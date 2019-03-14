@@ -8,6 +8,8 @@
 #include <stdbool.h>
 #include "saten_structs.h"
 #include "saten_declarations.h"
-#include "saten_main.h"
+#include "saten_fps_control.h"
+#include "saten_public.h"
+
 
 #endif /* SATEN_LIBRARY */

@@ -1,7 +1,7 @@
 int saten_run(saten_fptr_run fptr)
 {
     while (!saten_break) {
-        //TODO update fps
+        saten_fps_control_update();
         SDL_Event sdl_event;
         while (SDL_PollEvent(&sdl_event) != 0) {
             if (sdl_event.type == SDL_QUIT) 
@@ -12,11 +12,12 @@ int saten_run(saten_fptr_run fptr)
         // Game
         fptr();
         SDL_RenderPresent(saten_ren);
-        //TODO wait until next frame begins
-
+        saten_fps_control_wait();
+        saten_fcnt++;
     }
     return 0;
 }
+
 int saten_init(const char *title, int screen_width, int screen_height)
 {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO |
@@ -68,6 +69,9 @@ int saten_init(const char *title, int screen_width, int screen_height)
             }
         }
     }
+
+    saten_fps.fps = 60;
+    saten_fcnt = 0;
 
 
 
