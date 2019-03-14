@@ -8,4 +8,4 @@ release:
 	gcc -Wall -o game $(SRC) `sdl2-config --cflags --libs` $(ADD_LIBS)
 
 win:
-	gcc -Wall -o game.exe -D WIN32 $(SRC) `sdl2-config --cflags --libs` $(ADD_LIBS)
+	gcc -Wall -o game.exe -D WIN $(SRC) `sdl2-config --cflags --libs` $(ADD_LIBS)

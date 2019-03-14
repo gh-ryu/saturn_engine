@@ -1,6 +1,8 @@
 # assets etc.
 
 output.log
+error.log
+error.txt
 
 # Prerequisites
 *.d
