@@ -27,8 +27,8 @@ void game(void)
     if (saten_keystate[SDL_SCANCODE_ESCAPE]) {
         saten_break = true;
     }
-    if (saten_key(SATEN_KEY_0) >= 20)
-        printf("%d\n", saten_key(SATEN_KEY_0));
+    if (saten_key(SATEN_KEY_Y) >= 20)
+        printf("%d\n", saten_key(SATEN_KEY_Y));
     static SDL_Rect player = { 0, 0, 12, 12 };
     static int step = 0;
     SDL_Surface *test = IMG_Load("test.png");
