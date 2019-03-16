@@ -25,6 +25,9 @@ void saten_errhandler(int i)
     case 6:
         saten_printerr(i, "Failed to clear renderer");
         break;
+    case 7:
+        saten_printerr(i, "Failed to allocate memory");
+        break;
     }
 }
 

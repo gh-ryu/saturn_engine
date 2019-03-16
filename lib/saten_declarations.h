@@ -7,8 +7,12 @@ SDL_Renderer *saten_ren;
 saten_fps_mngr saten_fps;
 uint8_t saten_flags;
 char* saten_errpath;
+const uint8_t *saten_keystate;
+uint32_t *saten_keystate2;
 
 #define SATEN_ERRORS (1 << 7)
+#define SATEN_INPUT (1 << 6)
+#define SATEN_KEYCODES (1 << 5)
 #define SATEN_PRINTERR saten_flag_check(SATEN_ERRORS, saten_flags)
 
 // function pointers
@@ -32,6 +36,12 @@ bool saten_flag_check(uint8_t mask, uint8_t flag);
 void saten_flag_set(uint8_t mask, uint8_t *flag);
 void saten_flag_unset(uint8_t mask, uint8_t *flag);
 
+// input func
+void saten_keyb_input_refresh(void);
+void saten_keyb_input_update(bool b, uint8_t i);
+uint32_t saten_key(uint8_t i);
+
+
 // error func
 void saten_errhandler(int i);
 void saten_printerr(int i, char *str);
@@ -39,3 +49,4 @@ void saten_printerr(int i, char *str);
 
 // util func
 char* saten_get_filepath(const char* fn);
+

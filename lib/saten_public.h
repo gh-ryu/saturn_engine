@@ -2,12 +2,16 @@ int saten_run(saten_fptr_run fptr)
 {
     while (!saten_break) {
         saten_fps_control_update();
-        SDL_Event sdl_event;
-        while (SDL_PollEvent(&sdl_event) != 0) {
-            if (sdl_event.type == SDL_QUIT) 
-                saten_break = true;
+        if (saten_flag_check(SATEN_INPUT, saten_flags)) {
+            SDL_Event sdl_event;
+            while (SDL_PollEvent(&sdl_event) != 0) {
+                if (sdl_event.type == SDL_QUIT) 
+                    saten_break = true;
+            }
+            SDL_PumpEvents();
+            saten_keystate = SDL_GetKeyboardState(NULL);
+            saten_keyb_input_refresh();
         }
-        //TODO update inputs
         if (SDL_RenderClear(saten_ren) < 0)
             saten_errhandler(6);
 
@@ -71,6 +75,12 @@ int saten_init(const char *title, int screen_width, int screen_height,
                     saten_errhandler(5);
                 }
             }
+        }
+    }
+    if (saten_flag_check(SATEN_INPUT, saten_flags)) {
+        saten_keystate2 = (uint32_t*) malloc(59*sizeof(uint32_t));
+        if (saten_keystate2 == NULL) {
+            saten_errhandler(7);
         }
     }
 

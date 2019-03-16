@@ -24,6 +24,7 @@
 #include "saten_bitop.h"
 #include "saten_util.h"
 #include "saten_error.h"
+#include "saten_input.h"
 
 
 #endif /* SATEN_LIBRARY */

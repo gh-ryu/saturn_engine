@@ -7,7 +7,7 @@
 void game(void);
 int main (int argc, char *argv[])
 {
-    if(saten_init("Saturn Engine Demo", 320, 240,SATEN_ERRORS)<0) {
+    if(saten_init("Saturn Engine Demo", 320, 240,SATEN_ERRORS|SATEN_INPUT)<0) {
         fprintf(stderr, "Init error...\n");
     }
 
@@ -24,6 +24,11 @@ int main (int argc, char *argv[])
 
 void game(void)
 {
+    if (saten_keystate[SDL_SCANCODE_ESCAPE]) {
+        saten_break = true;
+    }
+    if (saten_key(SATEN_KEY_0) >= 20)
+        printf("%d\n", saten_key(SATEN_KEY_0));
     static SDL_Rect player = { 0, 0, 12, 12 };
     static int step = 0;
     SDL_Surface *test = IMG_Load("test.png");
