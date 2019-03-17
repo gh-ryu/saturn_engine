@@ -2,6 +2,7 @@
 char *saten_base_path;
 bool saten_break;
 saten_pad *saten_pads;
+uint8_t saten_pad_num;
 SDL_Window *saten_window;
 SDL_Renderer *saten_ren;
 saten_fps_mngr saten_fps;
@@ -38,8 +39,11 @@ void saten_flag_unset(uint8_t mask, uint8_t *flag);
 
 // input func
 void saten_keyb_input_refresh(void);
+void saten_pad_input_refresh(int i);
 void saten_keyb_input_update(bool b, uint8_t i);
+void saten_pad_input_update(int i, bool b, int j);
 uint32_t saten_key(uint8_t i);
+uint32_t saten_btn(uint8_t i, int j);
 
 
 // error func

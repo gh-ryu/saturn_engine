@@ -1,5 +1,6 @@
 typedef struct _saten_pad {
     SDL_GameController *dev;
+    uint32_t state[17];
 } saten_pad;
 
 typedef struct _saten_fps_mngr {

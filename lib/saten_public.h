@@ -11,6 +11,11 @@ int saten_run(saten_fptr_run fptr)
             SDL_PumpEvents();
             saten_keystate = SDL_GetKeyboardState(NULL);
             saten_keyb_input_refresh();
+            if (saten_pad_num > 0) {
+                for (int i = 0; i < saten_pad_num; i++) {
+                    saten_pad_input_refresh(i);
+                }
+            }
         }
         if (SDL_RenderClear(saten_ren) < 0)
             saten_errhandler(6);
@@ -64,14 +69,19 @@ int saten_init(const char *title, int screen_width, int screen_height,
     }
 
 
-    int pad_cnt = SDL_NumJoysticks();
-    if (pad_cnt >= 1) {
-        saten_pads = (saten_pad*) realloc(saten_pads, pad_cnt*
-                sizeof(saten_pad));
-        for (int i = 0; i < pad_cnt; ++i) {
+    saten_pad_num = SDL_NumJoysticks();
+    if (saten_pad_num >= 1) {
+        //saten_pads = (saten_pad*) realloc(saten_pads, saten_pad_num*
+        //        sizeof(saten_pad));
+        saten_pads = (saten_pad*) malloc(sizeof(saten_pad)*saten_pad_num);
+        memset(saten_pads, 0, sizeof(saten_pad)*saten_pad_num);
+        if (saten_pads == NULL) {
+            saten_errhandler(7);
+        }
+        for (int i = 0; i < saten_pad_num; ++i) {
             if (SDL_IsGameController(i)) {
-                saten_pads[i-1].dev = SDL_GameControllerOpen(i);
-                if (saten_pads[i-1].dev == NULL) {
+                saten_pads[i].dev = SDL_GameControllerOpen(i);
+                if (saten_pads[i].dev == NULL) {
                     saten_errhandler(5);
                 }
             }
@@ -79,6 +89,9 @@ int saten_init(const char *title, int screen_width, int screen_height,
     }
     if (saten_flag_check(SATEN_INPUT, saten_flags)) {
         saten_keystate2 = (uint32_t*) malloc(59*sizeof(uint32_t));
+        memset(saten_keystate2, 0, 59*sizeof(uint32_t));
+        //saten_keystate2 = (uint32_t*) realloc(saten_keystate2,
+        //        59*sizeof(uint32_t));
         if (saten_keystate2 == NULL) {
             saten_errhandler(7);
         }

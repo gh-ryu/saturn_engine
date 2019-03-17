@@ -27,8 +27,45 @@ void game(void)
     if (saten_keystate[SDL_SCANCODE_ESCAPE]) {
         saten_break = true;
     }
+
+    if (saten_btn(SATEN_BTN_INV, 0) > 1)
+        printf("btn inv: %d\n", saten_btn(SATEN_BTN_INV, 0));
+    if (saten_btn(SATEN_BTN_1, 0) > 1)
+        printf("btn1: %d\n", saten_btn(SATEN_BTN_1, 0));
+    if (saten_btn(SATEN_BTN_2, 0) > 1)
+        printf("btn2: %d\n", saten_btn(SATEN_BTN_2, 0));
+    if (saten_btn(SATEN_BTN_3, 0) > 1)
+        printf("btn3: %d\n", saten_btn(SATEN_BTN_3, 0));
+    if (saten_btn(SATEN_BTN_4, 0) > 1)
+        printf("btn4: %d\n", saten_btn(SATEN_BTN_4, 0));
+    if (saten_btn(SATEN_BTN_SELECT, 0) > 1)
+        printf("select: %d\n", saten_btn(SATEN_BTN_SELECT, 0));
+    if (saten_btn(SATEN_BTN_HOME, 0) > 1)
+        printf("home: %d\n", saten_btn(SATEN_BTN_HOME, 0));
+    if (saten_btn(SATEN_BTN_START, 0) > 1)
+        printf("start: %d\n", saten_btn(SATEN_BTN_START, 0));
+    if (saten_btn(SATEN_BTN_LSTICK, 0) > 1)
+        printf("lstick: %d\n", saten_btn(SATEN_BTN_LSTICK, 0));
+    if (saten_btn(SATEN_BTN_RSTICK, 0) > 1)
+        printf("rstick: %d\n", saten_btn(SATEN_BTN_RSTICK, 0));
+    if (saten_btn(SATEN_BTN_LSHOULD, 0) > 1)
+        printf("lshould: %d\n", saten_btn(SATEN_BTN_LSHOULD, 0));
+    if (saten_btn(SATEN_BTN_RSHOULD, 0) > 1)
+        printf("rshould: %d\n", saten_btn(SATEN_BTN_RSHOULD, 0));
+    if (saten_btn(SATEN_BTN_DPAD_UP, 0) > 1)
+        printf("up: %d\n", saten_btn(SATEN_BTN_DPAD_UP, 0));
+    if (saten_btn(SATEN_BTN_DPAD_DOWN, 0) > 1)
+        printf("down: %d\n", saten_btn(SATEN_BTN_DPAD_DOWN, 0));
+    if (saten_btn(SATEN_BTN_DPAD_LEFT, 0) > 1)
+        printf("left: %d\n", saten_btn(SATEN_BTN_DPAD_LEFT, 0));
+    if (saten_btn(SATEN_BTN_DPAD_RIGHT, 0) > 1)
+        printf("right: %d\n", saten_btn(SATEN_BTN_DPAD_RIGHT, 0));
+    if (saten_btn(SATEN_BTN_MAX, 0) > 1)
+        printf("max: %d\n", saten_btn(SATEN_BTN_MAX, 0));
+
     if (saten_key(SATEN_KEY_Y) >= 20)
         printf("%d\n", saten_key(SATEN_KEY_Y));
+
     static SDL_Rect player = { 0, 0, 12, 12 };
     static int step = 0;
     SDL_Surface *test = IMG_Load("test.png");
