@@ -9,7 +9,8 @@ saten_fps_mngr saten_fps;
 uint8_t saten_flags;
 char* saten_errpath;
 const uint8_t *saten_keystate;
-uint32_t *saten_keystate2;
+int32_t *saten_keystate2;
+int16_t saten_analog_deadzone;
 
 #define SATEN_ERRORS (1 << 7)
 #define SATEN_INPUT (1 << 6)
@@ -26,7 +27,11 @@ int saten_run(saten_fptr_run);
 
 // getters and setters
 void saten_set_fps(int fps);
+void saten_set_stick_deadzone(int16_t dz);
 float saten_get_avg_fps(void);
+float saten_get_left_stick_angle(int i);
+float saten_get_right_stick_angle(int i);
+
 
 // fps control functions
 void saten_fps_control_update(void);
@@ -42,6 +47,9 @@ void saten_keyb_input_refresh(void);
 void saten_pad_input_refresh(int i);
 void saten_keyb_input_update(bool b, uint8_t i);
 void saten_pad_input_update(int i, bool b, int j);
+void saten_pad_axis_update(int i, int16_t k, int j);
+void saten_pad_stick_angle(int i);
+void saten_pad_filter_deadzone(int i);
 uint32_t saten_key(uint8_t i);
 uint32_t saten_btn(uint8_t i, int j);
 
@@ -53,4 +61,5 @@ void saten_printerr(int i, char *str);
 
 // util func
 char* saten_get_filepath(const char* fn);
+int square(int a);
 

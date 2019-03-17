@@ -28,6 +28,11 @@ void game(void)
         saten_break = true;
     }
 
+    if(saten_pads[0].lang)
+        printf("left angle: %f\n", saten_pads[0].lang);
+    if(saten_pads[0].rang)
+        printf("right angle: %f\n", saten_pads[0].rang);
+
     if (saten_btn(SATEN_BTN_INV, 0) > 1)
         printf("btn inv: %d\n", saten_btn(SATEN_BTN_INV, 0));
     if (saten_btn(SATEN_BTN_1, 0) > 1)
@@ -48,10 +53,10 @@ void game(void)
         printf("lstick: %d\n", saten_btn(SATEN_BTN_LSTICK, 0));
     if (saten_btn(SATEN_BTN_RSTICK, 0) > 1)
         printf("rstick: %d\n", saten_btn(SATEN_BTN_RSTICK, 0));
-    if (saten_btn(SATEN_BTN_LSHOULD, 0) > 1)
-        printf("lshould: %d\n", saten_btn(SATEN_BTN_LSHOULD, 0));
-    if (saten_btn(SATEN_BTN_RSHOULD, 0) > 1)
-        printf("rshould: %d\n", saten_btn(SATEN_BTN_RSHOULD, 0));
+    if (saten_btn(SATEN_BTN_LS, 0) > 1)
+        printf("lshould: %d\n", saten_btn(SATEN_BTN_LS, 0));
+    if (saten_btn(SATEN_BTN_RS, 0) > 1)
+        printf("rshould: %d\n", saten_btn(SATEN_BTN_RS, 0));
     if (saten_btn(SATEN_BTN_DPAD_UP, 0) > 1)
         printf("up: %d\n", saten_btn(SATEN_BTN_DPAD_UP, 0));
     if (saten_btn(SATEN_BTN_DPAD_DOWN, 0) > 1)

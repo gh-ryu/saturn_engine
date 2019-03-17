@@ -1,6 +1,7 @@
 typedef struct _saten_pad {
     SDL_GameController *dev;
-    uint32_t state[17];
+    int32_t state[25];
+    float lang, rang; // stick angles
 } saten_pad;
 
 typedef struct _saten_fps_mngr {

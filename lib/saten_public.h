@@ -31,6 +31,7 @@ int saten_run(saten_fptr_run fptr)
 int saten_init(const char *title, int screen_width, int screen_height,
         uint8_t flags)
 {
+    saten_analog_deadzone = 3000;
     saten_flag_set(flags, &saten_flags);
     if (!(saten_base_path = SDL_GetBasePath())) {
         fprintf(stderr, "Failed to acquire base path. (%s)\n", SDL_GetError());
@@ -88,8 +89,8 @@ int saten_init(const char *title, int screen_width, int screen_height,
         }
     }
     if (saten_flag_check(SATEN_INPUT, saten_flags)) {
-        saten_keystate2 = (uint32_t*) malloc(59*sizeof(uint32_t));
-        memset(saten_keystate2, 0, 59*sizeof(uint32_t));
+        saten_keystate2 = (int32_t*) malloc(59*sizeof(int32_t));
+        memset(saten_keystate2, 0, 59*sizeof(int32_t));
         //saten_keystate2 = (uint32_t*) realloc(saten_keystate2,
         //        59*sizeof(uint32_t));
         if (saten_keystate2 == NULL) {

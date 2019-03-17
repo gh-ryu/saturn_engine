@@ -9,3 +9,8 @@ char* saten_get_filepath(const char* fn)
     strcat(res, fn);
     return res;
 }
+
+int square(int a)
+{
+    return a * a;
+}
