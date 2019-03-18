@@ -7,6 +7,18 @@ int saten_run(saten_fptr_run fptr)
             while (SDL_PollEvent(&sdl_event) != 0) {
                 if (sdl_event.type == SDL_QUIT) 
                     saten_break = true;
+                if (sdl_event.type == SDL_CONTROLLERDEVICEREMOVED) {
+                    printf("removed contrller %d\n",
+                            sdl_event.cdevice.which);
+                }
+                if (sdl_event.type == SDL_CONTROLLERDEVICEADDED) {
+                    printf("added contrller %d\n",
+                            sdl_event.cdevice.which);
+                }
+                if (sdl_event.type == SDL_JOYDEVICEADDED) {
+                    printf("added joystick %d\n",
+                            sdl_event.jdevice.which);
+                }
             }
             SDL_PumpEvents();
             saten_keystate = SDL_GetKeyboardState(NULL);
@@ -31,7 +43,6 @@ int saten_run(saten_fptr_run fptr)
 int saten_init(const char *title, int screen_width, int screen_height,
         uint8_t flags)
 {
-    saten_analog_deadzone = 3000;
     saten_flag_set(flags, &saten_flags);
     if (!(saten_base_path = SDL_GetBasePath())) {
         fprintf(stderr, "Failed to acquire base path. (%s)\n", SDL_GetError());
@@ -40,7 +51,7 @@ int saten_init(const char *title, int screen_width, int screen_height,
     if (SATEN_PRINTERR)
         saten_errpath = saten_get_filepath(SATEN_ERROR_LOG);
 
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO |
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK |
                 SDL_INIT_GAMECONTROLLER | SDL_INIT_HAPTIC)<0) {
         saten_errhandler(0);
         return -1;
@@ -86,6 +97,14 @@ int saten_init(const char *title, int screen_width, int screen_height,
                     saten_errhandler(5);
                 } else {
                     saten_haptic_init(i);
+                }
+            } else {
+                // joystick
+                saten_pads[i].jdev = SDL_JoystickOpen(i);
+                if (saten_pads[i].jdev == NULL) {
+                    saten_errhandler(5);
+                } else {
+                    // joystick accepted
                 }
             }
         }

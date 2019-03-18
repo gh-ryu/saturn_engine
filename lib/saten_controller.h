@@ -1,5 +1,65 @@
 void saten_pad_input_refresh(int i)
 {
+    if (saten_pads[i].dev)
+        saten_pad_input_refresh_controller(i);
+    if (saten_pads[i].jdev)
+        saten_pad_input_refresh_joystick(i);
+}
+
+uint32_t saten_btn(uint8_t i, int j)
+{
+    return saten_pads[j].state[i];
+}
+
+void saten_pad_input_update(int i, bool b, int j)
+{
+    if (b) {
+        uint32_t tmp = saten_pads[i].state[j];
+        saten_pads[i].state[j] =
+            (saten_pads[i].state[j] < 4294967295) ? tmp+1 : 1; 
+    } else {
+        saten_pads[i].state[j] = 0;
+    }
+}
+
+void saten_pad_axis_update(int i, int16_t k, int j)
+{
+    saten_pads[i].state[j] = k;
+}
+
+void saten_pad_filter_deadzone(int i)
+{
+    float l = sqrtf((float)square(saten_pads[i].state[SATEN_AXS_LX]) +
+        (float)square(saten_pads[i].state[SATEN_AXS_LY]));
+    if ( l < saten_pads[i].deadzone) {
+        saten_pads[i].state[SATEN_AXS_LX] = 0;
+        saten_pads[i].state[SATEN_AXS_LY] = 0;
+    }
+    l = sqrtf((float)square(saten_pads[i].state[SATEN_AXS_RX]) +
+        (float)square(saten_pads[i].state[SATEN_AXS_RY]));
+    if ( l < saten_pads[i].deadzone) {
+        saten_pads[i].state[SATEN_AXS_RX] = 0;
+        saten_pads[i].state[SATEN_AXS_RY] = 0;
+    }
+}
+
+void saten_pad_stick_angle(int i)
+{
+    saten_pads[i].lang = 180+atan2f((float)saten_pads[i].state[SATEN_AXS_LY],
+            (float)saten_pads[i].state[SATEN_AXS_LX]) * (180 / M_PI);
+    if (!saten_pads[i].state[SATEN_AXS_LX] &&
+            !saten_pads[i].state[SATEN_AXS_LY])
+        saten_pads[i].lang = 0.0f;
+
+    saten_pads[i].rang = 180+atan2f((float)saten_pads[i].state[SATEN_AXS_RY],
+            (float)saten_pads[i].state[SATEN_AXS_RX]) * (180 / M_PI);
+    if (!saten_pads[i].state[SATEN_AXS_RX] &&
+            !saten_pads[i].state[SATEN_AXS_RY])
+        saten_pads[i].rang = 0.0f;
+}
+
+void saten_pad_input_refresh_controller(int i)
+{
     saten_pad_input_update(i, SDL_GameControllerGetButton(saten_pads[i].dev,
                 SDL_CONTROLLER_BUTTON_INVALID), 0);
     saten_pad_input_update(i, SDL_GameControllerGetButton(saten_pads[i].dev,
@@ -51,58 +111,38 @@ void saten_pad_input_refresh(int i)
                 SDL_CONTROLLER_AXIS_TRIGGERRIGHT), 23);
     saten_pad_axis_update(i, SDL_GameControllerGetAxis(saten_pads[i].dev,
                 SDL_CONTROLLER_AXIS_MAX), 24);
-    saten_pad_filter_deadzone(i);
+    if (saten_pads[i].deadzone > 0)
+        saten_pad_filter_deadzone(i);
     saten_pad_stick_angle(i);
 }
 
-uint32_t saten_btn(uint8_t i, int j)
+void saten_pad_input_refresh_joystick(int i)
 {
-    return saten_pads[j].state[i];
-}
+    saten_pad_input_update(i,SDL_JoystickGetButton(saten_pads[i].jdev,0),0);
+    saten_pad_input_update(i,SDL_JoystickGetButton(saten_pads[i].jdev,1),1);
+    saten_pad_input_update(i,SDL_JoystickGetButton(saten_pads[i].jdev,2),2);
+    saten_pad_input_update(i,SDL_JoystickGetButton(saten_pads[i].jdev,3),3);
+    saten_pad_input_update(i,SDL_JoystickGetButton(saten_pads[i].jdev,4),4);
+    saten_pad_input_update(i,SDL_JoystickGetButton(saten_pads[i].jdev,5),5);
+    saten_pad_input_update(i,SDL_JoystickGetButton(saten_pads[i].jdev,6),6);
+    saten_pad_input_update(i,SDL_JoystickGetButton(saten_pads[i].jdev,7),7);
+    saten_pad_input_update(i,SDL_JoystickGetButton(saten_pads[i].jdev,8),8);
+    saten_pad_input_update(i,SDL_JoystickGetButton(saten_pads[i].jdev,9),9);
+    saten_pad_input_update(i,SDL_JoystickGetButton(saten_pads[i].jdev,10),10);
+    saten_pad_input_update(i,SDL_JoystickGetButton(saten_pads[i].jdev,11),11);
+    saten_pad_input_update(i,SDL_JoystickGetButton(saten_pads[i].jdev,12),12);
+    saten_pad_input_update(i,SDL_JoystickGetButton(saten_pads[i].jdev,13),13);
+    saten_pad_input_update(i,SDL_JoystickGetButton(saten_pads[i].jdev,14),14);
+    saten_pad_input_update(i,SDL_JoystickGetButton(saten_pads[i].jdev,15),15);
+    saten_pad_input_update(i,SDL_JoystickGetButton(saten_pads[i].jdev,16),16);
 
-void saten_pad_input_update(int i, bool b, int j)
-{
-    if (b) {
-        uint32_t tmp = saten_pads[i].state[j];
-        saten_pads[i].state[j] =
-            (saten_pads[i].state[j] < 4294967295) ? tmp+1 : 1; 
-    } else {
-        saten_pads[i].state[j] = 0;
-    }
-}
-
-void saten_pad_axis_update(int i, int16_t k, int j)
-{
-    saten_pads[i].state[j] = k;
-}
-
-void saten_pad_filter_deadzone(int i)
-{
-    float l = sqrtf((float)square(saten_pads[i].state[SATEN_AXS_LX]) +
-        (float)square(saten_pads[i].state[SATEN_AXS_LY]));
-    if ( l < saten_analog_deadzone) {
-        saten_pads[i].state[SATEN_AXS_LX] = 0;
-        saten_pads[i].state[SATEN_AXS_LY] = 0;
-    }
-    l = sqrtf((float)square(saten_pads[i].state[SATEN_AXS_RX]) +
-        (float)square(saten_pads[i].state[SATEN_AXS_RY]));
-    if ( l < saten_analog_deadzone) {
-        saten_pads[i].state[SATEN_AXS_RX] = 0;
-        saten_pads[i].state[SATEN_AXS_RY] = 0;
-    }
-}
-
-void saten_pad_stick_angle(int i)
-{
-    saten_pads[i].lang = 180+atan2f((float)saten_pads[i].state[SATEN_AXS_LY],
-            (float)saten_pads[i].state[SATEN_AXS_LX]) * (180 / M_PI);
-    if (!saten_pads[i].state[SATEN_AXS_LX] &&
-            !saten_pads[i].state[SATEN_AXS_LY])
-        saten_pads[i].lang = 0.0f;
-
-    saten_pads[i].rang = 180+atan2f((float)saten_pads[i].state[SATEN_AXS_RY],
-            (float)saten_pads[i].state[SATEN_AXS_RX]) * (180 / M_PI);
-    if (!saten_pads[i].state[SATEN_AXS_RX] &&
-            !saten_pads[i].state[SATEN_AXS_RY])
-        saten_pads[i].rang = 0.0f;
+    saten_pad_axis_update(i,SDL_JoystickGetAxis(saten_pads[i].jdev,0),18);
+    saten_pad_axis_update(i,SDL_JoystickGetAxis(saten_pads[i].jdev,1),19);
+    saten_pad_axis_update(i,SDL_JoystickGetAxis(saten_pads[i].jdev,2),20);
+    saten_pad_axis_update(i,SDL_JoystickGetAxis(saten_pads[i].jdev,3),21);
+    saten_pad_axis_update(i,SDL_JoystickGetAxis(saten_pads[i].jdev,4),22);
+    saten_pad_axis_update(i,SDL_JoystickGetAxis(saten_pads[i].jdev,5),23);
+    if (saten_pads[i].deadzone > 0)
+        saten_pad_filter_deadzone(i);
+    saten_pad_stick_angle(i);
 }

@@ -30,14 +30,44 @@ void game(void)
         saten_break = true;
     }
 
+    /*
+    for (int i = 0; i < 20; i++) {
+        if (SDL_JoystickGetButton(saten_pads[0].jdev, i))
+            printf("%d\n", i);
+    }
+    for (int i = 0; i < 20; i++) {
+        if (SDL_JoystickGetAxis(saten_pads[0].jdev, i))
+            printf("%d\n", i);
+    }
+    */
+    /*
+    for (int i = 0; i < 20; i++) {
+        if (SDL_JoystickGetButton(
+                    SDL_GameControllerGetJoystick(saten_pads[0].dev), i))
+            printf("%d\n", i);
+    }
+    */
+
+    /*
     if (step == 120) {
         saten_rumble(0, 1.0, 1200);
     }
+    */
 
+    /*
     if(saten_pads[0].lang)
         printf("left angle: %f\n", saten_pads[0].lang);
     if(saten_pads[0].rang)
         printf("right angle: %f\n", saten_pads[0].rang);
+        */
+    if (saten_btn(SATEN_AXS_LX, 0) > 0)
+        printf("lx: %d\n", saten_btn(SATEN_AXS_LX, 0));
+    if (saten_btn(SATEN_AXS_LY, 0) > 0)
+        printf("ly: %d\n", saten_btn(SATEN_AXS_LY, 0));
+    if (saten_btn(SATEN_AXS_RX, 0) > 0)
+        printf("rx: %d\n", saten_btn(SATEN_AXS_RX, 0));
+    if (saten_btn(SATEN_AXS_RY, 0) > 0)
+        printf("ry: %d\n", saten_btn(SATEN_AXS_RY, 0));
 
     if (saten_btn(SATEN_BTN_INV, 0) > 1)
         printf("btn inv: %d\n", saten_btn(SATEN_BTN_INV, 0));

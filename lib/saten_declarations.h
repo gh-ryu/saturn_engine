@@ -10,7 +10,6 @@ uint8_t saten_flags;
 char* saten_errpath;
 const uint8_t *saten_keystate;
 int32_t *saten_keystate2;
-int16_t saten_analog_deadzone;
 
 #define SATEN_ERRORS (1 << 7)
 #define SATEN_INPUT (1 << 6)
@@ -27,7 +26,7 @@ int saten_run(saten_fptr_run);
 
 // getters and setters
 void saten_set_fps(int fps);
-void saten_set_stick_deadzone(int16_t dz);
+void saten_set_stick_deadzone(int16_t dz, int i);
 float saten_get_avg_fps(void);
 float saten_get_left_stick_angle(int i);
 float saten_get_right_stick_angle(int i);
@@ -45,6 +44,8 @@ void saten_flag_unset(uint8_t mask, uint8_t *flag);
 // input func
 void saten_keyb_input_refresh(void);
 void saten_pad_input_refresh(int i);
+void saten_pad_input_refresh_controller(int i);
+void saten_pad_input_refresh_joystick(int i);
 void saten_keyb_input_update(bool b, uint8_t i);
 void saten_pad_input_update(int i, bool b, int j);
 void saten_pad_axis_update(int i, int16_t k, int j);

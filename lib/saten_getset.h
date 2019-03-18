@@ -3,9 +3,9 @@ void saten_set_fps(int fps)
     saten_fps.fps = fps;
 }
 
-void saten_set_stick_deadzone(int16_t dz)
+void saten_set_stick_deadzone(int16_t dz, int i)
 {
-    saten_analog_deadzone = dz;
+    saten_pads[i].deadzone = dz;
 }
 
 float saten_get_avg_fps(void)
