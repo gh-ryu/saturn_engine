@@ -89,6 +89,12 @@ int saten_init(const char *title, int screen_width, int screen_height,
         }
     }
 
+    if (saten_flag_check(SATEN_INPUT, saten_flags)) {
+        if (SDL_GameControllerAddMappingsFromFile("gamecontrollerdb.txt")<0)
+            saten_errhandler(12);
+
+    }
+
     saten_fps.fps = 60;
 
     // no problems

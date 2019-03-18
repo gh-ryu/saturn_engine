@@ -40,6 +40,9 @@ void saten_errhandler(int i)
     case 11:
         saten_printerr(i, "Failed to stop rumble");
         break;
+    case 12:
+        saten_printerr(i, "Failed reading controller db file");
+        break;
     }
 }
 
