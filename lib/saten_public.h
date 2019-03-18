@@ -7,17 +7,13 @@ int saten_run(saten_fptr_run fptr)
             while (SDL_PollEvent(&sdl_event) != 0) {
                 if (sdl_event.type == SDL_QUIT) 
                     saten_break = true;
-                if (sdl_event.type == SDL_CONTROLLERDEVICEREMOVED) {
-                    printf("removed contrller %d\n",
-                            sdl_event.cdevice.which);
-                }
-                if (sdl_event.type == SDL_CONTROLLERDEVICEADDED) {
-                    printf("added contrller %d\n",
-                            sdl_event.cdevice.which);
+                if (sdl_event.type == SDL_JOYDEVICEREMOVED) {
+                    //FIXME jdevice.which returns nonsense on second removal
+                    // and causes seg fault
+                    saten_controller_remove(sdl_event.jdevice.which);
                 }
                 if (sdl_event.type == SDL_JOYDEVICEADDED) {
-                    printf("added joystick %d\n",
-                            sdl_event.jdevice.which);
+                    saten_controller_add(sdl_event.jdevice.which);
                 }
             }
             SDL_PumpEvents();
@@ -25,7 +21,8 @@ int saten_run(saten_fptr_run fptr)
             saten_keyb_input_refresh();
             if (saten_pad_num > 0) {
                 for (int i = 0; i < saten_pad_num; i++) {
-                    saten_pad_input_refresh(i);
+                    if (saten_pads[i].flag)
+                        saten_pad_input_refresh(i);
                 }
             }
         }
@@ -81,34 +78,6 @@ int saten_init(const char *title, int screen_width, int screen_height,
     }
 
 
-    saten_pad_num = SDL_NumJoysticks();
-    if (saten_pad_num >= 1) {
-        //saten_pads = (saten_pad*) realloc(saten_pads, saten_pad_num*
-        //        sizeof(saten_pad));
-        saten_pads = (saten_pad*) malloc(sizeof(saten_pad)*saten_pad_num);
-        memset(saten_pads, 0, sizeof(saten_pad)*saten_pad_num);
-        if (saten_pads == NULL) {
-            saten_errhandler(7);
-        }
-        for (int i = 0; i < saten_pad_num; ++i) {
-            if (SDL_IsGameController(i)) {
-                saten_pads[i].dev = SDL_GameControllerOpen(i);
-                if (saten_pads[i].dev == NULL) {
-                    saten_errhandler(5);
-                } else {
-                    saten_haptic_init(i);
-                }
-            } else {
-                // joystick
-                saten_pads[i].jdev = SDL_JoystickOpen(i);
-                if (saten_pads[i].jdev == NULL) {
-                    saten_errhandler(5);
-                } else {
-                    // joystick accepted
-                }
-            }
-        }
-    }
 
     if (saten_flag_check(SATEN_INPUT, saten_flags)) {
         saten_keystate2 = (int32_t*) malloc(59*sizeof(int32_t));

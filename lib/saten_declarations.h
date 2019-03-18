@@ -53,6 +53,8 @@ void saten_pad_stick_angle(int i);
 void saten_pad_filter_deadzone(int i);
 uint32_t saten_key(uint8_t i);
 uint32_t saten_btn(uint8_t i, int j);
+void saten_controller_add(int i);
+void saten_controller_remove(int i);
 
 // haptic
 void saten_haptic_init(int i);

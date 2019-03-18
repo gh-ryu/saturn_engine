@@ -7,6 +7,7 @@ typedef struct _saten_pad {
     float lang, rang; // stick angles
     int jbtncnt;
     int deadzone;
+    bool flag;
 } saten_pad;
 
 typedef struct _saten_fps_mngr {

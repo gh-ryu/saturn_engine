@@ -60,49 +60,51 @@ void game(void)
     if(saten_pads[0].rang)
         printf("right angle: %f\n", saten_pads[0].rang);
         */
-    if (saten_btn(SATEN_AXS_LX, 0) > 0)
-        printf("lx: %d\n", saten_btn(SATEN_AXS_LX, 0));
-    if (saten_btn(SATEN_AXS_LY, 0) > 0)
-        printf("ly: %d\n", saten_btn(SATEN_AXS_LY, 0));
-    if (saten_btn(SATEN_AXS_RX, 0) > 0)
-        printf("rx: %d\n", saten_btn(SATEN_AXS_RX, 0));
-    if (saten_btn(SATEN_AXS_RY, 0) > 0)
-        printf("ry: %d\n", saten_btn(SATEN_AXS_RY, 0));
+    for (int i = 0; i < saten_pad_num; i++) {
+    if (saten_btn(SATEN_AXS_LX, i) > 0)
+        printf("lx: %d\n", saten_btn(SATEN_AXS_LX, i));
+    if (saten_btn(SATEN_AXS_LY, i) > 0)
+        printf("ly: %d\n", saten_btn(SATEN_AXS_LY, i));
+    if (saten_btn(SATEN_AXS_RX, i) > 0)
+        printf("rx: %d\n", saten_btn(SATEN_AXS_RX, i));
+    if (saten_btn(SATEN_AXS_RY, i) > 0)
+        printf("ry: %d\n", saten_btn(SATEN_AXS_RY, i));
 
-    if (saten_btn(SATEN_BTN_INV, 0) > 1)
-        printf("btn inv: %d\n", saten_btn(SATEN_BTN_INV, 0));
-    if (saten_btn(SATEN_BTN_1, 0) > 1)
-        printf("btn1: %d\n", saten_btn(SATEN_BTN_1, 0));
-    if (saten_btn(SATEN_BTN_2, 0) > 1)
-        printf("btn2: %d\n", saten_btn(SATEN_BTN_2, 0));
-    if (saten_btn(SATEN_BTN_3, 0) > 1)
-        printf("btn3: %d\n", saten_btn(SATEN_BTN_3, 0));
-    if (saten_btn(SATEN_BTN_4, 0) > 1)
-        printf("btn4: %d\n", saten_btn(SATEN_BTN_4, 0));
-    if (saten_btn(SATEN_BTN_SELECT, 0) > 1)
-        printf("select: %d\n", saten_btn(SATEN_BTN_SELECT, 0));
-    if (saten_btn(SATEN_BTN_HOME, 0) > 1)
-        printf("home: %d\n", saten_btn(SATEN_BTN_HOME, 0));
-    if (saten_btn(SATEN_BTN_START, 0) > 1)
-        printf("start: %d\n", saten_btn(SATEN_BTN_START, 0));
-    if (saten_btn(SATEN_BTN_LSTICK, 0) > 1)
-        printf("lstick: %d\n", saten_btn(SATEN_BTN_LSTICK, 0));
-    if (saten_btn(SATEN_BTN_RSTICK, 0) > 1)
-        printf("rstick: %d\n", saten_btn(SATEN_BTN_RSTICK, 0));
-    if (saten_btn(SATEN_BTN_LS, 0) > 1)
-        printf("lshould: %d\n", saten_btn(SATEN_BTN_LS, 0));
-    if (saten_btn(SATEN_BTN_RS, 0) > 1)
-        printf("rshould: %d\n", saten_btn(SATEN_BTN_RS, 0));
-    if (saten_btn(SATEN_BTN_DPAD_UP, 0) > 1)
-        printf("up: %d\n", saten_btn(SATEN_BTN_DPAD_UP, 0));
-    if (saten_btn(SATEN_BTN_DPAD_DOWN, 0) > 1)
-        printf("down: %d\n", saten_btn(SATEN_BTN_DPAD_DOWN, 0));
-    if (saten_btn(SATEN_BTN_DPAD_LEFT, 0) > 1)
-        printf("left: %d\n", saten_btn(SATEN_BTN_DPAD_LEFT, 0));
-    if (saten_btn(SATEN_BTN_DPAD_RIGHT, 0) > 1)
-        printf("right: %d\n", saten_btn(SATEN_BTN_DPAD_RIGHT, 0));
-    if (saten_btn(SATEN_BTN_MAX, 0) > 1)
-        printf("max: %d\n", saten_btn(SATEN_BTN_MAX, 0));
+    if (saten_btn(SATEN_BTN_INV, i) > 1)
+        printf("btn inv: %d\n", saten_btn(SATEN_BTN_INV, i));
+    if (saten_btn(SATEN_BTN_1, i) > 1)
+        printf("btn1: %d\n", saten_btn(SATEN_BTN_1, i));
+    if (saten_btn(SATEN_BTN_2, i) > 1)
+        printf("btn2: %d\n", saten_btn(SATEN_BTN_2, i));
+    if (saten_btn(SATEN_BTN_3, i) > 1)
+        printf("btn3: %d\n", saten_btn(SATEN_BTN_3, i));
+    if (saten_btn(SATEN_BTN_4, i) > 1)
+        printf("btn4: %d\n", saten_btn(SATEN_BTN_4, i));
+    if (saten_btn(SATEN_BTN_SELECT, i) > 1)
+        printf("select: %d\n", saten_btn(SATEN_BTN_SELECT, i));
+    if (saten_btn(SATEN_BTN_HOME, i) > 1)
+        printf("home: %d\n", saten_btn(SATEN_BTN_HOME, i));
+    if (saten_btn(SATEN_BTN_START, i) > 1)
+        printf("start: %d\n", saten_btn(SATEN_BTN_START, i));
+    if (saten_btn(SATEN_BTN_LSTICK, i) > 1)
+        printf("lstick: %d\n", saten_btn(SATEN_BTN_LSTICK, i));
+    if (saten_btn(SATEN_BTN_RSTICK, i) > 1)
+        printf("rstick: %d\n", saten_btn(SATEN_BTN_RSTICK, i));
+    if (saten_btn(SATEN_BTN_LS, i) > 1)
+        printf("lshould: %d\n", saten_btn(SATEN_BTN_LS, i));
+    if (saten_btn(SATEN_BTN_RS, i) > 1)
+        printf("rshould: %d\n", saten_btn(SATEN_BTN_RS, i));
+    if (saten_btn(SATEN_BTN_DPAD_UP, i) > 1)
+        printf("up: %d\n", saten_btn(SATEN_BTN_DPAD_UP, i));
+    if (saten_btn(SATEN_BTN_DPAD_DOWN, i) > 1)
+        printf("down: %d\n", saten_btn(SATEN_BTN_DPAD_DOWN, i));
+    if (saten_btn(SATEN_BTN_DPAD_LEFT, i) > 1)
+        printf("left: %d\n", saten_btn(SATEN_BTN_DPAD_LEFT, i));
+    if (saten_btn(SATEN_BTN_DPAD_RIGHT, i) > 1)
+        printf("right: %d\n", saten_btn(SATEN_BTN_DPAD_RIGHT, i));
+    if (saten_btn(SATEN_BTN_MAX, i) > 1)
+        printf("max: %d\n", saten_btn(SATEN_BTN_MAX, i));
+    }
 
     if (saten_key(SATEN_KEY_Y) >= 20)
         printf("%d\n", saten_key(SATEN_KEY_Y));
