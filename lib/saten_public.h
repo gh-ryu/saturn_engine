@@ -41,7 +41,7 @@ int saten_init(const char *title, int screen_width, int screen_height,
         saten_errpath = saten_get_filepath(SATEN_ERROR_LOG);
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO |
-                SDL_INIT_GAMECONTROLLER)<0) {
+                SDL_INIT_GAMECONTROLLER | SDL_INIT_HAPTIC)<0) {
         saten_errhandler(0);
         return -1;
     }
@@ -84,10 +84,13 @@ int saten_init(const char *title, int screen_width, int screen_height,
                 saten_pads[i].dev = SDL_GameControllerOpen(i);
                 if (saten_pads[i].dev == NULL) {
                     saten_errhandler(5);
+                } else {
+                    saten_haptic_init(i);
                 }
             }
         }
     }
+
     if (saten_flag_check(SATEN_INPUT, saten_flags)) {
         saten_keystate2 = (int32_t*) malloc(59*sizeof(int32_t));
         memset(saten_keystate2, 0, 59*sizeof(int32_t));

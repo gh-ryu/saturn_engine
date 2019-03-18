@@ -24,8 +24,14 @@ int main (int argc, char *argv[])
 
 void game(void)
 {
+    static SDL_Rect player = { 0, 0, 12, 12 };
+    static int step = 0;
     if (saten_keystate[SDL_SCANCODE_ESCAPE]) {
         saten_break = true;
+    }
+
+    if (step == 120) {
+        saten_rumble(0, 1.0, 1200);
     }
 
     if(saten_pads[0].lang)
@@ -71,8 +77,6 @@ void game(void)
     if (saten_key(SATEN_KEY_Y) >= 20)
         printf("%d\n", saten_key(SATEN_KEY_Y));
 
-    static SDL_Rect player = { 0, 0, 12, 12 };
-    static int step = 0;
     SDL_Surface *test = IMG_Load("test.png");
     SDL_Texture *txtr = SDL_CreateTextureFromSurface(saten_ren, test);
     SDL_SetRenderDrawColor(saten_ren, 155, 225, 200, 255);

@@ -1,5 +1,7 @@
 typedef struct _saten_pad {
     SDL_GameController *dev;
+    SDL_Haptic *hdev;
+    bool can_rumble;
     int32_t state[25];
     float lang, rang; // stick angles
 } saten_pad;

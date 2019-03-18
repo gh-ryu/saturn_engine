@@ -53,6 +53,13 @@ void saten_pad_filter_deadzone(int i);
 uint32_t saten_key(uint8_t i);
 uint32_t saten_btn(uint8_t i, int j);
 
+// haptic
+void saten_haptic_init(int i);
+void saten_rumble_init(int i);
+SDL_Haptic* saten_get_haptic(int i);
+void saten_rumble(int i, float str, uint32_t l);
+void saten_rumble_stop(int i);
+
 
 // error func
 void saten_errhandler(int i);

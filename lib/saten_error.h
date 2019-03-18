@@ -28,6 +28,18 @@ void saten_errhandler(int i)
     case 7:
         saten_printerr(i, "Failed to allocate memory");
         break;
+    case 8:
+        saten_printerr(i, "Failed to open haptic device");
+        break;
+    case 9:
+        saten_printerr(i, "Failed to check for rumble support");
+        break;
+    case 10:
+        saten_printerr(i, "Failed to start rumble");
+        break;
+    case 11:
+        saten_printerr(i, "Failed to stop rumble");
+        break;
     }
 }
 
