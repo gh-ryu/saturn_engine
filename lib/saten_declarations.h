@@ -24,6 +24,47 @@ int saten_init(const char *title, int screen_width, int screen_height,
         uint8_t flags);
 int saten_run(saten_fptr_run);
 
+// graphics
+// custom surface to perform blits on
+saten_layer* saten_create_layer(void);
+// set clip area of a layer
+void saten_layer_set_clip_area(saten_layer *lay, int x, int y, int w, int h);
+// draw layers on top of each other, convert top layer to texture and
+// copy onto renderer
+void saten_combine_layers(void);
+// if NULL draw operations are performed on renderer, otherwise blit onto
+// layer surface
+void saten_set_target_layer(saten_layer *lay);
+// draw on target determined by set_target_layer
+void saten_draw_rot(saten_sprite *sprite, int tile_id, int x, int y, float scale,
+        double ang);
+void saten_draw(saten_sprite *sprite, int tile_id, int x, int y, float scale);
+// manipulate how sprites are drawn onto target layers/renderer
+void saten_set_sprite_alphamod(saten_sprite *sprite, uint8_t alpha);
+void saten_set_sprite_blendmode(saten_sprite *sprite, SDL_BlendMode blendmode);
+void saten_set_sprite_colormod(saten_sprite *sprite, uint8_t r, uint8_t g,
+        uint8_t b);
+// for drawing lines, points and rects on renderer via sdl api
+void saten_set_draw_blendmode(SDL_BlendMode blendmode);
+// load sprite from file (ignore texture
+saten_sprite* saten_get_sprite(char *filename);
+// set texture of a sprite
+void saten_set_texture(saten_sprite *sprite);
+// copy sprite to modify pixels separate from original
+saten_sprite* saten_copy_sprite(saten_sprite *sprite);
+// set pixels a certain value
+void saten_recolor_sprite(saten_sprite *sprite, uint8_t r, uint8_t g,
+        uint8_t b);
+// draw stuff on renderer
+void saten_draw_line(int x1, int y1, int x2, int y2, uint8_t r, uint8_t g,
+        uint8_t b, uint8_t a);
+void saten_draw_rect(int x, int y, int w, int h, uint8_t r, uint8_t g,
+        uint8_t b, uint8_t a);
+void saten_draw_rect_filled(int x, int y, int w, int h, uint8_t r, uint8_t g,
+        uint8_t b, uint8_t a);
+void saten_draw_point(int x, int y, uint8_t r, uint8_t g, uint8_t b,
+        uint8_t a);
+
 // getters and setters
 void saten_set_fps(int fps);
 void saten_set_stick_deadzone(int16_t dz, int i);

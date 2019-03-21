@@ -17,3 +17,14 @@ typedef struct _saten_fps_mngr {
     int fps;
     int n; // used to calculate average
 } saten_fps_mngr;
+
+typedef struct _saten_sprite {
+    SDL_Surface *srf;
+    SDL_Texture *texture;
+    SDL_Rect *tile;
+} saten_sprite;
+
+typedef struct _saten_layer {
+    SDL_Surface *srf;
+    bool flag;
+} saten_layer;

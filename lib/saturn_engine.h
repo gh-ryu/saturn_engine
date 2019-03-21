@@ -26,6 +26,7 @@
 #include "saten_error.h"
 #include "saten_input.h"
 #include "saten_haptic.h"
+#include "saten_graphics.h"
 
 
 #endif /* SATEN_LIBRARY */
