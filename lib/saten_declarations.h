@@ -12,6 +12,7 @@ const uint8_t *saten_keystate;
 int32_t *saten_keystate2;
 
 saten_list* saten_list_layer;
+saten_layer* saten_target_layer;
 
 #define SATEN_ERRORS (1 << 7)
 #define SATEN_INPUT (1 << 6)
@@ -37,7 +38,7 @@ void saten_layer_set_clip_area(saten_layer *lay, int x, int y, int w, int h);
 void saten_combine_layers(void);
 // if NULL draw operations are performed on renderer, otherwise blit onto
 // layer surface
-void saten_set_target_layer(saten_layer *lay);
+void saten_set_target_layer(saten_layer **lay);
 // draw on target determined by set_target_layer
 void saten_draw_rot(saten_sprite *sprite, int tile_id, int x, int y, float scale,
         double ang);
@@ -50,11 +51,11 @@ void saten_set_sprite_colormod(saten_sprite *sprite, uint8_t r, uint8_t g,
 // for drawing lines, points and rects on renderer via sdl api
 void saten_set_draw_blendmode(SDL_BlendMode blendmode);
 // load sprite from file (ignore texture
-saten_sprite* saten_get_sprite(char *filename);
+void saten_load_sprite(saten_sprite **sprite, char *filename);
 // set texture of a sprite
 void saten_set_texture(saten_sprite *sprite);
 // copy sprite to modify pixels separate from original
-saten_sprite* saten_copy_sprite(saten_sprite *sprite);
+void saten_copy_sprite(saten_sprite **sprite_out, saten_sprite *sprite_in);
 // set pixels a certain value
 void saten_recolor_sprite(saten_sprite *sprite, uint8_t r, uint8_t g,
         uint8_t b);

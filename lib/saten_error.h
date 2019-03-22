@@ -46,6 +46,12 @@ void saten_errhandler(int i)
     case 13:
         saten_printerr(i, "Pointer to initialize is not null");
         break;
+    case 14:
+        saten_printerr(i, "Failed creating texture from surface");
+        break;
+    case 15:
+        saten_printerr(i, "Failed to copy sprite surface");
+        break;
     }
 }
 

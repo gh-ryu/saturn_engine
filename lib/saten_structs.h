@@ -39,5 +39,6 @@ typedef struct _saten_sprite {
 
 typedef struct _saten_layer {
     SDL_Surface *srf;
+    SDL_Rect *clip_area;
     bool flag;
 } saten_layer;
