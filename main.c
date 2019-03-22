@@ -10,6 +10,9 @@ int main (int argc, char *argv[])
     if(saten_init("Saturn Engine Demo", 320, 240,SATEN_ERRORS|SATEN_INPUT)<0) {
         fprintf(stderr, "Init error...\n");
     }
+    saten_layer* layer1 = NULL;
+    saten_create_layer(&layer1);
+    saten_destroy_layer(layer1);
 
     saten_fptr_run fptr_run = game;
 

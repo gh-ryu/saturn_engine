@@ -18,6 +18,7 @@
 #include <time.h>
 #include "saten_structs.h"
 #include "saten_declarations.h"
+#include "saten_list.h"
 #include "saten_fps_control.h"
 #include "saten_public.h"
 #include "saten_getset.h"

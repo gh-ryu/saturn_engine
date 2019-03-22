@@ -43,6 +43,9 @@ void saten_errhandler(int i)
     case 12:
         saten_printerr(i, "Failed reading controller db file");
         break;
+    case 13:
+        saten_printerr(i, "Pointer to initialize is not null");
+        break;
     }
 }
 
@@ -50,6 +53,7 @@ void saten_printerr(int i, char *str)
 {
 #ifdef DEV
     fprintf(stderr, "ERROR(%d) : %s. (%s)\n", i, str, SDL_GetError());
+#endif
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
     FILE *errlog = fopen(saten_errpath, "a");
@@ -57,5 +61,4 @@ void saten_printerr(int i, char *str)
             tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
     fprintf(errlog, "%s. (%s)\n", str, SDL_GetError());
     fclose(errlog);
-#endif
 }

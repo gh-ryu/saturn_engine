@@ -11,6 +11,8 @@ char* saten_errpath;
 const uint8_t *saten_keystate;
 int32_t *saten_keystate2;
 
+saten_list* saten_list_layer;
+
 #define SATEN_ERRORS (1 << 7)
 #define SATEN_INPUT (1 << 6)
 #define SATEN_KEYCODES (1 << 5)
@@ -26,7 +28,8 @@ int saten_run(saten_fptr_run);
 
 // graphics
 // custom surface to perform blits on
-saten_layer* saten_create_layer(void);
+void saten_create_layer(saten_layer **lay);
+void saten_destroy_layer(saten_layer *lay);
 // set clip area of a layer
 void saten_layer_set_clip_area(saten_layer *lay, int x, int y, int w, int h);
 // draw layers on top of each other, convert top layer to texture and
@@ -109,6 +112,12 @@ void saten_rumble_stop(int i);
 void saten_errhandler(int i);
 void saten_printerr(int i, char *str);
 
+// list func
+void saten_list_init(saten_list **lptr, size_t s);
+void saten_list_insert(saten_list *lptr, saten_litem *elemptr);
+void saten_list_remove(saten_list *lptr, saten_litem *elemptr);
+void saten_list_search(saten_list *lptr, saten_litem *curreptr,
+        saten_litem **eptr, void *item);
 
 // util func
 char* saten_get_filepath(const char* fn);

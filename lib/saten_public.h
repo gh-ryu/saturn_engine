@@ -95,6 +95,8 @@ int saten_init(const char *title, int screen_width, int screen_height,
 
     }
 
+    saten_list_init(&saten_list_layer, sizeof(saten_layer));
+
     saten_fps.fps = 60;
 
     // no problems

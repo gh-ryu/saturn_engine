@@ -1,3 +1,16 @@
+typedef struct _saten_litem {
+    void *current;
+    void *next;
+    void *prev;
+} saten_litem;
+
+typedef struct _saten_list {
+    saten_litem *head;
+    saten_litem *tail;
+    size_t size;
+    int num;
+} saten_list;
+
 typedef struct _saten_pad {
     SDL_GameController *dev;
     SDL_Joystick *jdev;
