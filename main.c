@@ -112,17 +112,30 @@ void game(void)
     if (saten_key(SATEN_KEY_Y) >= 20)
         printf("%d\n", saten_key(SATEN_KEY_Y));
 
-    SDL_Surface *test = IMG_Load("test.png");
-    SDL_Texture *txtr = SDL_CreateTextureFromSurface(saten_ren, test);
+    //SDL_Surface *test = IMG_Load("test.png");
+    //SDL_Texture *txtr = SDL_CreateTextureFromSurface(saten_ren, test);
+    saten_sprite *sprite = NULL;
+    saten_load_sprite(&sprite, "test.png");
+    saten_set_texture(sprite);
+
     SDL_SetRenderDrawColor(saten_ren, 155, 225, 200, 255);
     SDL_RenderFillRect(saten_ren, NULL);
-    SDL_SetTextureColorMod(txtr, 255, 255, 255);
-    SDL_RenderCopy(saten_ren, txtr, NULL, NULL);
+    //SDL_SetTextureColorMod(txtr, 255, 255, 255);
+
+    saten_sprite_scale(sprite, 1.0);
+    saten_draw(sprite, 0, 0, 0, -1, false);
+    saten_sprite_scale(sprite, 1.5);
+    saten_draw(sprite, 0, 60, 60, -1, false);
+    saten_sprite_scale(sprite, 2.0);
+    saten_draw(sprite, 0, 120, 120, -1, false);
+    //SDL_RenderCopy(saten_ren, txtr, NULL, NULL);
+
     SDL_SetRenderDrawColor(saten_ren, 255, 225, 255, 255);
     player.x += 1;
     SDL_RenderFillRect(saten_ren, &player);
 
-    SDL_FreeSurface(test);
-    SDL_DestroyTexture(txtr);
+    saten_destroy_sprite(sprite);
+    //SDL_FreeSurface(test);
+    //SDL_DestroyTexture(txtr);
     step++;
 }
