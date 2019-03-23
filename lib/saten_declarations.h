@@ -29,7 +29,7 @@ int saten_run(saten_fptr_run);
 
 // graphics
 // custom surface to perform blits on
-void saten_create_layer(saten_layer **lay);
+void saten_create_layer(saten_layer **lay, int width, int height);
 void saten_destroy_layer(saten_layer *lay);
 void saten_destroy_sprite(saten_sprite *sprite);
 // set clip area of a layer
@@ -40,7 +40,7 @@ void saten_layer_reset_clip_area(saten_layer *lay);
 void saten_combine_layers(void);
 // if NULL draw operations are performed on renderer, otherwise blit onto
 // layer surface
-void saten_set_target_layer(saten_layer **lay);
+void saten_set_target_layer(saten_layer *lay);
 // draw on target determined by set_target_layer
 void saten_draw(saten_sprite *sprite, int tile_id, int x, int y, double ang,
         bool stretch);

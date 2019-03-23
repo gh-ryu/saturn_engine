@@ -4,20 +4,39 @@
 
 #include "lib/saturn_engine.h"
 
+saten_sprite *sprite;
+saten_sprite *arrow;
+saten_layer* layer1 = NULL;
+saten_layer* layer2 = NULL;
+saten_layer* layer3 = NULL;
+saten_layer* layer4 = NULL;
+saten_layer* layer5 = NULL;
+saten_layer* layer6 = NULL;
+
 void game(void);
 int main (int argc, char *argv[])
 {
     if(saten_init("Saturn Engine Demo", 320, 240,SATEN_ERRORS|SATEN_INPUT)<0) {
         fprintf(stderr, "Init error...\n");
     }
-    saten_layer* layer1 = NULL;
-    saten_create_layer(&layer1);
-    saten_destroy_layer(layer1);
+    saten_create_layer(&layer1, 320, 240);
+    saten_create_layer(&layer2, 320, 240);
+    saten_create_layer(&layer3, 320, 240);
+    saten_create_layer(&layer4, 320, 240);
+    saten_create_layer(&layer5, 320, 240);
+    saten_create_layer(&layer6, 320, 240);
 
     saten_fptr_run fptr_run = game;
 
+    saten_load_sprite(&sprite, "test.png");
+    saten_load_sprite(&arrow, "arrow.png");
+    saten_set_texture(sprite);
+    saten_set_texture(arrow);
+
     saten_run(fptr_run);
 
+    saten_destroy_sprite(sprite);
+    saten_destroy_sprite(arrow);
 
 
 
@@ -114,27 +133,28 @@ void game(void)
 
     //SDL_Surface *test = IMG_Load("test.png");
     //SDL_Texture *txtr = SDL_CreateTextureFromSurface(saten_ren, test);
-    saten_sprite *sprite = NULL;
-    saten_load_sprite(&sprite, "test.png");
-    saten_set_texture(sprite);
 
     SDL_SetRenderDrawColor(saten_ren, 155, 225, 200, 255);
     SDL_RenderFillRect(saten_ren, NULL);
     //SDL_SetTextureColorMod(txtr, 255, 255, 255);
 
     saten_sprite_scale(sprite, 1.0);
+    saten_set_target_layer(layer1);
     saten_draw(sprite, 0, 0, 0, -1, false);
     saten_sprite_scale(sprite, 1.5);
+    saten_set_target_layer(layer2);
     saten_draw(sprite, 0, 60, 60, -1, false);
     saten_sprite_scale(sprite, 2.0);
+    saten_set_target_layer(layer3);
     saten_draw(sprite, 0, 120, 120, -1, false);
     //SDL_RenderCopy(saten_ren, txtr, NULL, NULL);
+    saten_set_target_layer(layer4);
+    saten_draw(arrow, 0, 160, 120, step*0.5, false);
 
     SDL_SetRenderDrawColor(saten_ren, 255, 225, 255, 255);
     player.x += 1;
     SDL_RenderFillRect(saten_ren, &player);
 
-    saten_destroy_sprite(sprite);
     //SDL_FreeSurface(test);
     //SDL_DestroyTexture(txtr);
     step++;

@@ -87,9 +87,9 @@ void saten_copy_sprite(saten_sprite **sprite_out, saten_sprite *sprite_in)
         saten_errhandler(15);
 }
 
-void saten_set_target_layer(saten_layer **lay)
+void saten_set_target_layer(saten_layer *lay)
 {
-    saten_target_layer = *lay;
+    saten_target_layer = lay;
 }
 
 void saten_layer_set_clip_area(saten_layer *lay, int x, int y, int w, int h)
@@ -115,7 +115,7 @@ void saten_layer_reset_clip_area(saten_layer *lay)
     lay->clip_area = NULL;
 }
 
-void saten_create_layer(saten_layer **lay) {
+void saten_create_layer(saten_layer **lay, int width, int height) {
     if (*lay != NULL)
         saten_errhandler(13);
     *lay = (saten_layer*) malloc(sizeof(saten_layer));
@@ -125,7 +125,24 @@ void saten_create_layer(saten_layer **lay) {
 
     // setup surface
     //TODO
-    //SDL_Surface* surface = NULL;
+    SDL_Surface* surface = NULL;
+    int32_t rmask, gmask, bmask, amask;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    rmask = 0xff000000;
+    gmask = 0x00ff0000;
+    bmask = 0x0000ff00;
+    amask = 0x000000ff;
+#else
+    rmask = 0x000000ff;
+    gmask = 0x0000ff00;
+    bmask = 0x00ff0000;
+    amask = 0xff000000;
+#endif
+    surface = SDL_CreateRGBSurface(0, width, height, 32, rmask, gmask,
+            bmask, amask);
+    if (surface == NULL)
+        saten_errhandler(17);
+    (*lay)->srf = surface;
 
     
     //
@@ -189,4 +206,12 @@ void saten_destroy_sprite(saten_sprite *sprite)
         free(sprite->tile);
     free(sprite);
     sprite = NULL;
+}
+
+void saten_combine_layers(void)
+{
+    if (saten_list_layer->num == 0)
+        return;
+
+    if (saten_list
 }

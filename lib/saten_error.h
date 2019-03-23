@@ -55,6 +55,9 @@ void saten_errhandler(int i)
     case 16:
         saten_printerr(i, "Failed copying texture to renderer");
         break;
+    case 17:
+        saten_printerr(i, "Failed creating new surface for layer");
+        break;
     }
 }
 
