@@ -42,9 +42,8 @@ void saten_combine_layers(void);
 // layer surface
 void saten_set_target_layer(saten_layer **lay);
 // draw on target determined by set_target_layer
-void saten_draw_rot(saten_sprite *sprite, int tile_id, int x, int y,
-        double ang);
-void saten_draw(saten_sprite *sprite, int tile_id, int x, int y);
+void saten_draw(saten_sprite *sprite, int tile_id, int x, int y, double ang,
+        bool stretch);
 // set scale
 void saten_sprite_scale(saten_sprite *sprite, float scale);
 // manipulate how sprites are drawn onto target layers/renderer

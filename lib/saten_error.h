@@ -52,6 +52,9 @@ void saten_errhandler(int i)
     case 15:
         saten_printerr(i, "Failed to copy sprite surface");
         break;
+    case 16:
+        saten_printerr(i, "Failed copying texture to renderer");
+        break;
     }
 }
 

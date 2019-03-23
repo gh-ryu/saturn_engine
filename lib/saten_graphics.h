@@ -22,6 +22,57 @@ void saten_set_texture(saten_sprite *sprite)
         saten_errhandler(14);
 }
 
+void saten_draw(saten_sprite *sprite, int tile_id, int x, int y, double ang,
+        bool stretch)
+{
+    int r;
+    SDL_Point rotation_center;
+    SDL_Point *rcenptr;
+    SDL_Rect *targetptr = NULL;
+    if (sprite->centered) { // draw pos is center of sprite
+        sprite->target->x = x - sprite->target->w/2;
+        sprite->target->y = y - sprite->target->h/2;
+        rotation_center.x = x;
+        rotation_center.y = y;
+        rcenptr = &rotation_center;
+    } else { // top-left corner is draw pos
+        sprite->target->x = x;
+        sprite->target->y = y;
+        rcenptr = NULL;
+    }
+    if (!stretch)
+        targetptr = sprite->target;
+    if (saten_target_layer == NULL) { // copy to renderer
+        if (ang < 0) {  // no rotation
+            if (sprite->tile) // use sprite from sheet
+                r = SDL_RenderCopy(saten_ren, sprite->texture,
+                        &sprite->tile[tile_id], targetptr);
+            else // use whole texture
+                r = SDL_RenderCopy(saten_ren, sprite->texture, NULL,
+                        targetptr);
+        } else {
+            // rotate sprite
+            if (sprite->tile)
+                r = SDL_RenderCopyEx(saten_ren, sprite->texture,
+                        &sprite->tile[tile_id], targetptr, ang, rcenptr,
+                        SDL_FLIP_NONE);
+            else // whole texture
+                r = SDL_RenderCopyEx(saten_ren, sprite->texture, NULL,
+                        targetptr, ang, rcenptr, SDL_FLIP_NONE);
+        }
+    } else { // blit onto layer
+        //TODO add rotation ?
+        if (sprite->tile)
+            r = SDL_BlitScaled(sprite->srf, &sprite->tile[tile_id],
+                        saten_target_layer->srf, targetptr);
+        else
+            r = SDL_BlitScaled(sprite->srf, NULL, saten_target_layer->srf,
+                        targetptr);
+    }
+    if (r < 0)
+        saten_errhandler(16);
+}
+
 void saten_copy_sprite(saten_sprite **sprite_out, saten_sprite *sprite_in)
 {
     *sprite_out = (saten_sprite*) malloc(sizeof(saten_sprite));
