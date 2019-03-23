@@ -31,8 +31,10 @@ int saten_run(saten_fptr_run);
 // custom surface to perform blits on
 void saten_create_layer(saten_layer **lay);
 void saten_destroy_layer(saten_layer *lay);
+void saten_destroy_sprite(saten_sprite *sprite);
 // set clip area of a layer
 void saten_layer_set_clip_area(saten_layer *lay, int x, int y, int w, int h);
+void saten_layer_reset_clip_area(saten_layer *lay);
 // draw layers on top of each other, convert top layer to texture and
 // copy onto renderer
 void saten_combine_layers(void);
@@ -40,9 +42,11 @@ void saten_combine_layers(void);
 // layer surface
 void saten_set_target_layer(saten_layer **lay);
 // draw on target determined by set_target_layer
-void saten_draw_rot(saten_sprite *sprite, int tile_id, int x, int y, float scale,
+void saten_draw_rot(saten_sprite *sprite, int tile_id, int x, int y,
         double ang);
-void saten_draw(saten_sprite *sprite, int tile_id, int x, int y, float scale);
+void saten_draw(saten_sprite *sprite, int tile_id, int x, int y);
+// set scale
+void saten_sprite_scale(saten_sprite *sprite, float scale);
 // manipulate how sprites are drawn onto target layers/renderer
 void saten_set_sprite_alphamod(saten_sprite *sprite, uint8_t alpha);
 void saten_set_sprite_blendmode(saten_sprite *sprite, SDL_BlendMode blendmode);
@@ -54,6 +58,8 @@ void saten_set_draw_blendmode(SDL_BlendMode blendmode);
 void saten_load_sprite(saten_sprite **sprite, char *filename);
 // set texture of a sprite
 void saten_set_texture(saten_sprite *sprite);
+// get tiles for sprite sheets
+void saten_set_tiles(saten_sprite *sprite, int num_h, int num_v);
 // copy sprite to modify pixels separate from original
 void saten_copy_sprite(saten_sprite **sprite_out, saten_sprite *sprite_in);
 // set pixels a certain value

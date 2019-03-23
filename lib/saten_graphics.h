@@ -5,6 +5,13 @@ void saten_load_sprite(saten_sprite **sprite, char *filename)
         saten_errhandler(7);
     memset(*sprite, 0, sizeof(saten_sprite));
     (*sprite)->srf = IMG_Load(filename);
+    (*sprite)->target = (SDL_Rect*) malloc(sizeof(SDL_Rect));
+    if ((*sprite)->target == NULL)
+        saten_errhandler(7);
+    (*sprite)->target->x = 0;
+    (*sprite)->target->y = 0;
+    (*sprite)->target->w = (*sprite)->srf->w;
+    (*sprite)->target->h = (*sprite)->srf->h;
 
 }
 
@@ -50,6 +57,13 @@ void saten_layer_set_clip_area(saten_layer *lay, int x, int y, int w, int h)
     SDL_SetClipRect(lay->srf, lay->clip_area);
 }
 
+void saten_layer_reset_clip_area(saten_layer *lay)
+{
+    if (lay->clip_area != NULL)
+        free (lay->clip_area);
+    lay->clip_area = NULL;
+}
+
 void saten_create_layer(saten_layer **lay) {
     if (*lay != NULL)
         saten_errhandler(13);
@@ -80,4 +94,48 @@ void saten_destroy_layer(saten_layer *lay)
     free(lay->clip_area);
     saten_list_remove(saten_list_layer, eptr);
     free(lay);
+}
+
+void saten_set_tiles(saten_sprite *sprite, int num_h, int num_v)
+{
+    int tile_w, tile_h, size;
+    tile_w = sprite->srf->w / num_h;
+    tile_h = sprite->srf->h / num_v;
+    size = num_h * num_v;
+    SDL_Rect *rects = (SDL_Rect*) malloc(sizeof(SDL_Rect)*size);
+    if (rects == NULL)
+        saten_errhandler(7);
+    for (int i = 0, k = 0; i < num_v; i++) {
+        for (int j= 0; j < num_h; j++) {
+            //SDL_Rect rect = { j*tile_w, i*tile_h, tile_w, tile_h };
+            rects[k] = (SDL_Rect) { j*tile_w, i*tile_h, tile_w, tile_h };
+            k++;
+        }
+    }
+    sprite->tile = rects;
+    sprite->target->w = tile_w;
+    sprite->target->h = tile_h;
+}
+
+void saten_sprite_scale(saten_sprite *sprite, float scale)
+{
+    if (sprite->tile) { // spritesheet
+        sprite->target->w = sprite->tile->w * scale;
+        sprite->target->h = sprite->tile->h * scale;
+    } else { // entire sprite
+        sprite->target->w = sprite->srf->w * scale;
+        sprite->target->h = sprite->srf->h * scale;
+    }
+}
+
+void saten_destroy_sprite(saten_sprite *sprite)
+{
+    if (sprite->srf)
+        SDL_FreeSurface(sprite->srf);
+    if (sprite->texture)
+        SDL_DestroyTexture(sprite->texture);
+    if (sprite->tile)
+        free(sprite->tile);
+    free(sprite);
+    sprite = NULL;
 }
