@@ -1,3 +1,4 @@
+// public
 void saten_list_init(saten_list **lptr, size_t s)
 {
     if (*lptr != NULL)
@@ -9,6 +10,7 @@ void saten_list_init(saten_list **lptr, size_t s)
     (*lptr)->size = s;
 }
 
+// public
 void saten_list_insert(saten_list *lptr, saten_litem *elemptr)
 {
     if (lptr->num == 0) {
@@ -28,6 +30,7 @@ void saten_list_insert(saten_list *lptr, saten_litem *elemptr)
     lptr->num++;
 }
 
+// public
 void saten_list_search(saten_list *lptr, saten_litem *curreptr,
         saten_litem **eptr, void *item)
 {
@@ -43,6 +46,7 @@ void saten_list_search(saten_list *lptr, saten_litem *curreptr,
     }
 }
 
+// public
 void saten_list_remove(saten_list *lptr, saten_litem *elemptr)
 {
     if (lptr->head == elemptr) {
@@ -78,4 +82,21 @@ void saten_list_remove(saten_list *lptr, saten_litem *elemptr)
         free(elemptr);
     }
     lptr->num--;
+}
+
+// public
+void saten_list_traverse(saten_list *lptr, saten_fptr_list_action fptr)
+{
+    if (lptr->head)
+        saten_list_loop(lptr, lptr->head, 0, fptr);
+}
+
+// private
+void saten_list_loop(saten_list *lptr, saten_litem *eptr, int i,
+        saten_fptr_list_action fptr)
+{
+    if (i < lptr->num) {
+        fptr(eptr->current, i, lptr->num);
+        saten_list_loop(lptr, eptr->next, i+1, fptr);
+    }
 }

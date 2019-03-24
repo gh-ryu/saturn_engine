@@ -1,3 +1,4 @@
+// public
 void saten_load_sprite(saten_sprite **sprite, char *filename)
 {
     *sprite = (saten_sprite*) malloc(sizeof(saten_sprite));
@@ -15,6 +16,7 @@ void saten_load_sprite(saten_sprite **sprite, char *filename)
 
 }
 
+// public
 void saten_set_texture(saten_sprite *sprite)
 {
     sprite->texture = SDL_CreateTextureFromSurface(saten_ren, sprite->srf);
@@ -22,8 +24,9 @@ void saten_set_texture(saten_sprite *sprite)
         saten_errhandler(14);
 }
 
-void saten_draw(saten_sprite *sprite, int tile_id, int x, int y, double ang,
-        bool stretch)
+// public
+void saten_draw_sprite(saten_sprite *sprite, int tile_id, int x, int y,
+        double ang, bool stretch)
 {
     int r;
     SDL_Point rotation_center;
@@ -73,8 +76,10 @@ void saten_draw(saten_sprite *sprite, int tile_id, int x, int y, double ang,
         saten_errhandler(16);
 }
 
+// public
 void saten_copy_sprite(saten_sprite **sprite_out, saten_sprite *sprite_in)
 {
+    //FIXME pixel data is not a copy! copy manually..
     *sprite_out = (saten_sprite*) malloc(sizeof(saten_sprite));
     if (*sprite_out == NULL)
         saten_errhandler(7);
@@ -85,13 +90,16 @@ void saten_copy_sprite(saten_sprite **sprite_out, saten_sprite *sprite_in)
             sprite_in->srf->format->format);
     if ((*sprite_out)->srf == NULL)
         saten_errhandler(15);
+    (*sprite_out)->copy = true;
 }
 
+// public
 void saten_set_target_layer(saten_layer *lay)
 {
     saten_target_layer = lay;
 }
 
+// public
 void saten_layer_set_clip_area(saten_layer *lay, int x, int y, int w, int h)
 {
     if (lay->clip_area == NULL) {
@@ -108,6 +116,7 @@ void saten_layer_set_clip_area(saten_layer *lay, int x, int y, int w, int h)
     SDL_SetClipRect(lay->srf, lay->clip_area);
 }
 
+// public
 void saten_layer_reset_clip_area(saten_layer *lay)
 {
     if (lay->clip_area != NULL)
@@ -115,6 +124,7 @@ void saten_layer_reset_clip_area(saten_layer *lay)
     lay->clip_area = NULL;
 }
 
+// public
 void saten_create_layer(saten_layer **lay, int width, int height) {
     if (*lay != NULL)
         saten_errhandler(13);
@@ -143,7 +153,7 @@ void saten_create_layer(saten_layer **lay, int width, int height) {
     if (surface == NULL)
         saten_errhandler(17);
     (*lay)->srf = surface;
-
+    (*lay)->flag = true;
     
     //
     saten_litem *elem = (saten_litem*) malloc(sizeof(saten_litem));
@@ -154,6 +164,7 @@ void saten_create_layer(saten_layer **lay, int width, int height) {
     saten_list_insert(saten_list_layer, elem);
 }
 
+// public
 void saten_destroy_layer(saten_layer *lay)
 {
     saten_litem* eptr = NULL;
@@ -164,6 +175,7 @@ void saten_destroy_layer(saten_layer *lay)
     free(lay);
 }
 
+// public
 void saten_set_tiles(saten_sprite *sprite, int num_h, int num_v)
 {
     int tile_w, tile_h, size;
@@ -185,6 +197,7 @@ void saten_set_tiles(saten_sprite *sprite, int num_h, int num_v)
     sprite->target->h = tile_h;
 }
 
+// public
 void saten_sprite_scale(saten_sprite *sprite, float scale)
 {
     if (sprite->tile) { // spritesheet
@@ -196,6 +209,7 @@ void saten_sprite_scale(saten_sprite *sprite, float scale)
     }
 }
 
+// public
 void saten_destroy_sprite(saten_sprite *sprite)
 {
     if (sprite->srf)
@@ -208,10 +222,34 @@ void saten_destroy_sprite(saten_sprite *sprite)
     sprite = NULL;
 }
 
+// public
 void saten_combine_layers(void)
 {
-    if (saten_list_layer->num == 0)
+    if (saten_list_layer->num <= 1) // requires 2 layers min
         return;
 
-    if (saten_list
+    saten_fptr_list_action fptr = saten_layer_blit;
+    saten_list_traverse(saten_list_layer, fptr);
+
+}
+
+// private
+void saten_layer_blit(void *item, int i, int num)
+{
+    saten_layer *layer = (saten_layer*) item;
+    if (layer->flag) { // ignore layers with flag set to off
+        SDL_BlitSurface(layer->srf, NULL, saten_layer0->srf,
+                saten_layer0->clip_area);
+    }
+    if (i == num-1) { // handling last element in list
+        SDL_Texture *zt = SDL_CreateTextureFromSurface(saten_ren,
+                saten_layer0->srf);
+        if (zt == NULL) {
+            saten_errhandler(18);
+            return;
+        }
+        if (SDL_RenderCopy(saten_ren, zt, NULL, NULL) == -1)
+            saten_errhandler(19);
+        SDL_DestroyTexture(zt);
+    }
 }

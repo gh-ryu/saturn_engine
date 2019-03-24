@@ -96,6 +96,12 @@ int saten_init(const char *title, int screen_width, int screen_height,
     }
 
     saten_list_init(&saten_list_layer, sizeof(saten_layer));
+    saten_create_layer(&saten_layer0, screen_width, screen_height);
+    saten_layer0->flag = 0;
+    saten_layer0->clip_area = (SDL_Rect*) malloc(sizeof(SDL_Rect));
+    if (saten_layer0->clip_area == NULL)
+        saten_errhandler(7);
+    memset(saten_layer0->clip_area, 0, sizeof(SDL_Rect));
 
     saten_fps.fps = 60;
 

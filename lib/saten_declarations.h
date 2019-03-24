@@ -13,6 +13,7 @@ int32_t *saten_keystate2;
 
 saten_list* saten_list_layer;
 saten_layer* saten_target_layer;
+saten_layer* saten_layer0;
 
 #define SATEN_ERRORS (1 << 7)
 #define SATEN_INPUT (1 << 6)
@@ -20,7 +21,8 @@ saten_layer* saten_target_layer;
 #define SATEN_PRINTERR saten_flag_check(SATEN_ERRORS, saten_flags)
 
 // function pointers
-typedef void (*saten_fptr_run) (void);
+typedef void (*saten_fptr_run)(void);
+typedef void (*saten_fptr_list_action)(void*, int, int);
 
 // public functions
 int saten_init(const char *title, int screen_width, int screen_height,
@@ -38,6 +40,7 @@ void saten_layer_reset_clip_area(saten_layer *lay);
 // draw layers on top of each other, convert top layer to texture and
 // copy onto renderer
 void saten_combine_layers(void);
+void saten_layer_blit(void *item, int i, int num);
 // if NULL draw operations are performed on renderer, otherwise blit onto
 // layer surface
 void saten_set_target_layer(saten_layer *lay);
@@ -124,6 +127,9 @@ void saten_list_insert(saten_list *lptr, saten_litem *elemptr);
 void saten_list_remove(saten_list *lptr, saten_litem *elemptr);
 void saten_list_search(saten_list *lptr, saten_litem *curreptr,
         saten_litem **eptr, void *item);
+void saten_list_traverse(saten_list *lptr, saten_fptr_list_action fptr);
+void saten_list_loop(saten_list *lptr, saten_litem *eptr, int i,
+        saten_fptr_list_action fptr);
 
 // util func
 char* saten_get_filepath(const char* fn);

@@ -140,16 +140,18 @@ void game(void)
 
     saten_sprite_scale(sprite, 1.0);
     saten_set_target_layer(layer1);
-    saten_draw(sprite, 0, 0, 0, -1, false);
+    saten_draw_sprite(sprite, 0, 0, 0, -1, false);
     saten_sprite_scale(sprite, 1.5);
     saten_set_target_layer(layer2);
-    saten_draw(sprite, 0, 60, 60, -1, false);
+    saten_draw_sprite(sprite, 0, 60, 60, -1, false);
     saten_sprite_scale(sprite, 2.0);
     saten_set_target_layer(layer3);
-    saten_draw(sprite, 0, 120, 120, -1, false);
+    saten_draw_sprite(sprite, 0, 120, 120, -1, false);
     //SDL_RenderCopy(saten_ren, txtr, NULL, NULL);
     saten_set_target_layer(layer4);
-    saten_draw(arrow, 0, 160, 120, step*0.5, false);
+    saten_draw_sprite(arrow, 0, 160, 120, step*0.5, false);
+
+    saten_combine_layers();
 
     SDL_SetRenderDrawColor(saten_ren, 255, 225, 255, 255);
     player.x += 1;
