@@ -29,53 +29,49 @@ int saten_init(const char *title, int screen_width, int screen_height,
         uint8_t flags);
 int saten_run(saten_fptr_run);
 
-// graphics
-// custom surface to perform blits on
+// draw
+void saten_draw_line(int x1, int y1, int x2, int y2, uint8_t r, uint8_t g,
+        uint8_t b, uint8_t a, SDL_BlendMode blendmode);
+void saten_draw_rect(int x, int y, int w, int h, uint8_t r, uint8_t g,
+        uint8_t b, uint8_t a, SDL_BlendMode blendmode);
+void saten_draw_rect_filled(int x, int y, int w, int h, uint8_t r, uint8_t g,
+        uint8_t b, uint8_t a, SDL_BlendMode blendmode);
+void saten_draw_point(int x, int y, uint8_t r, uint8_t g, uint8_t b,
+        uint8_t a, SDL_BlendMode blendmode);
+void saten_draw_set_param(uint8_t r, uint8_t g, uint8_t b, uint8_t a,
+        SDL_BlendMode blendmode);
+
+// sprite
+void saten_destroy_sprite(saten_sprite *sprite);
+void saten_draw_sprite(saten_sprite *sprite, int tile_id, int x, int y,
+        double ang, bool stretch);
+void saten_sprite_scale(saten_sprite *sprite, float scale);
+saten_sprite* saten_load_sprite(char *filename);
+void saten_set_texture(saten_sprite *sprite);
+void saten_set_tiles(saten_sprite *sprite, int num_h, int num_v);
+//void saten_copy_sprite(saten_sprite **sprite_out, saten_sprite *sprite_in);
+//void saten_recolor_sprite(saten_sprite *sprite, uint8_t r, uint8_t g,
+//        uint8_t b);
+void saten_sprite_alphamod(saten_sprite *sprite, uint8_t alpha);
+void saten_sprite_colormod(saten_sprite *sprite, uint8_t r, uint8_t g,
+        uint8_t b);
+void saten_sprite_blendmode(saten_sprite *sprite, SDL_BlendMode blendmode);
+
+// layer
 void saten_create_layer(saten_layer **lay, int width, int height);
 void saten_destroy_layer(saten_layer *lay);
-void saten_destroy_sprite(saten_sprite *sprite);
-// set clip area of a layer
 void saten_layer_set_clip_area(saten_layer *lay, int x, int y, int w, int h);
 void saten_layer_reset_clip_area(saten_layer *lay);
-// draw layers on top of each other, convert top layer to texture and
-// copy onto renderer
 void saten_combine_layers(void);
 void saten_layer_blit(void *item, int i, int num);
-// if NULL draw operations are performed on renderer, otherwise blit onto
-// layer surface
 void saten_set_target_layer(saten_layer *lay);
-// draw on target determined by set_target_layer
-void saten_draw(saten_sprite *sprite, int tile_id, int x, int y, double ang,
-        bool stretch);
-// set scale
-void saten_sprite_scale(saten_sprite *sprite, float scale);
-// manipulate how sprites are drawn onto target layers/renderer
-void saten_set_sprite_alphamod(saten_sprite *sprite, uint8_t alpha);
-void saten_set_sprite_blendmode(saten_sprite *sprite, SDL_BlendMode blendmode);
-void saten_set_sprite_colormod(saten_sprite *sprite, uint8_t r, uint8_t g,
+void saten_layer_clear(saten_layer *layer);
+void saten_layer_clear2(void *item, int i, int num);
+void saten_layer_clear_all(void);
+void saten_layer_alphamod(saten_layer *layer, uint8_t alpha);
+void saten_layer_colormod(saten_layer *layer, uint8_t r, uint8_t g,
         uint8_t b);
-// for drawing lines, points and rects on renderer via sdl api
-void saten_set_draw_blendmode(SDL_BlendMode blendmode);
-// load sprite from file (ignore texture
-void saten_load_sprite(saten_sprite **sprite, char *filename);
-// set texture of a sprite
-void saten_set_texture(saten_sprite *sprite);
-// get tiles for sprite sheets
-void saten_set_tiles(saten_sprite *sprite, int num_h, int num_v);
-// copy sprite to modify pixels separate from original
-void saten_copy_sprite(saten_sprite **sprite_out, saten_sprite *sprite_in);
-// set pixels a certain value
-void saten_recolor_sprite(saten_sprite *sprite, uint8_t r, uint8_t g,
-        uint8_t b);
-// draw stuff on renderer
-void saten_draw_line(int x1, int y1, int x2, int y2, uint8_t r, uint8_t g,
-        uint8_t b, uint8_t a);
-void saten_draw_rect(int x, int y, int w, int h, uint8_t r, uint8_t g,
-        uint8_t b, uint8_t a);
-void saten_draw_rect_filled(int x, int y, int w, int h, uint8_t r, uint8_t g,
-        uint8_t b, uint8_t a);
-void saten_draw_point(int x, int y, uint8_t r, uint8_t g, uint8_t b,
-        uint8_t a);
+void saten_layer_blendmode(saten_layer *layer, SDL_BlendMode blendmode);
 
 // getters and setters
 void saten_set_fps(int fps);

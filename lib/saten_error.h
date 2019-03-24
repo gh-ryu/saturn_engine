@@ -64,6 +64,39 @@ void saten_errhandler(int i)
     case 19:
         saten_printerr(i, "Failed copying zero layer texture to renderer");
         break;
+    case 20:
+        saten_printerr(i, "Failed setting surface alpha mod");
+        break;
+    case 21:
+        saten_printerr(i, "Failed setting texture alpha mod");
+        break;
+    case 22:
+        saten_printerr(i, "Failed setting surface color mod");
+        break;
+    case 23:
+        saten_printerr(i, "Failed setting texture color mod");
+        break;
+    case 24:
+        saten_printerr(i, "Failed setting surface blend mode");
+        break;
+    case 25:
+        saten_printerr(i, "Failed setting texture blend mode");
+        break;
+    case 26:
+        saten_printerr(i, "Failed setting render draw color");
+        break;
+    case 27:
+        saten_printerr(i, "Failed setting render draw blend mode");
+        break;
+    case 28:
+        saten_printerr(i, "Failed to draw line to renderer");
+        break;
+    case 29:
+        saten_printerr(i, "Failed to draw rect to renderer");
+        break;
+    case 30:
+        saten_printerr(i, "Failed to draw point to renderer");
+        break;
     }
 }
 

@@ -28,8 +28,8 @@ int main (int argc, char *argv[])
 
     saten_fptr_run fptr_run = game;
 
-    saten_load_sprite(&sprite, "test.png");
-    saten_load_sprite(&arrow, "arrow.png");
+    sprite = saten_load_sprite("test.png");
+    arrow = saten_load_sprite("arrow.png");
     saten_set_texture(sprite);
     saten_set_texture(arrow);
 
@@ -51,6 +51,8 @@ void game(void)
     if (saten_keystate[SDL_SCANCODE_ESCAPE]) {
         saten_break = true;
     }
+
+    saten_layer_clear_all();
 
     /*
     for (int i = 0; i < 20; i++) {
@@ -134,28 +136,35 @@ void game(void)
     //SDL_Surface *test = IMG_Load("test.png");
     //SDL_Texture *txtr = SDL_CreateTextureFromSurface(saten_ren, test);
 
-    SDL_SetRenderDrawColor(saten_ren, 155, 225, 200, 255);
-    SDL_RenderFillRect(saten_ren, NULL);
+    //SDL_SetRenderDrawColor(saten_ren, 155, 225, 200, 255);
+    //SDL_RenderFillRect(saten_ren, NULL);
+    saten_draw_rect_filled(0, 0, 320, 240, 155, 225, 200, 255,
+            SDL_BLENDMODE_NONE);
+
     //SDL_SetTextureColorMod(txtr, 255, 255, 255);
 
     saten_sprite_scale(sprite, 1.0);
     saten_set_target_layer(layer1);
-    saten_draw_sprite(sprite, 0, 0, 0, -1, false);
+    saten_draw_sprite(sprite, 0, 0, 0+step, -1, false);
     saten_sprite_scale(sprite, 1.5);
     saten_set_target_layer(layer2);
-    saten_draw_sprite(sprite, 0, 60, 60, -1, false);
+    saten_draw_sprite(sprite, 0, 60, 60+step, -1, false);
     saten_sprite_scale(sprite, 2.0);
     saten_set_target_layer(layer3);
-    saten_draw_sprite(sprite, 0, 120, 120, -1, false);
+    saten_draw_sprite(sprite, 0, 120, 120+step, -1, false);
     //SDL_RenderCopy(saten_ren, txtr, NULL, NULL);
     saten_set_target_layer(layer4);
     saten_draw_sprite(arrow, 0, 160, 120, step*0.5, false);
 
     saten_combine_layers();
 
-    SDL_SetRenderDrawColor(saten_ren, 255, 225, 255, 255);
+    //SDL_SetRenderDrawColor(saten_ren, 255, 225, 255, 255);
     player.x += 1;
-    SDL_RenderFillRect(saten_ren, &player);
+    //SDL_RenderFillRect(saten_ren, &player);
+
+    saten_set_target_layer(NULL);
+    saten_draw_rect_filled(player.x, player.y, player.w, player.h,
+            255, 255, 255, 255, SDL_BLENDMODE_NONE);
 
     //SDL_FreeSurface(test);
     //SDL_DestroyTexture(txtr);
