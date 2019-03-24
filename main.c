@@ -166,6 +166,10 @@ void game(void)
     saten_draw_rect_filled(player.x, player.y, player.w, player.h,
             255, 255, 255, 255, SDL_BLENDMODE_NONE);
 
+    saten_draw_rect_filled(0, 0, 320, 240,
+            0, 0, 0, 255, SDL_BLENDMODE_NONE);
+    saten_draw_circle(160,120,60,255,255,255,255, SDL_BLENDMODE_NONE);
+    saten_draw_circle_filled(160,120,60,80,255,255,120, SDL_BLENDMODE_BLEND);
     //SDL_FreeSurface(test);
     //SDL_DestroyTexture(txtr);
     step++;
