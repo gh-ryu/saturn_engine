@@ -10,7 +10,13 @@ char* saten_get_filepath(const char* fn)
     return res;
 }
 
-int square(int a)
+int saten_square(int a)
 {
     return a * a;
+}
+
+uint32_t saten_get_surface_pixel(uint32_t *pixels, int x, int y, int w)
+{
+    printf("index %d\n", y*w+x);
+    return pixels[y*w+x];
 }

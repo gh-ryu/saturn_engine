@@ -114,7 +114,8 @@ void saten_draw_simple_circle(int x, int y, int r, bool fill)
                         saten_errhandler(30);
                 }
             } else {
-                if ((dx + dy) == r) {
+                //FIXME doesn't work :/
+                if ((dx * dx + dy * dy) == boundary) {
                     if (SDL_RenderDrawPoint(saten_ren, j, i) < 0)
                         saten_errhandler(30);
                 }

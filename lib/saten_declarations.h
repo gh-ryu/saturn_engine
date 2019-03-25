@@ -135,5 +135,5 @@ void saten_list_loop(saten_list *lptr, saten_litem *eptr, int i,
 
 // util func
 char* saten_get_filepath(const char* fn);
-int square(int a);
-
+int saten_square(int a);
+uint32_t saten_get_surface_pixel(uint32_t *pixels, int x, int y, int w);

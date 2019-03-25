@@ -35,14 +35,14 @@ void saten_pad_axis_update(int i, int16_t k, int j)
 
 void saten_pad_filter_deadzone(int i)
 {
-    float l = sqrtf((float)square(saten_pads[i].state[SATEN_AXS_LX]) +
-        (float)square(saten_pads[i].state[SATEN_AXS_LY]));
+    float l = sqrtf((float)saten_square(saten_pads[i].state[SATEN_AXS_LX]) +
+        (float)saten_square(saten_pads[i].state[SATEN_AXS_LY]));
     if ( l < saten_pads[i].deadzone) {
         saten_pads[i].state[SATEN_AXS_LX] = 0;
         saten_pads[i].state[SATEN_AXS_LY] = 0;
     }
-    l = sqrtf((float)square(saten_pads[i].state[SATEN_AXS_RX]) +
-        (float)square(saten_pads[i].state[SATEN_AXS_RY]));
+    l = sqrtf((float)saten_square(saten_pads[i].state[SATEN_AXS_RX]) +
+        (float)saten_square(saten_pads[i].state[SATEN_AXS_RY]));
     if ( l < saten_pads[i].deadzone) {
         saten_pads[i].state[SATEN_AXS_RX] = 0;
         saten_pads[i].state[SATEN_AXS_RY] = 0;
