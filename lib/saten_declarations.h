@@ -20,6 +20,10 @@ saten_layer* saten_layer0;
 #define SATEN_KEYCODES (1 << 5)
 #define SATEN_PRINTERR saten_flag_check(SATEN_ERRORS, saten_flags)
 
+#define SATEN_SPRITE 0
+#define SATEN_LAYER 1
+#define SATEN_SURFACE 2
+
 // function pointers
 typedef void (*saten_fptr_run)(void);
 typedef void (*saten_fptr_list_action)(void*, int, int);
@@ -136,4 +140,6 @@ void saten_list_loop(saten_list *lptr, saten_litem *eptr, int i,
 // util func
 char* saten_get_filepath(const char* fn);
 int saten_square(int a);
-uint32_t saten_get_pixel(SDL_Surface *srf, int x, int y);
+uint32_t saten_get_pixel(void *data, int tupe, int x, int y);
+void saten_put_pixel(void *data, int type, int x, int y, uint32_t pixel);
+SDL_Surface* saten_get_surface(void *data, int type);

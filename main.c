@@ -31,7 +31,6 @@ int main (int argc, char *argv[])
 
     sprite = saten_load_sprite("test.png");
     arrow = saten_load_sprite("arrow.png");
-    m7 = saten_load_sprite("mode7test.png");
     saten_set_texture(sprite);
     saten_set_texture(arrow);
 
@@ -40,7 +39,6 @@ int main (int argc, char *argv[])
 
     saten_destroy_sprite(sprite);
     saten_destroy_sprite(arrow);
-    saten_destroy_sprite(m7);
 
 
 
@@ -50,15 +48,9 @@ int main (int argc, char *argv[])
 
 void game(void)
 {
-    //static SDL_Rect player = { 0, 0, 12, 12 };
+    static SDL_Rect player = { 0, 0, 12, 12 };
     static int step = 0;
 
-    static float fovhalf = 3.14159f / 4.0f;
-    static float world_angle = 0.1f;
-    static float near = 0.005f;
-    static float far = 0.03f;
-    static float world_x = 1000.0f;
-    static float world_y = 1000.0f;
     if (saten_keystate[SDL_SCANCODE_ESCAPE]) {
         saten_break = true;
     }
@@ -152,93 +144,9 @@ void game(void)
     saten_draw_rect_filled(0, 0, 320, 240, 155, 225, 200, 255,
             SDL_BLENDMODE_NONE);
 
-    if (saten_key(SATEN_KEY_Q) >= 1)
-        near += 0.1f * 0.16f;
-    if (saten_key(SATEN_KEY_A) >= 1)
-        near -= 0.1f * 0.16f;
-
-    if (saten_key(SATEN_KEY_W) >= 1)
-        far += 0.1f * 0.16f;
-    if (saten_key(SATEN_KEY_S) >= 1)
-        far -= 0.1f * 0.16f;
-
-    if (saten_key(SATEN_KEY_Z) >= 1)
-        fovhalf += 0.1f * 0.16f;
-    if (saten_key(SATEN_KEY_X) >= 1)
-        fovhalf -= 0.1f * 0.16f;
-
-    float far_x1 = world_x + cosf(world_angle - fovhalf) * far;
-    float far_y1 = world_y + sinf(world_angle - fovhalf) * far;
-
-    float near_x1 = world_x + cosf(world_angle - fovhalf) * near;
-    float near_y1 = world_y + sinf(world_angle - fovhalf) * near;
-
-    float far_x2 = world_x + cosf(world_angle + fovhalf) * far;
-    float far_y2 = world_y + sinf(world_angle + fovhalf) * far;
-
-    float near_x2 = world_x + cosf(world_angle + fovhalf) * near;
-    float near_y2 = world_y + sinf(world_angle + fovhalf) * near;
-
-    for (int y = 0; y < 240 / 2; y++) {
-        float sample_depth = (float)y / (240.0f / 2.0f);
-
-        float start_x, start_y, end_x, end_y;
-        if (sample_depth > 0) {
-            start_x = (far_x1 - near_x1) / (sample_depth) + near_x1;
-            start_y = (far_y1 - near_y1) / (sample_depth) + near_y1;
-            end_x = (far_x2 - near_x2) / (sample_depth) + near_x2;
-            end_y = (far_y2 - near_y2) / (sample_depth) + near_y2;
-        } else {
-            start_x = near_x1; 
-            start_y = near_y1;
-            end_x = near_x2;
-            end_y = near_y2;
-        }
-
-        for (int x = 0; x < 320; x++) {
-            float sample_width = (float)x / 320.0f;
-            float sample_x = (end_x - start_x) * sample_width + start_x;
-            float sample_y = (end_y - start_y) * sample_width + start_y;
-
-            sample_x = fmod(sample_x, 1.0f);
-            sample_y = fmod(sample_y, 1.0f);
-
-            sample_x *= m7->srf->w;
-            sample_y *= m7->srf->h;
-            sample_x -= 1;
-            sample_y -= 1;
-            if (sample_x < 0)
-                sample_x = 0;
-            if (sample_y < 0)
-                sample_y = 0;
-            
-            uint32_t pixel = saten_get_pixel(m7->srf, sample_x, sample_y);
-            uint8_t r = 0, g = 0, b = 0, a = 255;
-            SDL_GetRGBA(pixel, m7->srf->format, &r, &g, &b, &a);
-            saten_draw_point(x, y +(240 / 2), r, g, b, 255,
-                    SDL_BLENDMODE_NONE);
-
-        }
-    }
-
-    if (saten_key(SATEN_KEY_LEFT) >= 1)
-        world_angle -= 1.0f * 0.16f;
-    if (saten_key(SATEN_KEY_RIGHT) >= 1)
-        world_angle += 1.0f * 0.16f;
-    if (saten_key(SATEN_KEY_UP) >= 1) {
-        world_x += cosf(world_angle) * 0.2f * 0.16f;
-        world_y += sinf(world_angle) * 0.2f * 0.16f;
-    }
-    if (saten_key(SATEN_KEY_DOWN) >= 1) {
-        world_x -= cosf(world_angle) * 0.2f * 0.16f;
-        world_y -= sinf(world_angle) * 0.2f * 0.16f;
-    }
-
-    //saten_draw_sprite(m7, 0, 0, 0, -1, false);
 
     //SDL_SetTextureColorMod(txtr, 255, 255, 255);
 
-    /*
     saten_sprite_scale(sprite, 1.0);
     saten_set_target_layer(layer1);
     saten_draw_sprite(sprite, 0, 0, 0+step, -1, false);
@@ -266,7 +174,6 @@ void game(void)
             0, 0, 0, 255, SDL_BLENDMODE_NONE);
     saten_draw_circle(160,120,120,255,255,255,255, SDL_BLENDMODE_BLEND);
     //saten_draw_circle_filled(160,120,80,80,255,255,80, SDL_BLENDMODE_BLEND);
-    */
 
     //SDL_FreeSurface(test);
     //SDL_DestroyTexture(txtr);
