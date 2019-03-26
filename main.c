@@ -40,6 +40,7 @@ int main (int argc, char *argv[])
 
     saten_destroy_sprite(sprite);
     saten_destroy_sprite(arrow);
+    saten_destroy_sprite(m7);
 
 
 
@@ -56,8 +57,8 @@ void game(void)
     static float world_angle = 0.1f;
     static float near = 0.005f;
     static float far = 0.03f;
-    static float world_x = 0.5f;
-    static float world_y = 0.5f;
+    static float world_x = 1000.0f;
+    static float world_y = 1000.0f;
     if (saten_keystate[SDL_SCANCODE_ESCAPE]) {
         saten_break = true;
     }
@@ -202,11 +203,17 @@ void game(void)
             sample_x = fmod(sample_x, 1.0f);
             sample_y = fmod(sample_y, 1.0f);
 
-            uint32_t pixel = saten_get_surface_pixel(
-                    m7->srf->pixels, (sample_x * m7->srf->w)-1,
-                    (sample_y * m7->srf->h)-1, m7->srf->w);
-            //uint8_t *pc = (uint8_t*) &pixel;
-            uint8_t r, g, b, a;
+            sample_x *= m7->srf->w;
+            sample_y *= m7->srf->h;
+            sample_x -= 1;
+            sample_y -= 1;
+            if (sample_x < 0)
+                sample_x = 0;
+            if (sample_y < 0)
+                sample_y = 0;
+            
+            uint32_t pixel = saten_get_pixel(m7->srf, sample_x, sample_y);
+            uint8_t r = 0, g = 0, b = 0, a = 255;
             SDL_GetRGBA(pixel, m7->srf->format, &r, &g, &b, &a);
             saten_draw_point(x, y +(240 / 2), r, g, b, 255,
                     SDL_BLENDMODE_NONE);
@@ -227,6 +234,7 @@ void game(void)
         world_y -= sinf(world_angle) * 0.2f * 0.16f;
     }
 
+    //saten_draw_sprite(m7, 0, 0, 0, -1, false);
 
     //SDL_SetTextureColorMod(txtr, 255, 255, 255);
 
