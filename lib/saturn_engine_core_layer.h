@@ -30,43 +30,27 @@ void saten_layer_reset_clip_area(saten_layer *lay)
 }
 
 // public
-void saten_create_layer(saten_layer **lay, int width, int height) {
-    if (*lay != NULL)
-        saten_errhandler(13);
-    *lay = (saten_layer*) malloc(sizeof(saten_layer));
-    if (*lay == NULL)
+saten_layer* saten_layer_create(int width, int height) {
+    saten_layer *lay = (saten_layer*) malloc(sizeof(saten_layer));
+    if (lay == NULL)
         saten_errhandler(7); 
-    memset(*lay, 0, sizeof(saten_layer));
+    memset(lay, 0, sizeof(saten_layer));
 
     // setup surface
-    //TODO
-    SDL_Surface* surface = NULL;
-    int32_t rmask, gmask, bmask, amask;
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    rmask = 0xff000000;
-    gmask = 0x00ff0000;
-    bmask = 0x0000ff00;
-    amask = 0x000000ff;
-#else
-    rmask = 0x000000ff;
-    gmask = 0x0000ff00;
-    bmask = 0x00ff0000;
-    amask = 0xff000000;
-#endif
-    surface = SDL_CreateRGBSurface(0, width, height, 32, rmask, gmask,
-            bmask, amask);
-    if (surface == NULL)
-        saten_errhandler(17);
-    (*lay)->srf = surface;
-    (*lay)->flag = true;
+    SDL_Surface *surface = NULL;
+    surface = saten_surface_create(width, height, 32);
+
+    lay->srf = surface;
+    lay->flag = true;
     
     //
     saten_litem *elem = (saten_litem*) malloc(sizeof(saten_litem));
     if (elem == NULL)
         saten_errhandler(7); 
     memset(elem, 0, sizeof(saten_litem));
-    elem->current = (void*) *lay;
+    elem->current = (void*) lay;
     saten_list_insert(saten_list_layer, elem);
+    return lay;
 }
 
 // public
@@ -152,8 +136,10 @@ void saten_layer_blit(void *item, int i, int num)
 {
     saten_layer *layer = (saten_layer*) item;
     if (layer->flag) { // ignore layers with flag set to off
-        SDL_BlitSurface(layer->srf, NULL, saten_layer0->srf,
-                saten_layer0->clip_area);
+        int r = SDL_BlitSurface(layer->srf, NULL, saten_layer0->srf,
+                        saten_layer0->clip_area);
+        if (r < 0)
+            saten_errhandler(31);
     }
     if (i == num-1) { // handling last element in list
         SDL_Texture *zt = SDL_CreateTextureFromSurface(saten_ren,

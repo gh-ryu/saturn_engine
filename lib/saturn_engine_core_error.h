@@ -97,6 +97,9 @@ void saten_errhandler(int i)
     case 30:
         saten_printerr(i, "Failed to draw point to renderer");
         break;
+    case 31:
+        saten_printerr(i, "Failed to blit surface");
+        break;
     }
 }
 

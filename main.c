@@ -5,6 +5,7 @@
 #include "lib/saturn_engine_core.h"
 
 saten_sprite *sprite;
+saten_sprite *sprite_copy;
 saten_sprite *arrow;
 saten_sprite *m7;
 saten_layer* layer1 = NULL;
@@ -20,25 +21,28 @@ int main (int argc, char *argv[])
     if(saten_init("Saturn Engine Core", 320, 240,SATEN_ERRORS|SATEN_INPUT)<0) {
         fprintf(stderr, "Init error...\n");
     }
-    saten_create_layer(&layer1, 320, 240);
-    saten_create_layer(&layer2, 320, 240);
-    saten_create_layer(&layer3, 320, 240);
-    saten_create_layer(&layer4, 320, 240);
-    saten_create_layer(&layer5, 320, 240);
-    saten_create_layer(&layer6, 320, 240);
+    layer1 = saten_layer_create(320, 240);
+    layer2 = saten_layer_create(320, 240);
+    layer3 = saten_layer_create(320, 240);
+    layer4 = saten_layer_create(320, 240);
+    layer5 = saten_layer_create(320, 240);
+    layer6 = saten_layer_create(320, 240);
 
     saten_fptr_run fptr_run = game;
 
     sprite = saten_sprite_load("test.png");
-    saten_sprite_colorize(sprite, 255, 255, 255);
+    sprite_copy = saten_sprite_copy(sprite);
+    saten_sprite_colorize(sprite_copy, 255, 255, 255);
     arrow = saten_sprite_load("arrow.png");
     saten_sprite_texturize(sprite);
+    saten_sprite_texturize(sprite_copy);
     saten_sprite_texturize(arrow);
 
 
     saten_run(fptr_run);
 
     saten_sprite_destroy(sprite);
+    saten_sprite_destroy(sprite_copy);
     saten_sprite_destroy(arrow);
 
 
@@ -51,6 +55,7 @@ void game(void)
 {
     static SDL_Rect player = { 0, 0, 12, 12 };
     static int step = 0;
+    static int decide = 0;
 
     if (saten_keystate[SDL_SCANCODE_ESCAPE]) {
         saten_break = true;
@@ -146,9 +151,20 @@ void game(void)
             SDL_BLENDMODE_NONE);
 
     saten_sprite_scale(sprite, 0.5f);
+    saten_sprite_scale(sprite_copy, 0.5f);
 
-    saten_sprite_repeat(sprite, 0, 0, 0, 320, 240);
 
+    if (step % 200 == 0) {
+        if (decide) 
+            decide = 0;
+        else
+            decide = 1;
+    }
+
+    if (decide)
+        saten_sprite_repeat(sprite, 0, 0, 0, 320, 240);
+    else
+        saten_sprite_repeat(sprite_copy, 0, 0, 0, 320, 240);
 
     player.x += 1;
 

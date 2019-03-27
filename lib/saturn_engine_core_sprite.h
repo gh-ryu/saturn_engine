@@ -200,21 +200,33 @@ void saten_sprite_colorize(saten_sprite *sprite, uint8_t r, uint8_t g,
     }
 }
 
-/*
 // public
-void saten_copy_sprite(saten_sprite **sprite_out, saten_sprite *sprite_in)
+// This function does NOT copy tile data and texture data. These have to be
+// set for the copy individually
+saten_sprite* saten_sprite_copy(saten_sprite *sprite_in)
 {
-    //FIXME pixel data is not a copy! copy manually..
-    *sprite_out = (saten_sprite*) malloc(sizeof(saten_sprite));
-    if (*sprite_out == NULL)
+    saten_sprite* sprite = (saten_sprite*) malloc(sizeof(saten_sprite));
+    if (sprite == NULL)
+        saten_errhandler(7); 
+    memset(sprite, 0, sizeof(saten_sprite));
+
+    SDL_Surface *surface = saten_surface_create(sprite_in->srf->w,
+            sprite_in->srf->h, 32);
+    sprite->srf = surface;
+    sprite->copy = true;
+
+    int r = SDL_BlitSurface(sprite_in->srf, NULL, sprite->srf, NULL);
+    if (r < 0)
+        saten_errhandler(31);
+
+
+    sprite->target = (SDL_Rect*) malloc(sizeof(SDL_Rect));
+    if (sprite->target == NULL)
         saten_errhandler(7);
-    memset(*sprite_out, 0, sizeof(saten_sprite));
-    (*sprite_out)->srf = SDL_CreateRGBSurfaceWithFormatFrom(
-            sprite_in->srf->pixels, sprite_in->srf->w, sprite_in->srf->h,
-            sprite_in->srf->format->BitsPerPixel, sprite_in->srf->pitch,
-            sprite_in->srf->format->format);
-    if ((*sprite_out)->srf == NULL)
-        saten_errhandler(15);
-    (*sprite_out)->copy = true;
+    sprite->target->x = 0;
+    sprite->target->y = 0;
+    sprite->target->w = sprite->srf->w;
+    sprite->target->h = sprite->srf->h;
+    sprite->scale = 1.0f;
+    return sprite;
 }
-*/

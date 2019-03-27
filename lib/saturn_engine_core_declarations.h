@@ -72,7 +72,7 @@ void saten_sprite_colorize(saten_sprite *sprite, uint8_t r, uint8_t g,
         uint8_t b);
 
 // layer
-void saten_create_layer(saten_layer **lay, int width, int height);
+saten_layer* saten_layer_create(int width, int height);
 void saten_destroy_layer(saten_layer *lay);
 void saten_layer_set_clip_area(saten_layer *lay, int x, int y, int w, int h);
 void saten_layer_reset_clip_area(saten_layer *lay);
@@ -144,8 +144,11 @@ void saten_list_loop(saten_list *lptr, saten_litem *eptr, int i,
 // util func
 char* saten_get_filepath(const char* fn);
 int saten_square(int a);
-SDL_Surface* saten_get_surface(void *data, int type);
 
 // pixel
 uint32_t saten_pixel_get(void *data, int tupe, int x, int y);
 void saten_pixel_put(void *data, int type, int x, int y, uint32_t pixel);
+
+// surface
+SDL_Surface* saten_surface_create(int w, int h, int depth);
+SDL_Surface* saten_surface_get(void *data, int type);
