@@ -1,8 +1,8 @@
 /*
-  Saturn Engine - Demo program
+  Saturn Engine Core - Demo program
 */
 
-#include "lib/saturn_engine.h"
+#include "lib/saturn_engine_core.h"
 
 saten_sprite *sprite;
 saten_sprite *arrow;
@@ -17,7 +17,7 @@ saten_layer* layer6 = NULL;
 void game(void);
 int main (int argc, char *argv[])
 {
-    if(saten_init("Saturn Engine Demo", 320, 240,SATEN_ERRORS|SATEN_INPUT)<0) {
+    if(saten_init("Saturn Engine Core", 320, 240,SATEN_ERRORS|SATEN_INPUT)<0) {
         fprintf(stderr, "Init error...\n");
     }
     saten_create_layer(&layer1, 320, 240);
