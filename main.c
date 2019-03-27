@@ -30,6 +30,7 @@ int main (int argc, char *argv[])
     saten_fptr_run fptr_run = game;
 
     sprite = saten_sprite_load("test.png");
+    saten_sprite_colorize(sprite, 255, 255, 255);
     arrow = saten_sprite_load("arrow.png");
     saten_sprite_texturize(sprite);
     saten_sprite_texturize(arrow);

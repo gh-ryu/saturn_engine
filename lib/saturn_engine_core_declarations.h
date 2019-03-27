@@ -68,6 +68,8 @@ void saten_sprite_colormod(saten_sprite *sprite, uint8_t r, uint8_t g,
 void saten_sprite_blendmode(saten_sprite *sprite, SDL_BlendMode blendmode);
 void saten_sprite_repeat(saten_sprite *sprite, int tile_id, int x0, int y0,
         int w, int h);
+void saten_sprite_colorize(saten_sprite *sprite, uint8_t r, uint8_t g,
+        uint8_t b);
 
 // layer
 void saten_create_layer(saten_layer **lay, int width, int height);
@@ -142,6 +144,8 @@ void saten_list_loop(saten_list *lptr, saten_litem *eptr, int i,
 // util func
 char* saten_get_filepath(const char* fn);
 int saten_square(int a);
-uint32_t saten_get_pixel(void *data, int tupe, int x, int y);
-void saten_put_pixel(void *data, int type, int x, int y, uint32_t pixel);
 SDL_Surface* saten_get_surface(void *data, int type);
+
+// pixel
+uint32_t saten_pixel_get(void *data, int tupe, int x, int y);
+void saten_pixel_put(void *data, int type, int x, int y, uint32_t pixel);

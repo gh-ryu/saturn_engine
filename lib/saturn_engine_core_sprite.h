@@ -184,6 +184,22 @@ void saten_sprite_blendmode(saten_sprite *sprite, SDL_BlendMode blendmode)
     }
 }
 
+// public
+void saten_sprite_colorize(saten_sprite *sprite, uint8_t r, uint8_t g,
+        uint8_t b)
+{
+    for (int y = 0; y < sprite->srf->h; y++) {
+        for (int x = 0; x < sprite->srf->w; x++) {
+            uint8_t r0, g0, b0, a0;
+            uint32_t pixel = saten_pixel_get(sprite, SATEN_SPRITE, x, y);
+            SDL_GetRGBA(pixel, sprite->srf->format,&r0,&g0,&b0,&a0);
+            pixel = SDL_MapRGBA(sprite->srf->format, r, g, b, a0);
+            if (a0 != 0)
+                saten_pixel_put(sprite, SATEN_SPRITE, x, y, pixel);
+        }
+    }
+}
+
 /*
 // public
 void saten_copy_sprite(saten_sprite **sprite_out, saten_sprite *sprite_in)

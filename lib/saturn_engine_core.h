@@ -30,6 +30,7 @@
 #include "saturn_engine_core_draw.h"
 #include "saturn_engine_core_layer.h"
 #include "saturn_engine_core_sprite.h"
+#include "saturn_engine_core_pixel.h"
 
 
 #endif /* SATEN_ENGINE_CORE */
