@@ -1,5 +1,5 @@
 // public
-saten_sprite* saten_load_sprite(char *filename)
+saten_sprite* saten_sprite_load(char *filename)
 {
     saten_sprite* sprite = (saten_sprite*) malloc(sizeof(saten_sprite));
     if (sprite == NULL)
@@ -13,12 +13,13 @@ saten_sprite* saten_load_sprite(char *filename)
     sprite->target->y = 0;
     sprite->target->w = sprite->srf->w;
     sprite->target->h = sprite->srf->h;
+    sprite->scale = 1.0f;
 
     return sprite;
 }
 
 // public
-void saten_set_texture(saten_sprite *sprite)
+void saten_sprite_texturize(saten_sprite *sprite)
 {
     sprite->texture = SDL_CreateTextureFromSurface(saten_ren, sprite->srf);
     if (sprite->texture == NULL)
@@ -26,7 +27,7 @@ void saten_set_texture(saten_sprite *sprite)
 }
 
 // public
-void saten_draw_sprite(saten_sprite *sprite, int tile_id, int x, int y,
+void saten_sprite_draw(saten_sprite *sprite, int tile_id, int x, int y,
         double ang, bool stretch)
 {
     int r;
@@ -77,9 +78,19 @@ void saten_draw_sprite(saten_sprite *sprite, int tile_id, int x, int y,
         saten_errhandler(16);
 }
 
+void saten_sprite_repeat(saten_sprite *sprite, int tile_id, int x0, int y0,
+        int w, int h)
+{
+    for (int y = 0; y < h; y = y + sprite->target->h) {
+        for (int x = 0; x < w; x = x + sprite->target->w) {
+            saten_sprite_draw(sprite, tile_id, x + x0, y + y0, -1, false);
+        }
+    }
+}
+
 
 // public
-void saten_set_tiles(saten_sprite *sprite, int num_h, int num_v)
+void saten_sprite_tile_sheet(saten_sprite *sprite, int num_h, int num_v)
 {
     int tile_w, tile_h, size;
     tile_w = sprite->srf->w / num_h;
@@ -103,6 +114,7 @@ void saten_set_tiles(saten_sprite *sprite, int num_h, int num_v)
 // public
 void saten_sprite_scale(saten_sprite *sprite, float scale)
 {
+    sprite->scale = scale;
     if (sprite->tile) { // spritesheet
         sprite->target->w = sprite->tile->w * scale;
         sprite->target->h = sprite->tile->h * scale;
@@ -113,7 +125,7 @@ void saten_sprite_scale(saten_sprite *sprite, float scale)
 }
 
 // public
-void saten_destroy_sprite(saten_sprite *sprite)
+void saten_sprite_destroy(saten_sprite *sprite)
 {
     if (sprite->srf)
         SDL_FreeSurface(sprite->srf);

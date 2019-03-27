@@ -29,16 +29,16 @@ int main (int argc, char *argv[])
 
     saten_fptr_run fptr_run = game;
 
-    sprite = saten_load_sprite("test.png");
-    arrow = saten_load_sprite("arrow.png");
-    saten_set_texture(sprite);
-    saten_set_texture(arrow);
+    sprite = saten_sprite_load("test.png");
+    arrow = saten_sprite_load("arrow.png");
+    saten_sprite_texturize(sprite);
+    saten_sprite_texturize(arrow);
 
 
     saten_run(fptr_run);
 
-    saten_destroy_sprite(sprite);
-    saten_destroy_sprite(arrow);
+    saten_sprite_destroy(sprite);
+    saten_sprite_destroy(arrow);
 
 
 
@@ -144,36 +144,17 @@ void game(void)
     saten_draw_rect_filled(0, 0, 320, 240, 155, 225, 200, 255,
             SDL_BLENDMODE_NONE);
 
+    saten_sprite_scale(sprite, 0.5f);
 
-    //SDL_SetTextureColorMod(txtr, 255, 255, 255);
+    saten_sprite_repeat(sprite, 0, 0, 0, 320, 240);
 
-    saten_sprite_scale(sprite, 1.0);
-    saten_set_target_layer(layer1);
-    saten_draw_sprite(sprite, 0, 0, 0+step, -1, false);
-    saten_sprite_scale(sprite, 1.5);
-    saten_set_target_layer(layer2);
-    saten_draw_sprite(sprite, 0, 60, 60+step, -1, false);
-    saten_sprite_scale(sprite, 2.0);
-    saten_set_target_layer(layer3);
-    saten_draw_sprite(sprite, 0, 120, 120+step, -1, false);
-    //SDL_RenderCopy(saten_ren, txtr, NULL, NULL);
-    saten_set_target_layer(layer4);
-    saten_draw_sprite(arrow, 0, 160, 120, step*0.5, false);
 
-    saten_combine_layers();
-
-    //SDL_SetRenderDrawColor(saten_ren, 255, 225, 255, 255);
     player.x += 1;
-    //SDL_RenderFillRect(saten_ren, &player);
 
     saten_set_target_layer(NULL);
     saten_draw_rect_filled(player.x, player.y, player.w, player.h,
             255, 255, 255, 255, SDL_BLENDMODE_NONE);
 
-    saten_draw_rect_filled(0, 0, 320, 240,
-            0, 0, 0, 255, SDL_BLENDMODE_NONE);
-    saten_draw_circle(160,120,120,255,255,255,255, SDL_BLENDMODE_BLEND);
-    //saten_draw_circle_filled(160,120,80,80,255,255,80, SDL_BLENDMODE_BLEND);
 
     //SDL_FreeSurface(test);
     //SDL_DestroyTexture(txtr);

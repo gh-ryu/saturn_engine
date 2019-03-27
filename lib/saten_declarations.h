@@ -52,13 +52,13 @@ void saten_draw_bresenham_circle(int x, int y, int r, bool fill);
 void saten_draw_simple_circle(int x, int y, int r, bool fill);
 
 // sprite
-void saten_destroy_sprite(saten_sprite *sprite);
-void saten_draw_sprite(saten_sprite *sprite, int tile_id, int x, int y,
+void saten_sprite_destroy(saten_sprite *sprite);
+void saten_sprite_draw(saten_sprite *sprite, int tile_id, int x, int y,
         double ang, bool stretch);
 void saten_sprite_scale(saten_sprite *sprite, float scale);
-saten_sprite* saten_load_sprite(char *filename);
-void saten_set_texture(saten_sprite *sprite);
-void saten_set_tiles(saten_sprite *sprite, int num_h, int num_v);
+saten_sprite* saten_sprite_load(char *filename);
+void saten_sprite_texturize(saten_sprite *sprite);
+void saten_sprite_tile_sheet(saten_sprite *sprite, int num_h, int num_v);
 //void saten_copy_sprite(saten_sprite **sprite_out, saten_sprite *sprite_in);
 //void saten_recolor_sprite(saten_sprite *sprite, uint8_t r, uint8_t g,
 //        uint8_t b);
@@ -66,6 +66,8 @@ void saten_sprite_alphamod(saten_sprite *sprite, uint8_t alpha);
 void saten_sprite_colormod(saten_sprite *sprite, uint8_t r, uint8_t g,
         uint8_t b);
 void saten_sprite_blendmode(saten_sprite *sprite, SDL_BlendMode blendmode);
+void saten_sprite_repeat(saten_sprite *sprite, int tile_id, int x0, int y0,
+        int w, int h);
 
 // layer
 void saten_create_layer(saten_layer **lay, int width, int height);
