@@ -78,6 +78,8 @@ void saten_sprite_draw(saten_sprite *sprite, int tile_id, int x, int y,
         saten_errhandler(16);
 }
 
+// public
+// repeatedly draws a sprie across area w*h starting at point x0,y0
 void saten_sprite_repeat(saten_sprite *sprite, int tile_id, int x0, int y0,
         int w, int h)
 {
@@ -90,6 +92,7 @@ void saten_sprite_repeat(saten_sprite *sprite, int tile_id, int x0, int y0,
 
 
 // public
+// setup for tile sheets
 void saten_sprite_tile_sheet(saten_sprite *sprite, int num_h, int num_v)
 {
     int tile_w, tile_h, size;
@@ -112,6 +115,7 @@ void saten_sprite_tile_sheet(saten_sprite *sprite, int num_h, int num_v)
 }
 
 // public
+// sets scale for a sprite
 void saten_sprite_scale(saten_sprite *sprite, float scale)
 {
     sprite->scale = scale;
@@ -152,6 +156,7 @@ void saten_sprite_alphamod(saten_sprite *sprite, uint8_t alpha)
             saten_errhandler(21);
     }
 }
+
 // public
 void saten_sprite_colormod(saten_sprite *sprite, uint8_t r, uint8_t g,
         uint8_t b)
@@ -168,6 +173,7 @@ void saten_sprite_colormod(saten_sprite *sprite, uint8_t r, uint8_t g,
             saten_errhandler(23);
     }
 }
+
 // public
 void saten_sprite_blendmode(saten_sprite *sprite, SDL_BlendMode blendmode)
 {
@@ -185,6 +191,8 @@ void saten_sprite_blendmode(saten_sprite *sprite, SDL_BlendMode blendmode)
 }
 
 // public
+// sets all pixels of a sprite to the specified colors.
+// alpha values are retained
 void saten_sprite_colorize(saten_sprite *sprite, uint8_t r, uint8_t g,
         uint8_t b)
 {

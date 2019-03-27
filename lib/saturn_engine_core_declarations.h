@@ -29,9 +29,9 @@ typedef void (*saten_fptr_run)(void);
 typedef void (*saten_fptr_list_action)(void*, int, int);
 
 // public functions
-int saten_init(const char *title, int screen_width, int screen_height,
+int saten_core_init(const char *title, int screen_width, int screen_height,
         uint8_t flags);
-int saten_run(saten_fptr_run);
+int saten_core_run(saten_fptr_run);
 
 // draw
 void saten_draw_line(int x1, int y1, int x2, int y2, uint8_t r, uint8_t g,
@@ -73,12 +73,11 @@ void saten_sprite_colorize(saten_sprite *sprite, uint8_t r, uint8_t g,
 
 // layer
 saten_layer* saten_layer_create(int width, int height);
-void saten_destroy_layer(saten_layer *lay);
+void saten_layer_destroy(saten_layer *lay);
 void saten_layer_set_clip_area(saten_layer *lay, int x, int y, int w, int h);
 void saten_layer_reset_clip_area(saten_layer *lay);
-void saten_combine_layers(void);
+void saten_layer_render_all(void);
 void saten_layer_blit(void *item, int i, int num);
-void saten_set_target_layer(saten_layer *lay);
 void saten_layer_clear(saten_layer *layer);
 void saten_layer_clear2(void *item, int i, int num);
 void saten_layer_clear_all(void);
@@ -93,6 +92,8 @@ void saten_set_stick_deadzone(int16_t dz, int i);
 float saten_get_avg_fps(void);
 float saten_get_left_stick_angle(int i);
 float saten_get_right_stick_angle(int i);
+void saten_set_target_layer(saten_layer *lay);
+SDL_Haptic* saten_get_haptic(int i);
 
 
 // fps control functions
@@ -122,7 +123,6 @@ void saten_controller_remove(int i);
 // haptic
 void saten_haptic_init(int i);
 void saten_rumble_init(int i);
-SDL_Haptic* saten_get_haptic(int i);
 void saten_rumble(int i, float str, uint32_t l);
 void saten_rumble_stop(int i);
 

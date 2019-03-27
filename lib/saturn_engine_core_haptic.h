@@ -46,8 +46,3 @@ void saten_rumble_init(int i)
         saten_errhandler(9);
     }
 }
-
-SDL_Haptic* saten_get_haptic(int i)
-{
-    return saten_pads[i].hdev;
-}

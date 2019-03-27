@@ -1,4 +1,4 @@
-int saten_run(saten_fptr_run fptr)
+int saten_core_run(saten_fptr_run fptr)
 {
     while (!saten_break) {
         saten_fps_control_update();
@@ -37,7 +37,7 @@ int saten_run(saten_fptr_run fptr)
     return 0;
 }
 
-int saten_init(const char *title, int screen_width, int screen_height,
+int saten_core_init(const char *title, int screen_width, int screen_height,
         uint8_t flags)
 {
     saten_flag_set(flags, &saten_flags);

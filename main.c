@@ -18,7 +18,8 @@ saten_layer* layer6 = NULL;
 void game(void);
 int main (int argc, char *argv[])
 {
-    if(saten_init("Saturn Engine Core", 320, 240,SATEN_ERRORS|SATEN_INPUT)<0) {
+    if(saten_core_init("Saturn Engine Core", 320, 240,SATEN_ERRORS|SATEN_INPUT)
+            <0) {
         fprintf(stderr, "Init error...\n");
     }
     layer1 = saten_layer_create(320, 240);
@@ -39,7 +40,7 @@ int main (int argc, char *argv[])
     saten_sprite_texturize(arrow);
 
 
-    saten_run(fptr_run);
+    saten_core_run(fptr_run);
 
     saten_sprite_destroy(sprite);
     saten_sprite_destroy(sprite_copy);

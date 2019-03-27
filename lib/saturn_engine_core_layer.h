@@ -1,10 +1,4 @@
 // public
-void saten_set_target_layer(saten_layer *lay)
-{
-    saten_target_layer = lay;
-}
-
-// public
 void saten_layer_set_clip_area(saten_layer *lay, int x, int y, int w, int h)
 {
     if (lay->clip_area == NULL) {
@@ -54,7 +48,7 @@ saten_layer* saten_layer_create(int width, int height) {
 }
 
 // public
-void saten_destroy_layer(saten_layer *lay)
+void saten_layer_destroy(saten_layer *lay)
 {
     saten_litem* eptr = NULL;
     saten_list_search(saten_list_layer, NULL, &eptr, (void*)lay);
@@ -65,7 +59,10 @@ void saten_destroy_layer(saten_layer *lay)
 }
 
 // public
-void saten_combine_layers(void)
+// blits layers with flag=1 in the order they were created
+// then creates a texture of the result and copies that to the
+// renderer
+void saten_layer_render_all(void)
 {
     if (saten_list_layer->num <= 1) // requires 2 layers min
         return;
@@ -132,6 +129,7 @@ void saten_layer_clear2(void *item, int i, int num)
         saten_layer_clear(layer);
 }
 
+// private
 void saten_layer_blit(void *item, int i, int num)
 {
     saten_layer *layer = (saten_layer*) item;

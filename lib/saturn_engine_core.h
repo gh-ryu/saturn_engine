@@ -22,7 +22,7 @@
 #include "saturn_engine_core_fps_control.h"
 #include "saturn_engine_core_main.h"
 #include "saturn_engine_core_getset.h"
-#include "saturn_engine_core_bitop.h"
+#include "saturn_engine_core_flag.h"
 #include "saturn_engine_core_util.h"
 #include "saturn_engine_core_error.h"
 #include "saturn_engine_core_input.h"

@@ -22,3 +22,14 @@ float saten_get_left_stick_angle(int i)
 {
     return saten_pads[i].lang;
 }
+
+// public
+void saten_set_target_layer(saten_layer *lay)
+{
+    saten_target_layer = lay;
+}
+
+SDL_Haptic* saten_get_haptic(int i)
+{
+    return saten_pads[i].hdev;
+}
