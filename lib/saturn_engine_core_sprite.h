@@ -93,7 +93,7 @@ void saten_sprite_repeat(saten_sprite *sprite, int tile_id, int x0, int y0,
 
 // public
 // setup for tile sheets
-void saten_sprite_tile_sheet(saten_sprite *sprite, int num_h, int num_v)
+void saten_sprite_set_tiles(saten_sprite *sprite, int num_h, int num_v)
 {
     int tile_w, tile_h, size;
     tile_w = sprite->srf->w / num_h;

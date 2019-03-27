@@ -58,7 +58,7 @@ void saten_sprite_draw(saten_sprite *sprite, int tile_id, int x, int y,
 void saten_sprite_scale(saten_sprite *sprite, float scale);
 saten_sprite* saten_sprite_load(char *filename);
 void saten_sprite_texturize(saten_sprite *sprite);
-void saten_sprite_tile_sheet(saten_sprite *sprite, int num_h, int num_v);
+void saten_sprite_set_tiles(saten_sprite *sprite, int num_h, int num_v);
 //void saten_copy_sprite(saten_sprite **sprite_out, saten_sprite *sprite_in);
 //void saten_recolor_sprite(saten_sprite *sprite, uint8_t r, uint8_t g,
 //        uint8_t b);
