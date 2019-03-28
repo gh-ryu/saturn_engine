@@ -70,6 +70,7 @@ void saten_sprite_repeat(saten_sprite *sprite, int tile_id, int x0, int y0,
         int w, int h);
 void saten_sprite_colorize(saten_sprite *sprite, uint8_t r, uint8_t g,
         uint8_t b);
+void saten_sprite_patternize0(saten_sprite *sprite);
 
 // layer
 saten_layer* saten_layer_create(int width, int height);

@@ -35,7 +35,8 @@ int main (int argc, char *argv[])
     sprite = saten_sprite_load("test.png");
     spplayer = saten_sprite_load("spritesheet_test.png");
     sprite_copy = saten_sprite_copy(sprite);
-    saten_sprite_colorize(sprite_copy, 255, 255, 255);
+    //saten_sprite_colorize(sprite_copy, 255, 255, 255);
+    saten_sprite_patternize0(sprite_copy);
     arrow = saten_sprite_load("arrow.png");
     saten_sprite_texturize(sprite);
     saten_sprite_texturize(spplayer);
@@ -156,8 +157,8 @@ void game(void)
     saten_draw_rect_filled(0, 0, 320, 240, 155, 225, 200, 255,
             SDL_BLENDMODE_NONE);
 
-    saten_sprite_scale(sprite, 0.5f);
-    saten_sprite_scale(sprite_copy, 0.5f);
+    //saten_sprite_scale(sprite, 0.5f);
+    saten_sprite_scale(sprite_copy, 1.0f);
 
 
     if (step % 6 == 0) {
@@ -171,10 +172,7 @@ void game(void)
             tile = 0;
     }
 
-    if (decide)
-        saten_sprite_repeat(sprite, 0, 0, 0, 320, 240);
-    else
-        saten_sprite_repeat(sprite_copy, 0, 0, 0, 320, 240);
+    saten_sprite_repeat(sprite_copy, 0, 0, 0, 320, 240);
 
     player.x += 1;
 
@@ -182,7 +180,7 @@ void game(void)
     saten_draw_rect_filled(player.x, player.y, player.w, player.h,
             255, 255, 255, 255, SDL_BLENDMODE_NONE);
 
-    saten_draw_rect_filled(0, 0, 320, 240, 0, 0, 0, 255, SDL_BLENDMODE_NONE);
+    //saten_draw_rect_filled(0, 0, 320, 240, 0, 0, 0, 255, SDL_BLENDMODE_NONE);
     spplayer->centered = true;
     saten_sprite_draw(spplayer, tile, 160, 120, -1, false);
 

@@ -209,6 +209,35 @@ void saten_sprite_colorize(saten_sprite *sprite, uint8_t r, uint8_t g,
 }
 
 // public
+// makes every other pixel transparent to create a retro transparency effect
+void saten_sprite_patternize0(saten_sprite *sprite)
+{
+    for (int y = 0; y < sprite->srf->h; y++) {
+        for (int x = 0; x < sprite->srf->w; x++) {
+            if (y % 2 == 0) {
+                if (x % 2 == 0) {
+                    uint8_t r0, g0, b0, a0;
+                    uint32_t pixel = saten_pixel_get(sprite, SATEN_SPRITE,
+                            x, y);
+                    SDL_GetRGBA(pixel, sprite->srf->format,&r0,&g0,&b0,&a0);
+                    pixel = SDL_MapRGBA(sprite->srf->format, r0, g0, b0, 0);
+                    saten_pixel_put(sprite, SATEN_SPRITE, x, y, pixel);
+                }
+            } else {
+                if (x % 2 != 0) {
+                    uint8_t r0, g0, b0, a0;
+                    uint32_t pixel = saten_pixel_get(sprite, SATEN_SPRITE,
+                            x, y);
+                    SDL_GetRGBA(pixel, sprite->srf->format,&r0,&g0,&b0,&a0);
+                    pixel = SDL_MapRGBA(sprite->srf->format, r0, g0, b0, 0);
+                    saten_pixel_put(sprite, SATEN_SPRITE, x, y, pixel);
+                }
+            }
+        }
+    }
+}
+
+// public
 // This function does NOT copy tile data and texture data. These have to be
 // set for the copy individually
 saten_sprite* saten_sprite_copy(saten_sprite *sprite_in)
