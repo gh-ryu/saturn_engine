@@ -27,6 +27,42 @@ void saten_sprite_texturize(saten_sprite *sprite)
 }
 
 // public
+void saten_sprite_source_area(saten_sprite *sprite, int tile_id, int x, int y,
+        int w, int h)
+{
+    if (sprite->source == NULL) {
+        sprite->source = (SDL_Rect*) malloc(sizeof(SDL_Rect));
+        if (sprite->source == NULL)
+            saten_errhandler(7);
+    }
+    if (sprite->tile == NULL) {
+        sprite->source->x = x;
+        sprite->source->y = y;
+    } else {
+        sprite->source->x = sprite->tile[tile_id].x + x;
+        sprite->source->y = sprite->tile[tile_id].y + y;
+    }
+    sprite->source->w = w;
+    sprite->source->h = h;
+    sprite->target->w = w;
+    sprite->target->h = h;
+}
+
+// public
+void saten_sprite_reset_source_area(saten_sprite *sprite)
+{
+    free(sprite->source);
+    sprite->source = NULL;
+    if (sprite->tile) {
+        sprite->target->w = sprite->tile[0].w;
+        sprite->target->h = sprite->tile[0].h;
+    } else {
+        sprite->target->w = sprite->srf->w;
+        sprite->target->h = sprite->srf->h;
+    }
+}
+
+// public
 void saten_sprite_draw(saten_sprite *sprite, int tile_id, int x, int y,
         double ang, bool stretch)
 {
@@ -34,6 +70,7 @@ void saten_sprite_draw(saten_sprite *sprite, int tile_id, int x, int y,
     SDL_Point rotation_center;
     SDL_Point *rcenptr;
     SDL_Rect *targetptr = NULL;
+    SDL_Rect *sourceptr = NULL;
     if (sprite->centered) { // draw pos is center of sprite
         sprite->target->x = x - sprite->target->w/2;
         sprite->target->y = y - sprite->target->h/2;
@@ -47,32 +84,29 @@ void saten_sprite_draw(saten_sprite *sprite, int tile_id, int x, int y,
     }
     if (!stretch)
         targetptr = sprite->target;
+    if (sprite->tile) {
+        if (sprite->source)
+            sourceptr = sprite->source;
+        else
+            sourceptr = &sprite->tile[tile_id];
+    } else {
+        sourceptr = sprite->source;
+    }
+    printf("%d, %d, %d, %d\n", sourceptr->x, sourceptr->y,
+            sourceptr->w, sourceptr->h);
     if (saten_target_layer == NULL) { // copy to renderer
         if (ang < 0) {  // no rotation
-            if (sprite->tile) // use sprite from sheet
-                r = SDL_RenderCopy(saten_ren, sprite->texture,
-                        &sprite->tile[tile_id], targetptr);
-            else // use whole texture
-                r = SDL_RenderCopy(saten_ren, sprite->texture, NULL,
-                        targetptr);
+            r = SDL_RenderCopy(saten_ren, sprite->texture,
+                    sourceptr, targetptr);
         } else {
             // rotate sprite
-            if (sprite->tile)
-                r = SDL_RenderCopyEx(saten_ren, sprite->texture,
-                        &sprite->tile[tile_id], targetptr, ang, rcenptr,
-                        SDL_FLIP_NONE);
-            else // whole texture
-                r = SDL_RenderCopyEx(saten_ren, sprite->texture, NULL,
-                        targetptr, ang, rcenptr, SDL_FLIP_NONE);
+            r = SDL_RenderCopyEx(saten_ren, sprite->texture,
+                    sourceptr, targetptr, ang, rcenptr, SDL_FLIP_NONE);
         }
     } else { // blit onto layer
         //TODO add rotation ?
-        if (sprite->tile)
-            r = SDL_BlitScaled(sprite->srf, &sprite->tile[tile_id],
-                        saten_target_layer->srf, targetptr);
-        else
-            r = SDL_BlitScaled(sprite->srf, NULL, saten_target_layer->srf,
-                        targetptr);
+        r = SDL_BlitScaled(sprite->srf, sourceptr, saten_target_layer->srf,
+                    targetptr);
     }
     if (r < 0)
         saten_errhandler(16);
@@ -250,7 +284,6 @@ saten_sprite* saten_sprite_copy(saten_sprite *sprite_in)
     SDL_Surface *surface = saten_surface_create(sprite_in->srf->w,
             sprite_in->srf->h, 32);
     sprite->srf = surface;
-    sprite->copy = true;
 
     int r = SDL_BlitSurface(sprite_in->srf, NULL, sprite->srf, NULL);
     if (r < 0)

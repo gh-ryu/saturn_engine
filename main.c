@@ -159,6 +159,10 @@ void game(void)
 
     //saten_sprite_scale(sprite, 0.5f);
     saten_sprite_scale(sprite_copy, 1.0f);
+    saten_sprite_source_area(sprite_copy, 0, 20, 20, 1, sprite->srf->h);
+
+    saten_sprite_source_area(spplayer, 0, 5, 0, 1,
+            spplayer->tile[0].h);
 
 
     if (step % 6 == 0) {
@@ -182,7 +186,7 @@ void game(void)
 
     //saten_draw_rect_filled(0, 0, 320, 240, 0, 0, 0, 255, SDL_BLENDMODE_NONE);
     spplayer->centered = true;
-    saten_sprite_draw(spplayer, tile, 160, 120, -1, false);
+    saten_sprite_draw(spplayer, 0, 160, 120, -1, false);
 
 
     //SDL_FreeSurface(test);

@@ -36,9 +36,9 @@ typedef struct _saten_sprite {
     SDL_Texture *texture;
     SDL_Rect *tile;
     SDL_Rect *target;
+    SDL_Rect *source;
     float scale;
     bool centered;
-    bool copy;
 } saten_sprite;
 
 typedef struct _saten_layer {
