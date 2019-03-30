@@ -120,7 +120,7 @@ void saten_printerr(int i, char *str)
     //fprintf(errlog, "ERROR(%d) | %d-%d-%d %d:%d:%d | ", i, tm->tm_year + 1900,
     //        tm->tm_mon + 1, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec);
     //fprintf(errlog, "%s. (%s)\n", str, SDL_GetError());
-    sprintf(buffer, "ERROR(%d) | %d-%d-%d %d:%d:%d | %s. (%s)\n", i,
+    snprintf(buffer, 1024, "ERROR(%d) | %d-%d-%d %d:%d:%d | %s. (%s)\n", i,
             tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday, tm->tm_hour,
             tm->tm_min, tm->tm_sec, str, SDL_GetError());
     //printf("length of buffer: %ld\n", strlen(buffer));
