@@ -103,6 +103,9 @@ void saten_errhandler(int i)
     case 32:
         saten_printerr(i, "Can't get texture of sprite w/o surface");
         break;
+    case 33:
+        saten_printerr(i, "Failed to load image via IMG_load");
+        break;
     }
 }
 

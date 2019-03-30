@@ -6,6 +6,8 @@ saten_sprite* saten_sprite_load(char *filename)
         saten_errhandler(7);
     memset(sprite, 0, sizeof(saten_sprite));
     sprite->srf = IMG_Load(filename);
+    if (sprite->srf == NULL)
+        saten_errhandler(33);
     sprite->target = (SDL_Rect*) malloc(sizeof(SDL_Rect));
     if (sprite->target == NULL)
         saten_errhandler(7);
