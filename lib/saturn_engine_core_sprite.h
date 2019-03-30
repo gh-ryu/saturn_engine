@@ -21,6 +21,8 @@ saten_sprite* saten_sprite_load(char *filename)
 // public
 void saten_sprite_texturize(saten_sprite *sprite)
 {
+    if (sprite->srf == NULL)
+        saten_errhandler(32);
     sprite->texture = SDL_CreateTextureFromSurface(saten_ren, sprite->srf);
     if (sprite->texture == NULL)
         saten_errhandler(14);
@@ -92,8 +94,6 @@ void saten_sprite_draw(saten_sprite *sprite, int tile_id, int x, int y,
     } else {
         sourceptr = sprite->source;
     }
-    printf("%d, %d, %d, %d\n", sourceptr->x, sourceptr->y,
-            sourceptr->w, sourceptr->h);
     if (saten_target_layer == NULL) { // copy to renderer
         if (ang < 0) {  // no rotation
             r = SDL_RenderCopy(saten_ren, sprite->texture,

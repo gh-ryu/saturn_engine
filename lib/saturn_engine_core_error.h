@@ -100,6 +100,9 @@ void saten_errhandler(int i)
     case 31:
         saten_printerr(i, "Failed to blit surface");
         break;
+    case 32:
+        saten_printerr(i, "Can't get texture of sprite w/o surface");
+        break;
     }
 }
 
@@ -109,10 +112,23 @@ void saten_printerr(int i, char *str)
     fprintf(stderr, "ERROR(%d) : %s. (%s)\n", i, str, SDL_GetError());
 #endif
     time_t t = time(NULL);
-    struct tm tm = *localtime(&t);
-    FILE *errlog = fopen(saten_errpath, "a");
-    fprintf(errlog, "ERROR(%d) | %d-%d-%d %d:%d:%d | ", i, tm.tm_year + 1900,
-            tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
-    fprintf(errlog, "%s. (%s)\n", str, SDL_GetError());
-    fclose(errlog);
+    struct tm *tm;
+    tm = saten_localtime(&t);
+    //FILE *errlog = saten_fopen(saten_errpath, "a");
+    SDL_RWops *errlog = SDL_RWFromFile(saten_errpath, "a");
+    char buffer[1024] = { 0 };
+    //fprintf(errlog, "ERROR(%d) | %d-%d-%d %d:%d:%d | ", i, tm->tm_year + 1900,
+    //        tm->tm_mon + 1, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec);
+    //fprintf(errlog, "%s. (%s)\n", str, SDL_GetError());
+    sprintf(buffer, "ERROR(%d) | %d-%d-%d %d:%d:%d | %s. (%s)\n", i,
+            tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday, tm->tm_hour,
+            tm->tm_min, tm->tm_sec, str, SDL_GetError());
+    //printf("length of buffer: %ld\n", strlen(buffer));
+    SDL_RWwrite(errlog, buffer, sizeof(char), strlen(buffer));
+
+    //fclose(errlog);
+    SDL_RWclose(errlog);
+#ifdef _WIN32
+    free(tm);
+#endif
 }

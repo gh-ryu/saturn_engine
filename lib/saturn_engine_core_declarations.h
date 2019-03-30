@@ -143,8 +143,12 @@ void saten_list_loop(saten_list *lptr, saten_litem *eptr, int i,
         saten_fptr_list_action fptr);
 
 // util func
-char* saten_get_filepath(const char* fn);
+char* saten_get_filepath(const char *fn);
 int saten_square(int a);
+void saten_strcpy(char *str1, const char *str2);
+void saten_strcat(char *str1, const char *str2);
+struct tm* saten_localtime( const time_t *timer);
+FILE* saten_fopen(const char *filename, const char *mode);
 
 // pixel
 uint32_t saten_pixel_get(void *data, int tupe, int x, int y);

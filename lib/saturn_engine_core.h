@@ -1,18 +1,25 @@
 #ifndef SATURN_ENGINE_CORE
 #define SATEN_ENGINE_CORE
 
-#ifdef WIN
-#define SATEN_PATH_SEP "\\" 
+#ifdef _WIN32
+//#define SATEN_PATH_SEP "\\" 
 #define SATEN_ERROR_LOG "error.txt"
 #else
-#define SATEN_PATH_SEP "/"
+//#define SATEN_PATH_SEP "/"
 #define SATEN_ERROR_LOG "error.log"
 #endif
+#define SATEN_PATH_SEP "/"
 
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
+#include <stdlib.h>
+#include <stdio.h>
+#ifdef _WIN32
+#include <io.h>
+#endif
+#include <fcntl.h>
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
