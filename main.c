@@ -39,12 +39,7 @@ int main (int argc, char *argv[])
     saten_sprite_patternize0(sprite_copy);
     arrow = saten_sprite_load("arrow.png");
     saten_sprite_texturize(sprite);
-    printf("1..\n");
-    SDL_FreeSurface(spplayer->srf);
-    spplayer->srf = NULL;
-    printf("2..\n");
     saten_sprite_texturize(spplayer);
-    printf("3..\n");
     saten_sprite_texturize(sprite_copy);
     saten_sprite_texturize(arrow);
     saten_sprite_set_tiles(spplayer, 4, 3);
