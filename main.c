@@ -19,6 +19,12 @@ saten_layer* layer6 = NULL;
 void game(void);
 int main (int argc, char *argv[])
 {
+
+    //wchar_t string[3] = { 'あ', 'b', '\0' };
+    char *string = "日本語 lol";
+    printf("%s\n", string);
+    printf("%d\n", string[0]);
+    printf("%d\n", string[1]);
     if(saten_core_init("Saturn Engine Core", 320, 240,SATEN_ERRORS|SATEN_INPUT)
             <0) {
         fprintf(stderr, "Init error...\n");
@@ -30,7 +36,7 @@ int main (int argc, char *argv[])
     layer5 = saten_layer_create(320, 240);
     layer6 = saten_layer_create(320, 240);
 
-    saten_fptr_run fptr_run = game;
+    //saten_fptr_run fptr_run = game;
 
     sprite = saten_sprite_load("test.png");
     spplayer = saten_sprite_load("spritesheet_test.png");
@@ -45,7 +51,7 @@ int main (int argc, char *argv[])
     saten_sprite_set_tiles(spplayer, 4, 3);
 
 
-    saten_core_run(fptr_run);
+    saten_core_run(game);
 
     saten_sprite_destroy(sprite);
     saten_sprite_destroy(sprite_copy);
