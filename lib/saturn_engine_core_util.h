@@ -50,16 +50,12 @@ struct tm* saten_localtime( const time_t *timer)
 #endif
 }
 
-FILE* saten_fopen(const char *filename, const char *mode)
+void saten_fopen(FILE **fp, const char *filename, const char *mode)
 {
+    //FIXME error checking
 #ifdef _WIN32
-    FILE *fp = malloc(sizeof(FILE));
-    if (fp == NULL)
-        saten_errhandler(7);
-    memset(fp, 0, sizeof(FILE));
     fopen_s(fp, filename, mode);
-    return fp;
 #else
-    return fopen(filename, mode);
+    *fp = fopen(filename, mode);
 #endif
 }

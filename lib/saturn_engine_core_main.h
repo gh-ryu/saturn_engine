@@ -115,10 +115,12 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
     saten_mrbc = mrbc_context_new(saten_mrb);
 
     //FILE *f = fopen("saten_script_glyph_mapping.rb", "r");
-    SDL_RWops *f = SDL_RWFromFile("saten_script_glyph_mapping.rb", "r");
+    //SDL_RWops *f = SDL_RWFromFile("saten_script_glyph_mapping.rb", "r");
+    FILE *f = NULL;
+    saten_fopen(&f, "saten_script_glyph_mapping.rb", "r");
     mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
-    //fclose(f);
-    SDL_RWclose(f);
+    fclose(f);
+    //SDL_RWclose(f);
 
     // no problems
     return 0;
