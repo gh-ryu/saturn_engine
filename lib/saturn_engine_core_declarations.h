@@ -14,6 +14,8 @@ int32_t *saten_keystate2;
 saten_list* saten_list_layer;
 saten_layer* saten_target_layer;
 saten_layer* saten_layer0;
+mrb_state *saten_mrb;
+mrbc_context *saten_mrbc;
 
 #define SATEN_ERRORS (1 << 7)
 #define SATEN_INPUT (1 << 6)
@@ -32,6 +34,7 @@ typedef void (*saten_fptr_list_action)(void*, int, int);
 int saten_core_init(const char *title, int screen_width, int screen_height,
         uint8_t flags);
 int saten_core_run(saten_fptr_run);
+void saten_core_quit(void);
 
 // draw
 void saten_draw_line(int x1, int y1, int x2, int y2, uint8_t r, uint8_t g,

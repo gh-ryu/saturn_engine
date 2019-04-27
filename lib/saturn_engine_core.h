@@ -23,6 +23,8 @@
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
+#include "/home/ryu/bin/mruby-2.0.1/include/mruby.h"
+#include "/home/ryu/bin/mruby-2.0.1/include/mruby/compile.h"
 #include "saturn_engine_core_structs.h"
 #include "saturn_engine_core_declarations.h"
 #include "saturn_engine_core_list.h"

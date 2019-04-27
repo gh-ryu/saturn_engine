@@ -106,6 +106,26 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
 
     saten_fps.fps = 60;
 
+    //mrb
+    saten_mrb = mrb_open();
+    if (!saten_mrb) {
+        saten_errhandler(34);
+        return -1;
+    }
+    saten_mrbc = mrbc_context_new(saten_mrb);
+
+    //FILE *f = fopen("saten_script_glyph_mapping.rb", "r");
+    SDL_RWops *f = SDL_RWFromFile("saten_script_glyph_mapping.rb", "r");
+    mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
+    //fclose(f);
+    SDL_RWclose(f);
+
     // no problems
     return 0;
+}
+
+void saten_core_quit(void)
+{
+    mrbc_context_free(saten_mrb, saten_mrbc);
+    mrb_close(saten_mrb);
 }

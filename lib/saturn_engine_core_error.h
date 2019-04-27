@@ -106,6 +106,9 @@ void saten_errhandler(int i)
     case 33:
         saten_printerr(i, "Failed to load image via IMG_load");
         break;
+    case 34:
+        saten_printerr(i, "Failed to setup mrb state");
+        break;
     }
 }
 
