@@ -23,6 +23,7 @@ int main (int argc, char *argv[])
     //wchar_t string[3] = { 'あ', 'b', '\0' };
     char *string = "日本語 lol";
     printf("%s\n", string);
+    printf("%s\n", string);
     printf("%d\n", string[0]);
     printf("%d\n", string[1]);
     if(saten_core_init("Saturn Engine Core", 320, 240,SATEN_ERRORS|SATEN_INPUT)

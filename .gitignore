@@ -4,6 +4,8 @@ output.log
 error.log
 error.txt
 
+config.mk
+
 # Prerequisites
 *.d
 

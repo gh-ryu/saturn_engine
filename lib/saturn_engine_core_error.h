@@ -114,7 +114,7 @@ void saten_errhandler(int i)
 
 void saten_printerr(int i, char *str)
 {
-#ifdef DEV
+#ifdef _DEBUG
     fprintf(stderr, "ERROR(%d) : %s. (%s)\n", i, str, SDL_GetError());
 #endif
     time_t t = time(NULL);
