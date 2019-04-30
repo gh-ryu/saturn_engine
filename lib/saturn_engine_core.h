@@ -13,7 +13,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
-#include <SDL_ttf.h>
+//#include <SDL_ttf.h>
 #include <stdlib.h>
 #include <stdio.h>
 #ifdef _WIN32
@@ -22,9 +22,13 @@
 #include <fcntl.h>
 #include <string.h>
 #include <stdbool.h>
+#include <math.h>
 #include <time.h>
-#include "/home/ryu/bin/mruby-2.0.1/include/mruby.h"
-#include "/home/ryu/bin/mruby-2.0.1/include/mruby/compile.h"
+#include "saturn_engine_core_config.h" // defines mruby locations
+#include SATEN_MRB_HEADER_LOCATION
+#include SATEN_MRB_COMPILE_HEADER_LOCATION
+//#include "/home//bin/mruby-2.0.1/include/mruby.h"
+//#include "/home//bin/mruby-2.0.1/include/mruby/compile.h"
 #include "saturn_engine_core_structs.h"
 #include "saturn_engine_core_declarations.h"
 #include "saturn_engine_core_list.h"

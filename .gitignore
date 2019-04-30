@@ -5,6 +5,7 @@ error.log
 error.txt
 
 config.mk
+lib/saturn_engine_core_config.h
 
 # Prerequisites
 *.d

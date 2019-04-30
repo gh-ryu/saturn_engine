@@ -59,10 +59,12 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
         return -1;
     }
 
+    /*
     if (TTF_Init() < 0) {
         saten_errhandler(2);
         return -1;
     }
+    */
 
     if ((saten_window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED,
                     SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height,
