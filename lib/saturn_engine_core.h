@@ -45,6 +45,7 @@
 #include "saturn_engine_core_sprite.h"
 #include "saturn_engine_core_pixel.h"
 #include "saturn_engine_core_surface.h"
+#include "saturn_engine_core_mruby.h"
 
 
 #endif /* SATEN_ENGINE_CORE */

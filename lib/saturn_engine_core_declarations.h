@@ -160,3 +160,7 @@ void saten_pixel_put(void *data, int type, int x, int y, uint32_t pixel);
 // surface
 SDL_Surface* saten_surface_create(int w, int h, int depth);
 SDL_Surface* saten_surface_get(void *data, int type);
+
+// mruby api
+void saten_mrb_function_setup(void);
+mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self);

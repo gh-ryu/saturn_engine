@@ -268,6 +268,8 @@ saten_mrbi_charmap[:"ン"] = [3, 79]
 saten_mrbi_charmap[:"心"] = [4, 0]
 saten_mrbi_charmap[:"体"] = [4, 1]
 
-saten_mrbi_charmap.each do |k,v|
-  puts v[1]
-end
+#saten_mrbi_charmap.each do |k,v|
+#  puts v[1]
+#end
+
+saten_mrb_load_glyph_file("test")
