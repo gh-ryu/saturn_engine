@@ -271,5 +271,3 @@ saten_mrbi_charmap[:"体"] = [4, 1]
 #saten_mrbi_charmap.each do |k,v|
 #  puts v[1]
 #end
-
-saten_mrb_load_glyph_file("test")
