@@ -2,13 +2,25 @@
 char* saten_get_filepath(const char *fn)
 {
     char *res =
-        (char*) malloc(strlen(saten_base_path)+1+strlen(fn));
+        (char*)malloc(strlen(saten_base_path)+1+strlen(fn));
     if (res == NULL) {
         return NULL;
     }
     saten_strcpy(res, saten_base_path);
     saten_strcat(res, fn);
     return res;
+}
+
+void* saten_malloc(size_t size)
+{
+    void *ptr = NULL;
+    ptr = malloc(size);
+    if (ptr == NULL) {
+        saten_errhandler(7);
+    } else {
+        memset(ptr, 0, size);
+    }
+    return ptr;
 }
 
 // private
@@ -38,10 +50,7 @@ void saten_strcat(char *str1, const char *str2)
 struct tm* saten_localtime( const time_t *timer)
 {
 #ifdef _WIN32
-    struct tm *tm = malloc(sizeof(struct tm));
-    if (tm == NULL)
-        saten_errhandler(7);
-    memset(tm, 0, sizeof(struct tm));
+    struct tm *tm = (struct tm*)saten_malloc(sizeof(struct tm));
     localtime_s(tm, timer);
     return tm;
 #else

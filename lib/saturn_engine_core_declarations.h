@@ -154,6 +154,7 @@ void saten_strcpy(char *str1, const char *str2);
 void saten_strcat(char *str1, const char *str2);
 struct tm* saten_localtime( const time_t *timer);
 void saten_fopen(FILE **fp, const char *filename, const char *mode);
+void* saten_malloc(size_t size);
 
 // pixel
 uint32_t saten_pixel_get(void *data, int tupe, int x, int y);

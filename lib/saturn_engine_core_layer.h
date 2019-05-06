@@ -1,12 +1,8 @@
 // public
 void saten_layer_set_clip_area(saten_layer *lay, int x, int y, int w, int h)
 {
-    if (lay->clip_area == NULL) {
-        // allocate fresh rect
-        lay->clip_area = (SDL_Rect*) malloc(sizeof(SDL_Rect));
-        if (lay->clip_area == NULL)
-            saten_errhandler(7);
-    }
+    if (lay->clip_area == NULL) // allocate fresh rect
+        lay->clip_area = (SDL_Rect*)saten_malloc(sizeof(SDL_Rect));
     lay->clip_area->x = x;
     lay->clip_area->y = y;
     lay->clip_area->w = w;
@@ -25,10 +21,7 @@ void saten_layer_reset_clip_area(saten_layer *lay)
 
 // public
 saten_layer* saten_layer_create(int width, int height) {
-    saten_layer *lay = (saten_layer*) malloc(sizeof(saten_layer));
-    if (lay == NULL)
-        saten_errhandler(7); 
-    memset(lay, 0, sizeof(saten_layer));
+    saten_layer *lay = (saten_layer*)saten_malloc(sizeof(saten_layer));
 
     // setup surface
     SDL_Surface *surface = NULL;
@@ -38,10 +31,7 @@ saten_layer* saten_layer_create(int width, int height) {
     lay->flag = true;
     
     //
-    saten_litem *elem = (saten_litem*) malloc(sizeof(saten_litem));
-    if (elem == NULL)
-        saten_errhandler(7); 
-    memset(elem, 0, sizeof(saten_litem));
+    saten_litem *elem = (saten_litem*)saten_malloc(sizeof(saten_litem));
     elem->current = (void*) lay;
     saten_list_insert(saten_list_layer, elem);
     return lay;

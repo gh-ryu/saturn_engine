@@ -1,16 +1,11 @@
 // public
 saten_sprite* saten_sprite_load(char *filename)
 {
-    saten_sprite* sprite = (saten_sprite*) malloc(sizeof(saten_sprite));
-    if (sprite == NULL)
-        saten_errhandler(7);
-    memset(sprite, 0, sizeof(saten_sprite));
+    saten_sprite* sprite = (saten_sprite*) saten_malloc(sizeof(saten_sprite));
     sprite->srf = IMG_Load(filename);
     if (sprite->srf == NULL)
         saten_errhandler(33);
-    sprite->target = (SDL_Rect*) malloc(sizeof(SDL_Rect));
-    if (sprite->target == NULL)
-        saten_errhandler(7);
+    sprite->target = (SDL_Rect*)saten_malloc(sizeof(SDL_Rect));
     sprite->target->x = 0;
     sprite->target->y = 0;
     sprite->target->w = sprite->srf->w;
@@ -35,9 +30,7 @@ void saten_sprite_source_area(saten_sprite *sprite, int tile_id, int x, int y,
         int w, int h)
 {
     if (sprite->source == NULL) {
-        sprite->source = (SDL_Rect*) malloc(sizeof(SDL_Rect));
-        if (sprite->source == NULL)
-            saten_errhandler(7);
+        sprite->source = (SDL_Rect*)saten_malloc(sizeof(SDL_Rect));
     }
     if (sprite->tile == NULL) {
         sprite->source->x = x;
@@ -135,9 +128,7 @@ void saten_sprite_set_tiles(saten_sprite *sprite, int num_h, int num_v)
     tile_w = sprite->srf->w / num_h;
     tile_h = sprite->srf->h / num_v;
     size = num_h * num_v;
-    SDL_Rect *rects = (SDL_Rect*) malloc(sizeof(SDL_Rect)*size);
-    if (rects == NULL)
-        saten_errhandler(7);
+    SDL_Rect *rects = (SDL_Rect*)saten_malloc(sizeof(SDL_Rect)*size);
     for (int i = 0, k = 0; i < num_v; i++) {
         for (int j= 0; j < num_h; j++) {
             //SDL_Rect rect = { j*tile_w, i*tile_h, tile_w, tile_h };
@@ -278,10 +269,7 @@ void saten_sprite_patternize0(saten_sprite *sprite)
 // set for the copy individually
 saten_sprite* saten_sprite_copy(saten_sprite *sprite_in)
 {
-    saten_sprite* sprite = (saten_sprite*) malloc(sizeof(saten_sprite));
-    if (sprite == NULL)
-        saten_errhandler(7); 
-    memset(sprite, 0, sizeof(saten_sprite));
+    saten_sprite* sprite = (saten_sprite*)saten_malloc(sizeof(saten_sprite));
 
     SDL_Surface *surface = saten_surface_create(sprite_in->srf->w,
             sprite_in->srf->h, 32);
@@ -292,9 +280,7 @@ saten_sprite* saten_sprite_copy(saten_sprite *sprite_in)
         saten_errhandler(31);
 
 
-    sprite->target = (SDL_Rect*) malloc(sizeof(SDL_Rect));
-    if (sprite->target == NULL)
-        saten_errhandler(7);
+    sprite->target = (SDL_Rect*)saten_malloc(sizeof(SDL_Rect));
     sprite->target->x = 0;
     sprite->target->y = 0;
     sprite->target->w = sprite->srf->w;

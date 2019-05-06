@@ -13,10 +13,8 @@ mrb_value saten_mrb_glyph_init(mrb_state *mrb, mrb_value self)
     mrb_int n;
     mrb_get_args(saten_mrb, "i", &n);
     saten_glyph_set_n = (uint8_t)n;
-    saten_glyph_sets = malloc(saten_glyph_set_n * sizeof(saten_glyph_set));
-    if (saten_glyph_sets == NULL)
-        saten_errhandler(7);
-    memset(saten_glyph_sets, 0, saten_glyph_set_n * sizeof(saten_glyph_set));
+    saten_glyph_sets = (saten_glyph_set*)saten_malloc(
+            saten_glyph_set_n * sizeof(saten_glyph_set));
     return mrb_nil_value();
 }
 
@@ -45,21 +43,15 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self)
         return mrb_nil_value();
     }
     saten_glyph_sets[id].flag = true;
-    saten_glyph_sets[id].glyph = malloc (cn * sizeof(SDL_Texture**));
-    if (saten_glyph_sets[id].glyph == NULL)
-        saten_errhandler(7);
-    memset(saten_glyph_sets[id].glyph, 0, cn * sizeof(SDL_Texture**));
-    saten_glyph_sets[id].glyph_width = malloc(n * sizeof(uint8_t));
-    if (saten_glyph_sets[id].glyph_width == NULL)
-        saten_errhandler(7);
-    memset(saten_glyph_sets[id].glyph_width, 0, n * sizeof(uint8_t));
+    saten_glyph_sets[id].glyph =
+        (SDL_Texture***)saten_malloc(cn * sizeof(SDL_Texture**));
+    saten_glyph_sets[id].glyph_width =
+        (uint8_t*)saten_malloc(n * sizeof(uint8_t));
     saten_glyph_sets[id].cn = cn;
     saten_glyph_sets[id].n = n;
     for (int i = 0; i < cn; i++) {
-        saten_glyph_sets[id].glyph[i] = malloc (n * sizeof(SDL_Texture*));
-        if (saten_glyph_sets[id].glyph[id] == NULL)
-            saten_errhandler(7);
-        memset(saten_glyph_sets[id].glyph[i], 0, n * sizeof(SDL_Texture*));
+        saten_glyph_sets[id].glyph[i] =
+            (SDL_Texture**)saten_malloc(n * sizeof(SDL_Texture*));
         if (animated) // only need memory for one "color"
             break;
     }

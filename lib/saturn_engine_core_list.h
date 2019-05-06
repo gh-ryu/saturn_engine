@@ -3,10 +3,7 @@ void saten_list_init(saten_list **lptr, size_t s)
 {
     if (*lptr != NULL)
         saten_errhandler(13);
-    *lptr = (saten_list*) malloc(sizeof(saten_list));
-    if (*lptr == NULL)
-        saten_errhandler(7);
-    memset(*lptr, 0, sizeof(saten_list));
+    *lptr = (saten_list*)saten_malloc(sizeof(saten_list));
     (*lptr)->size = s;
 }
 

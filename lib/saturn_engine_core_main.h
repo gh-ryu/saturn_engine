@@ -82,13 +82,7 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
 
 
     if (saten_flag_check(SATEN_INPUT, saten_flags)) {
-        saten_keystate2 = (int32_t*) malloc(59*sizeof(int32_t));
-        memset(saten_keystate2, 0, 59*sizeof(int32_t));
-        //saten_keystate2 = (uint32_t*) realloc(saten_keystate2,
-        //        59*sizeof(uint32_t));
-        if (saten_keystate2 == NULL) {
-            saten_errhandler(7);
-        }
+        saten_keystate2 = (int32_t*)saten_malloc(59*sizeof(int32_t));
     }
 
     if (saten_flag_check(SATEN_INPUT, saten_flags)) {
@@ -100,10 +94,7 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
     saten_list_init(&saten_list_layer, sizeof(saten_layer));
     saten_layer0 = saten_layer_create(screen_width, screen_height);
     saten_layer0->flag = 0;
-    saten_layer0->clip_area = (SDL_Rect*) malloc(sizeof(SDL_Rect));
-    if (saten_layer0->clip_area == NULL)
-        saten_errhandler(7);
-    memset(saten_layer0->clip_area, 0, sizeof(SDL_Rect));
+    saten_layer0->clip_area = (SDL_Rect*)saten_malloc(sizeof(SDL_Rect));
     saten_set_target_layer(NULL);
 
     saten_fps.fps = 60;
