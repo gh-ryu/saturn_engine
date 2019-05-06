@@ -109,6 +109,12 @@ void saten_errhandler(int i)
     case 34:
         saten_printerr(i, "Failed to setup mrb state");
         break;
+    case 35:
+        saten_printerr(i, "ID out of range");
+        break;
+    case 36:
+        saten_printerr(i, "Glyph set already defined");
+        break;
     }
 }
 

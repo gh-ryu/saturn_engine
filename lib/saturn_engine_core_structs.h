@@ -46,3 +46,12 @@ typedef struct _saten_layer {
     SDL_Rect *clip_area;
     bool flag;
 } saten_layer;
+
+typedef struct _saten_glyph_set {
+    SDL_Texture ***glyph;
+    uint8_t *glyph_width; // width of each individual glyph
+    bool is_animated;
+    int cn; // color number
+    int n; // glyph number
+    bool flag; // is defined?
+} saten_glyph_set;

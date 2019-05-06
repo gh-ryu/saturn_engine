@@ -11,9 +11,11 @@ char* saten_errpath;
 const uint8_t *saten_keystate;
 int32_t *saten_keystate2;
 
-saten_list* saten_list_layer;
-saten_layer* saten_target_layer;
-saten_layer* saten_layer0;
+saten_list *saten_list_layer;
+saten_layer *saten_target_layer;
+saten_layer *saten_layer0;
+saten_glyph_set *saten_glyph_sets;
+uint8_t saten_glyph_set_n;
 mrb_state *saten_mrb;
 mrbc_context *saten_mrbc;
 
@@ -163,4 +165,5 @@ SDL_Surface* saten_surface_get(void *data, int type);
 
 // mruby api
 void saten_mrb_function_setup(void);
+mrb_value saten_mrb_glyph_init(mrb_state *mrb, mrb_value self);
 mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self);
