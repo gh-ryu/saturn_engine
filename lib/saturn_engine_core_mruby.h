@@ -49,6 +49,10 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self)
     if (saten_glyph_sets[id].glyph == NULL)
         saten_errhandler(7);
     memset(saten_glyph_sets[id].glyph, 0, cn * sizeof(SDL_Texture**));
+    saten_glyph_sets[id].glyph_width = malloc(n * sizeof(uint8_t));
+    if (saten_glyph_sets[id].glyph_width == NULL)
+        saten_errhandler(7);
+    memset(saten_glyph_sets[id].glyph_width, 0, n * sizeof(uint8_t));
     saten_glyph_sets[id].cn = cn;
     saten_glyph_sets[id].n = n;
     for (int i = 0; i < cn; i++) {
