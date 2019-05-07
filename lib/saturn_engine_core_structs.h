@@ -50,6 +50,7 @@ typedef struct _saten_layer {
 typedef struct _saten_glyph_set {
     SDL_Texture ***glyph;
     uint8_t *glyph_width; // width of each individual glyph
+    uint8_t glyph_height;
     bool is_animated;
     int cn; // color number
     int n; // glyph number
