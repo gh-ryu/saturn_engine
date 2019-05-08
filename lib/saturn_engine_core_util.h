@@ -11,6 +11,7 @@ char* saten_get_filepath(const char *fn)
     return res;
 }
 
+// public
 void* saten_malloc(size_t size)
 {
     void *ptr = NULL;
@@ -23,12 +24,19 @@ void* saten_malloc(size_t size)
     return ptr;
 }
 
+// public
+bool saten_test_rgb(uint8_t r, uint8_t g, uint8_t b, uint8_t t)
+{
+    return (r == t && g == t && b == t);
+}
+
 // private
 int saten_square(int a)
 {
     return a * a;
 }
 
+// private
 void saten_strcpy(char *str1, const char *str2)
 {
 #ifdef _WIN32
@@ -38,6 +46,7 @@ void saten_strcpy(char *str1, const char *str2)
 #endif
 }
 
+// private
 void saten_strcat(char *str1, const char *str2)
 {
 #ifdef _WIN32
@@ -47,6 +56,7 @@ void saten_strcat(char *str1, const char *str2)
 #endif
 }
 
+// private
 struct tm* saten_localtime( const time_t *timer)
 {
 #ifdef _WIN32
@@ -59,6 +69,7 @@ struct tm* saten_localtime( const time_t *timer)
 #endif
 }
 
+// private
 void saten_fopen(FILE **fp, const char *filename, const char *mode)
 {
     //FIXME error checking

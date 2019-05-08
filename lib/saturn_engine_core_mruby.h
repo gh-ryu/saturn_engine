@@ -59,9 +59,11 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self)
     // can now assign textures to saten_glyph_sets[id].glyph[color][glyph]
     sprite = saten_sprite_load(string);
     // scan each glyph
-    int hn, vn, srow;
+    int hn, vn, srow, pn, glyph_cnt;
+    glyph_cnt = 0;
     hn = sprite->srf->w / w;
     vn = (sprite->srf->h / h); // ignore first row, it's color information
+    pn = w * h;
 
     if (animated)
         srow = 0;
@@ -69,20 +71,54 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self)
         srow = 1;
         
     for (int i = srow; i < vn; i++) { // each line of glyphs...
-        for (int j = 0; j < vh; j++) { // each glyph
+        for (int j = 0; j < hn; j++) { // each glyph
             // scan glyph
-            
-            // get texture
-            
+            int gstart, gend, pid;
+            bool gstart_set = false;
+            pid = 0; gstart = 0; gend = 0;
+            saten_spixel pixbuff[pn];
+            for (int k = j * w; k < (j * w) + w; k++) { // k=pixel x
+                for (int l = i * h; l < (i * h) + h; l++) { //l=pixel y
+                    //printf("x: %d, y: %d\n", k, l);
+                    uint8_t r, g, b, a;
+                    uint32_t pixel =
+                        saten_pixel_get(sprite, SATEN_SPRITE, k, l);
+                    SDL_GetRGBA(pixel, sprite->srf->format, &r, &g, &b, &a);
+                    if (saten_test_rgb(r, g, b, 255) ||
+                            saten_test_rgb(r, g, b, 0)) {
+                        if (!gstart_set) {
+                            gstart = k;
+                            gstart_set = true;
+                        }
+                        gend = k;
+                    }
+                    pixbuff[pid] = (saten_spixel){ k, l, r, g, b, a };
+                    pid++;
+                    //printf("pid: %d\n", pid);
+                }
+            }
+            //printf("gstart: %d, gend: %d\n", gstart, gend);
+            // get textures
+            if (!animated) {
+                for (int k = 0; k < cn; k++) { // for each color
+                    for (int l = 0; l < pn; l++) { // iterate pixel array
+                    }
+                }
+            }
             // save width
+            saten_glyph_sets[id].glyph_width[glyph_cnt] = (gend - gstart) + 1;
+            printf("width: %d\n", gend - gstart);
+            // finish
+            gstart_set = false;
+            glyph_cnt++;
+            if (glyph_cnt == n)
+                goto SATEN_GLYPH_HANDLER_DONE;
+            
         }
     }
-
-    uint8_t r, g, b, a;
-    uint32_t pixel = saten_pixel_get(sprite, SATEN_SPRITE, 0, 18);
-    SDL_GetRGBA(pixel, sprite->srf->format, &r, &g, &b, &a);
-    printf("r %d, g %d, b %d, a %d\n", r, g, b , a);
-    printf("h tiles: %d, v tiles: %d\n", hn, vn);
+SATEN_GLYPH_HANDLER_DONE:
+    //printf("r %d, g %d, b %d, a %d\n", r, g, b , a);
+    //printf("h tiles: %d, v tiles: %d\n", hn, vn);
 
 
 

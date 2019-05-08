@@ -56,3 +56,8 @@ typedef struct _saten_glyph_set {
     int n; // glyph number
     bool flag; // is defined?
 } saten_glyph_set;
+
+typedef struct _saten_spixel {
+    int x, y;
+    uint8_t r, g, b, a;
+} saten_spixel;
