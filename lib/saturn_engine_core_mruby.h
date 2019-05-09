@@ -77,8 +77,9 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self)
             bool gstart_set = false;
             pid = 0; gstart = 0; gend = 0, gwidth = 0;
             saten_spixel pixbuff[pn];
-            for (int k = j * w; k < (j * w) + w; k++) { // k=pixel x
-                for (int l = i * h; l < (i * h) + h; l++) { //l=pixel y
+            for (int k = j * w, k2 = 0; k < (j * w) + w; k++, k2++) {
+                for (int l = i * h, l2 = 0; l < (i * h) + h; l++, l2++) {
+                    // k=pixel x, l=pixel y
                     uint8_t r, g, b, a;
                     uint32_t pixel =
                         saten_pixel_get(sprite, SATEN_SPRITE, k, l);
@@ -91,19 +92,11 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self)
                         }
                         gend = k;
                     }
-                    //FIXME k and l require offset to be glyph coordinates
-                    //instead glyphset coordinates
-                    pixbuff[pid] = (saten_spixel){ k, l, r, g, b, a };
+                    pixbuff[pid] = (saten_spixel){ k2, l2, r, g, b, a };
                     pid++;
                 }
             }
             gwidth = (gend - gstart) + 1;
-            for (int k = 0; k < pn; k++) {
-                if (saten_test_rgb(pixbuff[k].r, pixbuff[k].g,
-                            pixbuff[k].b, 0)) {
-                    printf("x: %d, y: %d\n", pixbuff[k].x, pixbuff[k].y);
-                }
-            }
             // get textures
             if (!animated) {
                 for (int k = 0; k < cn; k++) { // for each color
@@ -117,9 +110,6 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self)
                                 uint32_t pnew = SDL_MapRGBA(srf->format,
                                         pixbuff[l].r, pixbuff[l].g,
                                         pixbuff[l].b, pixbuff[l].a);
-                                //printf("x: %d, y: %d\n", pixbuff[l].x - gstart,
-                                        //pixbuff[l].y);
-                                //printf("srf height: %d\n", srf->h);
                                 saten_pixel_put(srf, SATEN_SURFACE,
                                         pixbuff[l].x - gstart, pixbuff[l].y,
                                         pnew);
