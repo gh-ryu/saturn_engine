@@ -115,6 +115,9 @@ void saten_errhandler(int i)
     case 36:
         saten_printerr(i, "Glyph set already defined");
         break;
+    case 37:
+        saten_printerr(i, "Colors must not be larger than number of h items");
+        break;
     }
 }
 

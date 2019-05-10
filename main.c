@@ -183,9 +183,22 @@ void game(void)
     saten_draw_rect_filled(player.x, player.y, player.w, player.h,
             255, 255, 255, 255, SDL_BLENDMODE_NONE);
 
-    //saten_draw_rect_filled(0, 0, 320, 240, 0, 0, 0, 255, SDL_BLENDMODE_NONE);
     spplayer->centered = true;
     saten_sprite_draw(spplayer, tile, 160, 120, -1, false);
+
+    saten_draw_rect_filled(0, 0, 320, 240, 255, 255, 255, 255,
+            SDL_BLENDMODE_NONE);
+    for (int i = 0, x = 0, y = 0; i < 16; i++) { // each color
+        for (int j = 0; j < 43; j++) { // each glyph
+            SDL_Rect target = { x, y, saten_glyph_sets[0].glyph_width[j],
+                saten_glyph_sets[0].glyph_height };
+            SDL_RenderCopy(saten_ren, saten_glyph_sets[0].glyph[i][j], NULL,
+                    &target);
+            x += saten_glyph_sets[0].glyph_width[j] + 1;
+        }
+        x = 0;
+        y += 16;
+    }
 
 
     //SDL_FreeSurface(test);

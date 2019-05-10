@@ -64,6 +64,10 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self)
     hn = sprite->srf->w / w;
     vn = (sprite->srf->h / h); // ignore first row, it's color information
     pn = w * h;
+    if (cn > hn) {
+        saten_errhandler(37);
+        return mrb_nil_value();
+    }
 
     if (animated)
         srow = 0;
@@ -87,10 +91,10 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self)
                     if (saten_test_rgb(r, g, b, 255) ||
                             saten_test_rgb(r, g, b, 0)) {
                         if (!gstart_set) {
-                            gstart = k;
+                            gstart = k2;
                             gstart_set = true;
                         }
-                        gend = k;
+                        gend = k2;
                     }
                     pixbuff[pid] = (saten_spixel){ k2, l2, r, g, b, a };
                     pid++;
@@ -107,17 +111,33 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self)
                             if (saten_test_rgb(pixbuff[l].r, pixbuff[l].g,
                                         pixbuff[l].b, 0)) {
                                 // draw this pixel according to color
+                                uint8_t r, g, b, a;
+                                uint32_t pixel =
+                                    saten_pixel_get(sprite, SATEN_SPRITE,
+                                            pixbuff[l].x + (k * w),
+                                            pixbuff[l].y);
+                                SDL_GetRGBA(pixel, sprite->srf->format,
+                                        &r, &g, &b, &a);
                                 uint32_t pnew = SDL_MapRGBA(srf->format,
-                                        pixbuff[l].r, pixbuff[l].g,
-                                        pixbuff[l].b, pixbuff[l].a);
+                                        r, g, b, a);
+                                //uint32_t pnew = SDL_MapRGBA(srf->format,
+                                //        pixbuff[l].r, pixbuff[l].g,
+                                //        pixbuff[l].b, pixbuff[l].a);
                                 saten_pixel_put(srf, SATEN_SURFACE,
                                         pixbuff[l].x - gstart, pixbuff[l].y,
                                         pnew);
                             } else {
                                 // invisible
+                                uint32_t pnew = SDL_MapRGBA(srf->format,
+                                        0, 0, 0, 0);
+                                saten_pixel_put(srf, SATEN_SURFACE,
+                                        pixbuff[l].x - gstart, pixbuff[l].y,
+                                        pnew);
                             }
                         }
                     }
+                    saten_glyph_sets[id].glyph[k][glyph_cnt] =
+                        SDL_CreateTextureFromSurface(saten_ren, srf);
                     SDL_FreeSurface(srf);
                 }
             }
