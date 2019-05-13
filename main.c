@@ -199,6 +199,15 @@ void game(void)
         x = 0;
         y += 16;
     }
+    saten_draw_rect_filled(0, 0, 320, 240, 255, 255, 255, 255,
+            SDL_BLENDMODE_NONE);
+    for (int i = 0, x = 0; i < 5; i++) {
+        SDL_Rect target = { x, 0, saten_glyph_sets[3].glyph_width[i],
+            saten_glyph_sets[3].glyph_height };
+        SDL_RenderCopy(saten_ren, saten_glyph_sets[3].glyph[0][i], NULL,
+                &target);
+        x += saten_glyph_sets[3].glyph_width[i] + 1;
+    }
 
 
     //SDL_FreeSurface(test);

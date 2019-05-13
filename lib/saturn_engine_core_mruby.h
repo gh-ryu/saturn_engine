@@ -50,6 +50,10 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self)
     saten_glyph_sets[id].cn = cn;
     saten_glyph_sets[id].n = n;
     saten_glyph_sets[id].glyph_height = h;
+    if (cn == 0) { // only one texture per glyph
+        saten_glyph_sets[id].glyph[0] =
+            (SDL_Texture**)saten_malloc(n * sizeof(SDL_Texture*));
+    }
     for (int i = 0; i < cn; i++) {
         saten_glyph_sets[id].glyph[i] =
             (SDL_Texture**)saten_malloc(n * sizeof(SDL_Texture*));
@@ -62,17 +66,18 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self)
     int hn, vn, srow, pn, glyph_cnt;
     glyph_cnt = 0;
     hn = sprite->srf->w / w;
-    vn = (sprite->srf->h / h); // ignore first row, it's color information
+    vn = sprite->srf->h / h;
     pn = w * h;
     if (cn > hn) {
         saten_errhandler(37);
         return mrb_nil_value();
     }
 
-    if (animated)
+    //if (animated)
+    if (cn == 0)
         srow = 0;
     else
-        srow = 1;
+        srow = 1; // ignore first row, it's color information
         
     for (int i = srow; i < vn; i++) { // each line of glyphs...
         for (int j = 0; j < hn; j++) { // each glyph
@@ -102,7 +107,7 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self)
             }
             gwidth = (gend - gstart) + 1;
             // get textures
-            if (!animated) {
+            if (cn > 0) { // normal text glyphs
                 for (int k = 0; k < cn; k++) { // for each color
                     SDL_Surface *srf = NULL;
                     srf = saten_surface_create(gwidth, h, 32);
@@ -140,11 +145,35 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self)
                         SDL_CreateTextureFromSurface(saten_ren, srf);
                     SDL_FreeSurface(srf);
                 }
+                // save width
+                saten_glyph_sets[id].glyph_width[glyph_cnt] = gwidth;
+                gstart_set = false;
+            } else { // icons and animated icons
+                SDL_Surface *srf = NULL;
+                srf = saten_surface_create(w, h, 32);
+                uint8_t tr, tg, tb, ta;
+                uint32_t nopixel = saten_pixel_get(sprite, SATEN_SPRITE, 0, 0);
+                SDL_GetRGBA(nopixel, sprite->srf->format, &tr, &tg, &tb, &ta);
+                for (int l = 0; l < pn; l++) {
+                    if (pixbuff[l].r == tr && pixbuff[l].g == tg &&
+                            pixbuff[l].b == tb) {
+                        // transparent
+                        uint32_t pnew = SDL_MapRGBA(srf->format, 0, 0, 0, 0);
+                        saten_pixel_put(srf, SATEN_SURFACE, pixbuff[l].x,
+                                pixbuff[l].y, pnew);
+                    } else {
+                        uint32_t pnew = SDL_MapRGBA(srf->format, pixbuff[l].r,
+                                pixbuff[l].g, pixbuff[l].b, pixbuff[l].a);
+                        saten_pixel_put(srf, SATEN_SURFACE, pixbuff[l].x,
+                                pixbuff[l].y, pnew);
+                    }
+                }
+                saten_glyph_sets[id].glyph[0][glyph_cnt] =
+                    SDL_CreateTextureFromSurface(saten_ren, srf);
+                SDL_FreeSurface(srf);
+                saten_glyph_sets[id].glyph_width[glyph_cnt] = w;
             }
-            // save width
-            saten_glyph_sets[id].glyph_width[glyph_cnt] = gwidth;
             // finish
-            gstart_set = false;
             glyph_cnt++;
             if (glyph_cnt == n)
                 goto SATEN_GLYPH_HANDLER_DONE;
