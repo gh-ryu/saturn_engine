@@ -209,6 +209,45 @@ void game(void)
         x += saten_glyph_sets[3].glyph_width[i] + 1;
     }
 
+    // test animated glyphs
+    for (int i = 0, x = 0, y = 24; i < 3; i++) {
+        for (int j = 0; j < 100; j++) {
+            SDL_Rect target = { x, y, 16, 16 };
+            SDL_RenderCopy(saten_ren, saten_glyph_sets[4].glyph[i][j], NULL,
+                    &target);
+            x += saten_glyph_sets[4].glyph_width[i] + 1;
+            if (i == 0 && j == 7)
+                break;
+            if (i == 1 && j == 2)
+                break;
+            if (i == 2 && j == 6)
+                break;
+        }
+    }
+    saten_draw_rect_filled(64, 64, 64, 18, 0, 0, 0, 255,
+            SDL_BLENDMODE_NONE);
+
+    static int i = 0, j = 0, k = 0;
+    printf("%d, %d, %d\n", i, j, k);
+    SDL_Rect target = { 64, 64, 16, 16 };
+    target.x = 64;
+    SDL_RenderCopy(saten_ren, saten_glyph_sets[4].glyph[0][i], NULL, &target);
+    target.x += 18;
+    SDL_RenderCopy(saten_ren, saten_glyph_sets[4].glyph[1][j], NULL, &target);
+    target.x += 18;
+    SDL_RenderCopy(saten_ren, saten_glyph_sets[4].glyph[2][k], NULL, &target);
+    if (step % 6 == 0) {
+        printf("ok...\n");
+        i++; k++; j++;
+    }
+    if (i > 7)
+        i = 0;
+    if (j > 2)
+        j = 0;
+    if (k > 6)
+        k = 0;
+
+
 
     //SDL_FreeSurface(test);
     //SDL_DestroyTexture(txtr);

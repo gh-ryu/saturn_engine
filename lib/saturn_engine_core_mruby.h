@@ -96,6 +96,8 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self)
         srow = 1; // ignore first row, it's color information
         
     for (int i = srow; i < vn; i++) { // each line of glyphs...
+        if (animated && i == n)
+            goto SATEN_GLYPH_HANDLER_DONE;
         for (int j = 0; j < hn; j++) { // each glyph
             // scan glyph
             int gstart, gend, pid, gwidth, tcnt;
@@ -195,6 +197,20 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self)
                     goto SATEN_GLYPH_SKIP;
                 }
                 if (animated) {
+                    int gi;
+                    gi = glyph_cnt - (i * hn);
+                    if (i == 0)
+                        gi--; // first line first glyph is not used
+                    if (gi >= 0) { // realloc
+                        saten_glyph_sets[id].glyph[i] =
+                            (SDL_Texture**)realloc(
+                                    (void*)saten_glyph_sets[id].glyph[i],
+                                    (gi+1) * sizeof(SDL_Texture*));
+                    }
+                    saten_glyph_sets[id].glyph[i][gi] =
+                        SDL_CreateTextureFromSurface(saten_ren, srf);
+                    SDL_FreeSurface(srf);
+                    saten_glyph_sets[id].glyph_width[i] = w;
                 } else {
                     saten_glyph_sets[id].glyph[0][glyph_cnt] =
                         SDL_CreateTextureFromSurface(saten_ren, srf);
@@ -205,9 +221,8 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self)
             // finish
 SATEN_GLYPH_SKIP:
             glyph_cnt++;
-            if (glyph_cnt == n)
+            if (!animated && glyph_cnt == n)
                 goto SATEN_GLYPH_HANDLER_DONE;
-            
         }
     }
 SATEN_GLYPH_HANDLER_DONE:
