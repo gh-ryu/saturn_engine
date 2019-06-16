@@ -228,7 +228,7 @@ void game(void)
             SDL_BLENDMODE_NONE);
 
     static int i = 0, j = 0, k = 0;
-    printf("%d, %d, %d\n", i, j, k);
+    //printf("%d, %d, %d\n", i, j, k);
     SDL_Rect target = { 64, 64, 16, 16 };
     target.x = 64;
     SDL_RenderCopy(saten_ren, saten_glyph_sets[4].glyph[0][i], NULL, &target);
@@ -237,7 +237,7 @@ void game(void)
     target.x += 18;
     SDL_RenderCopy(saten_ren, saten_glyph_sets[4].glyph[2][k], NULL, &target);
     if (step % 6 == 0) {
-        printf("ok...\n");
+        //printf("ok...\n");
         i++; k++; j++;
     }
     if (i > 7)
