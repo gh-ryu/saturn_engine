@@ -12,6 +12,7 @@ const uint8_t *saten_keystate;
 int32_t *saten_keystate2;
 
 saten_list *saten_list_layer;
+saten_list *saten_list_text;
 saten_layer *saten_target_layer;
 saten_layer *saten_layer0;
 saten_glyph_set *saten_glyph_sets;
