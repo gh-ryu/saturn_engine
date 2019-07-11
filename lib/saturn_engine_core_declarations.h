@@ -12,13 +12,17 @@ const uint8_t *saten_keystate;
 int32_t *saten_keystate2;
 
 saten_list *saten_list_layer;
-saten_list *saten_list_text;
+//saten_list *saten_list_text; // no point in using a list (?)
+saten_text *saten_latest_text; // pointer to last modified text
+//int saten_latest_text_id; // id of last modified text
 saten_layer *saten_target_layer;
 saten_layer *saten_layer0;
 saten_glyph_set *saten_glyph_sets;
 uint8_t saten_glyph_set_n;
 mrb_state *saten_mrb;
 mrbc_context *saten_mrbc;
+
+struct RClass* _saten_mrb_module;
 
 #define SATEN_ERRORS (1 << 7)
 #define SATEN_INPUT (1 << 6)
@@ -170,3 +174,8 @@ SDL_Surface* saten_surface_get(void *data, int type);
 void saten_mrb_function_setup(void);
 mrb_value saten_mrb_glyph_init(mrb_state *mrb, mrb_value self);
 mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self);
+
+// text
+void saten_mrb_text_init(void);
+mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self);
+mrb_value saten_mrb_text_free(mrb_state *mrb, mrb_value self);

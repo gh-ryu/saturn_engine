@@ -1,5 +1,8 @@
 void saten_mrb_function_setup(void)
 {
+
+    _saten_mrb_module = mrb_define_module(saten_mrb, "Saten");
+
     mrb_define_method(saten_mrb, saten_mrb->object_class,
             "saten_mrb_glyph_init", saten_mrb_glyph_init,
             MRB_ARGS_REQ(1));

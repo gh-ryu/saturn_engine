@@ -9,4 +9,6 @@ saten_mrb_load_glyph_file(3, "saten_glyph_icon.png", 5, 0, 16, 16, false)
 saten_mrb_load_glyph_file(4, "saten_glyph_anime.png", 3, 0, 16, 16, true)
 
 
-Saten.printg("test0")
+#Saten.printg("test0")
+Saten.set_text(nil, "my string\"", 0, 0)
+Saten.set_text(1, 2368572305, 0, 0)

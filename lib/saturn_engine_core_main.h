@@ -97,7 +97,7 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
     saten_layer0->clip_area = (SDL_Rect*)saten_malloc(sizeof(SDL_Rect));
     saten_set_target_layer(NULL);
 
-    saten_list_init(&saten_list_text, sizeof(saten_text));
+    //saten_list_init(&saten_list_text, sizeof(saten_text));
 
     saten_fps.fps = 60;
 
@@ -109,6 +109,7 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
     }
     saten_mrbc = mrbc_context_new(saten_mrb);
     saten_mrb_function_setup();
+    saten_mrb_text_init();
 
     FILE *f = NULL;
     saten_fopen(&f, "script/saten_script_header.rb", "r");
