@@ -160,6 +160,7 @@ void saten_strcat(char *str1, const char *str2);
 struct tm* saten_localtime( const time_t *timer);
 void saten_fopen(FILE **fp, const char *filename, const char *mode);
 void* saten_malloc(size_t size);
+void* saten_realloc(void* ptr, size_t size);
 bool saten_test_rgb(uint8_t r, uint8_t g, uint8_t b, uint8_t t);
 
 // pixel
@@ -179,3 +180,4 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self);
 void saten_mrb_text_init(void);
 mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self);
 mrb_value saten_mrb_text_free(mrb_state *mrb, mrb_value self);
+mrb_value saten_mrb_text_append_glyph(mrb_state *mrb, mrb_value self);

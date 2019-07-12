@@ -25,6 +25,15 @@ void* saten_malloc(size_t size)
 }
 
 // public
+void* saten_realloc(void* ptr, size_t size)
+{
+    ptr = realloc(ptr, size);
+    if (ptr == NULL)
+        saten_errhandler(7);
+    return ptr;
+}
+
+// public
 bool saten_test_rgb(uint8_t r, uint8_t g, uint8_t b, uint8_t t)
 {
     return (r == t && g == t && b == t);

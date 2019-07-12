@@ -11,6 +11,7 @@ module Saten
 =end
 
   class Text
+    @@color = 0
     def Text.set(id, str, x, y)
       # creates glyph array representation of str
       # id is glyph array to set, nil to create new array
@@ -29,9 +30,17 @@ module Saten
       end
       # don't append glyphs to nonexistant text...
       if check == 0
+        cnt = 0
         str = str.to_s
         str.each_char do |c|
-          puts c
+          if c == "/" && str[cnt+1] == "["
+            # meta information and not a character to be processed
+            #TODO process meta information
+          else
+            Text.append_glyph(@@charmap[:"#{c}"][0], @@color,
+                              @@charmap[:"#{c}"][1], x, y)
+          end
+          cnt += 1
         end
       end
     end

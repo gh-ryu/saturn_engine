@@ -112,10 +112,10 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
     saten_mrb_text_init();
 
     FILE *f = NULL;
-    saten_fopen(&f, "script/saten_script_header.rb", "r");
+    saten_fopen(&f, "script/saten_script_glyph_mapping.rb", "r");
     mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
     fclose(f);
-    saten_fopen(&f, "script/saten_script_glyph_mapping.rb", "r");
+    saten_fopen(&f, "script/saten_script_header.rb", "r");
     mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
     fclose(f);
     saten_fopen(&f, "script/saten_script_init_core.rb", "r");
