@@ -13,6 +13,8 @@ module Saten
   class Text
     @@color = 0
     def Text.set(id, str, x, y)
+      #FIXME linebreaks don't work
+
       # creates glyph array representation of str
       # id is glyph array to set, nil to create new array
       # x, y top left position of glyph 0 on screen

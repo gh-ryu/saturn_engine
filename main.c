@@ -252,4 +252,6 @@ void game(void)
     //SDL_FreeSurface(test);
     //SDL_DestroyTexture(txtr);
     step++;
+    saten_text *mytext = saten_text_create("Hey this is the story of how uhm what\n zeilen sprung :D\n und noch einer!!!?", 0, 120);
+    saten_text_draw(mytext);
 }

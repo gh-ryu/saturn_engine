@@ -86,10 +86,17 @@ void saten_text_draw(saten_text *text)
     }
 }
 
-saten_text* saten_text_set(char *str, int x, int y)
+saten_text* saten_text_create(char *str, int x, int y)
 {
-    //char prefix[] = "Saten::Text.set(nil, ";
+    size_t l = strlen(str) + 1;
+    size_t lx = saten_intlen(x);
+    size_t ly = saten_intlen(y);
+    //char prefix[] = "Saten::Text.set(nil, , )";
+    //size_t lp = strlen(prefix);
+    char cstr[l+lx+ly+25];
     //#Saten::Text.set(nil, 2368572305, 0, 0)
-    mrb_load_string(saten_mrb, str);
+    sprintf(cstr, "Saten::Text.set(nil, \"%s\", %d, %d)", str, x, y);
+    //printf("%s\n", cstr);
+    mrb_load_string(saten_mrb, cstr);
     return saten_latest_text;
 }
