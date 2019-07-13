@@ -59,7 +59,8 @@ typedef struct _saten_glyph_set {
 
 typedef struct _saten_glyph {
     int a, b ,c; // identifiers to insert into saten_glyph_sets[a][b][c]
-    int x, y; // pos
+    int l; // line index
+    SDL_Rect rect; // pos
 } saten_glyph;
 
 typedef struct _saten_text {

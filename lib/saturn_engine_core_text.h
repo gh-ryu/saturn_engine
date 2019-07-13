@@ -36,12 +36,11 @@ mrb_value saten_mrb_text_free(mrb_state *mrb, mrb_value self)
 
 mrb_value saten_mrb_text_append_glyph(mrb_state *mrb, mrb_value self)
 {
-    //TODO set position as rect?
-    printf("called append glyph..\n");
-    mrb_int a0, b0, c0, x0, y0;
-    int a, b, c, x, y, i;
-    mrb_get_args(saten_mrb, "iiiii", &a0, &b0, &c0, &x0, &y0);
+    mrb_int a0, b0, c0, x0, y0, l0;
+    int a, b, c, x, y, i, l;
+    mrb_get_args(saten_mrb, "iiiiii", &a0, &b0, &c0, &x0, &y0, &l0);
     a = (int)a0; b = (int)b0; c = (int)c0; x = (int)x0; y = (int)y0;
+    l = (int)l0;
 
     i = saten_latest_text->size;
 
@@ -53,8 +52,45 @@ mrb_value saten_mrb_text_append_glyph(mrb_state *mrb, mrb_value self)
     saten_latest_text->glyph[i].a = a;
     saten_latest_text->glyph[i].b = b;
     saten_latest_text->glyph[i].c = c;
-    saten_latest_text->glyph[i].x = x;
-    saten_latest_text->glyph[i].y = y;
-    printf("curr size: %d\n", saten_latest_text->size);
+    saten_latest_text->glyph[i].l = l;
+
+    // offset
+    if (i > 0) {
+        for (int j = i-1; j >= 0; j--) {
+            if (saten_latest_text->glyph[j].l == l) {
+                x += saten_latest_text->glyph[j].rect.w;
+                x += 2; // padding
+            }
+        }
+    }
+
+    if (l > 0) {
+        y = l * saten_latest_text->glyph[i-1].rect.y;
+        y += l * 2; // padding
+    }
+
+    saten_latest_text->glyph[i].rect.x = x;
+    saten_latest_text->glyph[i].rect.y = y;
+    //TODO scaling
+    saten_latest_text->glyph[i].rect.w = saten_glyph_sets[a].glyph_width[c];
+    saten_latest_text->glyph[i].rect.h = saten_glyph_sets[a].glyph_height;
     return mrb_nil_value();
+}
+
+void saten_text_draw(saten_text *text)
+{
+    for (int i = 0; i < text->size; i++) {
+        SDL_RenderCopyEx(saten_ren,
+                saten_glyph_sets[text->glyph[i].a].
+                glyph[text->glyph[i].b][text->glyph[i].c],
+                NULL, &text->glyph[i].rect, 0, NULL, SDL_FLIP_NONE);
+    }
+}
+
+saten_text* saten_text_set(char *str, int x, int y)
+{
+    //char prefix[] = "Saten::Text.set(nil, ";
+    //#Saten::Text.set(nil, 2368572305, 0, 0)
+    mrb_load_string(saten_mrb, str);
+    return saten_latest_text;
 }

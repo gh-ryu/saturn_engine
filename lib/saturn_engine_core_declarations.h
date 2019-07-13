@@ -181,3 +181,5 @@ void saten_mrb_text_init(void);
 mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self);
 mrb_value saten_mrb_text_free(mrb_state *mrb, mrb_value self);
 mrb_value saten_mrb_text_append_glyph(mrb_state *mrb, mrb_value self);
+void saten_text_draw(saten_text *text);
+saten_text* saten_text_set(char *str, int x, int y);

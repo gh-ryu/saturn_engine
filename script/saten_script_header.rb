@@ -31,14 +31,19 @@ module Saten
       # don't append glyphs to nonexistant text...
       if check == 0
         cnt = 0
+        l = 0 # current line
         str = str.to_s
         str.each_char do |c|
-          if c == "/" && str[cnt+1] == "["
+          if c == "\\" && str[cnt+1] == "["
             # meta information and not a character to be processed
             #TODO process meta information
           else
-            Text.append_glyph(@@charmap[:"#{c}"][0], @@color,
-                              @@charmap[:"#{c}"][1], x, y)
+            if c == "\n"
+              l += 1
+            else
+              Text.append_glyph(@@charmap[:"#{c}"][0], @@color,
+                                @@charmap[:"#{c}"][1], x, y, l)
+            end
           end
           cnt += 1
         end
