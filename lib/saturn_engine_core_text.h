@@ -63,9 +63,8 @@ mrb_value saten_mrb_text_append_glyph(mrb_state *mrb, mrb_value self)
             }
         }
     }
-
     if (l > 0) {
-        y = l * saten_latest_text->glyph[i-1].rect.y;
+        y += l * saten_latest_text->glyph[i-1].rect.y;
         y += l * 2; // padding
     }
 
