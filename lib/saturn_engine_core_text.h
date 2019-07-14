@@ -6,7 +6,7 @@ void saten_mrb_text_init(void)
             _saten_mrb_module, "Text", saten_mrb->object_class);
 
     mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
-            "create", saten_mrb_text_create, MRB_ARGS_NONE());
+            "create", saten_mrb_text_create, MRB_ARGS_REQ(1));
     mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
             "free", saten_mrb_text_free, MRB_ARGS_NONE());
     mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
@@ -18,13 +18,20 @@ void saten_mrb_text_init(void)
 
 mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self)
 {
+    mrb_float a0;
+    float a;
+    mrb_get_args(saten_mrb, "f", &a0);
+    a = (float)a0;
     //saten_latest_text = saten_text_create(n); // list canned
     saten_latest_text = (saten_text*)saten_malloc(sizeof(saten_text));
     mrb_value ret;
-    if (saten_latest_text == NULL)
+    if (saten_latest_text == NULL) {
         ret = mrb_fixnum_value((mrb_int)1);
-    else
+    }
+    else {
+        saten_latest_text->scale = a;
         ret = mrb_fixnum_value((mrb_int)0);
+    }
     return ret;
 
 }
@@ -54,8 +61,6 @@ mrb_value saten_mrb_text_append_glyph(mrb_state *mrb, mrb_value self)
     l = (int)l0;
 
     i = saten_latest_text->size;
-    //TODO allow user to set own value
-    saten_latest_text->scale = 1.0f;
 
     saten_latest_text->size++;
     saten_latest_text->glyph = (saten_glyph*)saten_realloc(
@@ -86,7 +91,6 @@ mrb_value saten_mrb_text_append_glyph(mrb_state *mrb, mrb_value self)
 
     saten_latest_text->glyph[i].rect.x = x;
     saten_latest_text->glyph[i].rect.y = y;
-    //TODO scaling
     saten_latest_text->glyph[i].rect.w =
         saten_glyph_sets[a].glyph_width[c] * saten_latest_text->scale;
     saten_latest_text->glyph[i].rect.h =
@@ -104,16 +108,21 @@ void saten_text_draw(saten_text *text)
     }
 }
 
-saten_text* saten_text_create(char *str, int x, int y)
+saten_text* saten_text_create(float scale, char *str, int x, int y)
 {
     size_t l = strlen(str) + 1;
     size_t lx = saten_intlen(x);
     size_t ly = saten_intlen(y);
+    if (scale <= 0)
+        scale = 0.1f;
+    if (scale >= 10.0)
+        scale = 9.9f;
+
     //char prefix[] = "Saten::Text.set(nil, , )";
     //size_t lp = strlen(prefix);
     char cstr[l+lx+ly+25];
     //#Saten::Text.set(nil, 2368572305, 0, 0)
-    sprintf(cstr, "Saten::Text.set(nil, \"%s\", %d, %d)", str, x, y);
+    sprintf(cstr, "Saten::Text.set(%0.1f, \"%s\", %d, %d)", scale, str, x, y);
     //printf("%s\n", cstr);
     mrb_load_string(saten_mrb, cstr);
     return saten_latest_text;

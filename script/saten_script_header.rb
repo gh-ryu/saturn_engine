@@ -12,22 +12,22 @@ module Saten
 
   class Text
     @@color = 0
-    def Text.set(id, str, x, y)
+    def Text.set(scale, str, x, y)
       # creates glyph array representation of str
       # id is glyph array to set, nil to create new array
       # x, y top left position of glyph 0 on screen
       check = 0
-      if id.nil?
-        check = Text.create()
+      #if id.nil?
+        check = Text.create(scale)
         if check == 1
           # failed to allocate memory for new text object
         end
-      else
+      #else
         # no use for now. might consider later if there are no better options to
         # display numerical variables
         # the idea is to change an existing text object to a new set of glyphs
-        Text.free()
-      end
+      #  Text.free()
+      #end
       # don't append glyphs to nonexistant text...
       if check == 0
         cnt = 0
