@@ -8,6 +8,8 @@ saten_mrb_load_glyph_file(2, "saten_glyph_hiragana.png", 80, 16, 16, 16, false)
 saten_mrb_load_glyph_file(3, "saten_glyph_icon.png", 5, 0, 16, 16, false)
 saten_mrb_load_glyph_file(4, "saten_glyph_anime.png", 3, 0, 16, 16, true)
 
+Saten::Text.set_glyph_height(16)
+
 
 #Saten.printg("test0")
 #Saten::Text.set(nil, "my string\"", 0, 0)

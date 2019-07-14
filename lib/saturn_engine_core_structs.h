@@ -66,6 +66,7 @@ typedef struct _saten_glyph {
 typedef struct _saten_text {
     saten_glyph *glyph; // glyph array
     int size, cnt; // length and increment
+    float scale;
 } saten_text;
 
 typedef struct _saten_spixel {
