@@ -16,7 +16,6 @@ void saten_mrb_text_init(void)
 
 mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self)
 {
-    printf("called text create...\n");
     //saten_latest_text = saten_text_create(n); // list canned
     saten_latest_text = (saten_text*)saten_malloc(sizeof(saten_text));
     mrb_value ret;
@@ -63,10 +62,12 @@ mrb_value saten_mrb_text_append_glyph(mrb_state *mrb, mrb_value self)
             }
         }
     }
+    printf("y before offset: %d\n", y);
     if (l > 0) {
-        y += l * saten_latest_text->glyph[i-1].rect.y;
+        y += l * saten_latest_text->glyph[i-1].rect.h;
         y += l * 2; // padding
     }
+    printf("y after offset: %d\n", y);
 
     saten_latest_text->glyph[i].rect.x = x;
     saten_latest_text->glyph[i].rect.y = y;
