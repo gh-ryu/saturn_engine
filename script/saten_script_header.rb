@@ -41,8 +41,12 @@ module Saten
             if c == "\n"
               l += 1
             else
-              Text.append_glyph(@@charmap[:"#{c}"][0], @@color,
-                                @@charmap[:"#{c}"][1], x, y, l)
+              if @@charmap.has_key?(:"#{c}")
+                Text.append_glyph(@@charmap[:"#{c}"][0], @@color,
+                                  @@charmap[:"#{c}"][1], x, y, l)
+              else
+                Text.append_glyph(1, @@color, 52, x, y, l)
+              end
             end
           end
           cnt += 1
