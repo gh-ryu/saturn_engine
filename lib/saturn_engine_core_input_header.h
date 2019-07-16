@@ -57,6 +57,7 @@
 #define SATEN_KEY_LEFT 56
 #define SATEN_KEY_RIGHT 57
 #define SATEN_KEY_DOWN 58
+#define SATEN_KEY_ENTER 59
 
 #define SATEN_BTN_INV 0
 #define SATEN_BTN_2 1

@@ -36,6 +36,7 @@ void saten_keyb_input_refresh(void)
     saten_keyb_input_update(saten_keystate[SDL_SCANCODE_LEFT], 56);
     saten_keyb_input_update(saten_keystate[SDL_SCANCODE_RIGHT], 57);
     saten_keyb_input_update(saten_keystate[SDL_SCANCODE_DOWN], 58);
+    saten_keyb_input_update(saten_keystate[SDL_SCANCODE_RETURN], 59);
     if (saten_flag_check(SATEN_KEYCODES, saten_flags)) {
         saten_keyb_input_update(saten_keystate[SDL_GetScancodeFromKey(SDLK_a)],
                 10);
