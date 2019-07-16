@@ -32,11 +32,13 @@ module Saten
       if check == 0
         cnt = 0
         l = 0 # current line
+        meta = "no"
         str = str.to_s
         str.each_char do |c|
-          if c == "\\" && str[cnt+1] == "["
-            # meta information and not a character to be processed
-            #TODO process meta information
+          #TODO process meta information
+          if c == "\\" && str[cnt+1] == "C"
+            # meta information to set color
+            meta = "color"
           else
             if c == "\n"
               l += 1

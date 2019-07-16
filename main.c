@@ -252,7 +252,12 @@ void game(void)
     //SDL_FreeSurface(test);
     //SDL_DestroyTexture(txtr);
     step++;
-    saten_text *mytext = saten_text_create(1.0,"。Hey this is the story of how uhm what\n zeilen sprung :D\n und noch einer!!!?", 0, 120);
-    saten_text_draw(mytext);
-    saten_text_destroy(mytext);
+    if (saten_key(SATEN_KEY_CL) == 1) {
+        printf("A: %lu\n", SDL_GetPerformanceCounter());
+        saten_text *mytext = saten_text_create(1.0,"。Hey this is the story of how uhm what\n zeilen sprung :D\n und noch einer!!!?", 0, 120);
+        printf("B: %lu\n", SDL_GetPerformanceCounter());
+        saten_text_draw(mytext);
+        printf("C: %lu\n", SDL_GetPerformanceCounter());
+        saten_text_destroy(mytext);
+    }
 }
