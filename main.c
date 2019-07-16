@@ -254,4 +254,5 @@ void game(void)
     step++;
     saten_text *mytext = saten_text_create(1.0,"。Hey this is the story of how uhm what\n zeilen sprung :D\n und noch einer!!!?", 0, 120);
     saten_text_draw(mytext);
+    saten_text_destroy(mytext);
 }

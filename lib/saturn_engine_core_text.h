@@ -81,13 +81,11 @@ mrb_value saten_mrb_text_append_glyph(mrb_state *mrb, mrb_value self)
             }
         }
     }
-    printf("y before offset: %d\n", y);
     if (l > 0) {
         //y += l * saten_latest_text->glyph[i-1].rect.h;
         y += l * (saten_text_gheight * saten_latest_text->scale);
         y += l * 2; // padding
     }
-    printf("y after offset: %d\n", y);
 
     saten_latest_text->glyph[i].rect.x = x;
     saten_latest_text->glyph[i].rect.y = y;
@@ -131,4 +129,10 @@ saten_text* saten_text_create(float scale, char *str, int x, int y)
 void saten_text_set_gheight(int a)
 {
     saten_text_gheight = a;
+}
+
+void saten_text_destroy(saten_text *ptr)
+{
+    free(ptr->glyph);
+    free(ptr);
 }
