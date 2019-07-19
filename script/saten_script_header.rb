@@ -9,9 +9,23 @@ module Saten
     end
   end
 =end
+  
+  def Saten.test()
+    a += 1
+    puts a
+  end
 
   class Text
+    attr_accessor :cleanstr, :scale, :x, :y, :id
     @@color = 0
+    def Text.initialize(str, scale, x, y)
+      @cleanstr = str
+      @scale = scale
+      @x = x
+      @y = y
+      @id = 0
+      Text.create(scale, self)
+    end
     def Text.set(scale, str, x, y)
       # creates glyph array representation of str
       # id is glyph array to set, nil to create new array

@@ -18,17 +18,19 @@ void saten_mrb_text_init(void)
 
 mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self)
 {
+    //TODO crate list element, save reference, remove latest text
     mrb_float a0;
+    mrb_value o;
     float a;
-    mrb_get_args(saten_mrb, "f", &a0);
+    mrb_get_args(saten_mrb, "fo", &a0, &o);
     a = (float)a0;
     //saten_latest_text = saten_text_create(n); // list canned
     saten_latest_text = (saten_text*)saten_malloc(sizeof(saten_text));
     mrb_value ret;
     if (saten_latest_text == NULL) {
         ret = mrb_fixnum_value((mrb_int)1);
-    }
-    else {
+    } else {
+        saten_latest_text;
         saten_latest_text->scale = a;
         ret = mrb_fixnum_value((mrb_int)0);
     }

@@ -69,7 +69,7 @@ typedef struct _saten_string {
 } saten_string;
 
 typedef struct _saten_text {
-    saten_string *str;
+    //saten_string *str;
     saten_glyph *glyph; // glyph array
     int size, cnt; // length and increment
     float scale;
