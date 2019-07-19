@@ -32,6 +32,7 @@ mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self)
         text->scale = a;
         text->mrbo = o;
         text->id = saten_list_text->num;
+        text->update_flag = true;
 
         // saten handling
         saten_litem *elem = (saten_litem*)saten_malloc(sizeof(saten_litem));
@@ -109,6 +110,11 @@ mrb_value saten_mrb_text_append_glyph(mrb_state *mrb, mrb_value self)
 
 void saten_text_draw(saten_text *text)
 {
+    printf("id: %d\n", text->id);
+    if (text->glyph == NULL)
+        mrb_funcall(saten_mrb, text->mrbo, "set_glyph", 0);
+
+    text->size = 0;
     for (int i = 0; i < text->size; i++) {
         SDL_RenderCopyEx(saten_ren,
                 saten_glyph_sets[text->glyph[i].a].

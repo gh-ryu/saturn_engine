@@ -10,10 +10,12 @@ void saten_list_init(saten_list **lptr, size_t s)
 // public
 void saten_list_insert(saten_list *lptr, saten_litem *elemptr)
 {
+    printf("list number: %d\n", lptr->num);
     if (lptr->num == 0) {
         // list is empty
         lptr->head = elemptr;
     } else if (lptr->num == 1) {
+        printf("works!!!\n");
         // list has exactly 1 element
         elemptr->prev = lptr->head;
         lptr->tail = elemptr;

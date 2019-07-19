@@ -30,6 +30,9 @@ module Saten
     def set_id(id)
       @id = id
     end
+    def set_glyph
+      puts "set glyphs for text[#{@id}]"
+    end
     def Text.set(scale, str, x, y)
       # creates glyph array representation of str
       # id is glyph array to set, nil to create new array

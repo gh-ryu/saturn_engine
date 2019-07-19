@@ -23,12 +23,12 @@ int main (int argc, char *argv[])
             <0) {
         fprintf(stderr, "Init error...\n");
     }
-    layer1 = saten_layer_create(320, 240);
-    layer2 = saten_layer_create(320, 240);
-    layer3 = saten_layer_create(320, 240);
-    layer4 = saten_layer_create(320, 240);
-    layer5 = saten_layer_create(320, 240);
-    layer6 = saten_layer_create(320, 240);
+    //layer1 = saten_layer_create(320, 240);
+    //layer2 = saten_layer_create(320, 240);
+    //layer3 = saten_layer_create(320, 240);
+    //layer4 = saten_layer_create(320, 240);
+    //layer5 = saten_layer_create(320, 240);
+    //layer6 = saten_layer_create(320, 240);
 
     //saten_fptr_run fptr_run = game;
 
@@ -68,7 +68,7 @@ void game(void)
         saten_break = true;
     }
 
-    saten_layer_clear_all();
+    //saten_layer_clear_all();
 
     /*
     for (int i = 0; i < 20; i++) {
@@ -252,6 +252,7 @@ void game(void)
     //SDL_FreeSurface(test);
     //SDL_DestroyTexture(txtr);
     step++;
+    /*
     if (saten_key(SATEN_KEY_ENTER) == 1) {
         printf("A: %lu\n", SDL_GetPerformanceCounter());
         saten_text *mytext = saten_text_create(1.0,"。Hey this is the story of how uhm what\n zeilen sprung :D\n und noch einer!!!?", 0, 120);
@@ -259,5 +260,13 @@ void game(void)
         saten_text_draw(mytext);
         printf("C: %lu\n", SDL_GetPerformanceCounter());
         saten_text_destroy(mytext);
+    }
+    */
+    if (saten_key(SATEN_KEY_ENTER) == 1) {
+        saten_text_draw(saten_list_text->head->current);
+        saten_litem *cast2 = saten_list_text->head->next;
+        //saten_text *cast = cast2->current;
+        saten_text_draw(cast2->current);
+        saten_text_draw(saten_list_text->tail->current);
     }
 }

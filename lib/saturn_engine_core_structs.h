@@ -2,6 +2,8 @@ typedef struct _saten_litem {
     void *current;
     void *next;
     void *prev;
+    //saten_litem *next;
+    //saten_litem *prev;
 } saten_litem;
 
 typedef struct _saten_list {
@@ -75,6 +77,7 @@ typedef struct _saten_text {
     float scale;
     mrb_value mrbo;
     int id;
+    bool update_flag;
 } saten_text;
 
 typedef struct _saten_spixel {
