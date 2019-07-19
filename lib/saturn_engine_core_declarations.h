@@ -12,7 +12,7 @@ const uint8_t *saten_keystate;
 int32_t *saten_keystate2;
 
 saten_list *saten_list_layer;
-//saten_list *saten_list_text; // no point in using a list (?)
+saten_list *saten_list_text; // no point in using a list (?)
 saten_text *saten_latest_text; // pointer to last modified text
 int saten_text_gheight; // glyph height to be considered when creating
                         // a text object

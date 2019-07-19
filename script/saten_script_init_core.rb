@@ -14,4 +14,10 @@ Saten::Text.set_glyph_height(16)
 #Saten.printg("test0")
 #Saten::Text.set(nil, "my string\"", 0, 0)
 #Saten::Text.set(nil, 2368572305, 0, 0)
-Saten.test()
+a = Saten::Text.new("hello world", 1.0, 0, 0)
+b = Saten::Text.new("hello world", 1.0, 0, 0)
+c = Saten::Text.new("hello world", 1.0, 0, 0)
+
+puts a.cleanstr
+puts c.id
+puts a.id

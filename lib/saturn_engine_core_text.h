@@ -18,24 +18,33 @@ void saten_mrb_text_init(void)
 
 mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self)
 {
-    //TODO crate list element, save reference, remove latest text
     mrb_float a0;
     mrb_value o;
     float a;
     mrb_get_args(saten_mrb, "fo", &a0, &o);
     a = (float)a0;
     //saten_latest_text = saten_text_create(n); // list canned
-    saten_latest_text = (saten_text*)saten_malloc(sizeof(saten_text));
+    saten_text *text = (saten_text*)saten_malloc(sizeof(saten_text));
     mrb_value ret;
-    if (saten_latest_text == NULL) {
+    if (text == NULL) {
         ret = mrb_fixnum_value((mrb_int)1);
     } else {
-        saten_latest_text;
-        saten_latest_text->scale = a;
+        text->scale = a;
+        text->mrbo = o;
+        text->id = saten_list_text->num;
+
+        // saten handling
+        saten_litem *elem = (saten_litem*)saten_malloc(sizeof(saten_litem));
+        elem->current = (void*) text;
+        saten_list_insert(saten_list_text, elem);
+
+        mrb_funcall(saten_mrb, text->mrbo, "set_id", 1,
+                mrb_fixnum_value(text->id));
+
+
         ret = mrb_fixnum_value((mrb_int)0);
     }
     return ret;
-
 }
 
 mrb_value saten_mrb_text_free(mrb_state *mrb, mrb_value self)
@@ -56,11 +65,11 @@ mrb_value saten_mrb_text_set_height(mrb_state *mrb, mrb_value self)
 
 mrb_value saten_mrb_text_append_glyph(mrb_state *mrb, mrb_value self)
 {
-    mrb_int a0, b0, c0, x0, y0, l0;
-    int a, b, c, x, y, i, l;
-    mrb_get_args(saten_mrb, "iiiiii", &a0, &b0, &c0, &x0, &y0, &l0);
+    mrb_int a0, b0, c0, x0, y0, l0, id0;
+    int a, b, c, x, y, i, l, id;
+    mrb_get_args(saten_mrb, "iiiiiii", &id0, &a0, &b0, &c0, &x0, &y0, &l0);
     a = (int)a0; b = (int)b0; c = (int)c0; x = (int)x0; y = (int)y0;
-    l = (int)l0;
+    l = (int)l0; id = (int)id0;
 
     i = saten_latest_text->size;
 

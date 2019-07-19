@@ -18,13 +18,17 @@ module Saten
   class Text
     attr_accessor :cleanstr, :scale, :x, :y, :id
     @@color = 0
-    def Text.initialize(str, scale, x, y)
+    def initialize(str, scale, x, y)
+      puts "hi"
       @cleanstr = str
       @scale = scale
       @x = x
       @y = y
       @id = 0
       Text.create(scale, self)
+    end
+    def set_id(id)
+      @id = id
     end
     def Text.set(scale, str, x, y)
       # creates glyph array representation of str

@@ -73,6 +73,8 @@ typedef struct _saten_text {
     saten_glyph *glyph; // glyph array
     int size, cnt; // length and increment
     float scale;
+    mrb_value mrbo;
+    int id;
 } saten_text;
 
 typedef struct _saten_spixel {
