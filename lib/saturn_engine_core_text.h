@@ -194,6 +194,7 @@ void saten_text_search_id(void *item, int i, int num)
 saten_text* saten_text_find(int id)
 {
     saten_list_look_for = id;
+    saten_list_found = NULL;
     saten_list_traverse(saten_list_text, saten_text_get);
     saten_text* found = (saten_text*) saten_list_found;
     return found;
