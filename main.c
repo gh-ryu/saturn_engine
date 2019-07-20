@@ -269,4 +269,12 @@ void game(void)
         saten_text_draw(cast2->current);
         saten_text_draw(saten_list_text->tail->current);
     }
+    if (saten_key(SATEN_KEY_ENTER) >= 200) {
+    //Saten::Text.update(1, nil, 1.0, 0, 200)
+    mrb_load_string(saten_mrb, "Saten::Text.update(1, \"replacement text :)\", 1.0, 0, 200)");
+    }
+
+    char buff[255];
+    sprintf(buff, "Saten::Text.update(0, nil, %f, %d, %d)", (float)step, step, step);
+    mrb_load_string(saten_mrb, buff);
 }

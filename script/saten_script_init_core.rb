@@ -17,3 +17,5 @@ Saten::Text.set_glyph_height(16)
 Saten::Text.new("。Hey this is the story of how uhm what\n zeilen sprung :D\n und noch einer!!!?", 1.0, 0, 120)
 Saten::Text.new("hello world 2", 1.0, 0, 200)
 Saten::Text.new("hello world 3", 1.0, 0, 220)
+
+#Saten::Text.update(1, nil, 1.0, 0, 200)

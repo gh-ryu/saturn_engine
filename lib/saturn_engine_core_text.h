@@ -15,6 +15,10 @@ void saten_mrb_text_init(void)
             "set_glyph_height", saten_mrb_text_set_height, MRB_ARGS_REQ(1));
     mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
             "append_glyph", saten_mrb_text_append_glyph, MRB_ARGS_REQ(3));
+    mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
+            "get", saten_mrb_text_get, MRB_ARGS_REQ(1));
+    mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
+            "reset", saten_mrb_text_reset, MRB_ARGS_REQ(2));
 
 }
 
@@ -70,6 +74,28 @@ mrb_value saten_mrb_text_set_height(mrb_state *mrb, mrb_value self)
     mrb_get_args(saten_mrb, "i", &a0);
     a = (int)a0;
     saten_text_gheight = a;
+    return mrb_nil_value();
+}
+
+mrb_value saten_mrb_text_get(mrb_state *mrb, mrb_value self)
+{
+    mrb_int id0; int id;
+    mrb_get_args(saten_mrb, "i", &id0);
+    id = (int)id0;
+    saten_text *text = saten_text_find(id);
+    return text->mrbo;
+}
+
+mrb_value saten_mrb_text_reset(mrb_state *mrb, mrb_value self)
+{
+    mrb_int id0; int id; mrb_float f0; float f;
+    mrb_get_args(saten_mrb, "if", &id0, &f0);
+    id = (int)id0; f = (float)f0;
+    saten_text *text = saten_text_find(id);
+    free(text->glyph);
+    text->glyph = NULL;
+    text->size = 0;
+    text->scale = f;
     return mrb_nil_value();
 }
 

@@ -54,47 +54,20 @@ module Saten
         cnt += 1
       end
     end
-    def Text.set(scale, str, x, y)
-      # creates glyph array representation of str
-      # id is glyph array to set, nil to create new array
-      # x, y top left position of glyph 0 on screen
-      check = 0
-      #if id.nil?
-        check = Text.create(scale)
-        if check == 1
-          # failed to allocate memory for new text object
-        end
-      #else
-        # no use for now. might consider later if there are no better options to
-        # display numerical variables
-        # the idea is to change an existing text object to a new set of glyphs
-      #  Text.free()
-      #end
-      # don't append glyphs to nonexistant text...
-      if check == 0
-        cnt = 0
-        l = 0 # current line
-        meta = "no"
+
+    def Text.update(id, str, scale, x, y)
+      obj = Text.get(id)
+      obj.scale = scale
+      obj.x = x
+      obj.y = y
+      if str.nil?
+        # only update scale, x, y
+        # maybe not necessary?
+        Text.reset(id, scale)
+      else
         str = str.to_s
-        str.each_char do |c|
-          #TODO process meta information
-          if c == "\\" && str[cnt+1] == "C"
-            # meta information to set color
-            meta = "color"
-          else
-            if c == "\n"
-              l += 1
-            else
-              if @@charmap.has_key?(:"#{c}")
-                Text.append_glyph(@@charmap[:"#{c}"][0], @@color,
-                                  @@charmap[:"#{c}"][1], x, y, l)
-              else
-                Text.append_glyph(1, @@color, 52, x, y, l)
-              end
-            end
-          end
-          cnt += 1
-        end
+        obj.cleanstr = str
+        Text.reset(id, scale)
       end
     end
   end
