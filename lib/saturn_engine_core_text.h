@@ -31,7 +31,7 @@ mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self)
     } else {
         text->scale = a;
         text->mrbo = o;
-        text->id = saten_list_text->num;
+        text->id = saten_text_get_id();
         text->update_flag = true;
 
         // saten handling
@@ -110,7 +110,6 @@ mrb_value saten_mrb_text_append_glyph(mrb_state *mrb, mrb_value self)
 
 void saten_text_draw(saten_text *text)
 {
-    printf("id: %d\n", text->id);
     if (text->glyph == NULL)
         mrb_funcall(saten_mrb, text->mrbo, "set_glyph", 0);
 
@@ -152,4 +151,28 @@ void saten_text_destroy(saten_text *ptr)
 {
     free(ptr->glyph);
     free(ptr);
+}
+
+// private
+int saten_text_get_id(void)
+{
+    int i = 0;
+    saten_list_new_id = 0;
+    while (true) {
+        saten_list_traverse(saten_list_text, saten_text_search_id);
+        i++;
+        if (saten_list_new_id >= 0)
+            break;
+        else
+            saten_list_new_id = i;
+    }
+    return saten_list_new_id;
+}
+
+// private
+void saten_text_search_id(void *item, int i, int num)
+{
+    saten_text *data = (saten_text*) item;
+    if (data->id == saten_list_new_id)
+        saten_list_new_id = -1;
 }

@@ -19,7 +19,6 @@ module Saten
     attr_accessor :cleanstr, :scale, :x, :y, :id
     @@color = 0
     def initialize(str, scale, x, y)
-      puts "hi"
       @cleanstr = str
       @scale = scale
       @x = x

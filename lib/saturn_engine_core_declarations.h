@@ -13,6 +13,7 @@ int32_t *saten_keystate2;
 
 saten_list *saten_list_layer;
 saten_list *saten_list_text; // no point in using a list (?)
+int saten_list_new_id;
 saten_text *saten_latest_text; // pointer to last modified text
 int saten_text_gheight; // glyph height to be considered when creating
                         // a text object
@@ -189,3 +190,5 @@ void saten_text_draw(saten_text *text);
 saten_text* saten_text_create(float scale, char *str, int x, int y);
 void saten_text_set_gheight(int a);
 void saten_text_destroy(saten_text *ptr);
+int saten_text_get_id(void);
+void saten_text_search_id(void *item, int i, int num);
