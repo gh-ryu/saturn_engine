@@ -262,7 +262,7 @@ void game(void)
         saten_text_destroy(mytext);
     }
     */
-    if (saten_key(SATEN_KEY_ENTER) == 1) {
+    if (saten_key(SATEN_KEY_ENTER) >= 1) {
         saten_text_draw(saten_list_text->head->current);
         saten_litem *cast2 = saten_list_text->head->next;
         //saten_text *cast = cast2->current;

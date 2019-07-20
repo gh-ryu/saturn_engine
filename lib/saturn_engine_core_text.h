@@ -10,6 +10,8 @@ void saten_mrb_text_init(void)
     mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
             "free", saten_mrb_text_free, MRB_ARGS_NONE());
     mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
+            "prepare_glyph", saten_mrb_text_prepare_glyph, MRB_ARGS_NONE());
+    mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
             "set_glyph_height", saten_mrb_text_set_height, MRB_ARGS_REQ(1));
     mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
             "append_glyph", saten_mrb_text_append_glyph, MRB_ARGS_REQ(3));
@@ -50,7 +52,14 @@ mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self)
 
 mrb_value saten_mrb_text_free(mrb_state *mrb, mrb_value self)
 {
+    //TODO
     //printf("called text free...\n");
+    return mrb_nil_value();
+}
+
+mrb_value saten_mrb_text_prepare_glyph(mrb_state *mrb, mrb_value self)
+{
+    saten_latest_text = NULL;
     return mrb_nil_value();
 }
 
@@ -72,39 +81,44 @@ mrb_value saten_mrb_text_append_glyph(mrb_state *mrb, mrb_value self)
     a = (int)a0; b = (int)b0; c = (int)c0; x = (int)x0; y = (int)y0;
     l = (int)l0; id = (int)id0;
 
-    i = saten_latest_text->size;
+    saten_text *text = NULL;
+    if (saten_latest_text == NULL)
+        saten_latest_text = saten_text_find(id);
+    text = saten_latest_text;
 
-    saten_latest_text->size++;
-    saten_latest_text->glyph = (saten_glyph*)saten_realloc(
-            saten_latest_text->glyph,
-            saten_latest_text->size * sizeof(saten_glyph));
 
-    saten_latest_text->glyph[i].a = a;
-    saten_latest_text->glyph[i].b = b;
-    saten_latest_text->glyph[i].c = c;
-    saten_latest_text->glyph[i].l = l;
+    i = text->size;
+
+    text->size++;
+    text->glyph = (saten_glyph*)saten_realloc(
+            text->glyph, text->size * sizeof(saten_glyph));
+
+    text->glyph[i].a = a;
+    text->glyph[i].b = b;
+    text->glyph[i].c = c;
+    text->glyph[i].l = l;
 
     // offset
     if (i > 0) {
         for (int j = i-1; j >= 0; j--) {
-            if (saten_latest_text->glyph[j].l == l) {
-                x += saten_latest_text->glyph[j].rect.w;
+            if (text->glyph[j].l == l) {
+                x += text->glyph[j].rect.w;
                 x += 2; // padding
             }
         }
     }
     if (l > 0) {
         //y += l * saten_latest_text->glyph[i-1].rect.h;
-        y += l * (saten_text_gheight * saten_latest_text->scale);
+        y += l * (saten_text_gheight * text->scale);
         y += l * 2; // padding
     }
 
-    saten_latest_text->glyph[i].rect.x = x;
-    saten_latest_text->glyph[i].rect.y = y;
-    saten_latest_text->glyph[i].rect.w =
-        saten_glyph_sets[a].glyph_width[c] * saten_latest_text->scale;
-    saten_latest_text->glyph[i].rect.h =
-        saten_glyph_sets[a].glyph_height * saten_latest_text->scale;
+    text->glyph[i].rect.x = x;
+    text->glyph[i].rect.y = y;
+    text->glyph[i].rect.w =
+        saten_glyph_sets[a].glyph_width[c] * text->scale;
+    text->glyph[i].rect.h =
+        saten_glyph_sets[a].glyph_height * text->scale;
     return mrb_nil_value();
 }
 
@@ -113,7 +127,6 @@ void saten_text_draw(saten_text *text)
     if (text->glyph == NULL)
         mrb_funcall(saten_mrb, text->mrbo, "set_glyph", 0);
 
-    text->size = 0;
     for (int i = 0; i < text->size; i++) {
         SDL_RenderCopyEx(saten_ren,
                 saten_glyph_sets[text->glyph[i].a].
@@ -175,4 +188,22 @@ void saten_text_search_id(void *item, int i, int num)
     saten_text *data = (saten_text*) item;
     if (data->id == saten_list_new_id)
         saten_list_new_id = -1;
+}
+
+// public
+saten_text* saten_text_find(int id)
+{
+    saten_list_look_for = id;
+    saten_list_traverse(saten_list_text, saten_text_get);
+    saten_text* found = (saten_text*) saten_list_found;
+    return found;
+}
+
+// private
+void saten_text_get(void *item, int i, int num)
+{
+    saten_text *data = (saten_text*) item;
+    if (data->id == saten_list_look_for)
+        saten_list_found = data;
+
 }

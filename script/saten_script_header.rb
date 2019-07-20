@@ -19,7 +19,7 @@ module Saten
     attr_accessor :cleanstr, :scale, :x, :y, :id
     @@color = 0
     def initialize(str, scale, x, y)
-      @cleanstr = str
+      @cleanstr = str.to_s
       @scale = scale
       @x = x
       @y = y
@@ -30,7 +30,29 @@ module Saten
       @id = id
     end
     def set_glyph
-      puts "set glyphs for text[#{@id}]"
+      Text.prepare_glyph
+      cnt = 0
+      l = 0 # current line
+      meta = "no"
+      str = @cleanstr
+      # process str = remove meta information
+      str.each_char do |c|
+        if c == "//" && str[cnt+1] == "c"
+          meta = "color"
+        else
+          if c == "\n"
+            l += 1
+          else
+            if @@charmap.has_key?(:"#{c}")
+              Text.append_glyph(@id, @@charmap[:"#{c}"][0], @@color,
+                                @@charmap[:"#{c}"][1], @x, @y, l)
+            else
+              Text.append_glyph(@id, 1, @@color, 52, @x, @y, l)
+            end
+          end
+        end
+        cnt += 1
+      end
     end
     def Text.set(scale, str, x, y)
       # creates glyph array representation of str

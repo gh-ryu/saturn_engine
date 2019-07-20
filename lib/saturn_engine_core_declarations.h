@@ -14,6 +14,8 @@ int32_t *saten_keystate2;
 saten_list *saten_list_layer;
 saten_list *saten_list_text; // no point in using a list (?)
 int saten_list_new_id;
+int saten_list_look_for;
+void *saten_list_found;
 saten_text *saten_latest_text; // pointer to last modified text
 int saten_text_gheight; // glyph height to be considered when creating
                         // a text object
@@ -184,6 +186,7 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self);
 void saten_mrb_text_init(void);
 mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self);
 mrb_value saten_mrb_text_free(mrb_state *mrb, mrb_value self);
+mrb_value saten_mrb_text_prepare_glyph(mrb_state *mrb, mrb_value self);
 mrb_value saten_mrb_text_append_glyph(mrb_state *mrb, mrb_value self);
 mrb_value saten_mrb_text_set_height(mrb_state *mrb, mrb_value self);
 void saten_text_draw(saten_text *text);
@@ -192,3 +195,5 @@ void saten_text_set_gheight(int a);
 void saten_text_destroy(saten_text *ptr);
 int saten_text_get_id(void);
 void saten_text_search_id(void *item, int i, int num);
+saten_text* saten_text_find(int id);
+void saten_text_get(void *item, int i, int num);
