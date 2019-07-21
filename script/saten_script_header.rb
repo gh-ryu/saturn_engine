@@ -35,20 +35,38 @@ module Saten
       l = 0 # current line
       meta = "no"
       str = @cleanstr
+      @@color = 0
       # process str = remove meta information
+      k = 3
       str.each_char do |c|
-        if c == "//" && str[cnt+1] == "c"
-          meta = "color"
-        else
-          if c == "\n"
-            l += 1
-          else
-            if @@charmap.has_key?(:"#{c}")
-              Text.append_glyph(@id, @@charmap[:"#{c}"][0], @@color,
-                                @@charmap[:"#{c}"][1], @x, @y, l)
-            else
-              Text.append_glyph(@id, 1, @@color, 52, @x, @y, l)
+        if meta == "no"
+          if c == "\\" && str[cnt+1] == "C" && str[cnt+2] == "["
+            j = cnt+3
+            newcol = ""
+            until str[j] == "]" do
+              newcol += str[j]
+              k += 1
+              j += 1
             end
+            @@color = newcol.to_i
+            meta = "color"
+          else
+            if c == "\n"
+              l += 1
+            else
+              if @@charmap.has_key?(:"#{c}")
+                Text.append_glyph(@id, @@charmap[:"#{c}"][0], @@color,
+                                  @@charmap[:"#{c}"][1], @x, @y, l)
+              else
+                Text.append_glyph(@id, 1, @@color, 52, @x, @y, l)
+              end
+            end
+          end
+        elsif meta == "color"
+          k -= 1
+          if k == 0
+            meta = "no"
+            k = 3
           end
         end
         cnt += 1

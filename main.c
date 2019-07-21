@@ -274,7 +274,7 @@ void game(void)
     mrb_load_string(saten_mrb, "Saten::Text.update(1, \"replacement text :)\", 1.0, 0, 200)");
     }
 
-    char buff[255];
-    sprintf(buff, "Saten::Text.update(0, nil, %f, %d, %d)", (float)step, step, step);
-    mrb_load_string(saten_mrb, buff);
+    //char buff[255];
+    //sprintf(buff, "Saten::Text.update(0, nil, %f, %d, %d)", (float)step, step, step);
+    //mrb_load_string(saten_mrb, buff);
 }
