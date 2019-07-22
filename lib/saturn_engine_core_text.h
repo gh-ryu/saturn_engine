@@ -145,6 +145,12 @@ mrb_value saten_mrb_text_append_glyph(mrb_state *mrb, mrb_value self)
         saten_glyph_sets[a].glyph_width[c] * text->scale;
     text->glyph[i].rect.h =
         saten_glyph_sets[a].glyph_height * text->scale;
+    if (saten_glyph_sets[a].is_animated) {
+        text->glyph[i].is_animated = true;
+        text->glyph[i].anum = saten_glyph_sets[a].anum[b];
+    } else {
+        text->glyph[i].is_animated = false;
+    }
     return mrb_nil_value();
 }
 
@@ -154,10 +160,14 @@ void saten_text_draw(saten_text *text)
         mrb_funcall(saten_mrb, text->mrbo, "set_glyph", 0);
 
     for (int i = 0; i < text->size; i++) {
-        SDL_RenderCopyEx(saten_ren,
-                saten_glyph_sets[text->glyph[i].a].
-                glyph[text->glyph[i].b][text->glyph[i].c],
-                NULL, &text->glyph[i].rect, 0, NULL, SDL_FLIP_NONE);
+        if (text->glyph[i].is_animated) {
+            // TODO draw animation frames
+        } else {
+            SDL_RenderCopyEx(saten_ren,
+                    saten_glyph_sets[text->glyph[i].a].
+                    glyph[text->glyph[i].b][text->glyph[i].c],
+                    NULL, &text->glyph[i].rect, 0, NULL, SDL_FLIP_NONE);
+        }
     }
 }
 

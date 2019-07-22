@@ -57,12 +57,15 @@ typedef struct _saten_glyph_set {
     int cn; // color number
     int n; // glyph number
     bool flag; // is defined?
+    uint8_t *anum; // number of animations for each animated glyph
 } saten_glyph_set;
 
 typedef struct _saten_glyph {
     int a, b ,c; // identifiers to insert into saten_glyph_sets[a][b][c]
     int l; // line index
     SDL_Rect rect; // pos
+    bool is_animated;
+    uint8_t anum, acnt; // animation information
 } saten_glyph;
 
 typedef struct _saten_string {

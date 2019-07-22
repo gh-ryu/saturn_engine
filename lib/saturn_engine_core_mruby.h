@@ -46,10 +46,13 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self)
         return mrb_nil_value();
     }
     saten_glyph_sets[id].flag = true;
+    saten_glyph_sets[id].is_animated = animated;
     if (cn == 0) {
         if (animated) {
             saten_glyph_sets[id].glyph =
                 (SDL_Texture***)saten_malloc(n * sizeof(SDL_Texture**));
+            saten_glyph_sets[id].anum =
+                (uint8_t*)saten_malloc(n * sizeof(uint8_t));
         } else {
             saten_glyph_sets[id].glyph =
                 (SDL_Texture***)saten_malloc(sizeof(SDL_Texture**));
@@ -206,7 +209,7 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self)
                         gi--; // first line first glyph is not used
                     if (gi >= 0) { // realloc
                         saten_glyph_sets[id].glyph[i] =
-                            (SDL_Texture**)realloc(
+                            (SDL_Texture**)saten_realloc(
                                     (void*)saten_glyph_sets[id].glyph[i],
                                     (gi+1) * sizeof(SDL_Texture*));
                     }
@@ -214,6 +217,7 @@ mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self)
                         SDL_CreateTextureFromSurface(saten_ren, srf);
                     SDL_FreeSurface(srf);
                     saten_glyph_sets[id].glyph_width[i] = w;
+                    saten_glyph_sets[id].anum[i] = gi+1;
                 } else {
                     saten_glyph_sets[id].glyph[0][glyph_cnt] =
                         SDL_CreateTextureFromSurface(saten_ren, srf);
