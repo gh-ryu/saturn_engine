@@ -41,6 +41,7 @@ module Saten
       m = 0
       a = ""
       b = ""
+      c2 = ""
       str.each_char do |c|
         if meta == "no"
           if c == "\\" && str[cnt+1] == "C" && str[cnt+2] == "["
@@ -57,7 +58,7 @@ module Saten
             j = cnt+3
             a = ""
             b = ""
-            c = ""
+            c2 = ""
             until str[j] == ":" do
               a += str[j]
               k += 1
@@ -73,7 +74,7 @@ module Saten
             j += 1 # move to third identifier
             k += 1
             until str[j] == "]" do
-              c += str[j]
+              c2 += str[j]
               k += 1
               j += 1
             end
@@ -101,9 +102,8 @@ module Saten
           if k == 0
             meta = "no"
             k = 3
-            puts "a: #{a}, b: #{b}"
-            Text.append_glyph(@id, a.to_i, b.to_i, c.to_i, @x, @y, l)
-            puts "got it"
+            if c2 == "c" then c2 = @@color end
+            Text.append_glyph(@id, a.to_i, b.to_i, c2.to_i, @x, @y, l)
           end
         end
         cnt += 1
