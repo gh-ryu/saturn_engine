@@ -38,6 +38,9 @@ module Saten
       @@color = 0
       # process str = remove meta information
       k = 3
+      m = 0
+      a = ""
+      b = ""
       str.each_char do |c|
         if meta == "no"
           if c == "\\" && str[cnt+1] == "C" && str[cnt+2] == "["
@@ -50,6 +53,23 @@ module Saten
             end
             @@color = newcol.to_i
             meta = "color"
+          elsif c == "\\" && str[cnt+1] == "G" && str[cnt+2] == "["
+            j = cnt+3
+            a = ""
+            b = ""
+            until str[j] == ":" do
+              a += str[j]
+              k += 1
+              j += 1
+            end
+            j += 1 # move to second identifier
+            k += 1
+            until str[j] == "]" do
+              b += str[j]
+              k += 1
+              j += 1
+            end
+            meta = "glyph"
           else
             if c == "\n"
               l += 1
@@ -67,6 +87,15 @@ module Saten
           if k == 0
             meta = "no"
             k = 3
+          end
+        elsif meta == "glyph"
+          k -= 1
+          if k == 0
+            meta = "no"
+            k = 3
+            puts "a: #{a}, b: #{b}"
+            Text.append_glyph(@id, a.to_i, 0, b.to_i, @x, @y, l)
+            puts "got it"
           end
         end
         cnt += 1
