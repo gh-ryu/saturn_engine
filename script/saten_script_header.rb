@@ -57,6 +57,7 @@ module Saten
             j = cnt+3
             a = ""
             b = ""
+            c = ""
             until str[j] == ":" do
               a += str[j]
               k += 1
@@ -64,8 +65,15 @@ module Saten
             end
             j += 1 # move to second identifier
             k += 1
-            until str[j] == "]" do
+            until str[j] == ":" do
               b += str[j]
+              k += 1
+              j += 1
+            end
+            j += 1 # move to third identifier
+            k += 1
+            until str[j] == "]" do
+              c += str[j]
               k += 1
               j += 1
             end
@@ -94,7 +102,7 @@ module Saten
             meta = "no"
             k = 3
             puts "a: #{a}, b: #{b}"
-            Text.append_glyph(@id, a.to_i, 0, b.to_i, @x, @y, l)
+            Text.append_glyph(@id, a.to_i, b.to_i, c.to_i, @x, @y, l)
             puts "got it"
           end
         end
