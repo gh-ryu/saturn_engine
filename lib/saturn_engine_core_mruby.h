@@ -1,16 +1,19 @@
-void saten_mrb_function_setup(void)
+void saten_mrb_init(void)
 {
 
     _saten_mrb_module = mrb_define_module(saten_mrb, "Saten");
 
+    /*
     mrb_define_method(saten_mrb, saten_mrb->object_class,
             "saten_mrb_glyph_init", saten_mrb_glyph_init,
             MRB_ARGS_REQ(1));
     mrb_define_method(saten_mrb, saten_mrb->object_class,
             "saten_mrb_load_glyph_file", saten_mrb_load_glyph_file,
             MRB_ARGS_REQ(7));
+            */
 }
 
+/*
 mrb_value saten_mrb_glyph_init(mrb_state *mrb, mrb_value self)
 {
     mrb_int n;
@@ -240,3 +243,4 @@ SATEN_GLYPH_HANDLER_DONE:
 
     return mrb_nil_value();
 }
+*/

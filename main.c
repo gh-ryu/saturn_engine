@@ -19,7 +19,8 @@ saten_layer* layer6 = NULL;
 void game(void);
 int main (int argc, char *argv[])
 {
-    if(saten_core_init("Saturn Engine Core", 320, 240,SATEN_ERRORS|SATEN_INPUT)
+    if(saten_core_init("Saturn Engine Core", 320, 240,
+                SATEN_ERRORS|SATEN_INPUT|SATEN_MRB|SATEN_TEXT)
             <0) {
         fprintf(stderr, "Init error...\n");
     }

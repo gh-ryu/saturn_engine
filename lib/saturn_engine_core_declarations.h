@@ -33,6 +33,8 @@ struct RClass* _saten_mrb_module;
 #define SATEN_ERRORS (1 << 7)
 #define SATEN_INPUT (1 << 6)
 #define SATEN_KEYCODES (1 << 5)
+#define SATEN_MRB (1 << 4)
+#define SATEN_TEXT (1 << 3)
 #define SATEN_PRINTERR saten_flag_check(SATEN_ERRORS, saten_flags)
 
 #define SATEN_SPRITE 0
@@ -179,9 +181,7 @@ SDL_Surface* saten_surface_create(int w, int h, int depth);
 SDL_Surface* saten_surface_get(void *data, int type);
 
 // mruby api
-void saten_mrb_function_setup(void);
-mrb_value saten_mrb_glyph_init(mrb_state *mrb, mrb_value self);
-mrb_value saten_mrb_load_glyph_file(mrb_state *mrb, mrb_value self);
+void saten_mrb_init(void);
 
 // text
 void saten_mrb_text_init(void);
@@ -200,3 +200,5 @@ int saten_text_get_id(void);
 void saten_text_search_id(void *item, int i, int num);
 saten_text* saten_text_find(int id);
 void saten_text_get(void *item, int i, int num);
+mrb_value saten_mrb_text_glyph_init(mrb_state *mrb, mrb_value self);
+mrb_value saten_mrb_text_load_glyph_file(mrb_state *mrb, mrb_value self);

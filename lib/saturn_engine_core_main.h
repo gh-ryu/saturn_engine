@@ -99,30 +99,36 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
     saten_layer0->clip_area = (SDL_Rect*)saten_malloc(sizeof(SDL_Rect));
     saten_set_target_layer(NULL);
 
-    saten_list_init(&saten_list_text, sizeof(saten_text));
-
     saten_fps.fps = 60;
 
     //mrb
-    saten_mrb = mrb_open();
-    if (!saten_mrb) {
-        saten_errhandler(34);
-        return -1;
-    }
-    saten_mrbc = mrbc_context_new(saten_mrb);
-    saten_mrb_function_setup();
-    saten_mrb_text_init();
+    if (saten_flag_check(SATEN_MRB, saten_flags)) {
+        saten_mrb = mrb_open();
+        if (!saten_mrb) {
+            saten_errhandler(34);
+            return -1;
+        }
+        saten_mrbc = mrbc_context_new(saten_mrb);
+        saten_mrb_init();
 
-    FILE *f = NULL;
-    saten_fopen(&f, "script/saten_script_glyph_mapping.rb", "r");
-    mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
-    fclose(f);
-    saten_fopen(&f, "script/saten_script_header.rb", "r");
-    mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
-    fclose(f);
-    saten_fopen(&f, "script/saten_script_init_core.rb", "r");
-    mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
-    fclose(f);
+        if (saten_flag_check(SATEN_TEXT, saten_flags)) {
+            saten_mrb_text_init();
+            saten_list_init(&saten_list_text, sizeof(saten_text));
+            FILE *f = NULL;
+            saten_fopen(&f, "script/saten_script_glyph_mapping.rb", "r");
+            mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
+            fclose(f);
+            saten_fopen(&f, "script/saten_script_class_text.rb", "r");
+            mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
+            fclose(f);
+            saten_fopen(&f, "script/saten_script_text_init.rb", "r");
+            mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
+            fclose(f);
+        }
+    }
+
+
+
 
     // no problems
     return 0;
@@ -130,6 +136,8 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
 
 void saten_core_quit(void)
 {
-    mrbc_context_free(saten_mrb, saten_mrbc);
-    mrb_close(saten_mrb);
+    if (saten_flag_check(SATEN_MRB, saten_flags)) {
+        mrbc_context_free(saten_mrb, saten_mrbc);
+        mrb_close(saten_mrb);
+    }
 }

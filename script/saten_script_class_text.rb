@@ -1,20 +1,5 @@
 module Saten
 
-=begin
-  def Saten.printg(str)
-    raw = false
-    str = str.to_s
-    str.each_char do |c|
-      puts c
-    end
-  end
-=end
-  
-  def Saten.test()
-    a += 1
-    puts a
-  end
-
   class Text
     attr_accessor :cleanstr, :scale, :x, :y, :id
     @@color = 0
