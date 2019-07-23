@@ -33,6 +33,7 @@ int saten_core_run(saten_fptr_run fptr)
         fptr();
         SDL_RenderPresent(saten_ren);
         saten_fps_control_wait();
+        saten_step++;
     }
     return 0;
 }
@@ -40,6 +41,7 @@ int saten_core_run(saten_fptr_run fptr)
 int saten_core_init(const char *title, int screen_width, int screen_height,
         uint8_t flags)
 {
+    saten_step = 0;
     saten_flag_set(flags, &saten_flags);
     if (!(saten_base_path = SDL_GetBasePath())) {
         fprintf(stderr, "Failed to acquire base path. (%s)\n", SDL_GetError());

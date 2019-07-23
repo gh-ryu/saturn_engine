@@ -10,6 +10,7 @@ uint8_t saten_flags;
 char* saten_errpath;
 const uint8_t *saten_keystate;
 int32_t *saten_keystate2;
+uint64_t saten_step;
 
 saten_list *saten_list_layer;
 saten_list *saten_list_text; // no point in using a list (?)

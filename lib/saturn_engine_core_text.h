@@ -161,7 +161,18 @@ void saten_text_draw(saten_text *text)
 
     for (int i = 0; i < text->size; i++) {
         if (text->glyph[i].is_animated) {
-            // TODO draw animation frames
+            SDL_RenderCopyEx(saten_ren,
+                    saten_glyph_sets[text->glyph[i].a].
+                    glyph[text->glyph[i].b][text->glyph[i].acnt],
+                    NULL, &text->glyph[i].rect, 0, NULL, SDL_FLIP_NONE);
+            // TODO flexibel animation speed
+            if (saten_step % 8 == 0) {
+                if (text->glyph[i].acnt != text->glyph[i].anum-1) {
+                    text->glyph[i].acnt++;
+                } else {
+                    text->glyph[i].acnt = 0;
+                }
+            }
         } else {
             SDL_RenderCopyEx(saten_ren,
                     saten_glyph_sets[text->glyph[i].a].
