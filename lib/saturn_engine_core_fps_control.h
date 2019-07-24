@@ -40,4 +40,6 @@ void saten_fps_control_wait2(void)
     deltaf = deltaf / pfreqf;
     printf("pdeltaf: %f\n", deltaf);
     // wait until deltaf == 0.0166 for 60FPS
+    // goal = (float) 1000 / desired_fps (30|60|etc)
+    // check output of goal and recalculate deltaf accordingly to match
 }
