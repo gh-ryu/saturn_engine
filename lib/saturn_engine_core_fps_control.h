@@ -1,5 +1,5 @@
 /* https://dixq.net/g/03_14.html */
-
+// private
 void saten_fps_control_update(void)
 {
     if (saten_fps.cnt == 0) {
@@ -15,10 +15,29 @@ void saten_fps_control_update(void)
     saten_fps.cnt++;
 }
 
+/* https://dixq.net/g/03_14.html */
+// private
 void saten_fps_control_wait(void)
 {
     Uint32 t2 = SDL_GetTicks() - saten_fps.t; // dt in ms
     int w = saten_fps.cnt * 1000 / saten_fps.fps - t2;
     if (w > 0)
         SDL_Delay(w);
+}
+
+// private
+void saten_fps_control_update2(void)
+{
+    saten_fps_start = SDL_GetPerformanceCounter();
+}
+
+// private
+void saten_fps_control_wait2(void)
+{
+    Uint64 delta = SDL_GetPerformanceCounter() - saten_fps_start;
+    float deltaf = (float)delta;
+    float pfreqf = (float)SDL_GetPerformanceFrequency();
+    deltaf = deltaf / pfreqf;
+    printf("pdeltaf: %f\n", deltaf);
+    // wait until deltaf == 0.0166 for 60FPS
 }

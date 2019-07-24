@@ -2,6 +2,7 @@ int saten_core_run(saten_fptr_run fptr)
 {
     while (!saten_break) {
         saten_fps_control_update();
+        saten_fps_control_update2();
         if (saten_flag_check(SATEN_INPUT, saten_flags)) {
             SDL_Event sdl_event;
             while (SDL_PollEvent(&sdl_event) != 0) {
@@ -32,6 +33,7 @@ int saten_core_run(saten_fptr_run fptr)
         // Game
         fptr();
         SDL_RenderPresent(saten_ren);
+        saten_fps_control_wait2();
         saten_fps_control_wait();
         saten_step++;
     }
