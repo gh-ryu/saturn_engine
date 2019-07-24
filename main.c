@@ -187,6 +187,7 @@ void game(void)
     spplayer->centered = true;
     saten_sprite_draw(spplayer, tile, 160, 120, -1, false);
 
+    /*
     saten_draw_rect_filled(0, 0, 320, 240, 255, 255, 255, 255,
             SDL_BLENDMODE_NONE);
     for (int i = 0, x = 0, y = 0; i < 16; i++) { // each color
@@ -247,6 +248,7 @@ void game(void)
         j = 0;
     if (k > 6)
         k = 0;
+        */
 
 
 
@@ -263,6 +265,7 @@ void game(void)
         saten_text_destroy(mytext);
     }
     */
+    
     if (saten_key(SATEN_KEY_ENTER) >= 1) {
         saten_text_draw(saten_list_text->head->current);
         saten_litem *cast2 = saten_list_text->head->next;
@@ -274,6 +277,7 @@ void game(void)
     //Saten::Text.update(1, nil, 1.0, 0, 200)
     mrb_load_string(saten_mrb, "Saten::Text.update(1, \"replacement text :)\", 1.0, 0, 200)");
     }
+    
 
     //char buff[255];
     //sprintf(buff, "Saten::Text.update(0, nil, %f, %d, %d)", (float)step, step, step);
