@@ -187,6 +187,8 @@ void saten_mrb_init(void);
 
 // text
 void saten_mrb_text_init(void);
+mrb_value saten_mrb_text_glyph_init(mrb_state *mrb, mrb_value self);
+mrb_value saten_mrb_text_load_glyph_file(mrb_state *mrb, mrb_value self);
 mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self);
 mrb_value saten_mrb_text_free(mrb_state *mrb, mrb_value self);
 mrb_value saten_mrb_text_prepare_glyph(mrb_state *mrb, mrb_value self);
@@ -202,5 +204,3 @@ int saten_text_get_id(void);
 void saten_text_search_id(void *item, int i, int num);
 saten_text* saten_text_find(int id);
 void saten_text_get(void *item, int i, int num);
-mrb_value saten_mrb_text_glyph_init(mrb_state *mrb, mrb_value self);
-mrb_value saten_mrb_text_load_glyph_file(mrb_state *mrb, mrb_value self);

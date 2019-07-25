@@ -37,23 +37,23 @@ mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self)
     mrb_get_args(saten_mrb, "fo", &a0, &o);
     a = (float)a0;
     //saten_latest_text = saten_text_create(n); // list canned
-    saten_text *text = (saten_text*)saten_malloc(sizeof(saten_text));
+    saten_latest_text = (saten_text*)saten_malloc(sizeof(saten_text));
     mrb_value ret;
-    if (text == NULL) {
+    if (saten_latest_text == NULL) {
         ret = mrb_fixnum_value((mrb_int)1);
     } else {
-        text->scale = a;
-        text->mrbo = o;
-        text->id = saten_text_get_id();
-        text->update_flag = true;
+        saten_latest_text->scale = a;
+        saten_latest_text->mrbo = o;
+        saten_latest_text->id = saten_text_get_id();
+        saten_latest_text->update_flag = true;
 
         // saten handling
         saten_litem *elem = (saten_litem*)saten_malloc(sizeof(saten_litem));
-        elem->current = (void*) text;
+        elem->current = (void*) saten_latest_text;
         saten_list_insert(saten_list_text, elem);
 
-        mrb_funcall(saten_mrb, text->mrbo, "set_id", 1,
-                mrb_fixnum_value(text->id));
+        mrb_funcall(saten_mrb, saten_latest_text->mrbo, "set_id", 1,
+                mrb_fixnum_value(saten_latest_text->id));
 
 
         ret = mrb_fixnum_value((mrb_int)0);
@@ -203,7 +203,7 @@ saten_text* saten_text_create(float scale, char *str, int x, int y)
     //size_t lp = strlen(prefix);
     char cstr[l+lx+ly+25];
     //#Saten::Text.set(nil, 2368572305, 0, 0)
-    sprintf(cstr, "Saten::Text.set(%0.1f, \"%s\", %d, %d)", scale, str, x, y);
+    sprintf(cstr, "Saten::Text.new(\"%s\", %0.1f, %d, %d)", str, scale, x, y);
     //printf("%s\n", cstr);
     mrb_load_string(saten_mrb, cstr);
     return saten_latest_text;
