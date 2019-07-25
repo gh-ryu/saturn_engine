@@ -5,8 +5,7 @@ saten_pad *saten_pads;
 uint8_t saten_pad_num;
 SDL_Window *saten_window;
 SDL_Renderer *saten_ren;
-saten_fps_mngr saten_fps;
-Uint64 saten_fps_start;
+saten_framgr saten_framectrl;
 uint8_t saten_flags;
 char* saten_errpath;
 const uint8_t *saten_keystate;
@@ -117,10 +116,10 @@ SDL_Haptic* saten_get_haptic(int i);
 
 
 // fps control functions
-void saten_fps_control_update(void);
-void saten_fps_control_wait(void);
-void saten_fps_control_update2(void);
-void saten_fps_control_wait2(void);
+void saten_framerate_dixq_update(void);
+void saten_framerate_dixq_wait(void);
+void saten_framerate_update(void);
+void saten_framerate_wait(void);
 
 // bitop functions
 bool saten_flag_check(uint8_t mask, uint8_t flag);

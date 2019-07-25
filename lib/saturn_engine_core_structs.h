@@ -25,13 +25,15 @@ typedef struct _saten_pad {
     bool flag;
 } saten_pad;
 
-typedef struct _saten_fps_mngr {
+typedef struct _saten_framgr {
     Uint32 t;
+    Uint64 t2, t3;
+    float pfreq;
     int cnt;
     float avg;
     int fps;
     int n; // used to calculate average
-} saten_fps_mngr;
+} saten_framgr;
 
 typedef struct _saten_sprite {
     SDL_Surface *srf;

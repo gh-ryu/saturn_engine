@@ -1,6 +1,6 @@
 void saten_set_fps(int fps)
 {
-    saten_fps.fps = fps;
+    saten_framectrl.fps = fps;
 }
 
 void saten_set_stick_deadzone(int16_t dz, int i)
@@ -10,7 +10,7 @@ void saten_set_stick_deadzone(int16_t dz, int i)
 
 float saten_get_avg_fps(void)
 {
-    return saten_fps.avg;
+    return saten_framectrl.avg;
 }
 
 float saten_get_right_stick_angle(int i)

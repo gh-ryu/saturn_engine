@@ -1,8 +1,8 @@
 int saten_core_run(saten_fptr_run fptr)
 {
     while (!saten_break) {
-        saten_fps_control_update();
-        saten_fps_control_update2();
+        //saten_framerate_dixq_update();
+        saten_framerate_update();
         if (saten_flag_check(SATEN_INPUT, saten_flags)) {
             SDL_Event sdl_event;
             while (SDL_PollEvent(&sdl_event) != 0) {
@@ -33,8 +33,8 @@ int saten_core_run(saten_fptr_run fptr)
         // Game
         fptr();
         SDL_RenderPresent(saten_ren);
-        saten_fps_control_wait2();
-        saten_fps_control_wait();
+        //saten_framerate_dixq_wait();
+        saten_framerate_wait();
         saten_step++;
     }
     return 0;
@@ -101,7 +101,9 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
     saten_layer0->clip_area = (SDL_Rect*)saten_malloc(sizeof(SDL_Rect));
     saten_set_target_layer(NULL);
 
-    saten_fps.fps = 60;
+    // frame control
+    saten_framectrl.fps = 60;
+    saten_framectrl.pfreq = (float)SDL_GetPerformanceFrequency();
 
     //mrb
     if (saten_flag_check(SATEN_MRB, saten_flags)) {
