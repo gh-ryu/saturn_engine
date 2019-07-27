@@ -122,47 +122,6 @@ mrb_value saten_mrb_text_append_glyph(mrb_state *mrb, mrb_value self)
 
     saten_text_glyph_create(a, b, c, x, y, l, text);
 
-
-    /*
-    i = text->size;
-
-    text->size++;
-    text->glyph = (saten_glyph*)saten_realloc(
-            text->glyph, text->size * sizeof(saten_glyph));
-
-    text->glyph[i].a = a;
-    text->glyph[i].b = b;
-    text->glyph[i].c = c;
-    text->glyph[i].l = l;
-
-    // offset
-    if (i > 0) {
-        for (int j = i-1; j >= 0; j--) {
-            if (text->glyph[j].l == l) {
-                x += text->glyph[j].rect.w;
-                x += 2; // padding
-            }
-        }
-    }
-    if (l > 0) {
-        //y += l * saten_latest_text->glyph[i-1].rect.h;
-        y += l * (saten_text_gheight * text->scale);
-        y += l * 2; // padding
-    }
-
-    text->glyph[i].rect.x = x;
-    text->glyph[i].rect.y = y;
-    text->glyph[i].rect.w =
-        saten_glyph_sets[a].glyph_width[c] * text->scale;
-    text->glyph[i].rect.h =
-        saten_glyph_sets[a].glyph_height * text->scale;
-    if (saten_glyph_sets[a].is_animated) {
-        text->glyph[i].is_animated = true;
-        text->glyph[i].anum = saten_glyph_sets[a].anum[b];
-    } else {
-        text->glyph[i].is_animated = false;
-    }
-    */
     return mrb_nil_value();
 }
 
