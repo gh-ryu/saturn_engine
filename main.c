@@ -15,6 +15,7 @@ saten_layer* layer3 = NULL;
 saten_layer* layer4 = NULL;
 saten_layer* layer5 = NULL;
 saten_layer* layer6 = NULL;
+saten_text *text = NULL;
 
 void game(void);
 int main (int argc, char *argv[])
@@ -45,6 +46,7 @@ int main (int argc, char *argv[])
     saten_sprite_texturize(arrow);
     saten_sprite_set_tiles(spplayer, 4, 3);
 
+    text = saten_text_create(1.0f, "", 0, 0);
 
     saten_core_run(game);
 
@@ -266,17 +268,30 @@ void game(void)
     }
     */
     
-    if (saten_key(SATEN_KEY_ENTER) >= 1) {
+    if (saten_key(SATEN_KEY_A) >= 1) {
         saten_text_draw(saten_list_text->head->current);
         saten_litem *cast2 = saten_list_text->head->next;
         //saten_text *cast = cast2->current;
         saten_text_draw(cast2->current);
-        saten_text_draw(saten_list_text->tail->current);
+        saten_litem *cast3 = saten_list_text->tail->prev;
+        //saten_text_draw(saten_list_text->tail->current);
+        saten_text_draw(cast3->current);
     }
-    if (saten_key(SATEN_KEY_ENTER) == 200) {
+    if (saten_key(SATEN_KEY_A) == 200) {
     //Saten::Text.update(1, nil, 1.0, 0, 200)
     mrb_load_string(saten_mrb, "Saten::Text.update(1, \"replacement text :)\", 1.0, 0, 200)");
     }
+
+    //saten_draw_rect_filled(0, 0, 320, 240, 255, 255, 255, 255,
+    //        SDL_BLENDMODE_NONE);
+    char buff[255] = { 0 };
+    sprintf(buff, "%0.2f", saten_framectrl.avg);
+
+    //saten_text *text = saten_text_create(1.0f, "", 0, 0);
+    //saten_nstot(text, "12345678912875.-hga", 0, 20, 20);
+    saten_nstot(text, buff, 0, 20, 20);
+    saten_text_draw(text);
+    //saten_text_destroy(text);
     
 
     //char buff[255];

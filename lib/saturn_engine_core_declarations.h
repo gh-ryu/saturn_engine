@@ -204,3 +204,6 @@ int saten_text_get_id(void);
 void saten_text_search_id(void *item, int i, int num);
 saten_text* saten_text_find(int id);
 void saten_text_get(void *item, int i, int num);
+void saten_nstot(saten_text *text, char *str, int col, int x, int y);
+void saten_text_glyph_create(int a, int b, int c, int x, int y, int l,
+        saten_text *text);

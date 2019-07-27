@@ -109,7 +109,8 @@ mrb_value saten_mrb_text_reset(mrb_state *mrb, mrb_value self)
 mrb_value saten_mrb_text_append_glyph(mrb_state *mrb, mrb_value self)
 {
     mrb_int a0, b0, c0, x0, y0, l0, id0;
-    int a, b, c, x, y, i, l, id;
+    //int a, b, c, x, y, i, l, id;
+    int a, b, c, x, y, l, id;
     mrb_get_args(saten_mrb, "iiiiiii", &id0, &a0, &b0, &c0, &x0, &y0, &l0);
     a = (int)a0; b = (int)b0; c = (int)c0; x = (int)x0; y = (int)y0;
     l = (int)l0; id = (int)id0;
@@ -119,7 +120,10 @@ mrb_value saten_mrb_text_append_glyph(mrb_state *mrb, mrb_value self)
         saten_latest_text = saten_text_find(id);
     text = saten_latest_text;
 
+    saten_text_glyph_create(a, b, c, x, y, l, text);
 
+
+    /*
     i = text->size;
 
     text->size++;
@@ -158,7 +162,50 @@ mrb_value saten_mrb_text_append_glyph(mrb_state *mrb, mrb_value self)
     } else {
         text->glyph[i].is_animated = false;
     }
+    */
     return mrb_nil_value();
+}
+
+// private
+void saten_text_glyph_create(int a, int b, int c, int x, int y, int l,
+        saten_text *text)
+{
+    int i = text->size;
+    text->size++;
+    text->glyph = (saten_glyph*)saten_realloc(text->glyph,
+            text->size * sizeof(saten_glyph));
+    text->glyph[i].a = a;
+    text->glyph[i].b = b;
+    text->glyph[i].c = c;
+    text->glyph[i].l = l;
+
+    // offset
+    if (i > 0) {
+        for (int j = i-1; j >= 0; j--) {
+            if (text->glyph[j].l == l) {
+                x += text->glyph[j].rect.w;
+                x += 2; // padding
+            }
+        }
+    }
+    if (l > 0) {
+        //y += l * saten_latest_text->glyph[i-1].rect.h;
+        y += l * (saten_text_gheight * text->scale);
+        y += l * 2; // padding
+    }
+
+    text->glyph[i].rect.x = x;
+    text->glyph[i].rect.y = y;
+    text->glyph[i].rect.w =
+        saten_glyph_sets[a].glyph_width[c] * text->scale;
+    text->glyph[i].rect.h =
+        saten_glyph_sets[a].glyph_height * text->scale;
+    if (saten_glyph_sets[a].is_animated) {
+        text->glyph[i].is_animated = true;
+        text->glyph[i].anum = saten_glyph_sets[a].anum[b];
+    } else {
+        text->glyph[i].is_animated = false;
+    }
 }
 
 void saten_text_draw(saten_text *text)
@@ -196,8 +243,8 @@ saten_text* saten_text_create(float scale, char *str, int x, int y)
     size_t ly = saten_intlen(y);
     if (scale <= 0)
         scale = 0.1f;
-    if (scale >= 10.0)
-        scale = 9.9f;
+    if (scale >= 100.0)
+        scale = 99.9f;
 
     //char prefix[] = "Saten::Text.set(nil, , )";
     //size_t lp = strlen(prefix);
@@ -207,6 +254,38 @@ saten_text* saten_text_create(float scale, char *str, int x, int y)
     //printf("%s\n", cstr);
     mrb_load_string(saten_mrb, cstr);
     return saten_latest_text;
+}
+
+void saten_nstot(saten_text *text, char *str, int col, int x, int y)
+{
+    // string can only contain numbers 0 to 9 and .
+    // everything else is ignored
+    int i = 0;
+    if (text->glyph != NULL) {
+        free(text->glyph);
+        text->glyph = NULL;
+    }
+    text->size = 0;
+
+    while (str[i] != '\0') {
+        if (str[i] >= 48 && str[i] <= 57) {
+            // is in number range
+            saten_text_glyph_create(0, col, str[i]-48, x, y, 0, text);
+        } else {
+            switch (str[i]) {
+            case 46: // dot
+                saten_text_glyph_create(0, col, 24, x, y, 0, text);
+                break;
+            case 45: // minus
+                saten_text_glyph_create(0, col, 23, x, y, 0, text);
+                break;
+            default: // invalid
+                // ignore
+                break;
+            }
+        }
+        i++;
+    }
 }
 
 void saten_text_set_gheight(int a)
