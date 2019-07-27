@@ -46,6 +46,9 @@ module Saten
     @@charmap[:"|"] = [0, 40]
     @@charmap[:"{"] = [0, 41]
     @@charmap[:"}"] = [0, 42]
+    @@charmap[:"。"] = [0, 43]
+    @@charmap[:"「"] = [0, 44]
+    @@charmap[:"」"] = [0, 45]
 
     # roman alphabet
     @@charmap[:"a"] = [1, 0]

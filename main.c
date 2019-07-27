@@ -267,6 +267,8 @@ void game(void)
         saten_text_destroy(mytext);
     }
     */
+    saten_draw_rect_filled(0, 0, 320, 240, 255, 255, 255, 255,
+            SDL_BLENDMODE_NONE);
     
     if (saten_key(SATEN_KEY_A) >= 1) {
         saten_text_draw(saten_list_text->head->current);
@@ -282,8 +284,6 @@ void game(void)
     mrb_load_string(saten_mrb, "Saten::Text.update(1, \"replacement text :)\", 1.0, 0, 200)");
     }
 
-    //saten_draw_rect_filled(0, 0, 320, 240, 255, 255, 255, 255,
-    //        SDL_BLENDMODE_NONE);
     char buff[255] = { 0 };
     sprintf(buff, "%0.2f", saten_framectrl.avg);
 
