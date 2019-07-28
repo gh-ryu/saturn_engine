@@ -47,6 +47,7 @@
 #include "saturn_engine_core_surface.h"
 #include "saturn_engine_core_mruby.h"
 #include "saturn_engine_core_text.h"
+#include "saturn_engine_core_audio.h"
 
 
 #endif /* SATEN_ENGINE_CORE */

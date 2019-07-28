@@ -11,9 +11,11 @@ int saten_core_run(saten_fptr_run fptr)
                 if (sdl_event.type == SDL_JOYDEVICEREMOVED) {
                     //FIXME jdevice.which returns nonsense on second removal
                     // and causes seg fault
+                    printf("removed controller id: %d\n", sdl_event.jdevice.which);
                     saten_controller_remove(sdl_event.jdevice.which);
                 }
                 if (sdl_event.type == SDL_JOYDEVICEADDED) {
+                    printf("added controller id: %d\n", sdl_event.jdevice.which);
                     saten_controller_add(sdl_event.jdevice.which);
                 }
             }
@@ -58,10 +60,8 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
         return -1;
     }
 
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-        saten_errhandler(1);
+    if (saten_audio_init() < 0)
         return -1;
-    }
 
     /*
     if (TTF_Init() < 0) {

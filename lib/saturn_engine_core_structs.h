@@ -89,3 +89,14 @@ typedef struct _saten_spixel {
     int x, y;
     uint8_t r, g, b, a;
 } saten_spixel;
+
+typedef struct _saten_resmngr {
+    saten_sprite **img;
+    int img_n;
+    Mix_Chunk **sfx;
+    int sfx_n;
+    Mix_Music **bgm;
+    int bgm_n;
+    saten_text **text;
+    int text_n;
+} saten_resmngr;

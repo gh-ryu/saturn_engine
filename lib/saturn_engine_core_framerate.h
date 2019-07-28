@@ -67,5 +67,5 @@ void saten_framerate_wait(void)
         deltaf = (float)delta;
         deltaf = (deltaf / saten_framectrl.pfreq) * 1000.0f;
     }
-    printf("avg fps: %f\n", saten_framectrl.avg);
+    //printf("avg fps: %f\n", saten_framectrl.avg);
 }

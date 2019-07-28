@@ -11,6 +11,8 @@ char* saten_errpath;
 const uint8_t *saten_keystate;
 int32_t *saten_keystate2;
 uint64_t saten_step;
+saten_resmngr saten_asset;
+bool *saten_se_flag;
 
 saten_list *saten_list_layer;
 saten_list *saten_list_text; // no point in using a list (?)
@@ -41,6 +43,8 @@ struct RClass* _saten_mrb_module;
 #define SATEN_LAYER 1
 #define SATEN_SURFACE 2
 
+#define SATEN_SFX_MAX 32 // max number of soundeffects
+
 // function pointers
 typedef void (*saten_fptr_run)(void);
 typedef void (*saten_fptr_list_action)(void*, int, int);
@@ -50,6 +54,13 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
         uint8_t flags);
 int saten_core_run(saten_fptr_run);
 void saten_core_quit(void);
+
+// audio
+int saten_audio_init(void);
+int saten_audio_set_sfx_vol(Mix_Chunk *sfx, int vol);
+void saten_audio_sfx_play(void);
+void saten_audio_sfx_set(int i);
+void saten_audio_sfx_unset(int i);
 
 // draw
 void saten_draw_line(int x1, int y1, int x2, int y2, uint8_t r, uint8_t g,
