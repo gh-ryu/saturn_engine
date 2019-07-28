@@ -29,7 +29,8 @@ void saten_audio_sfx_play(void)
 {
     // plays all soundeffects that have been set
     for (int i = 0; i < saten_asset.sfx_n; i++)
-        Mix_PlayChannel(-1, saten_asset.sfx[i], 0);
+        if (saten_se_flag[i])
+            Mix_PlayChannel(-1, saten_asset.sfx[i], 0);
 }
 
 // public
