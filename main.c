@@ -2,7 +2,7 @@
   Saturn Engine Core - Demo program
 */
 
-#include "lib/saturn_engine_core.h"
+#include "lib/saturn_engine.h"
 
 saten_sprite *sprite;
 saten_sprite *sprite_copy;
