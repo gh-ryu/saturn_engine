@@ -5,8 +5,9 @@ error.log
 error.txt
 
 config.mk
-lib/saturn_engine_core_config.h
+lib/core/saturn_engine_core_config.h
 demo
+demo.exe
 
 # Prerequisites
 *.d
