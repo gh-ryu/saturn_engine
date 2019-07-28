@@ -1,5 +1,5 @@
 #ifndef SATURN_ENGINE_CORE
-#define SATEN_ENGINE_CORE
+#define SATURN_ENGINE_CORE
 
 #ifdef _WIN32
 //#define SATEN_PATH_SEP "\\" 
@@ -50,4 +50,4 @@
 #include "saturn_engine_core_audio.h"
 
 
-#endif /* SATEN_ENGINE_CORE */
+#endif /* SATURN_ENGINE_CORE */

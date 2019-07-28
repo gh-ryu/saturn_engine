@@ -6,7 +6,7 @@ uint8_t saten_pad_num;
 SDL_Window *saten_window;
 SDL_Renderer *saten_ren;
 saten_framgr saten_framectrl;
-uint8_t saten_flags;
+uint8_t saten_core_flags;
 char* saten_errpath;
 const uint8_t *saten_keystate;
 int32_t *saten_keystate2;
@@ -32,12 +32,13 @@ mrbc_context *saten_mrbc;
 
 struct RClass* _saten_mrb_module;
 
+// Engine Core Flags
 #define SATEN_ERRORS (1 << 7)
 #define SATEN_INPUT (1 << 6)
 #define SATEN_KEYCODES (1 << 5)
 #define SATEN_MRB (1 << 4)
 #define SATEN_TEXT (1 << 3)
-#define SATEN_PRINTERR saten_flag_check(SATEN_ERRORS, saten_flags)
+#define SATEN_PRINTERR saten_flag_check(SATEN_ERRORS, saten_core_flags)
 
 #define SATEN_SPRITE 0
 #define SATEN_LAYER 1
@@ -52,7 +53,7 @@ typedef void (*saten_fptr_list_action)(void*, int, int);
 // public functions
 int saten_core_init(const char *title, int screen_width, int screen_height,
         uint8_t flags);
-int saten_core_run(saten_fptr_run);
+int saten_core_run(saten_fptr_run fptr);
 void saten_core_quit(void);
 
 // audio

@@ -4,27 +4,31 @@
 
 #include "lib/saturn_engine.h"
 
-saten_sprite *sprite;
-saten_sprite *sprite_copy;
-saten_sprite *spplayer;
-saten_sprite *arrow;
-saten_sprite *m7;
-saten_layer* layer1 = NULL;
-saten_layer* layer2 = NULL;
-saten_layer* layer3 = NULL;
-saten_layer* layer4 = NULL;
-saten_layer* layer5 = NULL;
-saten_layer* layer6 = NULL;
-saten_text *text = NULL;
+//saten_sprite *sprite;
+//saten_sprite *sprite_copy;
+//saten_sprite *spplayer;
+//saten_sprite *arrow;
+//saten_sprite *m7;
+//saten_layer* layer1 = NULL;
+//saten_layer* layer2 = NULL;
+//saten_layer* layer3 = NULL;
+//saten_layer* layer4 = NULL;
+//saten_layer* layer5 = NULL;
+//saten_layer* layer6 = NULL;
+//saten_text *text = NULL;
 
-void game(void);
+//void game(void);
 int main (int argc, char *argv[])
 {
+    /*
     if(saten_core_init("Saturn Engine Core", 320, 240,
                 SATEN_ERRORS|SATEN_INPUT|SATEN_MRB|SATEN_TEXT)
             <0) {
         fprintf(stderr, "Init error...\n");
     }
+    */
+    if (saten_init("saturn_engine_demo", 320, 240, SATEN_FULLSCREEN) < 0)
+        fprintf(stderr, "Init error...\n");
     //layer1 = saten_layer_create(320, 240);
     //layer2 = saten_layer_create(320, 240);
     //layer3 = saten_layer_create(320, 240);
@@ -34,25 +38,26 @@ int main (int argc, char *argv[])
 
     //saten_fptr_run fptr_run = game;
 
-    sprite = saten_sprite_load("test.png");
-    spplayer = saten_sprite_load("spritesheet_test.png");
-    sprite_copy = saten_sprite_copy(sprite);
+    //sprite = saten_sprite_load("test.png");
+    //spplayer = saten_sprite_load("spritesheet_test.png");
+    //sprite_copy = saten_sprite_copy(sprite);
     //saten_sprite_colorize(sprite_copy, 255, 255, 255);
-    saten_sprite_patternize0(sprite_copy);
-    arrow = saten_sprite_load("arrow.png");
-    saten_sprite_texturize(sprite);
-    saten_sprite_texturize(spplayer);
-    saten_sprite_texturize(sprite_copy);
-    saten_sprite_texturize(arrow);
-    saten_sprite_set_tiles(spplayer, 4, 3);
+    //saten_sprite_patternize0(sprite_copy);
+    //arrow = saten_sprite_load("arrow.png");
+    //saten_sprite_texturize(sprite);
+    //saten_sprite_texturize(spplayer);
+    //saten_sprite_texturize(sprite_copy);
+    //saten_sprite_texturize(arrow);
+    //saten_sprite_set_tiles(spplayer, 4, 3);
 
-    text = saten_text_create(1.0f, "", 0, 0);
+    //text = saten_text_create(1.0f, "", 0, 0);
 
-    saten_core_run(game);
+    // call this after initializing scene manager TODO
+    saten_run();
 
-    saten_sprite_destroy(sprite);
-    saten_sprite_destroy(sprite_copy);
-    saten_sprite_destroy(arrow);
+    //saten_sprite_destroy(sprite);
+    //saten_sprite_destroy(sprite_copy);
+    //saten_sprite_destroy(arrow);
 
 
 
@@ -60,6 +65,7 @@ int main (int argc, char *argv[])
  
 }
 
+/*
 void game(void)
 {
     static SDL_Rect player = { 0, 0, 12, 12 };
@@ -73,7 +79,6 @@ void game(void)
 
     //saten_layer_clear_all();
 
-    /*
     for (int i = 0; i < 20; i++) {
         if (SDL_JoystickGetButton(saten_pads[0].jdev, i))
             printf("%d\n", i);
@@ -82,27 +87,20 @@ void game(void)
         if (SDL_JoystickGetAxis(saten_pads[0].jdev, i))
             printf("%d\n", i);
     }
-    */
-    /*
     for (int i = 0; i < 20; i++) {
         if (SDL_JoystickGetButton(
                     SDL_GameControllerGetJoystick(saten_pads[0].dev), i))
             printf("%d\n", i);
     }
-    */
 
-    /*
     if (step == 120) {
         saten_rumble(0, 1.0, 1200);
     }
-    */
 
-    /*
     if(saten_pads[0].lang)
         printf("left angle: %f\n", saten_pads[0].lang);
     if(saten_pads[0].rang)
         printf("right angle: %f\n", saten_pads[0].rang);
-        */
     for (int i = 0; i < saten_pad_num; i++) {
     if (saten_btn(SATEN_AXS_LX, i) > 0)
         printf("lx: %d\n", saten_btn(SATEN_AXS_LX, i));
@@ -189,7 +187,6 @@ void game(void)
     spplayer->centered = true;
     saten_sprite_draw(spplayer, tile, 160, 120, -1, false);
 
-    /*
     saten_draw_rect_filled(0, 0, 320, 240, 255, 255, 255, 255,
             SDL_BLENDMODE_NONE);
     for (int i = 0, x = 0, y = 0; i < 16; i++) { // each color
@@ -250,14 +247,12 @@ void game(void)
         j = 0;
     if (k > 6)
         k = 0;
-        */
 
 
 
     //SDL_FreeSurface(test);
     //SDL_DestroyTexture(txtr);
     step++;
-    /*
     if (saten_key(SATEN_KEY_ENTER) == 1) {
         printf("A: %lu\n", SDL_GetPerformanceCounter());
         saten_text *mytext = saten_text_create(1.0,"。Hey this is the story of how uhm what\n zeilen sprung :D\n und noch einer!!!?", 0, 120);
@@ -266,7 +261,6 @@ void game(void)
         printf("C: %lu\n", SDL_GetPerformanceCounter());
         saten_text_destroy(mytext);
     }
-    */
     saten_draw_rect_filled(0, 0, 320, 240, 255, 255, 255, 255,
             SDL_BLENDMODE_NONE);
     
@@ -298,3 +292,4 @@ void game(void)
     //sprintf(buff, "Saten::Text.update(0, nil, %f, %d, %d)", (float)step, step, step);
     //mrb_load_string(saten_mrb, buff);
 }
+*/

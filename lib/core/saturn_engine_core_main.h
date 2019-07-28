@@ -3,7 +3,7 @@ int saten_core_run(saten_fptr_run fptr)
     while (!saten_break) {
         //saten_framerate_dixq_update();
         saten_framerate_update();
-        if (saten_flag_check(SATEN_INPUT, saten_flags)) {
+        if (saten_flag_check(SATEN_INPUT, saten_core_flags)) {
             SDL_Event sdl_event;
             while (SDL_PollEvent(&sdl_event) != 0) {
                 if (sdl_event.type == SDL_QUIT) 
@@ -46,7 +46,7 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
         uint8_t flags)
 {
     saten_step = 0;
-    saten_flag_set(flags, &saten_flags);
+    saten_flag_set(flags, &saten_core_flags);
     if (!(saten_base_path = SDL_GetBasePath())) {
         fprintf(stderr, "Failed to acquire base path. (%s)\n", SDL_GetError());
         return -1;
@@ -85,11 +85,11 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
 
 
 
-    if (saten_flag_check(SATEN_INPUT, saten_flags)) {
+    if (saten_flag_check(SATEN_INPUT, saten_core_flags)) {
         saten_keystate2 = (int32_t*)saten_malloc(60*sizeof(int32_t));
     }
 
-    if (saten_flag_check(SATEN_INPUT, saten_flags)) {
+    if (saten_flag_check(SATEN_INPUT, saten_core_flags)) {
         if (SDL_GameControllerAddMappingsFromFile("gamecontrollerdb.txt")<0)
             saten_errhandler(12);
 
@@ -106,7 +106,7 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
     saten_framectrl.pfreq = (float)SDL_GetPerformanceFrequency();
 
     //mrb
-    if (saten_flag_check(SATEN_MRB, saten_flags)) {
+    if (saten_flag_check(SATEN_MRB, saten_core_flags)) {
         saten_mrb = mrb_open();
         if (!saten_mrb) {
             saten_errhandler(34);
@@ -115,7 +115,7 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
         saten_mrbc = mrbc_context_new(saten_mrb);
         saten_mrb_init();
 
-        if (saten_flag_check(SATEN_TEXT, saten_flags)) {
+        if (saten_flag_check(SATEN_TEXT, saten_core_flags)) {
             saten_mrb_text_init();
             saten_list_init(&saten_list_text, sizeof(saten_text));
             FILE *f = NULL;
@@ -140,7 +140,7 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
 
 void saten_core_quit(void)
 {
-    if (saten_flag_check(SATEN_MRB, saten_flags)) {
+    if (saten_flag_check(SATEN_MRB, saten_core_flags)) {
         mrbc_context_free(saten_mrb, saten_mrbc);
         mrb_close(saten_mrb);
     }
