@@ -32,6 +32,7 @@
 #include "saturn_engine_core_structs.h"
 #include "saturn_engine_core_declarations.h"
 #include "saturn_engine_core_list.h"
+#include "saturn_engine_core_stack.h"
 #include "saturn_engine_core_framerate.h"
 #include "saturn_engine_core_main.h"
 #include "saturn_engine_core_getset.h"

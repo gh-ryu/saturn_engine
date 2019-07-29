@@ -13,6 +13,12 @@ typedef struct _saten_list {
     int num;
 } saten_list;
 
+typedef struct _saten_stack {
+    void *data;
+    size_t size;
+    int num;
+} saten_stack;
+
 typedef struct _saten_pad {
     SDL_GameController *dev;
     SDL_Joystick *jdev;

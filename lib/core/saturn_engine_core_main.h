@@ -1,4 +1,4 @@
-int saten_core_run(saten_fptr_run fptr)
+int saten_core_run(saten_fptr_void fptr)
 {
     while (!saten_break) {
         //saten_framerate_dixq_update();

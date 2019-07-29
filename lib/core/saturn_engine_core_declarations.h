@@ -12,10 +12,10 @@ const uint8_t *saten_keystate;
 int32_t *saten_keystate2;
 uint64_t saten_step;
 saten_resmngr saten_asset;
-bool *saten_se_flag;
+bool *saten_sfx_flag;
 
 saten_list *saten_list_layer;
-saten_list *saten_list_text; // no point in using a list (?)
+saten_list *saten_list_text;
 int saten_list_new_id;
 int saten_list_look_for;
 void *saten_list_found;
@@ -47,13 +47,14 @@ struct RClass* _saten_mrb_module;
 #define SATEN_SFX_MAX 32 // max number of soundeffects
 
 // function pointers
-typedef void (*saten_fptr_run)(void);
+typedef void (*saten_fptr_void)(void);
+typedef void (*saten_fptr_bool)(bool);
 typedef void (*saten_fptr_list_action)(void*, int, int);
 
 // public functions
 int saten_core_init(const char *title, int screen_width, int screen_height,
         uint8_t flags);
-int saten_core_run(saten_fptr_run fptr);
+int saten_core_run(saten_fptr_void fptr);
 void saten_core_quit(void);
 
 // audio
@@ -173,6 +174,10 @@ void saten_list_search(saten_list *lptr, saten_litem *curreptr,
 void saten_list_traverse(saten_list *lptr, saten_fptr_list_action fptr);
 void saten_list_loop(saten_list *lptr, saten_litem *eptr, int i,
         saten_fptr_list_action fptr);
+
+// stack func
+void saten_stack_init(saten_stack **sptr, size_t s);
+int saten_stack_new(saten_stack **sptr, int n);
 
 // util func
 char* saten_get_filepath(const char *fn);

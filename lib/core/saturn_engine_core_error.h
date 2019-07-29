@@ -118,6 +118,9 @@ void saten_errhandler(int i)
     case 37:
         saten_printerr(i, "Colors must not be larger than number of h items");
         break;
+    case 38:
+        saten_printerr(i, "A scene needs to be created before calling saten_run()");
+        break;
     }
 }
 
