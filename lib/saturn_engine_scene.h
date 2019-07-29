@@ -2,7 +2,7 @@
 int saten_scene_create(saten_fptr_void init, saten_fptr_bool update,
         saten_fptr_void draw, saten_fptr_void quit)
 {
-    int i = saten_stack_new(&saten_stack_scene, 1);
+    int i = saten_stack_grow(&saten_stack_scene, 1);
     saten_scene *scene = saten_stack_scene->data;
     scene[i].init = init;
     scene[i].update = update;

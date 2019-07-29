@@ -177,7 +177,8 @@ void saten_list_loop(saten_list *lptr, saten_litem *eptr, int i,
 
 // stack func
 void saten_stack_init(saten_stack **sptr, size_t s);
-int saten_stack_new(saten_stack **sptr, int n);
+int saten_stack_grow(saten_stack **sptr, int n);
+void saten_stack_shrink(saten_stack **sptr, int n);
 
 // util func
 char* saten_get_filepath(const char *fn);
