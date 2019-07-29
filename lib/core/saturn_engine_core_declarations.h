@@ -175,10 +175,10 @@ void saten_list_traverse(saten_list *lptr, saten_fptr_list_action fptr);
 void saten_list_loop(saten_list *lptr, saten_litem *eptr, int i,
         saten_fptr_list_action fptr);
 
-// stack func
-void saten_stack_init(saten_stack **sptr, size_t s);
-int saten_stack_grow(saten_stack **sptr, int n);
-void saten_stack_shrink(saten_stack **sptr, int n);
+// dynamic array func
+void saten_darr_init(saten_darr **sptr, size_t s);
+int saten_darr_grow(saten_darr **sptr, int n);
+void saten_darr_shrink(saten_darr **sptr, int n);
 
 // util func
 char* saten_get_filepath(const char *fn);

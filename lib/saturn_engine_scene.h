@@ -2,8 +2,8 @@
 int saten_scene_create(saten_fptr_void init, saten_fptr_bool update,
         saten_fptr_void draw, saten_fptr_void quit)
 {
-    int i = saten_stack_grow(&saten_stack_scene, 1);
-    saten_scene *scene = saten_stack_scene->data;
+    int i = saten_darr_grow(&saten_darr_scene, 1);
+    saten_scene *scene = saten_darr_scene->data;
     scene[i].init = init;
     scene[i].update = update;
     scene[i].draw = draw;
@@ -22,7 +22,7 @@ int saten_scene_create(saten_fptr_void init, saten_fptr_bool update,
 */
 void saten_scene_quit(int i)
 {
-    saten_scene *scene = saten_stack_scene->data;
-    for (int j = saten_stack_scene->num; i < j; i++)
+    saten_scene *scene = saten_darr_scene->data;
+    for (int j = saten_darr_scene->num; i < j; i++)
         scene[i].quit_flag = true;
 }
