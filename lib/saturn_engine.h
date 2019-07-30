@@ -12,8 +12,8 @@ int saten_run(void);
 void saten_game(void);
 
 // scene funcs
-int saten_scene_create(saten_fptr_void init, saten_fptr_bool update,
-        saten_fptr_void draw, saten_fptr_void quit);
+int saten_scene_create(uint8_t uid, saten_fptr_void init,
+        saten_fptr_bool update, saten_fptr_void draw, saten_fptr_void quit);
 void saten_scene_quit(int i);
 
 

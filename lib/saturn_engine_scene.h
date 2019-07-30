@@ -1,6 +1,6 @@
 // public
-int saten_scene_create(saten_fptr_void init, saten_fptr_bool update,
-        saten_fptr_void draw, saten_fptr_void quit)
+int saten_scene_create(uint8_t uid, saten_fptr_void init,
+        saten_fptr_bool update, saten_fptr_void draw, saten_fptr_void quit)
 {
     saten_scene scene;
     int i = SATEN_DARR_SIZE(saten_darr_scene);
@@ -11,6 +11,7 @@ int saten_scene_create(saten_fptr_void init, saten_fptr_bool update,
     scene.init_flag = false;
     scene.quit_flag = false;
     scene.id = i;
+    scene.uid = uid;
     SATEN_DARR_PUSH(saten_darr_scene, scene);
     return i;
 

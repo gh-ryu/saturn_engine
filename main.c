@@ -11,18 +11,19 @@ typedef struct _scenemngr {
     saten_scene *settings;
 } scenemngr;
 */
-typedef struct _scenemngr {
-    uint8_t root;
-    uint8_t title;
-    uint8_t settings;
+typedef struct _scenemngr { // index 0: uid, index 1: position id
+    uint8_t root[2];
+    uint8_t title[2];
+    uint8_t title_menu[2];
+    uint8_t title_menu_settings[2];
 } scenemngr;
-scenemngr scene = { 0, 0, 0 };
+scenemngr scene = { { 0, 0 }, { 1, 0 }, { 2, 0 } };
 
 int main (int argc, char *argv[])
 {
     if (saten_init("saturn_engine_demo", 320, 240, SATEN_FULLSCREEN) < 0)
         fprintf(stderr, "Init error...\n");
-    scene.root = saten_scene_create(NULL, NULL, NULL, NULL);
+    scene.root[1] = saten_scene_create(scene.root[0], NULL, NULL, NULL, NULL);
     saten_run();
 
     return 0;
