@@ -4,8 +4,7 @@
 #include "saturn_engine_structs.h"
 // Globals
 uint8_t saten_flags;
-saten_list *saten_list_scene;
-saten_darr *saten_darr_scene;
+saten_scene *saten_darr_scene = NULL;
 
 // Declarations
 int saten_init(char *title, int w, int h, uint8_t flags);
@@ -35,8 +34,7 @@ int saten_init(char *title, int w, int h, uint8_t flags)
     }
 
     // saten_flag_check(SATEN_FULLSCREEN, saten_flags)
-    //saten_list_init(&saten_list_scene, sizeof(saten_scene));
-    saten_darr_init(&saten_darr_scene, sizeof(saten_scene));
+    SATEN_DARR_INIT(saten_scene, saten_darr_scene);
 
     return 0; // everything okay!
 }
@@ -44,7 +42,8 @@ int saten_init(char *title, int w, int h, uint8_t flags)
 // public
 int saten_run(void)
 {
-    if (saten_darr_scene->num < 1) {
+    //if (saten_darr_scene->num < 1) {
+    if (SATEN_DARR_SIZE(saten_darr_scene) < 1) {
         saten_errhandler(38);
         return -1;
     }
@@ -57,24 +56,25 @@ int saten_run(void)
 // private
 void saten_game(void)
 {
-    saten_scene *scene = saten_darr_scene->data;
     // Traverse top-bottom (quit scenes)
-    for (int i = saten_darr_scene->num-1; i >= 0; i--) {
-        if (scene[i].quit_flag)
-            if (scene[i].quit != NULL)
-                scene[i].quit();
+    for (int i = SATEN_DARR_SIZE(saten_darr_scene)-1; i >= 0; i--) {
+        if (saten_darr_scene[i].quit_flag)
+            if (saten_darr_scene[i].quit != NULL)
+                saten_darr_scene[i].quit();
     }
 
     // Traverse bottom-top (play game)
-    for (int i = 0; i < saten_darr_scene->num; i++) {
-        if (!scene[i].init_flag) {
-            if (scene[i].init != NULL)
-                scene[i].init();
+    for (int i = 0; i < SATEN_DARR_SIZE(saten_darr_scene); i++) {
+        if (!saten_darr_scene[i].init_flag) {
+            if (saten_darr_scene[i].init != NULL)
+                saten_darr_scene[i].init();
         } else {
-            if (scene[i].update != NULL) // only top scene gets user control
-                scene[i].update((i == saten_darr_scene->num-1));
-            if (scene[i].draw != NULL)
-                scene[i].draw();
+            if (saten_darr_scene[i].update != NULL) 
+                saten_darr_scene[i].update(
+                        (i == SATEN_DARR_SIZE(saten_darr_scene)-1));
+                // ^only top scene gets user control
+            if (saten_darr_scene[i].draw != NULL)
+                saten_darr_scene[i].draw();
         }
     }
     if (saten_keystate[SDL_SCANCODE_ESCAPE])

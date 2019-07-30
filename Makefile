@@ -46,6 +46,11 @@ SFLAG += -D_DEBUG
 MSG += dev
 endif
 
+ifeq ($(filter macro,$(MAKECMDGOALS)),macro)
+	#CFLAG += -E
+	RUN = -E $(NAME)
+endif
+
 #linux: $(OBJ) // does not recompile when header files change
 linux win64:
 	@echo $(MSG)
@@ -53,6 +58,9 @@ linux win64:
 
 dev:
 	@echo Compiled in debug mode.
+
+macro:
+	@echo Wrote preprocessor output to stdout
 
 
 

@@ -176,9 +176,10 @@ void saten_list_loop(saten_list *lptr, saten_litem *eptr, int i,
         saten_fptr_list_action fptr);
 
 // dynamic array func
-void saten_darr_init(saten_darr **sptr, size_t s);
-int saten_darr_grow(saten_darr **sptr, int n);
-void saten_darr_shrink(saten_darr **sptr, int n);
+// replaced with macros
+//void saten_darr_init(saten_darr **sptr, size_t s);
+//int saten_darr_grow(saten_darr **sptr, int n);
+//void saten_darr_shrink(saten_darr **sptr, int n);
 
 // util func
 char* saten_get_filepath(const char *fn);
