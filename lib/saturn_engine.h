@@ -5,23 +5,31 @@
 // Globals
 uint8_t saten_flags;
 saten_scene *saten_darr_scene = NULL;
+//struct RClass* _saten_mrb_class_resource;
 
 // Declarations
 int saten_init(char *title, int w, int h, uint8_t flags);
 int saten_run(void);
 void saten_game(void);
 
-// scene funcs
-int saten_scene_create(uint8_t uid, saten_fptr_void init,
-        saten_fptr_bool update, saten_fptr_void draw, saten_fptr_void quit);
-void saten_scene_quit(int i);
+// Scene funcs
+saten_scene_info saten_scene_create(saten_scene_info info,
+        saten_fptr_void init, saten_fptr_bool update, saten_fptr_void draw,
+        saten_fptr_void quit);
+void saten_scene_quit(saten_scene_info scene);
+void saten_scene_initialized(saten_scene_info scene);
+
+// Load funcs
+void saten_load_resources(saten_scene_info scene, char *fp);
 
 
 // Engine Flags
 #define SATEN_FULLSCREEN (1 << 7)
+#define SATEN_MRBLOAD (1 << 6)
 
 // Includes
 #include "saturn_engine_scene.h"
+#include "saturn_engine_load.h"
 
 // public
 int saten_init(char *title, int w, int h, uint8_t flags)
@@ -34,6 +42,15 @@ int saten_init(char *title, int w, int h, uint8_t flags)
     }
 
     // saten_flag_check(SATEN_FULLSCREEN, saten_flags)
+
+    if (saten_flag_check(SATEN_MRBLOAD, saten_flags)) {
+        //_saten_mrb_class_resource = mrb_define_class_under(saten_mrb,
+        //    _saten_mrb_module, "Resource", saten_mrb->object_class);
+        FILE *f = NULL;
+        saten_fopen(&f, "script/saten_script_module_resource.rb", "r");
+        mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
+        fclose(f);
+    }
     SATEN_DARR_INIT(saten_scene, saten_darr_scene);
 
     return 0; // everything okay!

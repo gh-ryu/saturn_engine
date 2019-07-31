@@ -121,6 +121,9 @@ void saten_errhandler(int i)
     case 38:
         saten_printerr(i, "A scene needs to be created before calling saten_run()");
         break;
+    case 39:
+        saten_printerr(i, "Failed to open file");
+        break;
     }
 }
 

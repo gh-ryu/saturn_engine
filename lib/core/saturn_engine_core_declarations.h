@@ -202,7 +202,7 @@ SDL_Surface* saten_surface_create(int w, int h, int depth);
 SDL_Surface* saten_surface_get(void *data, int type);
 
 // mruby api
-void saten_mrb_init(void);
+int saten_mrb_init(void);
 
 // text
 void saten_mrb_text_init(void);

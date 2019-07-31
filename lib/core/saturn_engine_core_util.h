@@ -100,4 +100,6 @@ void saten_fopen(FILE **fp, const char *filename, const char *mode)
 #else
     *fp = fopen(filename, mode);
 #endif
+    if (*fp == NULL)
+        saten_errhandler(39);
 }
