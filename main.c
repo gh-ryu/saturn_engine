@@ -38,6 +38,7 @@ int main (int argc, char *argv[])
     scene.title.uid = 1;
     scene.title_menu.uid = 2;
     scene.title_menu_settings.uid = 3;
+    scene.game.uid = 4;
     // Create root scene
     scene.root = saten_scene_create(scene.root, scene_root_init,
             scene_root_update, scene_root_draw, scene_root_quit);
@@ -49,9 +50,9 @@ int main (int argc, char *argv[])
 
 void scene_root_init(void)
 {
-    scene.game.uid = 4;
     // load global resouces (menu soundeffects, load screen stuff)
     saten_load_resources(scene.root, "script/load_resources.rb");
+    saten_sprite_texturize(saten_asset.sprite[0]);
     saten_scene_initialized(scene.root);
 }
 void scene_root_update(bool c)
@@ -59,6 +60,7 @@ void scene_root_update(bool c)
 }
 void scene_root_draw(void)
 {
+    saten_sprite_draw(saten_asset.sprite[0], 0, 0, 0, 0, 0);
 }
 void scene_root_quit(void)
 {

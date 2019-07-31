@@ -12,9 +12,11 @@ typedef struct _saten_scene {
     bool load_flag;
     bool init_flag;
     bool quit_flag;
-    uint8_t id; // defines order
-    uint8_t uid; // unique id to identify scene (load proper resources etc.)
-    int asset_num_img;
+    // IDs moved to info substruct
+    //uint8_t id; // defines order
+    //uint8_t uid; // unique id to identify scene (load proper resources etc.)
+    saten_scene_info info;
+    int asset_num_sprite;
     int asset_num_sfx;
     int asset_num_bgm;
     int asset_num_text;

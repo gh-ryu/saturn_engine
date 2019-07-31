@@ -99,8 +99,8 @@ typedef struct _saten_spixel {
 } saten_spixel;
 
 typedef struct _saten_resmngr {
-    saten_sprite **img;
-    int img_n;
+    saten_sprite **sprite;
+    int sprite_n;
     Mix_Chunk **sfx;
     int sfx_n;
     Mix_Music **bgm;

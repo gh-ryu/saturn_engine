@@ -5,6 +5,7 @@
 // Globals
 uint8_t saten_flags;
 saten_scene *saten_darr_scene = NULL;
+saten_scene_info saten_now_loading;
 //struct RClass* _saten_mrb_class_resource;
 
 // Declarations
@@ -18,9 +19,15 @@ saten_scene_info saten_scene_create(saten_scene_info info,
         saten_fptr_void quit);
 void saten_scene_quit(saten_scene_info scene);
 void saten_scene_initialized(saten_scene_info scene);
+saten_scene_info saten_scene_get_current(void);
+saten_scene_info saten_scene_get_previous(void);
 
 // Load funcs
 void saten_load_resources(saten_scene_info scene, char *fp);
+mrb_value saten_mrb_load_img(mrb_state *mrb, mrb_value self);
+mrb_value saten_mrb_load_sfx(mrb_state *mrb, mrb_value self);
+mrb_value saten_mrb_load_bgm(mrb_state *mrb, mrb_value self);
+mrb_value saten_mrb_load_text(mrb_state *mrb, mrb_value self);
 
 
 // Engine Flags
@@ -44,12 +51,34 @@ int saten_init(char *title, int w, int h, uint8_t flags)
     // saten_flag_check(SATEN_FULLSCREEN, saten_flags)
 
     if (saten_flag_check(SATEN_MRBLOAD, saten_flags)) {
-        //_saten_mrb_class_resource = mrb_define_class_under(saten_mrb,
-        //    _saten_mrb_module, "Resource", saten_mrb->object_class);
-        FILE *f = NULL;
-        saten_fopen(&f, "script/saten_script_module_resource.rb", "r");
-        mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
-        fclose(f);
+        struct RClass* _saten_mrb_module_resource;
+        struct RClass* _saten_mrb_module_img;
+        struct RClass* _saten_mrb_module_sfx;
+        struct RClass* _saten_mrb_module_bgm;
+        struct RClass* _saten_mrb_module_text;
+        _saten_mrb_module_resource = mrb_define_module_under(saten_mrb,
+            _saten_mrb_module, "Resource");
+        _saten_mrb_module_img = mrb_define_module_under(saten_mrb,
+            _saten_mrb_module_resource, "Sprite");
+        _saten_mrb_module_sfx = mrb_define_module_under(saten_mrb,
+            _saten_mrb_module_resource, "SoundEffect");
+        _saten_mrb_module_bgm = mrb_define_module_under(saten_mrb,
+            _saten_mrb_module_resource, "BackgroundMusic");
+        _saten_mrb_module_text = mrb_define_module_under(saten_mrb,
+            _saten_mrb_module_resource, "Text");
+
+        mrb_define_module_function(saten_mrb, _saten_mrb_module_img,
+                "load", saten_mrb_load_img, MRB_ARGS_ARG(1,1));
+        mrb_define_module_function(saten_mrb, _saten_mrb_module_sfx,
+                "load", saten_mrb_load_sfx, MRB_ARGS_ARG(1,1));
+        mrb_define_module_function(saten_mrb, _saten_mrb_module_bgm,
+                "load", saten_mrb_load_bgm, MRB_ARGS_ARG(1,1));
+        mrb_define_module_function(saten_mrb, _saten_mrb_module_text,
+                "load", saten_mrb_load_text, MRB_ARGS_ARG(1,1));
+        //FILE *f = NULL;
+        //saten_fopen(&f, "script/saten_script_module_resource.rb", "r");
+        //mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
+        //fclose(f);
     }
     SATEN_DARR_INIT(saten_scene, saten_darr_scene);
 
