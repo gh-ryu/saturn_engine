@@ -26,6 +26,10 @@ void scene_root_init(void);
 void scene_root_update(bool c);
 void scene_root_draw(void);
 void scene_root_quit(void);
+void scene_title_init(void);
+void scene_title_update(bool c);
+void scene_title_draw(void);
+void scene_title_quit(void);
 scenemngr scene = { 0 };
 
 int main (int argc, char *argv[])
@@ -58,23 +62,45 @@ void scene_root_init(void)
     saten_audio_sfx_set_vol(1, 20);
     saten_audio_sfx_set_vol(2, 38);
     saten_scene_initialized(scene.root);
+    scene.title = saten_scene_create(scene.title, scene_title_init,
+            scene_title_update, scene_title_draw, scene_title_quit);
+    saten_scene_set_start(scene.title);
 }
 void scene_root_update(bool c)
 {
-    if (saten_key(SATEN_KEY_ENTER) == 1)
-        saten_sfx_set(0);
-    if (saten_key(SATEN_KEY_SPACE) == 1)
-        saten_sfx_set(1);
-    if (saten_key(SATEN_KEY_A) == 1)
-        saten_sfx_set(2);
+    if (c) {
+        if (saten_key(SATEN_KEY_ENTER) == 1)
+            saten_sfx_set(0);
+        if (saten_key(SATEN_KEY_SPACE) == 1)
+            saten_sfx_set(1);
+        if (saten_key(SATEN_KEY_A) == 1)
+            saten_sfx_set(2);
 
-    saten_sfx_play();
-    saten_sfx_unset(-1);
+        saten_sfx_play();
+        saten_sfx_unset(-1);
+    }
 }
 void scene_root_draw(void)
 {
     saten_sprite_draw(saten_asset.sprite[0], 0, 0, 0, 0, 0);
 }
 void scene_root_quit(void)
+{
+}
+
+void scene_title_init(void)
+{
+    saten_scene_initialized(scene.title);
+}
+
+void scene_title_update(bool c)
+{
+}
+
+void scene_title_draw(void)
+{
+}
+
+void scene_title_quit(void)
 {
 }

@@ -42,12 +42,23 @@ void saten_scene_initialized(saten_scene_info scene)
     saten_darr_scene[id].init_flag = true;
 }
 
+// public
 saten_scene_info saten_scene_get_current_uid(void)
 {
     return saten_darr_scene[(SATEN_DARR_SIZE(saten_darr_scene)) - 1].info;
 }
 
+// public
 saten_scene_info saten_scene_get_previous(void)
 {
     return saten_darr_scene[(SATEN_DARR_SIZE(saten_darr_scene)) - 2].info; 
+}
+
+// public
+saten_scene_info saten_scene_set_start(saten_scene_info scene)
+{
+    // returns previous starting scene
+    saten_scene_info old = saten_scene_start;
+    saten_scene_start = scene;
+    return old;
 }

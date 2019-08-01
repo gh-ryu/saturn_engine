@@ -6,6 +6,7 @@
 uint8_t saten_flags;
 saten_scene *saten_darr_scene = NULL;
 saten_scene_info saten_now_loading;
+saten_scene_info saten_scene_start; // the scene at which rendering starts
 //struct RClass* _saten_mrb_class_resource;
 
 // Declarations
@@ -21,6 +22,7 @@ void saten_scene_quit(saten_scene_info scene);
 void saten_scene_initialized(saten_scene_info scene);
 saten_scene_info saten_scene_get_current(void);
 saten_scene_info saten_scene_get_previous(void);
+saten_scene_info saten_scene_set_start(saten_scene_info scene);
 
 // Load funcs
 void saten_load_resources(saten_scene_info scene, char *fp);
@@ -110,7 +112,7 @@ void saten_game(void)
     }
 
     // Traverse bottom-top (play game)
-    for (int i = 0; i < SATEN_DARR_SIZE(saten_darr_scene); i++) {
+    for (int i=saten_scene_start.id;i< SATEN_DARR_SIZE(saten_darr_scene);i++) {
         if (!saten_darr_scene[i].init_flag) {
             if (saten_darr_scene[i].init != NULL)
                 saten_darr_scene[i].init();
