@@ -1,3 +1,4 @@
 Saten::Resource::Sprite.load("logo.png", 0)
-#Saten::Resource::Sprite.load("ololololol", 0)
-#Saten::Resource::Sprite.load("t3")
+Saten::Resource::SoundEffect.load("demo_assets/sfx_accept.wav")
+Saten::Resource::SoundEffect.load("demo_assets/sfx_cancel.wav")
+Saten::Resource::SoundEffect.load("demo_assets/sfx_cursor.wav")

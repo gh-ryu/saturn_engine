@@ -26,7 +26,7 @@ mrb_value saten_mrb_load_img(mrb_state *mrb, mrb_value self)
         // load file if no scene given or if we want to load files for id
         saten_asset.sprite_n++;
         saten_asset.sprite = saten_realloc(saten_asset.sprite,
-                (saten_asset.sprite_n) * sizeof(saten_sprite));
+                (saten_asset.sprite_n) * sizeof(saten_sprite*));
         saten_asset.sprite[saten_asset.sprite_n-1] = saten_sprite_load(string);
         saten_darr_scene[saten_now_loading.id].asset_num_sprite++;
     }
@@ -37,12 +37,44 @@ mrb_value saten_mrb_load_img(mrb_state *mrb, mrb_value self)
 // private
 mrb_value saten_mrb_load_sfx(mrb_state *mrb, mrb_value self)
 {
+    char *string;
+    mrb_int mrb_id; int id;
+    mrb_bool mrb_opt; bool opt;
+    mrb_get_args(saten_mrb, "z|i?", &string, &mrb_id, &mrb_opt);
+    id = (int)mrb_id;
+    opt = (bool)mrb_opt;
+
+    if (!opt || id == saten_now_loading.uid) {
+        // load file if no scene given or if we want to load files for id
+        saten_asset.sfx_n++;
+        saten_asset.sfx = saten_realloc(saten_asset.sfx,
+                (saten_asset.sfx_n) * sizeof(Mix_Chunk*));
+        saten_asset.sfx[saten_asset.sfx_n-1] = Mix_LoadWAV(string);
+        saten_darr_scene[saten_now_loading.id].asset_num_sfx++;
+    }
+
     return mrb_nil_value();
 }
 
 // private
 mrb_value saten_mrb_load_bgm(mrb_state *mrb, mrb_value self)
 {
+    char *string;
+    mrb_int mrb_id; int id;
+    mrb_bool mrb_opt; bool opt;
+    mrb_get_args(saten_mrb, "z|i?", &string, &mrb_id, &mrb_opt);
+    id = (int)mrb_id;
+    opt = (bool)mrb_opt;
+
+    if (!opt || id == saten_now_loading.uid) {
+        // load file if no scene given or if we want to load files for id
+        saten_asset.bgm_n++;
+        saten_asset.bgm = saten_realloc(saten_asset.bgm,
+                (saten_asset.bgm_n) * sizeof(Mix_Music*));
+        saten_asset.bgm[saten_asset.bgm_n-1] = Mix_LoadMUS(string);
+        saten_darr_scene[saten_now_loading.id].asset_num_bgm++;
+    }
+
     return mrb_nil_value();
 }
 

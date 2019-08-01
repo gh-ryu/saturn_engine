@@ -12,10 +12,10 @@ int saten_audio_init(void)
 }
 
 // public
-int saten_audio_set_sfx_vol(Mix_Chunk *sfx, int vol)
+int saten_audio_sfx_set_vol(int i, int vol)
 {
     // returns previous volume
-    return Mix_VolumeChunk(sfx, vol);
+    return Mix_VolumeChunk(saten_asset.sfx[i], vol);
 }
 
 // public
@@ -49,4 +49,5 @@ void saten_audio_sfx_reset(void)
 {
     saten_sfx_flag =
         saten_realloc(saten_sfx_flag, sizeof(bool) * saten_asset.sfx_n);
+    memset(saten_sfx_flag, 0, sizeof(bool) * saten_asset.sfx_n);
 }

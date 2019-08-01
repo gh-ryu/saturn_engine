@@ -53,10 +53,23 @@ void scene_root_init(void)
     // load global resouces (menu soundeffects, load screen stuff)
     saten_load_resources(scene.root, "script/load_resources.rb");
     saten_sprite_texturize(saten_asset.sprite[0]);
+    saten_audio_sfx_reset();
+    //saten_audio_sfx_set_vol(0, 100);
+    //saten_audio_sfx_set_vol(1, 100);
+    //saten_audio_sfx_set_vol(2, 100);
     saten_scene_initialized(scene.root);
 }
 void scene_root_update(bool c)
 {
+    if (saten_key(SATEN_KEY_ENTER) == 1)
+        saten_audio_sfx_set(0);
+    if (saten_key(SATEN_KEY_SPACE) == 1)
+        saten_audio_sfx_set(1);
+    if (saten_key(SATEN_KEY_A) == 1)
+        saten_audio_sfx_set(2);
+
+    saten_audio_sfx_play();
+    saten_audio_sfx_unset(-1);
 }
 void scene_root_draw(void)
 {

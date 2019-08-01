@@ -59,7 +59,7 @@ void saten_core_quit(void);
 
 // audio
 int saten_audio_init(void);
-int saten_audio_set_sfx_vol(Mix_Chunk *sfx, int vol);
+int saten_audio_sfx_set_vol(int i, int vol);
 void saten_audio_sfx_play(void);
 void saten_audio_sfx_set(int i);
 void saten_audio_sfx_unset(int i);
