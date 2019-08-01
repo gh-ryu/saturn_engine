@@ -197,21 +197,37 @@ void saten_text_draw(saten_text *text)
 
 saten_text* saten_text_create(float scale, char *str, int x, int y)
 {
-    size_t l = strlen(str) + 1;
-    size_t lx = saten_intlen(x);
-    size_t ly = saten_intlen(y);
+    mrb_float mrb_scale; mrb_int mrb_x; mrb_int mrb_y;
+    mrb_value mrb_str = mrb_str_new_cstr(saten_mrb, str);
+    mrb_value mrbarr[4];
+    struct RClass* _saten_mrb_class_text;
+    _saten_mrb_class_text = mrb_class_get_under(saten_mrb, _saten_mrb_module,
+            "Text");
+
+    //size_t l = strlen(str) + 1;
+    //size_t lx = saten_intlen(x);
+    //size_t ly = saten_intlen(y);
     if (scale <= 0)
         scale = 0.1f;
     if (scale >= 100.0)
         scale = 99.9f;
 
+    mrb_scale = (mrb_float)scale;
+    mrb_x = (mrb_int)x;
+    mrb_y = (mrb_int)y;
+    mrbarr[0] = mrb_str;
+    mrbarr[1] = mrb_float_value(saten_mrb, mrb_scale);
+    mrbarr[2] = mrb_fixnum_value(mrb_x);
+    mrbarr[3] = mrb_fixnum_value(mrb_y);
+
     //char prefix[] = "Saten::Text.set(nil, , )";
     //size_t lp = strlen(prefix);
-    char cstr[l+lx+ly+25];
+    //char cstr[l+lx+ly+25];
+    mrb_obj_new(saten_mrb, _saten_mrb_class_text, 4, mrbarr);
     //#Saten::Text.set(nil, 2368572305, 0, 0)
-    sprintf(cstr, "Saten::Text.new(\"%s\", %0.1f, %d, %d)", str, scale, x, y);
+    //sprintf(cstr, "Saten::Text.new(\"%s\", %0.1f, %d, %d)", str, scale, x, y);
     //printf("%s\n", cstr);
-    mrb_load_string(saten_mrb, cstr);
+    //mrb_load_string(saten_mrb, cstr);
     return saten_latest_text;
 }
 
@@ -531,3 +547,18 @@ SATEN_GLYPH_HANDLER_DONE:
     return mrb_nil_value();
 }
 
+// public
+void saten_text_update(saten_text* text, char *str, float scale, int x, int y)
+{
+    mrb_value mrb_str;
+    //mrb_float mrb_scale; mrb_int mrb_x; mrb_int mrb_y;
+    if (str)
+        mrb_str = mrb_str_new_cstr(saten_mrb, str);
+    else
+        mrb_str = mrb_nil_value();
+
+    mrb_funcall(saten_mrb, text->mrbo, "update", 4, mrb_str,
+            mrb_float_value(saten_mrb, scale), mrb_fixnum_value(x),
+            mrb_fixnum_value(y));
+
+}

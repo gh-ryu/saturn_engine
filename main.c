@@ -61,6 +61,7 @@ void scene_root_init(void)
     saten_audio_sfx_set_vol(0, 30);
     saten_audio_sfx_set_vol(1, 20);
     saten_audio_sfx_set_vol(2, 38);
+    saten_text_update(saten_asset.text[0], NULL, 2.0, 20, 20);
     saten_scene_initialized(scene.root);
     scene.title = saten_scene_create(scene.title, scene_title_init,
             scene_title_update, scene_title_draw, scene_title_quit);
@@ -95,10 +96,12 @@ void scene_title_init(void)
 
 void scene_title_update(bool c)
 {
+    printf("scene title running\n");
 }
 
 void scene_title_draw(void)
 {
+    saten_text_draw(saten_asset.text[0]);
 }
 
 void scene_title_quit(void)

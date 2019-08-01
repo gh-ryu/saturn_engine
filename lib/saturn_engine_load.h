@@ -81,5 +81,21 @@ mrb_value saten_mrb_load_bgm(mrb_state *mrb, mrb_value self)
 // private
 mrb_value saten_mrb_load_text(mrb_state *mrb, mrb_value self)
 {
+    char *string;
+    mrb_int mrb_id; int id;
+    mrb_bool mrb_opt; bool opt;
+    mrb_get_args(saten_mrb, "z|i?", &string, &mrb_id, &mrb_opt);
+    id = (int)mrb_id;
+    opt = (bool)mrb_opt;
+
+    if (!opt || id == saten_now_loading.uid) {
+        saten_asset.text_n++;
+        saten_asset.text = saten_realloc(saten_asset.text,
+                (saten_asset.text_n) * sizeof(saten_text*));
+        saten_asset.text[saten_asset.text_n-1] = saten_text_create(1.0, string,
+                0, 0);
+        saten_darr_scene[saten_now_loading.id].asset_num_text++;
+    }
+
     return mrb_nil_value();
 }

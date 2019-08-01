@@ -228,3 +228,4 @@ void saten_text_get(void *item, int i, int num);
 void saten_nstot(saten_text *text, char *str, int col, int x, int y);
 void saten_text_glyph_create(int a, int b, int c, int x, int y, int l,
         saten_text *text);
+void saten_text_update(saten_text* text, char *str, float scale, int x, int y);

@@ -96,6 +96,21 @@ module Saten
       end
     end
 
+    def update(str, scale, x, y)
+      @scale = scale
+      @x = x
+      @y = y
+      if str.nil?
+        # only update scale, x, y
+        # maybe not necessary?
+        Text.reset(@id, scale)
+      else
+        @cleanstr = str.to_s
+        Text.reset(@id, scale)
+      end
+    end
+
+=begin
     def Text.update(id, str, scale, x, y)
       obj = Text.get(id)
       obj.scale = scale
@@ -111,6 +126,7 @@ module Saten
         Text.reset(id, scale)
       end
     end
+=end
   end
 
 end
