@@ -59,10 +59,12 @@ void saten_core_quit(void);
 
 // audio
 int saten_audio_init(void);
-int saten_audio_sfx_set_vol(int i, int vol);
-void saten_audio_sfx_play(void);
-void saten_audio_sfx_set(int i);
-void saten_audio_sfx_unset(int i);
+
+// sound effetcts
+int saten_sfx_set_vol(int i, int vol);
+void saten_sfx_play(void);
+void saten_sfx_set(int i);
+void saten_sfx_unset(int i);
 
 // draw
 void saten_draw_line(int x1, int y1, int x2, int y2, uint8_t r, uint8_t g,
