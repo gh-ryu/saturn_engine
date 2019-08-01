@@ -4,6 +4,7 @@ saten_scene_info saten_scene_create(saten_scene_info info,
         saten_fptr_void quit)
 {
     saten_scene scene;
+    memset(&scene, 0, sizeof(saten_scene));
     int i = SATEN_DARR_SIZE(saten_darr_scene);
     scene.init = init;
     scene.update = update;
@@ -13,10 +14,10 @@ saten_scene_info saten_scene_create(saten_scene_info info,
     scene.quit_flag = false;
     scene.info.id = i;
     scene.info.uid = info.uid;
-    scene.asset_num_sprite = 0;
-    scene.asset_num_sfx = 0;
-    scene.asset_num_bgm = 0;
-    scene.asset_num_text = 0;
+    //scene.asset_num_sprite = 0;
+    //scene.asset_num_sfx = 0;
+    //scene.asset_num_bgm = 0;
+    //scene.asset_num_text = 0;
     SATEN_DARR_PUSH(saten_darr_scene, scene);
     info.id = i;
     return info;
@@ -61,4 +62,14 @@ saten_scene_info saten_scene_set_start(saten_scene_info scene)
     saten_scene_info old = saten_scene_start;
     saten_scene_start = scene;
     return old;
+}
+
+// private
+bool saten_scene_exists(saten_scene_info scene)
+{
+    if (scene.id < 0 || scene.id > SATEN_DARR_SIZE(saten_darr_scene)) {
+        saten_errhandler(40);
+        return false;
+    }
+    return true;
 }

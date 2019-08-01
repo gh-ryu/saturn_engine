@@ -7,6 +7,7 @@ uint8_t saten_flags;
 saten_scene *saten_darr_scene = NULL;
 saten_scene_info saten_now_loading;
 saten_scene_info saten_scene_start; // the scene at which rendering starts
+saten_scene_info saten_scene_current;
 //struct RClass* _saten_mrb_class_resource;
 
 // Declarations
@@ -23,6 +24,20 @@ void saten_scene_initialized(saten_scene_info scene);
 saten_scene_info saten_scene_get_current(void);
 saten_scene_info saten_scene_get_previous(void);
 saten_scene_info saten_scene_set_start(saten_scene_info scene);
+bool saten_scene_exists(saten_scene_info scene);
+
+// Resource funcs
+saten_sprite* saten_resource_sprite(saten_scene_info scene, int id);
+Mix_Chunk* saten_resource_sfx(saten_scene_info scene, int id);
+Mix_Music* saten_resource_bgm(saten_scene_info scene, int id);
+saten_text* saten_resource_text(saten_scene_info scene, int id);
+
+// SFX funcs
+int saten_sfx_volume(saten_scene_info scene, int i, int vol);
+void saten_sfx_play(saten_scene_info scene);
+void saten_sfx_set(saten_scene_info scene, int i);
+void saten_sfx_unset(saten_scene_info scene, int i);
+void saten_sfx_reset(saten_scene_info scene);
 
 // Load funcs
 void saten_load_resources(saten_scene_info scene, char *fp);
@@ -39,6 +54,8 @@ mrb_value saten_mrb_load_text(mrb_state *mrb, mrb_value self);
 // Includes
 #include "saturn_engine_scene.h"
 #include "saturn_engine_load.h"
+#include "saturn_engine_sfx.h"
+#include "saturn_engine_resource.h"
 
 // public
 int saten_init(char *title, int w, int h, uint8_t flags)

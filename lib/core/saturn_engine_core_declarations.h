@@ -11,7 +11,7 @@ char* saten_errpath;
 const uint8_t *saten_keystate;
 int32_t *saten_keystate2;
 uint64_t saten_step;
-saten_resmngr saten_asset;
+//saten_resmngr saten_asset;
 bool *saten_sfx_flag;
 
 saten_list *saten_list_layer;
@@ -59,12 +59,6 @@ void saten_core_quit(void);
 
 // audio
 int saten_audio_init(void);
-
-// sound effetcts
-int saten_sfx_set_vol(int i, int vol);
-void saten_sfx_play(void);
-void saten_sfx_set(int i);
-void saten_sfx_unset(int i);
 
 // draw
 void saten_draw_line(int x1, int y1, int x2, int y2, uint8_t r, uint8_t g,

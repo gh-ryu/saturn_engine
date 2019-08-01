@@ -16,8 +16,9 @@ typedef struct _saten_scene {
     //uint8_t id; // defines order
     //uint8_t uid; // unique id to identify scene (load proper resources etc.)
     saten_scene_info info;
-    int asset_num_sprite;
-    int asset_num_sfx;
-    int asset_num_bgm;
-    int asset_num_text;
+    saten_resmngr res;
+    //int asset_num_sprite;
+    //int asset_num_sfx;
+    //int asset_num_bgm;
+    //int asset_num_text;
 } saten_scene;

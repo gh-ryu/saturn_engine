@@ -103,6 +103,7 @@ typedef struct _saten_resmngr {
     int sprite_n;
     Mix_Chunk **sfx;
     int sfx_n;
+    bool *sfx_flag;
     Mix_Music **bgm;
     int bgm_n;
     saten_text **text;
