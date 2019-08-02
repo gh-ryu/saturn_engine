@@ -124,6 +124,24 @@ void saten_errhandler(int i)
     case 39:
         saten_printerr(i, "Failed to open file");
         break;
+    case 40:
+        saten_printerr(i, "Cannot access resources from scene that does not exist");
+        break;
+    case 41:
+        saten_printerr(i, "Invalid sprite ID");
+        break;
+    case 42:
+        saten_printerr(i, "Invalid sfx ID");
+        break;
+    case 43:
+        saten_printerr(i, "Invalid bgm ID");
+        break;
+    case 44:
+        saten_printerr(i, "Invalid text ID");
+        break;
+    case 45:
+        saten_printerr(i, "Can only destroy scenes at the top of the stack");
+        break;
     }
 }
 

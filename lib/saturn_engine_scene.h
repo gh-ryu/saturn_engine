@@ -3,6 +3,8 @@ saten_scene_info saten_scene_create(saten_scene_info info,
         saten_fptr_void init, saten_fptr_bool update, saten_fptr_void draw,
         saten_fptr_void quit)
 {
+    if (info.alive)
+        return info;
     saten_scene scene;
     memset(&scene, 0, sizeof(saten_scene));
     int i = SATEN_DARR_SIZE(saten_darr_scene);
@@ -109,4 +111,38 @@ bool saten_scene_exists(saten_scene_info scene)
     */
     //return true;
     return scene.alive;
+}
+
+saten_scene_info saten_scene_destroy(saten_scene_info scene)
+{
+    if (!saten_scene_exists(scene))
+        return scene;
+
+    int n = SATEN_DARR_SIZE(saten_darr_scene);
+    n--; // new size and index of top scene
+    if (scene.id != n) {
+        saten_errhandler(45);
+        return scene;
+    }
+    // free resources
+    for (int i = 0; i < saten_darr_scene[scene.id].res.sprite_n; i++)
+        saten_sprite_destroy(saten_darr_scene[scene.id].res.sprite[i]);
+    for (int i = 0; i < saten_darr_scene[scene.id].res.sfx_n; i++)
+        Mix_FreeChunk(saten_darr_scene[scene.id].res.sfx[i]);
+    for (int i = 0; i < saten_darr_scene[scene.id].res.bgm_n; i++)
+        Mix_FreeMusic(saten_darr_scene[scene.id].res.bgm[i]);
+    for (int i = 0; i < saten_darr_scene[scene.id].res.text_n; i++)
+        saten_text_destroy(saten_darr_scene[scene.id].res.text[i]);
+    free(saten_darr_scene[scene.id].res.sprite);
+    free(saten_darr_scene[scene.id].res.sfx);
+    free(saten_darr_scene[scene.id].res.bgm);
+    free(saten_darr_scene[scene.id].res.text);
+    free(saten_darr_scene[scene.id].res.sfx_flag);
+
+    SATEN_DARR_RESIZE(saten_darr_scene, n);
+
+    scene.alive = false;
+
+
+    return scene;
 }

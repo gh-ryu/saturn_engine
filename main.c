@@ -73,11 +73,9 @@ void scene_root_init(void)
         saten_scene_init_done(scene.root);
     }
     
-    if (!scene.title.alive) {
-        scene.title = saten_scene_create(scene.title, scene_title_init,
-                scene_title_update, scene_title_draw, scene_title_quit);
-        saten_scene_set_start(scene.title);
-    }
+    scene.title = saten_scene_create(scene.title, scene_title_init,
+            scene_title_update, scene_title_draw, scene_title_quit);
+    saten_scene_set_start(scene.title);
     
 }
 void scene_root_update(bool c)
@@ -94,36 +92,47 @@ void scene_root_update(bool c)
         saten_sfx_unset(scene.root, -1);
     }
 }
+
 void scene_root_draw(void)
 {
     //saten_sprite_draw(saten_asset.sprite[0], 0, 0, 0, 0, 0);
     saten_sprite_draw(saten_resource_sprite(scene.root, 0), 0, 0, 0, 0, 0);
 }
+
 void scene_root_quit(void)
 {
 }
 
 void scene_title_init(void)
 {
-    if (!scene.load.alive)
-        scene.load = saten_scene_create(scene.load, scene_load_init,
-                scene_load_update, scene_load_draw, scene_load_quit);
-    if (saten_scene_loaded(scene.title))
+    scene.load = saten_scene_create(scene.load, scene_load_init,
+            scene_load_update, scene_load_draw, scene_load_quit);
+    if (saten_scene_loaded(scene.title)) {
+        saten_sprite_texturize(saten_resource_sprite(scene.title, 0));
+        saten_sprite_scale(saten_resource_sprite(scene.title, 0), 0.5f);
         saten_scene_init_done(scene.title);
+    }
 }
 
 void scene_title_update(bool c)
 {
-    printf("scene title running\n");
+    if (c) {
+        if (saten_key(SATEN_KEY_Z) >= 120)
+            saten_scene_quit(scene.title);
+    }
 }
 
 void scene_title_draw(void)
 {
     //saten_text_draw(saten_asset.text[0]);
+    saten_sprite_draw(saten_resource_sprite(scene.title, 0),
+            0, 0, 0, 0, 0);
 }
 
 void scene_title_quit(void)
 {
+    scene.title = saten_scene_destroy(scene.title);
+    saten_scene_set_start(scene.root);
 }
 
 void scene_load_init(void)
@@ -136,13 +145,15 @@ void scene_load_init(void)
         saten_sprite_set_tiles(saten_resource_sprite(scene.load, 0), 2, 1);
         saten_sprite_texturize(saten_resource_sprite(scene.load, 0));
         saten_scene_init_done(scene.load);
-        //saten_load_resources(saten_scene_get_previous(),
-        //"script/load_resources.rb");
+        saten_load_resources(saten_scene_get_previous(),
+        "script/load_resources.rb", true);
     }
 }
 
 void scene_load_update(bool c)
 {
+    if (saten_scene_loaded(saten_scene_get_previous()))
+        saten_scene_quit(scene.load);
 }
 
 void scene_load_draw(void)
@@ -160,4 +171,5 @@ void scene_load_draw(void)
 
 void scene_load_quit(void)
 {
+    scene.load = saten_scene_destroy(scene.load);
 }

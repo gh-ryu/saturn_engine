@@ -28,6 +28,7 @@ bool saten_scene_is_quitting(saten_scene_info scene);
 saten_scene_info saten_scene_get_current(void);
 saten_scene_info saten_scene_get_previous(void);
 saten_scene_info saten_scene_set_start(saten_scene_info scene);
+saten_scene_info saten_scene_destroy(saten_scene_info scene);
 bool saten_scene_exists(saten_scene_info scene);
 
 // Resource funcs

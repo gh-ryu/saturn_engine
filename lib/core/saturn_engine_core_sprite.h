@@ -164,6 +164,8 @@ void saten_sprite_destroy(saten_sprite *sprite)
         SDL_DestroyTexture(sprite->texture);
     if (sprite->tile)
         free(sprite->tile);
+    if (sprite->target)
+        free(sprite->target);
     free(sprite);
     sprite = NULL;
 }
