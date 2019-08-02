@@ -1,6 +1,7 @@
 typedef struct _saten_scene_info {
     uint8_t uid; // unique id given by user
     uint8_t id; // dynamic id given by engine
+    bool alive;
 } saten_scene_info;
 
 typedef struct _saten_scene {

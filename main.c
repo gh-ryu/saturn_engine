@@ -19,6 +19,7 @@ typedef struct _scenemngr { // index 0: uid, index 1: position id
     saten_scene_info title_menu; // subscenes may use assets from prev scene
     saten_scene_info title_menu_settings;
     saten_scene_info game;
+    saten_scene_info load;
 } scenemngr;
 
 // Declarations
@@ -30,6 +31,10 @@ void scene_title_init(void);
 void scene_title_update(bool c);
 void scene_title_draw(void);
 void scene_title_quit(void);
+void scene_load_init(void);
+void scene_load_update(bool c);
+void scene_load_draw(void);
+void scene_load_quit(void);
 scenemngr scene = { 0 };
 
 int main (int argc, char *argv[])
@@ -43,6 +48,7 @@ int main (int argc, char *argv[])
     scene.title_menu.uid = 2;
     scene.title_menu_settings.uid = 3;
     scene.game.uid = 4;
+    scene.load.uid = 255;
     // Create root scene
     scene.root = saten_scene_create(scene.root, scene_root_init,
             scene_root_update, scene_root_draw, scene_root_quit);
@@ -55,20 +61,23 @@ int main (int argc, char *argv[])
 void scene_root_init(void)
 {
     // load global resouces (menu soundeffects, load screen stuff)
-    saten_load_resources(scene.root, "script/load_resources.rb");
+    saten_load_resources(scene.root, "script/load_resources.rb", false);
     //saten_sprite_texturize(saten_asset.sprite[0]);
-    saten_sprite_texturize(saten_resource_sprite(scene.root, 0));
-    saten_sfx_reset(scene.root);
-    saten_sfx_volume(scene.root, 0, 30);
-    saten_sfx_volume(scene.root, 1, 20);
-    saten_sfx_volume(scene.root, 2, 38);
-    //saten_text_update(saten_asset.text[0], NULL, 2.0, 20, 20);
-    saten_text_update(saten_resource_text(scene.root, 0), NULL, 2.0, 20, 20);
-    saten_scene_initialized(scene.root);
+    if (saten_scene_loaded(scene.root)) {
+        saten_sprite_texturize(saten_resource_sprite(scene.root, 0));
+        saten_sfx_reset(scene.root);
+        saten_sfx_volume(scene.root, 0, 30);
+        saten_sfx_volume(scene.root, 1, 20);
+        saten_sfx_volume(scene.root, 2, 38);
+        //saten_text_update(saten_asset.text[0], NULL, 2.0, 20, 20);
+        saten_scene_init_done(scene.root);
+    }
     
-    scene.title = saten_scene_create(scene.title, scene_title_init,
-            scene_title_update, scene_title_draw, scene_title_quit);
-    saten_scene_set_start(scene.title);
+    if (!scene.title.alive) {
+        scene.title = saten_scene_create(scene.title, scene_title_init,
+                scene_title_update, scene_title_draw, scene_title_quit);
+        saten_scene_set_start(scene.title);
+    }
     
 }
 void scene_root_update(bool c)
@@ -96,7 +105,11 @@ void scene_root_quit(void)
 
 void scene_title_init(void)
 {
-    saten_scene_initialized(scene.title);
+    if (!scene.load.alive)
+        scene.load = saten_scene_create(scene.load, scene_load_init,
+                scene_load_update, scene_load_draw, scene_load_quit);
+    if (saten_scene_loaded(scene.title))
+        saten_scene_init_done(scene.title);
 }
 
 void scene_title_update(bool c)
@@ -107,9 +120,44 @@ void scene_title_update(bool c)
 void scene_title_draw(void)
 {
     //saten_text_draw(saten_asset.text[0]);
-    saten_text_draw(saten_resource_text(scene.root, 0));
 }
 
 void scene_title_quit(void)
+{
+}
+
+void scene_load_init(void)
+{
+    saten_load_resources(scene.load, "script/load_resources.rb", false);
+    //saten_scene_load_done(scene.load);
+    if (saten_scene_loaded(scene.load)) {
+        saten_text_update(saten_resource_text(scene.load, 0),
+                NULL, 2.0, 20, 20);
+        saten_sprite_set_tiles(saten_resource_sprite(scene.load, 0), 2, 1);
+        saten_sprite_texturize(saten_resource_sprite(scene.load, 0));
+        saten_scene_init_done(scene.load);
+        //saten_load_resources(saten_scene_get_previous(),
+        //"script/load_resources.rb");
+    }
+}
+
+void scene_load_update(bool c)
+{
+}
+
+void scene_load_draw(void)
+{
+    saten_text_draw(saten_resource_text(scene.load, 0));
+    if (saten_step % 60) {
+        saten_sprite_draw(saten_resource_sprite(scene.load, 0),
+                0, 160, 120, 0, 0);
+    }
+    else {
+        saten_sprite_draw(saten_resource_sprite(scene.load, 0),
+                1, 160, 120, 0, 0);
+    }
+}
+
+void scene_load_quit(void)
 {
 }

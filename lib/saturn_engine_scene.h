@@ -14,12 +14,14 @@ saten_scene_info saten_scene_create(saten_scene_info info,
     scene.quit_flag = false;
     scene.info.id = i;
     scene.info.uid = info.uid;
+    scene.info.alive = true;
     //scene.asset_num_sprite = 0;
     //scene.asset_num_sfx = 0;
     //scene.asset_num_bgm = 0;
     //scene.asset_num_text = 0;
     SATEN_DARR_PUSH(saten_darr_scene, scene);
     info.id = i;
+    info.alive = true;
     return info;
 }
 
@@ -37,14 +39,21 @@ void saten_scene_quit(saten_scene_info scene)
 
 /* Access functions to control scenes */
 // public
-void saten_scene_initialized(saten_scene_info scene)
+void saten_scene_init_done(saten_scene_info scene)
 {
     int id = scene.id;
     saten_darr_scene[id].init_flag = true;
 }
 
 // public
-saten_scene_info saten_scene_get_current_uid(void)
+void saten_scene_load_done(saten_scene_info scene)
+{
+    int id = scene.id;
+    saten_darr_scene[id].load_flag = true;
+}
+
+// public
+saten_scene_info saten_scene_get_current(void)
 {
     return saten_darr_scene[(SATEN_DARR_SIZE(saten_darr_scene)) - 1].info;
 }
@@ -64,12 +73,40 @@ saten_scene_info saten_scene_set_start(saten_scene_info scene)
     return old;
 }
 
+// public
+bool saten_scene_initialized(saten_scene_info scene)
+{
+    if (saten_scene_exists(scene)) {
+        return saten_darr_scene[scene.id].init_flag;
+    }
+    return false;
+}
+
+bool saten_scene_loaded(saten_scene_info scene)
+{
+    if (saten_scene_exists(scene)) {
+        return saten_darr_scene[scene.id].load_flag;
+    }
+    return false;
+}
+
+bool saten_scene_is_quitting(saten_scene_info scene)
+{
+    if (saten_scene_exists(scene)) {
+        return saten_darr_scene[scene.id].quit_flag;
+    }
+    return false;
+}
+
 // private
 bool saten_scene_exists(saten_scene_info scene)
 {
+    /*
     if (scene.id < 0 || scene.id > SATEN_DARR_SIZE(saten_darr_scene)) {
         saten_errhandler(40);
         return false;
     }
-    return true;
+    */
+    //return true;
+    return scene.alive;
 }

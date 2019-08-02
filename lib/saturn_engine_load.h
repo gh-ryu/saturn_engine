@@ -1,5 +1,5 @@
 // public
-void saten_load_resources(saten_scene_info scene, char *fp)
+void saten_load_resources(saten_scene_info scene, char *fp, bool threaded)
 {
     // Set uid to check which resources to load (in case file has resources
     // for various scenes
@@ -10,6 +10,7 @@ void saten_load_resources(saten_scene_info scene, char *fp)
     saten_fopen(&f, fp, "r");
     mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
     fclose(f);
+    saten_scene_load_done(scene);
 }
 
 // private
