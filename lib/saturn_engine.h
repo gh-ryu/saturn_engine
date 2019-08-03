@@ -25,6 +25,7 @@ void saten_scene_load_done(saten_scene_info scene);
 bool saten_scene_initialized(saten_scene_info scene);
 bool saten_scene_loaded(saten_scene_info scene);
 bool saten_scene_is_quitting(saten_scene_info scene);
+uint64_t saten_scene_frame(saten_scene_info scene);
 saten_scene_info saten_scene_get_current(void);
 saten_scene_info saten_scene_get_previous(void);
 saten_scene_info saten_scene_set_start(saten_scene_info scene);

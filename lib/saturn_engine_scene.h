@@ -100,6 +100,14 @@ bool saten_scene_is_quitting(saten_scene_info scene)
     return false;
 }
 
+uint64_t saten_scene_frame(saten_scene_info scene)
+{
+    if (saten_scene_exists(scene)) {
+        return saten_darr_scene[scene.id].framecnt;
+    }
+    return false;
+}
+
 // private
 bool saten_scene_exists(saten_scene_info scene)
 {

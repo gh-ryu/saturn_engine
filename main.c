@@ -88,6 +88,14 @@ void scene_root_update(bool c)
         if (saten_key(SATEN_KEY_A) == 1)
             saten_sfx_set(scene.root, 2);
 
+        /*
+        if (saten_key(SATEN_KEY_Z) > 120) {
+            scene.title = saten_scene_create(scene.title, scene_title_init,
+                    scene_title_update, scene_title_draw, scene_title_quit);
+            saten_scene_set_start(scene.title);
+        }
+        */
+
         saten_sfx_play(scene.root);
         saten_sfx_unset(scene.root, -1);
     }
@@ -105,6 +113,7 @@ void scene_root_quit(void)
 
 void scene_title_init(void)
 {
+    saten_key_lock(-1); // lock all keys
     scene.load = saten_scene_create(scene.load, scene_load_init,
             scene_load_update, scene_load_draw, scene_load_quit);
     if (saten_scene_loaded(scene.title)) {
@@ -116,6 +125,12 @@ void scene_title_init(void)
 
 void scene_title_update(bool c)
 {
+    // unlock buttons when user stopped giving input for even a frame
+    if (!saten_input_check())
+        saten_key_unlock(-1);
+    // or unlock buttons after a number of frames
+    if (saten_scene_frame(scene.title) >= 260)
+        saten_key_unlock(-1);
     if (c) {
         if (saten_key(SATEN_KEY_Z) >= 120)
             saten_scene_quit(scene.title);
