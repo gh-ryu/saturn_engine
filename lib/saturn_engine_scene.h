@@ -1,7 +1,7 @@
 // public
 saten_scene_info saten_scene_create(saten_scene_info info,
         saten_fptr_void init, saten_fptr_bool update, saten_fptr_void draw,
-        saten_fptr_void quit)
+        saten_fptr_void quit, char *loadscriptfp)
 {
     if (info.alive)
         return info;
@@ -17,6 +17,7 @@ saten_scene_info saten_scene_create(saten_scene_info info,
     scene.info.id = i;
     scene.info.uid = info.uid;
     scene.info.alive = true;
+    scene.loadscriptfp = loadscriptfp;
     //scene.asset_num_sprite = 0;
     //scene.asset_num_sfx = 0;
     //scene.asset_num_bgm = 0;

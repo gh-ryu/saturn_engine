@@ -18,7 +18,7 @@ void saten_game(void);
 // Scene funcs
 saten_scene_info saten_scene_create(saten_scene_info info,
         saten_fptr_void init, saten_fptr_bool update, saten_fptr_void draw,
-        saten_fptr_void quit);
+        saten_fptr_void quit, char *loadscriptfp);
 void saten_scene_quit(saten_scene_info scene);
 void saten_scene_init_done(saten_scene_info scene);
 void saten_scene_load_done(saten_scene_info scene);
@@ -46,7 +46,7 @@ void saten_sfx_unset(saten_scene_info scene, int i);
 void saten_sfx_reset(saten_scene_info scene);
 
 // Load funcs
-void saten_load_resources(saten_scene_info scene, char *fp, bool threaded);
+void saten_load_resources(saten_scene_info scene, bool threaded);
 mrb_value saten_mrb_load_img(mrb_state *mrb, mrb_value self);
 mrb_value saten_mrb_load_sfx(mrb_state *mrb, mrb_value self);
 mrb_value saten_mrb_load_bgm(mrb_state *mrb, mrb_value self);

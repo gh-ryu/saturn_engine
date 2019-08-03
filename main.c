@@ -51,7 +51,8 @@ int main (int argc, char *argv[])
     scene.load.uid = 255;
     // Create root scene
     scene.root = saten_scene_create(scene.root, scene_root_init,
-            scene_root_update, scene_root_draw, scene_root_quit);
+            scene_root_update, scene_root_draw, scene_root_quit,
+            "script/load_resources.rb");
     // Run the game loop
     saten_run();
 
@@ -61,7 +62,7 @@ int main (int argc, char *argv[])
 void scene_root_init(void)
 {
     // load global resouces (menu soundeffects, load screen stuff)
-    saten_load_resources(scene.root, "script/load_resources.rb", false);
+    saten_load_resources(scene.root, false);
     //saten_sprite_texturize(saten_asset.sprite[0]);
     if (saten_scene_loaded(scene.root)) {
         saten_sprite_texturize(saten_resource_sprite(scene.root, 0));
@@ -72,7 +73,8 @@ void scene_root_init(void)
         //saten_text_update(saten_asset.text[0], NULL, 2.0, 20, 20);
         saten_scene_init_done(scene.root);
         scene.title = saten_scene_create(scene.title, scene_title_init,
-                scene_title_update, scene_title_draw, scene_title_quit);
+                scene_title_update, scene_title_draw, scene_title_quit,
+                "script/load_resources.rb");
         saten_scene_set_start(scene.title);
     }
     
@@ -115,7 +117,8 @@ void scene_title_init(void)
 {
     saten_key_lock(-1); // lock all keys
     scene.load = saten_scene_create(scene.load, scene_load_init,
-            scene_load_update, scene_load_draw, scene_load_quit);
+            scene_load_update, scene_load_draw, scene_load_quit,
+            "script/load_resources.rb");
     if (saten_scene_loaded(scene.title)) {
         saten_sprite_texturize(saten_resource_sprite(scene.title, 0));
         saten_sprite_scale(saten_resource_sprite(scene.title, 0), 0.5f);
@@ -152,7 +155,7 @@ void scene_title_quit(void)
 
 void scene_load_init(void)
 {
-    saten_load_resources(scene.load, "script/load_resources.rb", false);
+    saten_load_resources(scene.load, false);
     //saten_scene_load_done(scene.load);
     if (saten_scene_loaded(scene.load)) {
         saten_text_update(saten_resource_text(scene.load, 0),
@@ -160,8 +163,7 @@ void scene_load_init(void)
         saten_sprite_set_tiles(saten_resource_sprite(scene.load, 0), 2, 1);
         saten_sprite_texturize(saten_resource_sprite(scene.load, 0));
         saten_scene_init_done(scene.load);
-        saten_load_resources(saten_scene_get_previous(),
-        "script/load_resources.rb", true);
+        saten_load_resources(saten_scene_get_previous(), true);
     }
 }
 

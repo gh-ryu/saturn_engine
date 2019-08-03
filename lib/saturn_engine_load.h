@@ -1,16 +1,19 @@
 // public
-void saten_load_resources(saten_scene_info scene, char *fp, bool threaded)
+void saten_load_resources(saten_scene_info scene, bool threaded)
 {
-    // Set uid to check which resources to load (in case file has resources
-    // for various scenes
-    // something_global = scene.uid;
     saten_now_loading = scene;
-    // Uses path to a mrb script calling functions to load resources
-    FILE *f = NULL;
-    saten_fopen(&f, fp, "r");
-    mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
-    fclose(f);
-    saten_scene_load_done(scene);
+    if (threaded) {
+    } else {
+        // Set uid to check which resources to load (in case file has resources
+        // for various scenes
+        // something_global = scene.uid;
+        // Uses path to a mrb script calling functions to load resources
+        FILE *f = NULL;
+        saten_fopen(&f, saten_darr_scene[scene.id].loadscriptfp, "r");
+        mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
+        fclose(f);
+        saten_scene_load_done(scene);
+    }
 }
 
 // private

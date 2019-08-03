@@ -23,4 +23,5 @@ typedef struct _saten_scene {
     //int asset_num_sfx;
     //int asset_num_bgm;
     //int asset_num_text;
+    char *loadscriptfp; // file path for associated load script
 } saten_scene;
