@@ -145,6 +145,7 @@ void saten_game(void)
                 // ^only top scene gets user control
             if (saten_darr_scene[i].draw != NULL)
                 saten_darr_scene[i].draw();
+            saten_darr_scene[i].framecnt++;
         }
     }
     if (saten_keystate[SDL_SCANCODE_ESCAPE])

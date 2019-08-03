@@ -13,6 +13,7 @@ typedef struct _saten_scene {
     bool load_flag;
     bool init_flag;
     bool quit_flag;
+    uint64_t framecnt; // current frame
     // IDs moved to info substruct
     //uint8_t id; // defines order
     //uint8_t uid; // unique id to identify scene (load proper resources etc.)
