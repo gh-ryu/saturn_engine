@@ -139,6 +139,7 @@ void saten_flag_set(uint8_t mask, uint8_t *flag);
 void saten_flag_unset(uint8_t mask, uint8_t *flag);
 
 // input func
+bool saten_input_check(void);
 void saten_keyb_input_refresh(void);
 void saten_pad_input_refresh(int i);
 void saten_pad_input_refresh_controller(int i);
