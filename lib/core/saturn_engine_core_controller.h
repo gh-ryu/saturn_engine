@@ -10,7 +10,10 @@ uint32_t saten_btn(uint8_t i, int j)
 {
     if (saten_pad_num >= j+1) {
         if (saten_pads[j].flag)
-            return saten_pads[j].state[i];
+            if (!saten_pads[j].lockstate[i])
+                return saten_pads[j].state[i];
+            else
+                return 0;
         else
             return 0;
     }
