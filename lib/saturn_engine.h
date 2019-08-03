@@ -9,6 +9,9 @@ saten_scene_info saten_now_loading;
 saten_scene_info saten_scene_start; // the scene at which rendering starts
 saten_scene_info saten_scene_current;
 //struct RClass* _saten_mrb_class_resource;
+bool saten_load_on_thread;
+saten_resmngr saten_vres; // filled on second thread, copied into scene res
+                          // when loading finished
 
 // Declarations
 int saten_init(char *title, int w, int h, uint8_t flags);
