@@ -12,6 +12,8 @@ saten_scene_info saten_scene_current;
 bool saten_load_on_thread;
 saten_resmngr saten_vres; // filled on second thread, copied into scene res
                           // when loading finished
+SDL_mutex *saten_load_mtx;
+SDL_Thread *saten_load_thread;
 
 // Declarations
 int saten_init(char *title, int w, int h, uint8_t flags);
@@ -50,6 +52,8 @@ void saten_sfx_reset(saten_scene_info scene);
 
 // Load funcs
 void saten_load_resources(saten_scene_info scene, bool threaded);
+int saten_load_thread_func(void *ptr);
+void saten_load_pass_resources(saten_scene_info scene);
 mrb_value saten_mrb_load_img(mrb_state *mrb, mrb_value self);
 mrb_value saten_mrb_load_sfx(mrb_state *mrb, mrb_value self);
 mrb_value saten_mrb_load_bgm(mrb_state *mrb, mrb_value self);
@@ -109,6 +113,12 @@ int saten_init(char *title, int w, int h, uint8_t flags)
         //fclose(f);
     }
     SATEN_DARR_INIT(saten_scene, saten_darr_scene);
+
+    saten_load_mtx = SDL_CreateMutex();
+    if (!saten_load_mtx) {
+        saten_errhandler(46);
+        return -1;
+    }
 
     return 0; // everything okay!
 }

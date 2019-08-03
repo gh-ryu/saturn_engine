@@ -142,6 +142,15 @@ void saten_errhandler(int i)
     case 45:
         saten_printerr(i, "Can only destroy scenes at the top of the stack");
         break;
+    case 46:
+        saten_printerr(i, "Failed to create load mutex");
+        break;
+    case 47:
+        saten_printerr(i, "Failed to lock load mutex");
+        break;
+    case 48:
+        saten_printerr(i, "Failed to unlock load mutex");
+        break;
     }
 }
 
