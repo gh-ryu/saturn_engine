@@ -17,6 +17,28 @@ uint32_t saten_btn(uint8_t i, int j)
     return 0;
 }
 
+void saten_btn_lock(int i)
+{
+    if (i < 0)
+        for (int j = 0; j < saten_pad_num; j++)
+            for (int k = 0; k < 25; k++)
+                saten_pads[j].lockstate[k] = true;
+    else
+        for (int j = 0; j < saten_pad_num; j++)
+            saten_pads[j].lockstate[i] = true;
+}
+
+void saten_btn_unlock(int i)
+{
+    if (i < 0)
+        for (int j = 0; j < saten_pad_num; j++)
+            for (int k = 0; k < 25; k++)
+                saten_pads[j].lockstate[k] = false;
+    else
+        for (int j = 0; j < saten_pad_num; j++)
+            saten_pads[j].lockstate[i] = false;
+}
+
 void saten_pad_input_update(int i, bool b, int j)
 {
     if (b) {

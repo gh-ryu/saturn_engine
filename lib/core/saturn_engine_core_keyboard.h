@@ -122,7 +122,27 @@ void saten_keyb_input_refresh(void)
 
 uint32_t saten_key(uint8_t i)
 {
+    if (saten_keystate3[i])
+        return 0; // key locked, pretend it's not pushed
     return saten_keystate2[i];
+}
+
+void saten_key_lock(int i)
+{
+    if (i < 0) 
+        for (int j = 0; j < SATEN_KEYNUM; j++)
+            saten_keystate3[j] = true;
+    else
+        saten_keystate3[i] = true;
+}
+
+void saten_key_unlock(int i)
+{
+    if (i < 0) 
+        for (int j = 0; j < SATEN_KEYNUM; j++)
+            saten_keystate3[j] = false;
+    else
+        saten_keystate3[i] = false;
 }
 
 void saten_keyb_input_update(bool b, uint8_t i)

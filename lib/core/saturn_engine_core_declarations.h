@@ -10,6 +10,7 @@ uint8_t saten_core_flags;
 char* saten_errpath;
 const uint8_t *saten_keystate;
 int32_t *saten_keystate2;
+bool *saten_keystate3; // is key locked??
 uint64_t saten_step;
 //saten_resmngr saten_asset;
 bool *saten_sfx_flag;
@@ -45,6 +46,8 @@ struct RClass* _saten_mrb_module;
 #define SATEN_SURFACE 2
 
 #define SATEN_SFX_MAX 32 // max number of soundeffects
+
+#define SATEN_KEYNUM 60
 
 // function pointers
 typedef void (*saten_fptr_void)(void);
@@ -146,7 +149,11 @@ void saten_pad_axis_update(int i, int16_t k, int j);
 void saten_pad_stick_angle(int i);
 void saten_pad_filter_deadzone(int i);
 uint32_t saten_key(uint8_t i);
+void saten_key_lock(int i);
+void saten_key_unlock(int i);
 uint32_t saten_btn(uint8_t i, int j);
+void saten_btn_lock(int i);
+void saten_btn_unlock(int i);
 void saten_controller_add(int i);
 void saten_controller_remove(int i);
 

@@ -71,11 +71,11 @@ void scene_root_init(void)
         saten_sfx_volume(scene.root, 2, 38);
         //saten_text_update(saten_asset.text[0], NULL, 2.0, 20, 20);
         saten_scene_init_done(scene.root);
+        scene.title = saten_scene_create(scene.title, scene_title_init,
+                scene_title_update, scene_title_draw, scene_title_quit);
+        saten_scene_set_start(scene.title);
     }
     
-    scene.title = saten_scene_create(scene.title, scene_title_init,
-            scene_title_update, scene_title_draw, scene_title_quit);
-    saten_scene_set_start(scene.title);
     
 }
 void scene_root_update(bool c)

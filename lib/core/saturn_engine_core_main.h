@@ -86,7 +86,8 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
 
 
     if (saten_flag_check(SATEN_INPUT, saten_core_flags)) {
-        saten_keystate2 = (int32_t*)saten_malloc(60*sizeof(int32_t));
+        saten_keystate2 = (int32_t*)saten_malloc(SATEN_KEYNUM*sizeof(int32_t));
+        saten_keystate3 = (bool*)saten_malloc(SATEN_KEYNUM*sizeof(bool));
     }
 
     if (saten_flag_check(SATEN_INPUT, saten_core_flags)) {

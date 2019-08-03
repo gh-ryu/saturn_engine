@@ -27,6 +27,7 @@ typedef struct _saten_pad {
     SDL_Haptic *hdev;
     bool can_rumble;
     int32_t state[25];
+    bool lockstate[25];
     float lang, rang; // stick angles
     int jbtncnt;
     int deadzone;
