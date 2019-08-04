@@ -1,6 +1,5 @@
 SDL_Surface* saten_surface_create(int w, int h, int depth)
 {
-    //SDL_Surface *srf = (SDL_Surface*)saten_malloc(sizeof(SDL_Surface));
     SDL_Surface *srf = NULL;
     int32_t rmask, gmask, bmask, amask;
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN

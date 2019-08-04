@@ -25,10 +25,10 @@
 #include <math.h>
 #include <time.h>
 #include "saturn_engine_core_config.h" // defines mruby locations
+// path to mruby.h
 #include SATEN_MRB_HEADER_LOCATION
+// path to mruby/compile.h
 #include SATEN_MRB_COMPILE_HEADER_LOCATION
-//#include "/home//bin/mruby-2.0.1/include/mruby.h"
-//#include "/home//bin/mruby-2.0.1/include/mruby/compile.h"
 #include "saturn_engine_core_structs.h"
 #include "saturn_engine_core_declarations.h"
 #include "saturn_engine_core_list.h"

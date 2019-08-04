@@ -8,7 +8,6 @@ saten_scene *saten_darr_scene = NULL;
 saten_scene_info saten_now_loading;
 saten_scene_info saten_scene_start; // the scene at which rendering starts
 saten_scene_info saten_scene_current;
-//struct RClass* _saten_mrb_class_resource;
 bool saten_load_on_thread;
 saten_resmngr saten_vres; // filled on second thread, copied into scene res
                           // when loading finished
@@ -108,10 +107,6 @@ int saten_init(char *title, int w, int h, uint8_t flags)
                 "load", saten_mrb_load_bgm, MRB_ARGS_ARG(1,1));
         mrb_define_module_function(saten_mrb, _saten_mrb_module_text,
                 "load", saten_mrb_load_text, MRB_ARGS_ARG(1,1));
-        //FILE *f = NULL;
-        //saten_fopen(&f, "script/saten_script_module_resource.rb", "r");
-        //mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
-        //fclose(f);
     }
     SATEN_DARR_INIT(saten_scene, saten_darr_scene);
 
@@ -127,14 +122,13 @@ int saten_init(char *title, int w, int h, uint8_t flags)
 // public
 int saten_run(void)
 {
-    //if (saten_darr_scene->num < 1) {
     if (SATEN_DARR_SIZE(saten_darr_scene) < 1) {
         saten_errhandler(38);
         return -1;
     }
 
     // main game loop is no longer user defined
-    saten_core_run(saten_game); // have to write internal function
+    saten_core_run(saten_game);
     return 0;
 }
 

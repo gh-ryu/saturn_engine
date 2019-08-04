@@ -18,10 +18,6 @@ saten_scene_info saten_scene_create(saten_scene_info info,
     scene.info.uid = info.uid;
     scene.info.alive = true;
     scene.loadscriptfp = loadscriptfp;
-    //scene.asset_num_sprite = 0;
-    //scene.asset_num_sfx = 0;
-    //scene.asset_num_bgm = 0;
-    //scene.asset_num_text = 0;
     SATEN_DARR_PUSH(saten_darr_scene, scene);
     info.id = i;
     info.alive = true;
@@ -112,13 +108,6 @@ uint64_t saten_scene_frame(saten_scene_info scene)
 // private
 bool saten_scene_exists(saten_scene_info scene)
 {
-    /*
-    if (scene.id < 0 || scene.id > SATEN_DARR_SIZE(saten_darr_scene)) {
-        saten_errhandler(40);
-        return false;
-    }
-    */
-    //return true;
     return scene.alive;
 }
 

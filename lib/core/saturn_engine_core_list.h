@@ -10,7 +10,6 @@ void saten_list_init(saten_list **lptr, size_t s)
 // public
 void saten_list_insert(saten_list *lptr, saten_litem *elemptr)
 {
-    //printf("list number: %d\n", lptr->num);
     if (lptr->num == 0) {
         // list is empty
         lptr->head = elemptr;

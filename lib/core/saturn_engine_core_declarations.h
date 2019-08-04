@@ -23,7 +23,6 @@ void *saten_list_found;
 saten_text *saten_latest_text; // pointer to last modified text
 int saten_text_gheight; // glyph height to be considered when creating
                         // a text object
-//int saten_latest_text_id; // id of last modified text
 saten_layer *saten_target_layer;
 saten_layer *saten_layer0;
 saten_glyph_set *saten_glyph_sets;
@@ -89,15 +88,13 @@ void saten_sprite_scale(saten_sprite *sprite, float scale);
 saten_sprite* saten_sprite_load(char *filename);
 void saten_sprite_texturize(saten_sprite *sprite);
 void saten_sprite_set_tiles(saten_sprite *sprite, int num_h, int num_v);
-//void saten_copy_sprite(saten_sprite **sprite_out, saten_sprite *sprite_in);
-//void saten_recolor_sprite(saten_sprite *sprite, uint8_t r, uint8_t g,
-//        uint8_t b);
 void saten_sprite_alphamod(saten_sprite *sprite, uint8_t alpha);
 void saten_sprite_colormod(saten_sprite *sprite, uint8_t r, uint8_t g,
         uint8_t b);
 void saten_sprite_blendmode(saten_sprite *sprite, SDL_BlendMode blendmode);
 void saten_sprite_repeat(saten_sprite *sprite, int tile_id, int x0, int y0,
         int w, int h);
+saten_sprite* saten_sprite_copy(saten_sprite *sprite_in);
 void saten_sprite_colorize(saten_sprite *sprite, uint8_t r, uint8_t g,
         uint8_t b);
 void saten_sprite_patternize0(saten_sprite *sprite);
@@ -178,12 +175,6 @@ void saten_list_search(saten_list *lptr, saten_litem *curreptr,
 void saten_list_traverse(saten_list *lptr, saten_fptr_list_action fptr);
 void saten_list_loop(saten_list *lptr, saten_litem *eptr, int i,
         saten_fptr_list_action fptr);
-
-// dynamic array func
-// replaced with macros
-//void saten_darr_init(saten_darr **sptr, size_t s);
-//int saten_darr_grow(saten_darr **sptr, int n);
-//void saten_darr_shrink(saten_darr **sptr, int n);
 
 // util func
 char* saten_get_filepath(const char *fn);

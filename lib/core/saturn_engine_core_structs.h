@@ -2,8 +2,6 @@ typedef struct _saten_litem {
     void *current;
     void *next;
     void *prev;
-    //saten_litem *next;
-    //saten_litem *prev;
 } saten_litem;
 
 typedef struct _saten_list {
@@ -12,14 +10,6 @@ typedef struct _saten_list {
     size_t size;
     int num;
 } saten_list;
-
-/*
-typedef struct _saten_darr {
-    void *data;
-    size_t size;
-    int num;
-} saten_darr;
-*/
 
 typedef struct _saten_pad {
     SDL_GameController *dev;
@@ -85,7 +75,6 @@ typedef struct _saten_string {
 } saten_string;
 
 typedef struct _saten_text {
-    //saten_string *str;
     saten_glyph *glyph; // glyph array
     int size, cnt; // length and increment
     float scale;

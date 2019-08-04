@@ -4,15 +4,6 @@
 
 #include "lib/saturn_engine.h"
 
-/*
-typedef struct _scenemngr {
-    saten_scene *root; // root scene that loads all assets shared by scenes
-    saten_scene *title;
-    saten_scene *settings;
-} scenemngr;
-*/
-
-
 typedef struct _scenemngr { // index 0: uid, index 1: position id
     saten_scene_info root;
     saten_scene_info title;
@@ -63,21 +54,17 @@ void scene_root_init(void)
 {
     // load global resouces (menu soundeffects, load screen stuff)
     saten_load_resources(scene.root, false);
-    //saten_sprite_texturize(saten_asset.sprite[0]);
     if (saten_scene_loaded(scene.root)) {
         saten_sprite_texturize(saten_resource_sprite(scene.root, 0));
         saten_sfx_reset(scene.root);
         saten_sfx_volume(scene.root, 0, 30);
         saten_sfx_volume(scene.root, 1, 20);
         saten_sfx_volume(scene.root, 2, 38);
-        //saten_text_update(saten_asset.text[0], NULL, 2.0, 20, 20);
         saten_scene_init_done(scene.root);
-        /*
         scene.title = saten_scene_create(scene.title, scene_title_init,
                 scene_title_update, scene_title_draw, scene_title_quit,
                 "script/load_resources.rb");
         saten_scene_set_start(scene.title);
-        */
     }
     
     
@@ -94,15 +81,6 @@ void scene_root_update(bool c)
         if (saten_key(SATEN_KEY_A) == 1)
             saten_sfx_set(scene.root, 2);
 
-        
-        if (saten_key(SATEN_KEY_Z) > 120) {
-            scene.title = saten_scene_create(scene.title, scene_title_init,
-                    scene_title_update, scene_title_draw, scene_title_quit,
-                    "script/load_resources.rb");
-            saten_scene_set_start(scene.title);
-        }
-        
-
         saten_sfx_play(scene.root);
         saten_sfx_unset(scene.root, -1);
     }
@@ -110,7 +88,6 @@ void scene_root_update(bool c)
 
 void scene_root_draw(void)
 {
-    //saten_sprite_draw(saten_asset.sprite[0], 0, 0, 0, 0, 0);
     saten_sprite_draw(saten_resource_sprite(scene.root, 0), 0, 0, 0, 0, 0);
 }
 

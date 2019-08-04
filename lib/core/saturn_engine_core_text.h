@@ -36,7 +36,6 @@ mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self)
     float a;
     mrb_get_args(saten_mrb, "fo", &a0, &o);
     a = (float)a0;
-    //saten_latest_text = saten_text_create(n); // list canned
     saten_latest_text = (saten_text*)saten_malloc(sizeof(saten_text));
     mrb_value ret;
     if (saten_latest_text == NULL) {
@@ -64,7 +63,6 @@ mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self)
 mrb_value saten_mrb_text_free(mrb_state *mrb, mrb_value self)
 {
     //TODO
-    //printf("called text free...\n");
     return mrb_nil_value();
 }
 
@@ -204,9 +202,6 @@ saten_text* saten_text_create(float scale, char *str, int x, int y)
     _saten_mrb_class_text = mrb_class_get_under(saten_mrb, _saten_mrb_module,
             "Text");
 
-    //size_t l = strlen(str) + 1;
-    //size_t lx = saten_intlen(x);
-    //size_t ly = saten_intlen(y);
     if (scale <= 0)
         scale = 0.1f;
     if (scale >= 100.0)
@@ -220,14 +215,7 @@ saten_text* saten_text_create(float scale, char *str, int x, int y)
     mrbarr[2] = mrb_fixnum_value(mrb_x);
     mrbarr[3] = mrb_fixnum_value(mrb_y);
 
-    //char prefix[] = "Saten::Text.set(nil, , )";
-    //size_t lp = strlen(prefix);
-    //char cstr[l+lx+ly+25];
     mrb_obj_new(saten_mrb, _saten_mrb_class_text, 4, mrbarr);
-    //#Saten::Text.set(nil, 2368572305, 0, 0)
-    //sprintf(cstr, "Saten::Text.new(\"%s\", %0.1f, %d, %d)", str, scale, x, y);
-    //printf("%s\n", cstr);
-    //mrb_load_string(saten_mrb, cstr);
     return saten_latest_text;
 }
 
@@ -539,8 +527,6 @@ SATEN_GLYPH_SKIP:
         }
     }
 SATEN_GLYPH_HANDLER_DONE:
-    //printf("r %d, g %d, b %d, a %d\n", r, g, b , a);
-    //printf("h tiles: %d, v tiles: %d\n", hn, vn);
 
 
 
@@ -551,7 +537,6 @@ SATEN_GLYPH_HANDLER_DONE:
 void saten_text_update(saten_text* text, char *str, float scale, int x, int y)
 {
     mrb_value mrb_str;
-    //mrb_float mrb_scale; mrb_int mrb_x; mrb_int mrb_y;
     if (str)
         mrb_str = mrb_str_new_cstr(saten_mrb, str);
     else
