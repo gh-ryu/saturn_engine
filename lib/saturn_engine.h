@@ -157,7 +157,5 @@ void saten_game(void)
             saten_darr_scene[i].framecnt++;
         }
     }
-    if (saten_keystate[SDL_SCANCODE_ESCAPE])
-        saten_break = true;
 }
 #endif /* SATURN_ENGINE */

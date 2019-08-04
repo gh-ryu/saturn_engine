@@ -61,10 +61,12 @@ void scene_root_init(void)
         saten_sfx_volume(scene.root, 1, 20);
         saten_sfx_volume(scene.root, 2, 38);
         saten_scene_init_done(scene.root);
+        /*
         scene.title = saten_scene_create(scene.title, scene_title_init,
                 scene_title_update, scene_title_draw, scene_title_quit,
                 "script/load_resources.rb");
         saten_scene_set_start(scene.title);
+        */
     }
     
     
@@ -83,6 +85,16 @@ void scene_root_update(bool c)
 
         saten_sfx_play(scene.root);
         saten_sfx_unset(scene.root, -1);
+
+        if (saten_key(SATEN_KEY_ESC))
+            saten_break = true;
+
+        if (saten_key(SATEN_KEY_Z) == 1) {
+            scene.title = saten_scene_create(scene.title, scene_title_init,
+                    scene_title_update, scene_title_draw, scene_title_quit,
+                    "script/load_resources.rb");
+            saten_scene_set_start(scene.title);
+        }
     }
 }
 
@@ -119,7 +131,7 @@ void scene_title_update(bool c)
     if (saten_scene_frame(scene.title) >= 260)
         saten_key_unlock(-1);
     if (c) {
-        if (saten_key(SATEN_KEY_Z) >= 120) {
+        if (saten_key(SATEN_KEY_ESC) == 1) {
             saten_key_lock(-1);
             saten_scene_quit(scene.title);
         }
