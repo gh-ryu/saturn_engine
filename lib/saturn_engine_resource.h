@@ -53,3 +53,21 @@ saten_text* saten_resource_text(saten_scene_info scene, int id)
     }
     return saten_darr_scene[scene.id].res.text[id];
 }
+
+// public
+void saten_resource_free(saten_resmngr res)
+{
+    for (int i = 0; i < res.sprite_n; i++)
+        saten_sprite_destroy(res.sprite[i]);
+    for (int i = 0; i < res.sfx_n; i++)
+        Mix_FreeChunk(res.sfx[i]);
+    for (int i = 0; i < res.bgm_n; i++)
+        Mix_FreeMusic(res.bgm[i]);
+    for (int i = 0; i < res.text_n; i++)
+        saten_text_destroy(res.text[i]);
+    free(res.sprite);
+    free(res.sfx);
+    free(res.bgm);
+    free(res.text);
+    free(res.sfx_flag);
+}

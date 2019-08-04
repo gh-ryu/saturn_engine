@@ -5,8 +5,15 @@ void saten_load_resources(saten_scene_info scene, bool threaded)
     saten_now_loading = scene;
     if (threaded) {
         //TODO
+        printf("a\n");
+        //saten_resource_free(saten_vres);
+        //saten_resource_reset(&saten_vres);
+        printf("b\n");
+        memset(&saten_vres, 0, sizeof(saten_resmngr));
+        printf("c\n");
         saten_load_thread = SDL_CreateThread(saten_load_thread_func,
                           "saten_thread_load", NULL);
+        printf("d\n");
     } else {
         // Set uid to check which resources to load (in case file has resources
         // for various scenes
@@ -56,6 +63,7 @@ mrb_value saten_mrb_load_img(mrb_state *mrb, mrb_value self)
     id = (int)mrb_id;
     opt = (bool)mrb_opt;
     int i;
+
 
     if (!opt || id == saten_now_loading.uid) {
         saten_resmngr *res;
