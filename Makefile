@@ -39,7 +39,9 @@ MSG += win32
 endif
 
 # platform independent
-OBJ = main.c
+
+OBJ = src/main.c src/scene_root.c src/scene_title.c src/scene_load.c
+INC += -Iinclude
 ifeq ($(filter dev,$(MAKECMDGOALS)),dev)
 CFLAG = -g -Wall -Wno-switch -Wno-unused-label
 SFLAG += -D_DEBUG
