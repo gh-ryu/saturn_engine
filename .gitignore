@@ -8,6 +8,8 @@ config.mk
 include/saturn_engine/core/saturn_engine_core_config.h
 demo
 demo.exe
+test.h
+test.txt
 
 # Prerequisites
 *.d
