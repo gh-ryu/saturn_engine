@@ -1,3 +1,0 @@
-make linux dev
-gcc -g -Wall -Wno-switch -Wno-unused-label -o demo -D_DEBUG src/main.c src/scene_root.c src/scene_title.c src/scene_load.c  `sdl2-config --cflags --libs` -lSDL2_image -lSDL2_mixer /home/ryu/bin/mruby-2.0.1/build/host/lib/libmruby.a -lm -I/home/ryu/bin/mruby-2.0.1/include -Iinclude
-Makefile:58: recipe for target 'linux' failed
