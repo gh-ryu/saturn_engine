@@ -57,8 +57,8 @@ typedef void (*saten_fptr_bool)(bool);
 typedef void (*saten_fptr_list_action)(void*, int, int);
 
 // public functions
-int saten_core_init(const char *title, int screen_width, int screen_height,
-        uint8_t flags);
+int saten_core_init(const char *title, int screen_width,
+        int screen_height, uint8_t flags);
 int saten_core_run(saten_fptr_void fptr);
 void saten_core_quit(void);
 
@@ -66,18 +66,18 @@ void saten_core_quit(void);
 int saten_audio_init(void);
 
 // draw
-void saten_draw_line(int x1, int y1, int x2, int y2, uint8_t r, uint8_t g,
-        uint8_t b, uint8_t a, SDL_BlendMode blendmode);
+void saten_draw_line(int x1, int y1, int x2, int y2, uint8_t r,
+        uint8_t g, uint8_t b, uint8_t a, SDL_BlendMode blendmode);
 void saten_draw_rect(int x, int y, int w, int h, uint8_t r, uint8_t g,
         uint8_t b, uint8_t a, SDL_BlendMode blendmode);
-void saten_draw_rect_filled(int x, int y, int w, int h, uint8_t r, uint8_t g,
-        uint8_t b, uint8_t a, SDL_BlendMode blendmode);
+void saten_draw_rect_filled(int x, int y, int w, int h, uint8_t r,
+        uint8_t g, uint8_t b, uint8_t a, SDL_BlendMode blendmode);
 void saten_draw_point(int x, int y, uint8_t r, uint8_t g, uint8_t b,
         uint8_t a, SDL_BlendMode blendmode);
-void saten_draw_circle(int x, int y, int rad, uint8_t r, uint8_t g, uint8_t b,
-        uint8_t a, SDL_BlendMode blendmode);
-void saten_draw_circle_filled(int x, int y, int rad, uint8_t r, uint8_t g,
+void saten_draw_circle(int x, int y, int rad, uint8_t r, uint8_t g,
         uint8_t b, uint8_t a, SDL_BlendMode blendmode);
+void saten_draw_circle_filled(int x, int y, int rad, uint8_t r,
+        uint8_t g, uint8_t b, uint8_t a, SDL_BlendMode blendmode);
 void saten_draw_set_param(uint8_t r, uint8_t g, uint8_t b, uint8_t a,
         SDL_BlendMode blendmode);
 void saten_draw_bresenham_circle(int x, int y, int r, bool fill);
@@ -94,9 +94,10 @@ void saten_sprite_set_tiles(saten_sprite *sprite, int num_h, int num_v);
 void saten_sprite_alphamod(saten_sprite *sprite, uint8_t alpha);
 void saten_sprite_colormod(saten_sprite *sprite, uint8_t r, uint8_t g,
         uint8_t b);
-void saten_sprite_blendmode(saten_sprite *sprite, SDL_BlendMode blendmode);
-void saten_sprite_repeat(saten_sprite *sprite, int tile_id, int x0, int y0,
-        int w, int h);
+void saten_sprite_blendmode(saten_sprite *sprite,
+        SDL_BlendMode blendmode);
+void saten_sprite_repeat(saten_sprite *sprite, int tile_id, int x0,
+        int y0, int w, int h);
 saten_sprite* saten_sprite_copy(saten_sprite *sprite_in);
 void saten_sprite_colorize(saten_sprite *sprite, uint8_t r, uint8_t g,
         uint8_t b);
@@ -105,7 +106,8 @@ void saten_sprite_patternize0(saten_sprite *sprite);
 // layer
 saten_layer* saten_layer_create(int width, int height);
 void saten_layer_destroy(saten_layer *lay);
-void saten_layer_set_clip_area(saten_layer *lay, int x, int y, int w, int h);
+void saten_layer_set_clip_area(saten_layer *lay,
+        int x, int y, int w, int h);
 void saten_layer_reset_clip_area(saten_layer *lay);
 void saten_layer_render_all(void);
 void saten_layer_blit(void *item, int i, int num);
@@ -193,7 +195,8 @@ size_t saten_intlen(int a);
 
 // pixel
 uint32_t saten_pixel_get(void *data, int tupe, int x, int y);
-void saten_pixel_put(void *data, int type, int x, int y, uint32_t pixel);
+void saten_pixel_put(void *data,
+        int type, int x, int y, uint32_t pixel);
 
 // surface
 SDL_Surface* saten_surface_create(int w, int h, int depth);
@@ -224,6 +227,7 @@ void saten_text_get(void *item, int i, int num);
 void saten_nstot(saten_text *text, char *str, int col, int x, int y);
 void saten_text_glyph_create(int a, int b, int c, int x, int y, int l,
         saten_text *text);
-void saten_text_update(saten_text* text, char *str, float scale, int x, int y);
+void saten_text_update(saten_text* text, char *str,
+        float scale, int x, int y);
 
 #endif /* SATURN_ENGINE_CORE_DECLARATIONS */
