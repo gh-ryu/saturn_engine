@@ -5,7 +5,7 @@ error.log
 error.txt
 
 config.mk
-include/saturn_engine/core/saturn_engine_core_config.h
+include/saturn_engine/core/satenc_config.h
 demo
 demo.exe
 test.h

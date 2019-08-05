@@ -1,6 +1,8 @@
 include config.mk
+include saturn_engine_config.mk
 MSG = make 
 NAME = demo
+
 # linux
 ifeq ($(filter linux,$(MAKECMDGOALS)),linux)
 LIB = `sdl2-config --cflags --libs` -lSDL2_image -lSDL2_mixer \
@@ -56,7 +58,7 @@ endif
 #linux: $(OBJ) // does not recompile when header files change
 linux win64:
 	@echo $(MSG)
-	$(CC) $(CFLAG) $(RUN) $(SFLAG) $(OBJ)  $(LIB) $(INC)
+	$(CC) $(CFLAG) $(RUN) $(SFLAG) $(SATENOBJ) $(OBJ)  $(LIB) $(INC)
 
 dev:
 	@echo Compiled in debug mode.

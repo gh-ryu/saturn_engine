@@ -1,7 +1,8 @@
 /*
   Saturn Engine - Demo game
 */
-#include "saturn_engine/saturn_engine.h"
+
+#include "saturn_engine/_lib.h"
 #include "_global.h"
 #include "scene_title.h"
 #include "scene_load.h"
