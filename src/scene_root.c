@@ -43,15 +43,16 @@ void scene_root_update(bool c)
         saten_sfx_play(scene.root);
         saten_sfx_unset(scene.root, -1);
 
-        if (saten_key(SATEN_KEY_ESC))
-            saten_scene_quit(scene.root);
-
-        if (saten_key(SATEN_KEY_Z) == 1) {
+        if (saten_key(SATEN_KEY_Z)) {
             scene.title = saten_scene_create(scene.title, scene_title_init,
                     scene_title_update, scene_title_draw, scene_title_quit,
                     "script/load_resources.rb");
             saten_scene_set_start(scene.title);
         }
+
+        if (saten_key(SATEN_KEY_ESC))
+            saten_scene_quit(scene.root);
+
     }
 }
 

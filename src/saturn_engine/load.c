@@ -31,7 +31,7 @@ int saten_load_thread_func(void *ptr)
     saten_fopen(&f, saten_darr_scene[scene.id].loadscriptfp, "r");
     mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
     fclose(f);
-    //SDL_Delay(2000);
+    SDL_Delay(2000);
     if (SDL_LockMutex(saten_load_mtx) == 0) {
         saten_scene_load_done(saten_scene_get_previous());
         if (SDL_UnlockMutex(saten_load_mtx) < 0) {

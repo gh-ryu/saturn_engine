@@ -27,17 +27,6 @@ void scene_load_update(bool c)
         saten_load_pass_resources(saten_scene_get_previous());
         saten_scene_quit(scene.load);
     }
-    /* DEBUG LEFTOVER
-    saten_text *text = saten_resource_text(scene.load, 0);
-    printf("a\n");
-    for (int i = 0; i < 1000; i++) {
-        printf("cnt: %d\n", i);
-        mrb_funcall(saten_mrb, text->mrbo, "printid", 0);
-    }
-    printf("b\n");
-    saten_scene_quit(scene.load);
-    saten_break = true;
-    */
 }
 
 void scene_load_draw(void)

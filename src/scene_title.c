@@ -31,10 +31,10 @@ void scene_title_update(bool c)
     if (saten_scene_frame(scene.title) >= 260)
         saten_key_unlock(-1);
     if (c) {
-        //if (saten_key(SATEN_KEY_ESC) == 1) {
-            //saten_key_lock(-1);
+        if (saten_key(SATEN_KEY_ESC) == 1) {
+            saten_key_lock(-1);
             saten_scene_quit(scene.title);
-        //}
+        }
     }
 }
 
