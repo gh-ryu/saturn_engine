@@ -18,12 +18,12 @@ void scene_root_init(void)
         saten_sfx_volume(scene.root, 1, 20);
         saten_sfx_volume(scene.root, 2, 38);
         saten_scene_init_done(scene.root);
-        /*
+        
         scene.title = saten_scene_create(scene.title, scene_title_init,
                 scene_title_update, scene_title_draw, scene_title_quit,
                 "script/load_resources.rb");
         saten_scene_set_start(scene.title);
-        */
+        
     }
     
     

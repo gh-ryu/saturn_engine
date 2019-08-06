@@ -43,6 +43,7 @@ mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self)
     if (saten_latest_text == NULL) {
         ret = mrb_fixnum_value((mrb_int)1);
     } else {
+        mrb_gc_register(saten_mrb, o);
         saten_latest_text->scale = a;
         saten_latest_text->mrbo = o;
         saten_latest_text->id = saten_text_get_id();
@@ -178,7 +179,7 @@ void saten_text_draw(saten_text *text)
                     saten_glyph_sets[text->glyph[i].a].
                     glyph[text->glyph[i].b][text->glyph[i].acnt],
                     NULL, &text->glyph[i].rect, 0, NULL, SDL_FLIP_NONE);
-            // TODO flexibel animation speed
+            // TODO flexible animation speed
             if (saten_step % 8 == 0) {
                 if (text->glyph[i].acnt != text->glyph[i].anum-1) {
                     text->glyph[i].acnt++;
@@ -262,6 +263,7 @@ void saten_text_destroy(saten_text *ptr)
 {
     saten_litem* eptr = NULL;
     saten_list_search(saten_list_text, NULL, &eptr, (void*)ptr);
+    mrb_gc_unregister(saten_mrb, ptr->mrbo);
     free(ptr->glyph);
     free(ptr);
     saten_list_remove(saten_list_text, eptr);

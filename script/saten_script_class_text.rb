@@ -3,6 +3,7 @@ module Saten
   class Text
     attr_accessor :cleanstr, :scale, :x, :y, :id
     @@color = 0
+    @@cnt = 0
     def initialize(str, scale, x, y)
       @cleanstr = str.to_s
       @scale = scale
@@ -94,6 +95,7 @@ module Saten
         end
         cnt += 1
       end
+      @@cnt += 1
     end
 
     def update(str, scale, x, y)

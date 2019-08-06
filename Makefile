@@ -56,7 +56,7 @@ ifeq ($(filter macro,$(MAKECMDGOALS)),macro)
 endif
 
 #linux: $(OBJ) // does not recompile when header files change
-linux win64:
+linux win64: $(SATENOBJ) $(OBJ)
 	@echo $(MSG)
 	$(CC) $(CFLAG) $(RUN) $(SFLAG) $(SATENOBJ) $(OBJ)  $(LIB) $(INC)
 
