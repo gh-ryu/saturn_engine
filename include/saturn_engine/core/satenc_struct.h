@@ -14,6 +14,12 @@ typedef struct _saten_list {
     int num;
 } saten_list;
 
+typedef struct _saten_mfield {
+    char *ptr;
+    size_t volume;
+    size_t capacity;
+} saten_mfield;
+
 typedef struct _saten_pad {
     SDL_GameController *dev;
     SDL_Joystick *jdev;
@@ -80,6 +86,7 @@ typedef struct _saten_string {
 typedef struct _saten_text {
     saten_glyph *glyph; // glyph array
     int size, cnt; // length and increment
+    int glyph_capacity; // how many glyphs currently fit?
     float scale;
     mrb_value mrbo;
     int id;

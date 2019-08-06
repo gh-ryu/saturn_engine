@@ -1,5 +1,8 @@
 #include "saturn_engine/core/_lib.h"
 
+
+saten_mfield mfg; // memory field for glyphs
+
 // private
 void saten_mrb_text_init(void)
 {
@@ -10,6 +13,7 @@ void saten_mrb_text_init(void)
             "saten_mrb_load_glyph_file", saten_mrb_text_load_glyph_file,
             MRB_ARGS_REQ(7));
 
+    mfg = saten_mfield_create(SATEN_MB(1));
     struct RClass* _saten_mrb_class_text;
     _saten_mrb_class_text = mrb_define_class_under(saten_mrb,
             _saten_mrb_module, "Text", saten_mrb->object_class);
@@ -29,6 +33,13 @@ void saten_mrb_text_init(void)
     mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
             "reset", saten_mrb_text_reset, MRB_ARGS_REQ(2));
 
+    printf("mfg: %p\n", mfg.ptr);
+    char *ptr = saten_mfield_take(&mfg, 1);
+    printf("mfg: %p\n", mfg.ptr);
+    printf("ptr: %p\n", ptr);
+    ptr = saten_mfield_take(&mfg, 4);
+    printf("mfg: %p\n", mfg.ptr);
+    printf("ptr: %p\n", ptr);
 }
 
 mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self)

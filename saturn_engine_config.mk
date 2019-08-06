@@ -17,6 +17,7 @@ SATENOBJ += src/saturn_engine/core/sprite.c
 SATENOBJ += src/saturn_engine/core/surface.c
 SATENOBJ += src/saturn_engine/core/text.c
 SATENOBJ += src/saturn_engine/core/util.c
+SATENOBJ += src/saturn_engine/core/mfield.c
 
 SATENOBJ += src/saturn_engine/_engine.c
 SATENOBJ += src/saturn_engine/load.c

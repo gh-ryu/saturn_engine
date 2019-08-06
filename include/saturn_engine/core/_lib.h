@@ -90,6 +90,10 @@ SATEN_GLOBAL struct RClass* _saten_mrb_module;
 
 #define SATEN_KEYNUM 60
 
+#define SATEN_KB(n) (n) * 1024
+#define SATEN_MB(n) (n) * 1048576
+#define SATEN_GB(n) (n) * 1073741824
+
 typedef void (*saten_fptr_void)(void);
 typedef void (*saten_fptr_bool)(bool);
 typedef void (*saten_fptr_list_action)(void*, int, int);
@@ -117,5 +121,6 @@ void saten_core_quit(void);
 #include "satenc_mruby.h"
 #include "satenc_text.h"
 #include "satenc_audio.h"
+#include "satenc_mfield.h"
 
 #endif /* SATURN_ENGINE_CORE */
