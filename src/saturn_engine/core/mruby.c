@@ -7,7 +7,7 @@ int saten_mrb_init(void)
         saten_errhandler(34);
         return -1;
     }
-    saten_mrb->gc.disabled = TRUE;
+    //saten_mrb_gc_disable();
     saten_mrbc = mrbc_context_new(saten_mrb);
 
     _saten_mrb_module = mrb_define_module(saten_mrb, "Saten");
@@ -28,4 +28,14 @@ int saten_mrb_init(void)
     }
     return 0;
 
+}
+
+void saten_mrb_gc_enable(void)
+{
+    saten_mrb->gc.disabled = false;
+}
+
+void saten_mrb_gc_disable(void)
+{
+    saten_mrb->gc.disabled = true;
 }

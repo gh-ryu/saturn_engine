@@ -8,6 +8,7 @@ void saten_load_resources(saten_scene_info scene, bool threaded)
     if (threaded) {
         //TODO
         memset(&saten_vres, 0, sizeof(saten_resmngr));
+        saten_mrb_gc_disable();
         saten_load_thread = SDL_CreateThread(saten_load_thread_func,
                           "saten_thread_load", NULL);
     } else {

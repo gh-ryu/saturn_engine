@@ -26,6 +26,7 @@ void scene_load_update(bool c)
     if (saten_scene_loaded(saten_scene_get_previous())) {
         saten_load_pass_resources(saten_scene_get_previous());
         saten_scene_quit(scene.load);
+        saten_mrb_gc_enable();
     }
 }
 
