@@ -187,8 +187,8 @@ void saten_text_glyph_create(int a, int b, int c, int x, int y, int l,
         text->w = 0;
         text->h = 0;
     }
-    text->w += text->glyph[i].rect.w;
-    text->h = (l + 1) * (saten_text_gheight * text->scale);
+    text->w += text->glyph[i].rect.w+2; // include padding
+    text->h = (l + 1) * (saten_text_gheight * text->scale) + (l * 2);
 }
 
 void saten_text_draw(saten_text *text)

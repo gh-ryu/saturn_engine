@@ -20,6 +20,7 @@ void scene_title_init(void)
         saten_sprite_texturize(saten_resource_sprite(scene.title, 0));
         saten_sprite_scale(saten_resource_sprite(scene.title, 0), 0.5f);
         int w = saten_get_text_width(saten_resource_text(scene.title, 1));
+        printf("%d\n", w);
         saten_text_update(saten_resource_text(scene.title, 1), NULL,
                 1.0, 320/2 - w/2, 200);
 
