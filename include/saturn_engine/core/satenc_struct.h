@@ -86,11 +86,12 @@ typedef struct _saten_string {
 typedef struct _saten_text {
     saten_glyph *glyph; // glyph array
     int size, cnt; // length and increment
-    int glyph_capacity; // how many glyphs currently fit?
+    //int glyph_capacity; // how many glyphs currently fit?
     float scale;
     mrb_value mrbo;
     int id;
     bool update_flag;
+    int w, h, x, y;
 } saten_text;
 
 typedef struct _saten_spixel {

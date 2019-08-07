@@ -24,5 +24,10 @@ void saten_text_glyph_create(int a, int b, int c, int x, int y, int l,
         saten_text *text);
 void saten_text_update(saten_text* text, char *str,
         float scale, int x, int y);
+void saten_text_set_data(saten_text *text);
+int saten_get_text_width(saten_text *text);
+int saten_get_text_height(saten_text *text);
+int saten_get_text_x(saten_text *text);
+int saten_get_text_y(saten_text *text);
 
 #endif /* SATURN_ENGINE_CORE_TEXT */

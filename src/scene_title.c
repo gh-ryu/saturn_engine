@@ -16,8 +16,13 @@ void scene_title_init(void)
                 "script/load_resources.rb");
     // make sure load screen has passed
     if (saten_scene_loaded(scene.title) && !saten_scene_exists(scene.load)) {
+        // initialization with loaded resources starts here
         saten_sprite_texturize(saten_resource_sprite(scene.title, 0));
         saten_sprite_scale(saten_resource_sprite(scene.title, 0), 0.5f);
+        int w = saten_get_text_width(saten_resource_text(scene.title, 1));
+        saten_text_update(saten_resource_text(scene.title, 1), NULL,
+                1.0, 320/2 - w/2, 200);
+
         saten_scene_init_done(scene.title);
     }
 }
@@ -43,6 +48,7 @@ void scene_title_draw(void)
     //saten_text_draw(saten_asset.text[0]);
     saten_sprite_draw(saten_resource_sprite(scene.title, 0),
             0, 0, 0, 0, 0);
+    saten_text_draw(saten_resource_text(scene.title, 1));
 }
 
 void scene_title_quit(void)
