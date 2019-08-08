@@ -127,6 +127,5 @@ void saten_core_quit(void);
 #include "satenc_audio.h"
 #include "satenc_mfield.h"
 #include "satenc_crypt.h"
-#include "satenc_data.h"
 
 #endif /* SATURN_ENGINE_CORE */

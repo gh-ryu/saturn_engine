@@ -28,6 +28,7 @@ void saten_game(void);
 #include "saten_load.h"
 #include "saten_sfx.h"
 #include "saten_resource.h"
+#include "saten_data.h"
 
 
 #endif /* SATURN_ENGINE */
