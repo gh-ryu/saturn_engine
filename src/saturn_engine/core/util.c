@@ -27,6 +27,14 @@ void* saten_malloc(size_t size)
 }
 
 // public
+char* saten_strclone(char *str)
+{
+    int l = strlen(str) + 1;
+    char *newstr = saten_malloc(l * sizeof(char));
+    return (char*) memcpy(newstr, str, l);
+}
+
+// public
 void* saten_realloc(void* ptr, size_t size)
 {
     ptr = realloc(ptr, size);
