@@ -33,6 +33,7 @@ void saten_mrb_text_init(void)
     mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
             "reset", saten_mrb_text_reset, MRB_ARGS_REQ(2));
 
+    /*
     printf("mfg: %p\n", mfg.ptr);
     char *ptr = saten_mfield_take(&mfg, 1);
     printf("mfg: %p\n", mfg.ptr);
@@ -40,6 +41,7 @@ void saten_mrb_text_init(void)
     ptr = saten_mfield_take(&mfg, 4);
     printf("mfg: %p\n", mfg.ptr);
     printf("ptr: %p\n", ptr);
+    */
 }
 
 mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self)
@@ -54,7 +56,7 @@ mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self)
     if (saten_latest_text == NULL) {
         ret = mrb_fixnum_value((mrb_int)1);
     } else {
-        mrb_gc_register(saten_mrb, o);
+        //mrb_gc_register(saten_mrb, o);
         saten_latest_text->scale = a;
         saten_latest_text->mrbo = o;
         saten_latest_text->id = saten_text_get_id();
@@ -243,7 +245,8 @@ saten_text* saten_text_create(float scale, char *str, int x, int y)
     mrbarr[2] = mrb_fixnum_value(mrb_x);
     mrbarr[3] = mrb_fixnum_value(mrb_y);
 
-    mrb_obj_new(saten_mrb, _saten_mrb_class_text, 4, mrbarr);
+    mrb_value o = mrb_obj_new(saten_mrb, _saten_mrb_class_text, 4, mrbarr);
+    mrb_gc_register(saten_mrb, o);
     return saten_latest_text;
 }
 

@@ -26,6 +26,8 @@ int saten_mrb_init(void)
         mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
         fclose(f);
     }
+
+    saten_mrb_crypt_init();
     return 0;
 
 }

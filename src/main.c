@@ -3,6 +3,7 @@
 */
 
 #define SATEN_GLOBAL_INSTANCE
+#define SATEN_SYMKEY "alohah9t075c43cn47x08nc7"
 
 #include "saturn_engine/_lib.h"
 #include "_global.h"

@@ -111,4 +111,10 @@ typedef struct _saten_resmngr {
     int text_n;
 } saten_resmngr;
 
+typedef struct _saten_cryptomngr {
+    mrb_value o;
+    bool flag;
+    char *symkey;
+} saten_cryptomngr;
+
 #endif /* SATURN_ENGINE_CORE_STRUCTS */
