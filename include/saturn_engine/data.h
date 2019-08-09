@@ -1,12 +1,13 @@
 #ifndef SATURN_ENGINE_DATA
 #define SATURN_ENGINE_DATA
 
-void saten_data_init(char *fp, char *symkey);
-void saten_data_save_init(char *fp, char *symkey);
-void saten_data_load_init(char *fp, char *symkey);
+void saten_data_init(char *fp, bool is_secure);
+void saten_data_save_init(char *fp, bool is_secure);
+void saten_data_load_init(char *fp, bool is_secure);
 void saten_data_quit(void);
 int saten_data_save_quit(void);
 int saten_data_load_quit(void);
+void saten_data_hash_checksum(void); // mutes checksum
 void saten_data_save_float(float f);
 void saten_data_save_int(int i);
 void saten_data_save_int8(int8_t i);
