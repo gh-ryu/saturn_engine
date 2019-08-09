@@ -29,7 +29,7 @@ int main (int argc, char *argv[])
     // Run the game loop
     saten_run();
 
-    saten_data_save_init("demo_assets/s.dat", NULL);
+    saten_data_save_init("demo_assets/s.dat", "lmao");
     saten_data_save_float(0.1f);
     saten_data_save_int(4629385);
     saten_data_save_bool(true);
@@ -39,7 +39,7 @@ int main (int argc, char *argv[])
     saten_data_save_string("lol");
     saten_data_save_int(32569);
     saten_data_save_quit();
-    saten_data_load_init("demo_assets/s.dat", NULL);
+    saten_data_load_init("demo_assets/s.dat", "lmao");
     int i; float f; bool b1; bool b2; char *str1=NULL; char *str2=NULL;
     char *str3=NULL; int i2;
     saten_data_load_float(&f);
