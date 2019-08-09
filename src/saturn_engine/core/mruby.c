@@ -27,7 +27,7 @@ int saten_mrb_init(void)
         fclose(f);
     }
 
-    saten_mrb_crypt_init();
+    //saten_mrb_crypt_init();
     return 0;
 
 }

@@ -17,9 +17,6 @@ void saten_mrb_crypt_init(void)
 void saten_crypt_set_symkey(char *str)
 {
     mrb_cryptobj.symkey = saten_strclone(str);
-    //int l = strlen(str) + 1;
-    //mrb_cryptobj.symkey = saten_malloc(l * sizeof(char));
-    //mrb_cryptobj.symkey = (char*) memcpy(mrb_cryptobj.symkey, str, l);
 }
 
 void saten_crypt_obj_free(void)
