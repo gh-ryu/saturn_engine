@@ -33,13 +33,13 @@
 #include <math.h>
 #include <time.h>
 
-#include "satenc_config.h" // defines mruby locations
+#include "_config.h" // defines mruby locations
 // path to mruby.h
 #include SATEN_MRB_HEADER_LOCATION
 // path to mruby/compile.h
 #include SATEN_MRB_COMPILE_HEADER_LOCATION
 
-#include "satenc_struct.h"
+#include "_struct.h"
 
 SATEN_GLOBAL char *saten_base_path;
 SATEN_GLOBAL bool saten_break;
@@ -81,7 +81,7 @@ SATEN_GLOBAL struct RClass* _saten_mrb_module;
 #define SATEN_TEXT (1 << 3)
 #define SATEN_PRINTERR saten_flag_check(SATEN_ERRORS, saten_core_flags)
 
-#include "satenc_input_define.h"
+#include "input_define.h"
 #define SATEN_SPRITE 0
 #define SATEN_LAYER 1
 #define SATEN_SURFACE 2
@@ -107,25 +107,25 @@ int saten_core_init(const char *title, int screen_width,
 int saten_core_run(saten_fptr_void fptr);
 void saten_core_quit(void);
 
-#include "satenc_list.h"
-#include "satenc_darray.h"
-#include "satenc_framerate.h"
-#include "satenc_flag.h"
-#include "satenc_util.h"
-#include "satenc_error.h"
-#include "satenc_input.h"
-#include "satenc_keyboard.h"
-#include "satenc_controller.h"
-#include "satenc_haptic.h"
-#include "satenc_draw.h"
-#include "satenc_layer.h"
-#include "satenc_sprite.h"
-#include "satenc_pixel.h"
-#include "satenc_surface.h"
-#include "satenc_mruby.h"
-#include "satenc_text.h"
-#include "satenc_audio.h"
-#include "satenc_mfield.h"
-#include "satenc_crypt.h"
+#include "list.h"
+#include "darray.h"
+#include "framerate.h"
+#include "flag.h"
+#include "util.h"
+#include "error.h"
+#include "input.h"
+#include "keyboard.h"
+#include "controller.h"
+#include "haptic.h"
+#include "draw.h"
+#include "layer.h"
+#include "sprite.h"
+#include "pixel.h"
+#include "surface.h"
+#include "mruby.h"
+#include "text.h"
+#include "audio.h"
+#include "mfield.h"
+#include "crypt.h"
 
 #endif /* SATURN_ENGINE_CORE */

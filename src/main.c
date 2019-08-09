@@ -29,7 +29,7 @@ int main (int argc, char *argv[])
     // Run the game loop
     saten_run();
 
-    saten_data_save_init("test", NULL);
+    saten_data_save_init("demo_assets/s.dat", NULL);
     saten_data_save_float(0.1f);
     saten_data_save_int(4629385);
     saten_data_save_bool(true);
@@ -37,10 +37,11 @@ int main (int argc, char *argv[])
     saten_data_save_string("Hey world");
     saten_data_save_string("日本語ならどうかな");
     saten_data_save_string("lol");
-    saten_data_quit();
-    saten_data_load_init("tmp.txt", NULL);
+    saten_data_save_int(32569);
+    saten_data_save_quit();
+    saten_data_load_init("demo_assets/s.dat", NULL);
     int i; float f; bool b1; bool b2; char *str1=NULL; char *str2=NULL;
-    char *str3=NULL;
+    char *str3=NULL; int i2;
     saten_data_load_float(&f);
     saten_data_load_int(&i);
     saten_data_load_bool(&b1);
@@ -48,9 +49,8 @@ int main (int argc, char *argv[])
     saten_data_load_string(&str1);
     saten_data_load_string(&str2);
     saten_data_load_string(&str3);
-    saten_data_quit();
-
-    printf("%f, %d, %d, %d, %s, %s, %s\n", f, i, b1, b2, str1, str2, str3);
+    saten_data_load_int(&i2);
+    saten_data_load_quit();
 
     return 0;
 }

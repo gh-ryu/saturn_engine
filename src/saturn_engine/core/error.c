@@ -153,6 +153,18 @@ void saten_errhandler(int i)
     case 48:
         saten_printerr(i, "Failed to unlock load mutex");
         break;
+    case 49:
+        saten_printerr(i, "Failed to replace save file");
+        break;
+    case 50:
+        saten_printerr(i, "Error in data module: incompatible INT sizes");
+        break;
+    case 51:
+        saten_printerr(i, "Error in data module: incompatible file");
+        break;
+    case 52:
+        saten_printerr(i, "Error in data module: failed to open tmp file for writing");
+        break;
     }
 }
 

@@ -2,7 +2,7 @@
 #define SATURN_ENGINE
 
 #include "core/_lib.h"
-#include "saten_struct.h"
+#include "_struct.h"
 
 SATEN_GLOBAL uint8_t saten_flags;
 SATEN_GLOBAL saten_scene *saten_darr_scene;
@@ -24,11 +24,11 @@ int saten_init(char *title, int w, int h, uint8_t flags);
 int saten_run(void);
 void saten_game(void);
 
-#include "saten_scene.h"
-#include "saten_load.h"
-#include "saten_sfx.h"
-#include "saten_resource.h"
-#include "saten_data.h"
+#include "scene.h"
+#include "load.h"
+#include "sfx.h"
+#include "resource.h"
+#include "data.h"
 
 
 #endif /* SATURN_ENGINE */
