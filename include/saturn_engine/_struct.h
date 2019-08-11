@@ -21,4 +21,15 @@ typedef struct _saten_scene {
     char *loadscriptfp; // file path for associated load script
 } saten_scene;
 
+typedef struct _saten_stng {
+    uint8_t scale;
+    bool fullscreen;
+    bool fullscreend; // SDL_FULLSCREEN_DESKTOP
+    bool filter_flag; // filter activated?
+    uint8_t filter; // currently active filter
+    uint8_t wp; // id of wallpaper 0 = no
+    SDL_Color wpcol;
+    uint8_t vout;
+} saten_stng;
+
 #endif /* SATURN_ENGINE_STRUCT */

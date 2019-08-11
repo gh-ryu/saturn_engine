@@ -41,15 +41,36 @@ void scene_title_update(bool c)
             saten_key_lock(-1);
             saten_scene_quit(scene.title);
         }
+        if (saten_key(SATEN_KEY_F4)) {
+            printf("F4..\n");
+            SDL_SetWindowFullscreen(saten_window, SDL_WINDOW_FULLSCREEN);
+        }
+        if (saten_key(SATEN_KEY_F5)) {
+            printf("F5..\n");
+            SDL_SetWindowFullscreen(saten_window,
+                    SDL_WINDOW_FULLSCREEN_DESKTOP);
+            SDL_DisplayMode current;
+            SDL_GetWindowDisplayMode(saten_window, &current);
+            printf("w: %d, h: %d\n", current.w, current.h);
+        }
     }
 }
 
 void scene_title_draw(void)
 {
     //saten_text_draw(saten_asset.text[0]);
+    saten_draw_rect_filled(0, 0, 2*384, 2*216, 0, 0,
+        0, 255, SDL_BLENDMODE_NONE);
     saten_sprite_draw(saten_resource_sprite(scene.title, 0),
             0, 0, 0, 0, 0);
     saten_text_draw(saten_resource_text(scene.title, 1));
+    /*
+    SDL_RenderSetScale(saten_ren, 1, 1);
+    for (int i = 0; i < 480; i++)
+        if (i % 2)
+            saten_draw_line(0, i, 640, i, 0, 0, 0, 125, SDL_BLENDMODE_BLEND);
+    SDL_RenderSetScale(saten_ren, 2, 2);
+    */
 }
 
 void scene_title_quit(void)

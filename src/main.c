@@ -13,7 +13,7 @@ int main (int argc, char *argv[])
 {
     memset(&scene, 0, sizeof(scenemngr));
     // Engine initialization
-    if (saten_init("saturn_engine_demo", 320, 240, SATEN_MRBLOAD) < 0)
+    if (saten_init("saturn_engine_demo", SATEN_MRBLOAD) < 0)
         fprintf(stderr, "Init error...\n");
     // Setting up unique IDs for scenes //TODO let a function handle this?
     scene.root.uid = 0;
@@ -27,6 +27,13 @@ int main (int argc, char *argv[])
             scene_root_update, scene_root_draw, scene_root_quit,
             "script/load_resources.rb");
     // Run the game loop
+    SDL_SetWindowSize(saten_window, 384*2, 216*2);
+    SDL_RenderSetScale(saten_ren, 2, 2);
+    SDL_DisplayMode current;
+    //SDL_GetCurrentDisplayMode(0, &current);
+    SDL_GetWindowDisplayMode(saten_window, &current);
+    printf("w: %d, h: %d\n", current.w, current.h);
+
     saten_run();
 
     saten_data_save_init("demo_assets/s.dat", true);

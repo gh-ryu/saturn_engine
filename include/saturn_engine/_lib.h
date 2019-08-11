@@ -3,6 +3,7 @@
 
 #include "core/_lib.h"
 #include "_struct.h"
+#include "_config.h"
 
 SATEN_GLOBAL uint8_t saten_flags;
 SATEN_GLOBAL saten_scene *saten_darr_scene;
@@ -17,10 +18,22 @@ SATEN_GLOBAL saten_resmngr saten_vres; // filled on second thread then
 SATEN_GLOBAL SDL_mutex *saten_load_mtx;
 SATEN_GLOBAL SDL_Thread *saten_load_thread;
 
-#define SATEN_FULLSCREEN (1 << 7)
-#define SATEN_MRBLOAD (1 << 6)
+#define SATEN_MRBLOAD (1 << 7)
 
-int saten_init(char *title, int w, int h, uint8_t flags);
+#define SATEN_VOUT_320x240 0 // sd output, uses 288x216 (hd compatibility)
+#define SATEN_VOUT_384x216 1 // sd-ws
+#define SATEN_VOUT_768x432 2 // the above x2
+#define SATEN_VOUT_1152x648 3 // the above x3
+
+#define SATEN_VOUT_640x480 4 // vga output, uses 640x360 (hd compatibility)
+#define SATEN_VOUT_1280x720 5 // vga-ws x2
+
+#define SATEN_VOUT_1366x768 6 // hd-ready compatibility
+
+#define SATEN_VOUT_1920x1080 7 // sd-ws x5, vga-ws x3
+#define SATEN_VOUT_1920x1200 8 // for the cool kids
+
+int saten_init(char *title, uint8_t flags);
 int saten_run(void);
 void saten_game(void);
 

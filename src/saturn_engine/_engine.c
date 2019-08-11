@@ -1,11 +1,11 @@
 #include "saturn_engine/_lib.h"
 
 // public
-int saten_init(char *title, int w, int h, uint8_t flags)
+int saten_init(char *title, uint8_t flags)
 {
     saten_flag_set(flags, &saten_flags);
-    if (saten_core_init(title, w, h, SATEN_ERRORS|SATEN_INPUT|SATEN_MRB|
-                SATEN_TEXT) < 0) {
+    if (saten_core_init(title, SATEN_APPW, SATEN_APPH,
+                SATEN_ERRORS | SATEN_INPUT|SATEN_MRB | SATEN_TEXT) < 0) {
         fprintf(stderr, "Failed to initialize Saturn Engine\n");
         return -1;
     }
