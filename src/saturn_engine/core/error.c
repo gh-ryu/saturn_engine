@@ -165,6 +165,9 @@ void saten_errhandler(int i)
     case 52:
         saten_printerr(i, "Error in data module: failed to open tmp file for writing");
         break;
+    case 53:
+        saten_printerr(i, "Unable to fetch display mode");
+        break;
     }
 }
 

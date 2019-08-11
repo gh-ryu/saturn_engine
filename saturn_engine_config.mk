@@ -27,3 +27,4 @@ SATENOBJ += src/saturn_engine/resource.c
 SATENOBJ += src/saturn_engine/scene.c
 SATENOBJ += src/saturn_engine/sfx.c
 SATENOBJ += src/saturn_engine/data.c
+SATENOBJ += src/saturn_engine/video.c

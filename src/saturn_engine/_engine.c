@@ -4,13 +4,15 @@
 int saten_init(char *title, uint8_t flags)
 {
     saten_flag_set(flags, &saten_flags);
-    if (saten_core_init(title, SATEN_APPW, SATEN_APPH,
+    int w; int h;
+    saten_voutr(SATEN_VOUT_DEFAULT, &w, &h);
+
+    if (saten_core_init(title, w, h,
                 SATEN_ERRORS | SATEN_INPUT|SATEN_MRB | SATEN_TEXT) < 0) {
         fprintf(stderr, "Failed to initialize Saturn Engine\n");
         return -1;
     }
 
-    // saten_flag_check(SATEN_FULLSCREEN, saten_flags)
 
     if (saten_flag_check(SATEN_MRBLOAD, saten_flags)) {
         struct RClass* _saten_mrb_module_resource;
@@ -39,6 +41,11 @@ int saten_init(char *title, uint8_t flags)
                 "load", saten_mrb_load_text, MRB_ARGS_ARG(1,1));
     }
     SATEN_DARR_INIT(saten_scene, saten_darr_scene);
+    saten_video_init();
+
+    // TODO load settings
+
+    saten_video_update();
 
     saten_load_mtx = SDL_CreateMutex();
     if (!saten_load_mtx) {

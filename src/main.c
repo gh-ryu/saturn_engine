@@ -27,13 +27,17 @@ int main (int argc, char *argv[])
             scene_root_update, scene_root_draw, scene_root_quit,
             "script/load_resources.rb");
     // Run the game loop
-    SDL_SetWindowSize(saten_window, 384*2, 216*2);
-    SDL_RenderSetScale(saten_ren, 2, 2);
-    SDL_DisplayMode current;
+    
+    //SDL_SetWindowSize(saten_window, 384*2, 216*2);
+    //SDL_RenderSetScale(saten_ren, 2, 2);
+    //SDL_DisplayMode current;
     //SDL_GetCurrentDisplayMode(0, &current);
-    SDL_GetWindowDisplayMode(saten_window, &current);
-    printf("w: %d, h: %d\n", current.w, current.h);
+    //SDL_GetWindowDisplayMode(saten_window, &current);
+    //printf("w: %d, h: %d\n", current.w, current.h);
 
+    saten_voutreg(SATEN_VOUT_320x240);
+    saten_voutreg(SATEN_VOUT_1920x1080);
+    saten_voutreg(SATEN_VOUT_1920x1200);
     saten_run();
 
     saten_data_save_init("demo_assets/s.dat", true);

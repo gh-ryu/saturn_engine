@@ -6,7 +6,9 @@
 #include "_config.h"
 
 SATEN_GLOBAL uint8_t saten_flags;
+
 SATEN_GLOBAL saten_scene *saten_darr_scene;
+
 SATEN_GLOBAL saten_scene_info saten_now_loading;
 SATEN_GLOBAL saten_scene_info saten_scene_start; // the scene at which
                                                  //rendering starts
@@ -15,8 +17,10 @@ SATEN_GLOBAL bool saten_load_on_thread;
 SATEN_GLOBAL saten_resmngr saten_vres; // filled on second thread then
                                        //copied into scene res
                                        // when loading finished
+SATEN_GLOBAL saten_vstng saten_vconf;
 SATEN_GLOBAL SDL_mutex *saten_load_mtx;
 SATEN_GLOBAL SDL_Thread *saten_load_thread;
+SATEN_GLOBAL SDL_Rect saten_game_view;
 
 #define SATEN_MRBLOAD (1 << 7)
 
@@ -42,6 +46,7 @@ void saten_game(void);
 #include "sfx.h"
 #include "resource.h"
 #include "data.h"
+#include "video.h"
 
 
 #endif /* SATURN_ENGINE */
