@@ -45,6 +45,7 @@ void scene_title_update(bool c)
             printf("F4..\n");
             SDL_SetWindowFullscreen(saten_window, SDL_WINDOW_FULLSCREEN);
         }
+        /*
         if (saten_key(SATEN_KEY_F5)) {
             printf("F5..\n");
             SDL_SetWindowFullscreen(saten_window,
@@ -53,6 +54,7 @@ void scene_title_update(bool c)
             SDL_GetWindowDisplayMode(saten_window, &current);
             printf("w: %d, h: %d\n", current.w, current.h);
         }
+        */
     }
 }
 

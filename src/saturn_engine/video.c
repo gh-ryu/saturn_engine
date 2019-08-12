@@ -35,17 +35,29 @@ void saten_voutreg(uint8_t mode, float scale)
     SATEN_DARR_PUSH(video_modes, info);
 }
 
+// private
+void saten_video_mswitch(void)
+{
+    int index;
+    for (int i = 0; i < SATEN_DARR_SIZE(video_modes); i++) {
+        if (video_modes[i].mode == saten_vconf.vout)
+            index = i;
+    }
+    index = (index + 1) % (SATEN_DARR_SIZE(video_modes));
+    saten_vconf.vout = video_modes[index].mode;
+    saten_vconf.update = true;
+}
+
 // public
 void saten_video_update(void)
 {
-    printf("called video update\n");
-    saten_vconf.update = false;
     // TODO error handling
+    saten_vconf.update = false;
     /* Updates window */
     SDL_SetWindowFullscreen(saten_window, 0);
     int w; int h; float s;
     if (saten_vconf.fullscreend) {
-        /// Adjust scale dynamically TODO
+        /// Adjust scale dynamically
         SDL_SetWindowFullscreen(saten_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
         SDL_DisplayMode dmode;
         if (SDL_GetWindowDisplayMode(saten_window, &dmode) < 0)
@@ -63,7 +75,9 @@ void saten_video_update(void)
     }
 
     SDL_RenderSetScale(saten_ren, saten_vconf.scale, saten_vconf.scale);
-    printf("scale: %f\n", saten_vconf.scale);
+
+    saten_game_view.x = 0;
+    saten_game_view.y = 0;
 
     if (SATEN_GAME_WIDTH * saten_vconf.scale < w) {
         int diff = w - (SATEN_GAME_WIDTH * saten_vconf.scale);
@@ -74,12 +88,6 @@ void saten_video_update(void)
         saten_game_view.y = (diff / 2) / saten_vconf.scale;
     }
     SDL_RenderSetViewport(saten_ren, &saten_game_view);
-
-    //saten_game_view.x = 0;
-
-
-
-
 }
 
 // public
