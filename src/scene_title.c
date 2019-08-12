@@ -61,8 +61,8 @@ void scene_title_update(bool c)
 void scene_title_draw(void)
 {
     //saten_text_draw(saten_asset.text[0]);
-    saten_draw_rect_filled(0, 0, 2*384, 2*216, 0, 0,
-        0, 255, SDL_BLENDMODE_NONE);
+    //saten_draw_rect_filled(0, 0, 2*384, 2*216, 0, 0,
+    //    0, 255, SDL_BLENDMODE_NONE);
     saten_sprite_draw(saten_resource_sprite(scene.title, 0),
             0, 0, 0, 0, 0);
     saten_text_draw(saten_resource_text(scene.title, 1));

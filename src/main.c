@@ -40,6 +40,7 @@ int main (int argc, char *argv[])
     saten_voutreg(SATEN_VOUT_1152x648, 3);
     //saten_voutreg(SATEN_VOUT_1920x1080, 5);
     //saten_voutreg(SATEN_VOUT_1920x1200, 5);
+    saten_video_colw(0, 125, 255);
     saten_run();
     printf("w: %d, h: %d, x: %d, y: %d\n", saten_game_view.w,
             saten_game_view.h, saten_game_view.x, saten_game_view.y);
