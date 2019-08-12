@@ -5,7 +5,7 @@ int saten_init(char *title, uint8_t flags)
 {
     saten_flag_set(flags, &saten_flags);
     int w; int h;
-    saten_voutr(SATEN_VOUT_DEFAULT, &w, &h);
+    saten_voutr(SATEN_VOUT_DEFAULT, &w, &h, NULL);
 
     if (saten_core_init(title, w, h,
                 SATEN_ERRORS | SATEN_INPUT|SATEN_MRB | SATEN_TEXT) < 0) {
@@ -43,9 +43,6 @@ int saten_init(char *title, uint8_t flags)
     SATEN_DARR_INIT(saten_scene, saten_darr_scene);
     saten_video_init();
 
-    // TODO load settings
-
-    saten_video_update();
 
     saten_load_mtx = SDL_CreateMutex();
     if (!saten_load_mtx) {
@@ -59,6 +56,9 @@ int saten_init(char *title, uint8_t flags)
 // public
 int saten_run(void)
 {
+    // TODO load settings
+    saten_video_update();
+
     if (SATEN_DARR_SIZE(saten_darr_scene) < 1) {
         saten_errhandler(38);
         return -1;
@@ -72,6 +72,9 @@ int saten_run(void)
 // private
 void saten_game(void)
 {
+    // Update video output if necessary
+    if (saten_vconf.update)
+        saten_video_update();
     // Traverse top-bottom (quit scenes)
     for (int i = SATEN_DARR_SIZE(saten_darr_scene)-1; i >= 0; i--) {
         if (saten_darr_scene[i].quit_flag)

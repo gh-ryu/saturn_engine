@@ -35,10 +35,13 @@ int main (int argc, char *argv[])
     //SDL_GetWindowDisplayMode(saten_window, &current);
     //printf("w: %d, h: %d\n", current.w, current.h);
 
-    saten_voutreg(SATEN_VOUT_320x240);
-    saten_voutreg(SATEN_VOUT_1920x1080);
-    saten_voutreg(SATEN_VOUT_1920x1200);
+    saten_voutreg(SATEN_VOUT_320x240, 1);
+    saten_voutreg(SATEN_VOUT_640x480, 2);
+    saten_voutreg(SATEN_VOUT_1920x1080, 5);
+    saten_voutreg(SATEN_VOUT_1920x1200, 5);
     saten_run();
+    printf("w: %d, h: %d, x: %d, y: %d\n", saten_game_view.w,
+            saten_game_view.h, saten_game_view.x, saten_game_view.y);
 
     saten_data_save_init("demo_assets/s.dat", true);
     saten_data_save_float(0.1f);
