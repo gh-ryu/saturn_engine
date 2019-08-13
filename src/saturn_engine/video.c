@@ -1,7 +1,7 @@
 #include "saturn_engine/_lib.h"
 
 saten_vinfo *video_modes; // dynamic array
-window_info winfo; // information about window
+saten_window_info winfo; // information about window
 bool video_modes_flag;
 
 // private
@@ -14,6 +14,7 @@ void saten_video_init(void)
     video_modes_flag = true;
 
     saten_vconf.scale = SATEN_GSCALE_DEFAULT;
+    /*
     saten_vconf.fullscreen = false;
     saten_vconf.fullscreend = false;
     saten_vconf.filter_flag = false;
@@ -22,8 +23,8 @@ void saten_video_init(void)
     saten_vconf.wpcol.g = 0;
     saten_vconf.wpcol.b = 0;
     saten_vconf.wpcol.a = 0;
-    saten_vconf.wpl = NULL;
-    saten_vconf.wpr = NULL;
+    saten_vconf.wp = NULL;
+    */
     saten_vconf.vout = SATEN_VOUT_DEFAULT;
     saten_vconf.update = true;
 }
@@ -33,6 +34,33 @@ void saten_video_prepare_reset(void)
 {
     SDL_SetRenderDrawColor(saten_ren, saten_vconf.wpcol.r,
             saten_vconf.wpcol.g, saten_vconf.wpcol.b, 255);
+}
+
+// public
+void saten_video_wpreset(void)
+{
+    saten_vconf.wp = NULL;
+}
+
+// public
+void saten_video_wpw(saten_sprite *spr, bool repeat)
+{
+    saten_vconf.wprepeat = repeat;
+    saten_vconf.wp = spr;
+}
+
+//  private
+void saten_video_wpdraw(void)
+{
+    SDL_RenderSetViewport(saten_ren, NULL);
+    if (saten_vconf.wp) {
+        if (saten_vconf.wprepeat)
+            saten_sprite_repeat(saten_vconf.wp, 0, 0, 0,
+                    winfo.worig, winfo.horig);
+        else
+            saten_sprite_draw(saten_vconf.wp, 0, 0, 0, -1, false);
+    }
+    SDL_RenderSetViewport(saten_ren, &saten_game_view);
 }
 
 // public
@@ -112,6 +140,8 @@ void saten_video_update(void)
     SDL_RenderSetViewport(saten_ren, &saten_game_view);
     winfo.w = w;
     winfo.h = h;
+    winfo.worig = w / saten_vconf.scale;
+    winfo.horig = h / saten_vconf.scale;
 }
 
 // public

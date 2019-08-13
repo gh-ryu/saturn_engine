@@ -86,6 +86,8 @@ void saten_game(void)
                 saten_darr_scene[i].quit();
     }
 
+    // Draw wallpaper if set
+    saten_video_wpdraw();
 
     // Traverse bottom-top (play game)
     for (int i=saten_scene_start.id;i< SATEN_DARR_SIZE(saten_darr_scene);i++) {

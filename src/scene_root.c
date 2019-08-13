@@ -13,6 +13,7 @@ void scene_root_init(void)
     saten_load_resources(scene.root, false);
     if (saten_scene_loaded(scene.root)) {
         saten_sprite_texturize(saten_resource_sprite(scene.root, 0));
+        saten_video_wpw(saten_resource_sprite(scene.root, 0), true);
         saten_sfx_reset(scene.root);
         saten_sfx_volume(scene.root, 0, 30);
         saten_sfx_volume(scene.root, 1, 20);
@@ -64,5 +65,6 @@ void scene_root_draw(void)
 void scene_root_quit(void)
 {
     scene.root = saten_scene_destroy(scene.root);
+    saten_video_wpreset();
     saten_break = true;
 }

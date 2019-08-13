@@ -33,8 +33,8 @@ typedef struct _saten_vstng {
     bool filter_flag; // filter activated?
     uint8_t filter; // currently active filter
     SDL_Color wpcol;
-    saten_sprite *wpl;
-    saten_sprite *wpr;
+    bool wprepeat;
+    saten_sprite *wp;
     uint8_t vout;
     bool update; // flag
 } saten_vstng;
