@@ -41,11 +41,11 @@ void scene_title_update(bool c)
             saten_key_lock(-1);
             saten_scene_quit(scene.title);
         }
+        /*
         if (saten_key(SATEN_KEY_F4)) {
             printf("F4..\n");
             SDL_SetWindowFullscreen(saten_window, SDL_WINDOW_FULLSCREEN);
         }
-        /*
         if (saten_key(SATEN_KEY_F5)) {
             printf("F5..\n");
             SDL_SetWindowFullscreen(saten_window,

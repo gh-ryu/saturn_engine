@@ -81,7 +81,9 @@ void saten_video_colw(uint8_t r, uint8_t g, uint8_t b)
     saten_vconf.wpcol.b = b;
 }
 
-// private
+/* PRIVATE
+ * Switches current video mode
+ * According to the modes set by voutreg() */
 void saten_video_mswitch(void)
 {
     int index;
@@ -94,17 +96,44 @@ void saten_video_mswitch(void)
     saten_vconf.update = true;
 }
 
+/* PRIVATE
+ * Switches current window mode */
+void saten_video_wswitch(void)
+{
+    if (saten_vconf.fullscreen) {
+        saten_vconf.fullscreen  = false;
+        saten_vconf.fullscreend = true;
+    } else if (saten_vconf.fullscreend) {
+        saten_vconf.fullscreend  = false;
+        saten_vconf.fullscreen  = false;
+    } else {
+        saten_vconf.fullscreen = true;
+        saten_vconf.fullscreend = false;
+    }
+    saten_vconf.update = true;
+}
+
 // public
 void saten_video_update(void)
 {
-    // TODO error handling
-    saten_vconf.update = false;
-    /* Updates window */
-    SDL_SetWindowFullscreen(saten_window, 0);
     int w; int h; float s;
+    saten_vconf.update = false;
+    /* Restore */
+    if (SDL_SetWindowFullscreen(saten_window, 0) < 0)
+        saten_errhandler(54);
+    saten_voutr(saten_vconf.vout, &w, &h, &s);
+    saten_vconf.scale = s;
+    SDL_SetWindowSize(saten_window, w, h);
+    /* Set fullscreen if desired */
+    if (saten_vconf.fullscreen) {
+        if (SDL_SetWindowFullscreen(saten_window, SDL_WINDOW_FULLSCREEN)<0)
+            saten_errhandler(56);
+    }
+    /* Set windows fullscreen */
     if (saten_vconf.fullscreend) {
-        /// Adjust scale dynamically
-        SDL_SetWindowFullscreen(saten_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+        if (SDL_SetWindowFullscreen(saten_window,
+                    SDL_WINDOW_FULLSCREEN_DESKTOP) < 0)
+            saten_errhandler(55);
         SDL_DisplayMode dmode;
         if (SDL_GetWindowDisplayMode(saten_window, &dmode) < 0)
             saten_errhandler(53);
@@ -112,12 +141,6 @@ void saten_video_update(void)
         h = dmode.h;
         for (int i=1;SATEN_GAME_WIDTH*i<=w&&SATEN_GAME_HEIGHT*i<=h; i++)
             saten_vconf.scale = i;
-    } else {
-        saten_voutr(saten_vconf.vout, &w, &h, &s);
-        saten_vconf.scale = s;
-        SDL_SetWindowSize(saten_window, w, h);
-        if (saten_vconf.fullscreen)
-            SDL_SetWindowFullscreen(saten_window, SDL_WINDOW_FULLSCREEN);
     }
 
     SDL_RenderSetScale(saten_ren, saten_vconf.scale, saten_vconf.scale);
@@ -150,7 +173,6 @@ void saten_voutr(uint8_t t, int *w, int *h, float *s)
     // read width and height from video out
     if (video_modes_flag)
         for (int i = 0; i < SATEN_DARR_SIZE(video_modes); i++) {
-            printf("... %d\n", i);
             if (video_modes[i].mode == t) {
                 *s = video_modes[i].scale;
             }

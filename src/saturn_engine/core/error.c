@@ -168,6 +168,15 @@ void saten_errhandler(int i)
     case 53:
         saten_printerr(i, "Unable to fetch display mode");
         break;
+    case 54:
+        saten_printerr(i, "Failed to restore window");
+        break;
+    case 55:
+        saten_printerr(i, "Failed setting fullscreen-desktop");
+        break;
+    case 56:
+        saten_printerr(i, "Failed setting fullscreen");
+        break;
     }
 }
 

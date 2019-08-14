@@ -75,6 +75,8 @@ void saten_game(void)
     // Handle engine specific inputs
     if (saten_key(SATEN_KEY_F5) == 1)
         saten_video_mswitch();
+    if (saten_key(SATEN_KEY_F4) == 1)
+        saten_video_wswitch();
     // Update video output if necessary
     if (saten_vconf.update)
         saten_video_update();
