@@ -21,5 +21,7 @@ void saten_video_prepare_reset(void);
 void saten_video_wpreset(void);
 void saten_video_wpw(saten_sprite *spr, bool repeat);
 void saten_video_wpdraw(void);
+void saten_video_sconf(void);
+void saten_video_lconf(void);
 
 #endif /* SATURN_ENGINE_VIDEO */

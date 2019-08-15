@@ -57,6 +57,7 @@ int saten_init(char *title, uint8_t flags)
 int saten_run(void)
 {
     // TODO load settings
+    saten_video_lconf();
     saten_video_update();
 
     if (SATEN_DARR_SIZE(saten_darr_scene) < 1) {
@@ -108,4 +109,9 @@ void saten_game(void)
     }
     // Sets color to be used when renderer resets
     saten_video_prepare_reset();
+}
+
+void saten_quit(void)
+{
+    saten_video_sconf();
 }

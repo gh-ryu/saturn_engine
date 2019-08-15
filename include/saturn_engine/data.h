@@ -2,8 +2,8 @@
 #define SATURN_ENGINE_DATA
 
 void saten_data_init(char *fp, bool is_secure);
-void saten_data_save_init(char *fp, bool is_secure);
-void saten_data_load_init(char *fp, bool is_secure);
+int saten_data_save_init(char *fp, bool is_secure);
+int saten_data_load_init(char *fp, bool is_secure);
 void saten_data_quit(void);
 int saten_data_save_quit(void);
 int saten_data_load_quit(void);

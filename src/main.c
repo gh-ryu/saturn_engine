@@ -70,5 +70,7 @@ int main (int argc, char *argv[])
 
     printf("%d, %f, %d, %d, %s, %s, %s, %d\n",i,f,b1,b2,str1,str2,str3,i2);
 
+
+    saten_quit();
     return 0;
 }

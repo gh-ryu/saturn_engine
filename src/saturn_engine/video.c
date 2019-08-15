@@ -30,6 +30,36 @@ void saten_video_init(void)
 }
 
 // private
+void saten_video_lconf(void)
+{
+    if (saten_data_load_init("saturn_engine_data/vconf.dat", true) < 0)
+        return; // no settings to load
+    saten_data_load_float(&saten_vconf.scale);
+    saten_data_load_bool(&saten_vconf.fullscreen);
+    saten_data_load_bool(&saten_vconf.fullscreend);
+    saten_data_load_uint8(&saten_vconf.wpcol.r);
+    saten_data_load_uint8(&saten_vconf.wpcol.g);
+    saten_data_load_uint8(&saten_vconf.wpcol.b);
+    saten_data_load_uint8(&saten_vconf.vout);
+    saten_data_load_quit();
+}
+
+// private
+void saten_video_sconf(void)
+{
+    if (saten_data_save_init("saturn_engine_data/vconf.dat", true) < 0)
+        return; // failed to open file
+    saten_data_save_float(saten_vconf.scale);
+    saten_data_save_bool(saten_vconf.fullscreen);
+    saten_data_save_bool(saten_vconf.fullscreend);
+    saten_data_save_uint8(saten_vconf.wpcol.r);
+    saten_data_save_uint8(saten_vconf.wpcol.g);
+    saten_data_save_uint8(saten_vconf.wpcol.b);
+    saten_data_save_uint8(saten_vconf.vout);
+    saten_data_save_quit();
+}
+
+// private
 void saten_video_prepare_reset(void)
 {
     SDL_SetRenderDrawColor(saten_ren, saten_vconf.wpcol.r,

@@ -40,6 +40,7 @@ SATEN_GLOBAL SDL_Rect saten_game_view;
 int saten_init(char *title, uint8_t flags);
 int saten_run(void);
 void saten_game(void);
+void saten_quit(void);
 
 #include "scene.h"
 #include "load.h"

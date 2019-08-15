@@ -12,30 +12,40 @@ size_t cpuintsize;
 uint64_t checksum;
 
 // public
-void saten_data_save_init(char *fp, bool is_secure)
+int saten_data_save_init(char *fp, bool is_secure)
 {
     saten_data_init(fp, is_secure);
     data = SDL_RWFromFile("saturn_engine_data/tmp.dat", "wb");
-    if (!data)
+    if (data == NULL) {
         saten_errhandler(52);
+        return -1;
+    }
     SDL_RWwrite(data, &cpuendian_flag, sizeof(uint8_t), 1);
     SDL_RWwrite(data, &cpuintsize, sizeof(size_t), 1);
     saten_data_save_string("SaturnEngineData");
+    return 0;
 }
 
 // public
-void saten_data_load_init(char *fp, bool is_secure)
+int saten_data_load_init(char *fp, bool is_secure)
 {
     saten_data_init(fp, is_secure);
     data = SDL_RWFromFile(dfilepath, "rb");
+    if (data == NULL)
+        return -1;
     char *str;
     SDL_RWread(data, &fendian_flag, sizeof(uint8_t), 1);
     SDL_RWread(data, &fintsize, sizeof(size_t), 1);
     saten_data_load_string(&str);
-    if (strncmp(str, "SaturnEngineData", 17) != 0)
+    if (strncmp(str, "SaturnEngineData", 17) != 0) {
         saten_errhandler(51);
-    if (cpuintsize != fintsize)
+        return -1;
+    }
+    if (cpuintsize != fintsize) {
         saten_errhandler(50); // shouldn't even be a problem though
+        return -1;
+    }
+    return 0;
 }
 
 // private
