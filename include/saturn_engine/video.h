@@ -23,5 +23,7 @@ void saten_video_wpw(saten_sprite *spr, bool repeat);
 void saten_video_wpdraw(void);
 void saten_video_sconf(void);
 void saten_video_lconf(void);
+void saten_video_scldraw(void);
+void saten_video_sclstrw(uint8_t);
 
 #endif /* SATURN_ENGINE_VIDEO */

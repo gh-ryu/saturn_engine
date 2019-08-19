@@ -107,6 +107,7 @@ void saten_game(void)
             saten_darr_scene[i].framecnt++;
         }
     }
+    saten_video_scldraw();
     // Sets color to be used when renderer resets
     saten_video_prepare_reset();
 }

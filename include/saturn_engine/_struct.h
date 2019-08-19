@@ -32,6 +32,7 @@ typedef struct _saten_vstng {
     bool fullscreend; // SDL_FULLSCREEN_DESKTOP
     bool filter_flag; // filter activated?
     uint8_t filter; // currently active filter
+    uint8_t scanline_strength;
     SDL_Color wpcol;
     bool wprepeat;
     saten_sprite *wp;

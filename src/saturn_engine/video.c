@@ -27,6 +27,8 @@ void saten_video_init(void)
     */
     saten_vconf.vout = SATEN_VOUT_DEFAULT;
     saten_vconf.update = true;
+    saten_vconf.scanline_strength = 64;
+    saten_vconf.filter = 1;
 }
 
 // private
@@ -91,6 +93,48 @@ void saten_video_wpdraw(void)
             saten_sprite_draw(saten_vconf.wp, 0, 0, 0, -1, false);
     }
     SDL_RenderSetViewport(saten_ren, &saten_game_view);
+}
+
+// private
+void saten_video_scldraw()
+{
+    if (saten_vconf.scale == 1)
+        return;
+    int scale = (int)saten_vconf.scale;
+    int scnln = scale / 2;
+    SDL_RenderSetScale(saten_ren, 1, 1);
+    SDL_SetRenderDrawBlendMode(saten_ren, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(saten_ren, 0,0,0,saten_vconf.scanline_strength);
+    switch (saten_vconf.filter) {
+    case 0: // no filter
+        break;
+    case 1: // simple scanlines
+        if (scale % 2 == 0) { // even scaling factor
+            for (int i = 0; i < winfo.h; i+=scale)
+                for (int j = 0; j < scnln; j++)
+                    SDL_RenderDrawLine(saten_ren, 0, i+j, winfo.w, i+j);
+        } else {
+            for (int i = 0; i < winfo.h; i+=scale) {
+                SDL_SetRenderDrawColor(saten_ren, 0,0,0,
+                        saten_vconf.scanline_strength);
+                int j = 0;
+                for (; j < scnln; j++) {
+                        SDL_RenderDrawLine(saten_ren, 0, i+j, winfo.w, i+j);
+                }
+                SDL_SetRenderDrawColor(saten_ren, 0,0,0,
+                        saten_vconf.scanline_strength/scale);
+                SDL_RenderDrawLine(saten_ren, 0, i+j, winfo.w, i+j);
+            }
+        }
+        break;
+    }
+    SDL_RenderSetScale(saten_ren, saten_vconf.scale, saten_vconf.scale);
+}
+
+// public
+void saten_video_sclstrw(uint8_t n)
+{
+    saten_vconf.scanline_strength = n;
 }
 
 // public
