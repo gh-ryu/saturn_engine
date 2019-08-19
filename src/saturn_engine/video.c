@@ -9,22 +9,10 @@ void saten_video_init(void)
 {
     saten_game_view.w = SATEN_GAME_WIDTH;
     saten_game_view.h = SATEN_GAME_HEIGHT;
-
     SATEN_DARR_INIT(uint8_t, video_modes);
     video_modes_flag = true;
 
     saten_vconf.scale = SATEN_GSCALE_DEFAULT;
-    /*
-    saten_vconf.fullscreen = false;
-    saten_vconf.fullscreend = false;
-    saten_vconf.filter_flag = false;
-    saten_vconf.filter = 0;
-    saten_vconf.wpcol.r = 0;
-    saten_vconf.wpcol.g = 0;
-    saten_vconf.wpcol.b = 0;
-    saten_vconf.wpcol.a = 0;
-    saten_vconf.wp = NULL;
-    */
     saten_vconf.vout = SATEN_VOUT_DEFAULT;
     saten_vconf.update = true;
     saten_vconf.scanline_strength = 64;
@@ -43,6 +31,8 @@ void saten_video_lconf(void)
     saten_data_load_uint8(&saten_vconf.wpcol.g);
     saten_data_load_uint8(&saten_vconf.wpcol.b);
     saten_data_load_uint8(&saten_vconf.vout);
+    saten_data_load_uint8(&saten_vconf.filter);
+    saten_data_load_uint8(&saten_vconf.scanline_strength);
     saten_data_load_quit();
 }
 
@@ -58,6 +48,8 @@ void saten_video_sconf(void)
     saten_data_save_uint8(saten_vconf.wpcol.g);
     saten_data_save_uint8(saten_vconf.wpcol.b);
     saten_data_save_uint8(saten_vconf.vout);
+    saten_data_save_uint8(saten_vconf.filter);
+    saten_data_save_uint8(saten_vconf.scanline_strength);
     saten_data_save_quit();
 }
 
