@@ -122,6 +122,6 @@ void saten_quit(void)
 void saten_kill(void)
 {
     // Force all scenes to quit
-    saten_scene_info scene = { 0, 0 };
-    saten_scene_destroy(scene);
+    saten_scene_info scene = { 0, 0, 1 };
+    saten_scene_quit(scene);
 }
