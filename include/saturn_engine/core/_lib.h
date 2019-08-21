@@ -87,6 +87,8 @@ SATEN_GLOBAL struct RClass* _saten_mrb_module;
 #define SATEN_SURFACE 2
 
 #define SATEN_SFX_MAX 32 // max number of soundeffects
+#define SATEN_TEXT_GLYPH_MAX 512
+
 
 #define SATEN_KEYNUM 60
 

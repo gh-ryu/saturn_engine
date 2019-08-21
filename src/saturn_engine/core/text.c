@@ -32,16 +32,6 @@ void saten_mrb_text_init(void)
             "get", saten_mrb_text_get, MRB_ARGS_REQ(1));
     mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
             "reset", saten_mrb_text_reset, MRB_ARGS_REQ(2));
-
-    /*
-    printf("mfg: %p\n", mfg.ptr);
-    char *ptr = saten_mfield_take(&mfg, 1);
-    printf("mfg: %p\n", mfg.ptr);
-    printf("ptr: %p\n", ptr);
-    ptr = saten_mfield_take(&mfg, 4);
-    printf("mfg: %p\n", mfg.ptr);
-    printf("ptr: %p\n", ptr);
-    */
 }
 
 mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self)
@@ -116,7 +106,7 @@ mrb_value saten_mrb_text_reset(mrb_state *mrb, mrb_value self)
     mrb_get_args(saten_mrb, "if", &id0, &f0);
     id = (int)id0; f = (float)f0;
     saten_text *text = saten_text_find(id);
-    free(text->glyph);
+    //free(text->glyph);
     text->glyph = NULL;
     text->size = 0;
     text->scale = f;
@@ -147,9 +137,18 @@ void saten_text_glyph_create(int a, int b, int c, int x, int y, int l,
         saten_text *text)
 {
     int i = text->size;
+    if (i == SATEN_TEXT_GLYPH_MAX)
+        return; // skip glyphs that overflow
     text->size++;
-    text->glyph = (saten_glyph*)saten_realloc(text->glyph,
-            text->size * sizeof(saten_glyph));
+    if (i == 0 ) {
+        // take some preallocated memory
+        text->glyph = (saten_glyph*)saten_mfield_take(&mfg,
+                sizeof(saten_glyph) * SATEN_TEXT_GLYPH_MAX);
+    }
+    if (text->glyph == NULL)
+        printf("wtf!\n");
+    //text->glyph = (saten_glyph*)saten_realloc(text->glyph,
+    //        text->size * sizeof(saten_glyph));
     text->glyph[i].a = a;
     text->glyph[i].b = b;
     text->glyph[i].c = c;
@@ -201,6 +200,8 @@ void saten_text_draw(saten_text *text)
     }
 
     for (int i = 0; i < text->size; i++) {
+        if (i == SATEN_TEXT_GLYPH_MAX)
+            return ; // prevent overflow
         if (text->glyph[i].is_animated) {
             SDL_RenderCopyEx(saten_ren,
                     saten_glyph_sets[text->glyph[i].a].
@@ -250,13 +251,14 @@ saten_text* saten_text_create(float scale, char *str, int x, int y)
     return saten_latest_text;
 }
 
+// public?
 void saten_nstot(saten_text *text, char *str, int col, int x, int y)
 {
     // string can only contain numbers 0 to 9 and .
     // everything else is ignored
     int i = 0;
     if (text->glyph != NULL) {
-        free(text->glyph);
+        //free(text->glyph);
         text->glyph = NULL;
     }
     text->size = 0;
@@ -287,12 +289,13 @@ void saten_text_set_gheight(int a)
     saten_text_gheight = a;
 }
 
+// public
 void saten_text_destroy(saten_text *ptr)
 {
     saten_litem* eptr = NULL;
     saten_list_search(saten_list_text, NULL, &eptr, (void*)ptr);
     mrb_gc_unregister(saten_mrb, ptr->mrbo);
-    free(ptr->glyph);
+    //free(ptr->glyph);
     free(ptr);
     saten_list_remove(saten_list_text, eptr);
 }
