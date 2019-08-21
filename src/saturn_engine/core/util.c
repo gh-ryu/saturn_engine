@@ -19,6 +19,7 @@ void* saten_malloc(size_t size)
     void *ptr = NULL;
     ptr = malloc(size);
     if (ptr == NULL) {
+        saten_killf = true;
         saten_errhandler(7);
     } else {
         memset(ptr, 0, size);
@@ -38,8 +39,10 @@ char* saten_strclone(char *str)
 void* saten_realloc(void* ptr, size_t size)
 {
     ptr = realloc(ptr, size);
-    if (ptr == NULL)
+    if (ptr == NULL) {
+        saten_killf = true;
         saten_errhandler(7);
+    }
     return ptr;
 }
 

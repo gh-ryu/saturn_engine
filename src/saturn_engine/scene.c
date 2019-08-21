@@ -131,6 +131,10 @@ saten_scene_info saten_scene_destroy(saten_scene_info scene)
 
     scene.alive = false;
 
+    if (saten_load_mtx) {
+        SDL_DestroyMutex(saten_load_mtx);
+        saten_load_mtx = NULL;
+    }
 
     return scene;
 }

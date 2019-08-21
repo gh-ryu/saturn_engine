@@ -25,5 +25,6 @@ void saten_video_sconf(void);
 void saten_video_lconf(void);
 void saten_video_scldraw(void);
 void saten_video_sclstrw(uint8_t);
+void saten_video_quit(void);
 
 #endif /* SATURN_ENGINE_VIDEO */

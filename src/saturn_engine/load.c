@@ -6,6 +6,11 @@ void saten_load_resources(saten_scene_info scene, bool threaded)
     saten_load_on_thread = threaded;
     saten_now_loading = scene;
     if (threaded) {
+        saten_load_mtx = SDL_CreateMutex();
+        if (!saten_load_mtx) {
+            saten_errhandler(46);
+            saten_kill();
+        }
         //TODO
         memset(&saten_vres, 0, sizeof(saten_resmngr));
         saten_mrb_gc_disable();

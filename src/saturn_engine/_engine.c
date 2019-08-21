@@ -43,13 +43,6 @@ int saten_init(char *title, uint8_t flags)
     SATEN_DARR_INIT(saten_scene, saten_darr_scene);
     saten_video_init();
 
-
-    saten_load_mtx = SDL_CreateMutex();
-    if (!saten_load_mtx) {
-        saten_errhandler(46);
-        return -1;
-    }
-
     return 0; // everything okay!
 }
 
@@ -67,12 +60,15 @@ int saten_run(void)
 
     // main game loop is no longer user defined
     saten_core_run(saten_game);
+
     return 0;
 }
 
 // private
 void saten_game(void)
 {
+    if (saten_killf) // Core tells us to stop all operations
+        saten_kill();
     // Handle engine specific inputs
     if (saten_key(SATEN_KEY_F5) == 1)
         saten_video_mswitch();
@@ -110,9 +106,22 @@ void saten_game(void)
     saten_video_scldraw();
     // Sets color to be used when renderer resets
     saten_video_prepare_reset();
+    // No scenes set = time to quit!
+    if (SATEN_DARR_SIZE(saten_darr_scene) == 0)
+        saten_brkf = true;
 }
 
 void saten_quit(void)
 {
     saten_video_sconf();
+    saten_video_quit();
+    SATEN_DARR_DESTROY(saten_darr_scene);
+    saten_core_quit();
+}
+
+void saten_kill(void)
+{
+    // Force all scenes to quit
+    saten_scene_info scene = { 0, 0 };
+    saten_scene_destroy(scene);
 }

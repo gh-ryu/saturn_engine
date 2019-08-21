@@ -42,7 +42,8 @@
 #include "_struct.h"
 
 SATEN_GLOBAL char *saten_base_path;
-SATEN_GLOBAL bool saten_break;
+SATEN_GLOBAL bool saten_brkf; // break flag
+SATEN_GLOBAL bool saten_killf;
 SATEN_GLOBAL saten_pad *saten_pads;
 SATEN_GLOBAL uint8_t saten_pad_num;
 SATEN_GLOBAL SDL_Window *saten_window;

@@ -29,5 +29,6 @@ int saten_get_text_width(saten_text *text);
 int saten_get_text_height(saten_text *text);
 int saten_get_text_x(saten_text *text);
 int saten_get_text_y(saten_text *text);
+void saten_text_quit(void);
 
 #endif /* SATURN_ENGINE_CORE_TEXT */

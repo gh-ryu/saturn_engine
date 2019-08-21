@@ -2,22 +2,24 @@
 
 int saten_core_run(saten_fptr_void fptr)
 {
-    while (!saten_break) {
+    while (!saten_brkf) {
         //saten_framerate_dixq_update();
         saten_framerate_update();
         if (saten_flag_check(SATEN_INPUT, saten_core_flags)) {
             SDL_Event sdl_event;
             while (SDL_PollEvent(&sdl_event) != 0) {
                 if (sdl_event.type == SDL_QUIT) 
-                    saten_break = true;
+                    saten_killf = true;
                 if (sdl_event.type == SDL_JOYDEVICEREMOVED) {
                     //FIXME jdevice.which returns nonsense on second removal
                     // and causes seg fault
-                    printf("removed controller id: %d\n", sdl_event.jdevice.which);
+                    printf("removed controller id: %d\n",
+                            sdl_event.jdevice.which);
                     saten_controller_remove(sdl_event.jdevice.which);
                 }
                 if (sdl_event.type == SDL_JOYDEVICEADDED) {
-                    printf("added controller id: %d\n", sdl_event.jdevice.which);
+                    printf("added controller id: %d\n",
+                            sdl_event.jdevice.which);
                     saten_controller_add(sdl_event.jdevice.which);
                 }
             }
@@ -128,4 +130,5 @@ void saten_core_quit(void)
         mrbc_context_free(saten_mrb, saten_mrbc);
         mrb_close(saten_mrb);
     }
+    saten_text_quit();
 }

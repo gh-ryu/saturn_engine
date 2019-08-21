@@ -613,3 +613,9 @@ int saten_get_text_y(saten_text *text)
 {
     return text->y;
 }
+
+// private
+void saten_text_quit(void)
+{
+    saten_mfield_destroy(&mfg);
+}

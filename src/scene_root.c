@@ -66,5 +66,4 @@ void scene_root_quit(void)
 {
     scene.root = saten_scene_destroy(scene.root);
     saten_video_wpreset();
-    saten_break = true;
 }

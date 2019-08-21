@@ -282,3 +282,9 @@ void saten_voutr(uint8_t t, int *w, int *h, float *s)
         break;
     }
 }
+
+// private
+void saten_video_quit(void)
+{
+    SATEN_DARR_DESTROY(video_modes);
+}
