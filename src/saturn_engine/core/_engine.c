@@ -131,4 +131,21 @@ void saten_core_quit(void)
         mrb_close(saten_mrb);
     }
     saten_text_quit();
+    free(saten_base_path);
+    free(saten_pads);
+    //free(saten_keystate); internal SDL array
+    free(saten_keystate2);
+    free(saten_keystate3);
+    saten_layer_destroy(saten_layer0);
+    saten_list_destroy(saten_list_layer);
+
+    SDL_DestroyRenderer(saten_ren);
+    SDL_DestroyWindow(saten_window);
+
+    Mix_Quit();
+    IMG_Quit();
+    SDL_Quit();
+#ifdef _DEBUG
+    printf("Saturn Engine quit without problems.\n");
+#endif /* _DEBUG */
 }

@@ -618,4 +618,15 @@ int saten_get_text_y(saten_text *text)
 void saten_text_quit(void)
 {
     saten_mfield_destroy(&mfg);
+    saten_list_destroy(saten_list_text);
+    for (int i = 0; i < saten_glyph_set_n; i++) {
+        free(saten_glyph_sets[i].glyph_width);
+        for (int j = 0; j == 0 || j < saten_glyph_sets[i].cn; j++) {
+            for (int k = 0; k < saten_glyph_sets[i].n; k++)
+                SDL_DestroyTexture(saten_glyph_sets[i].glyph[j][k]);
+            free(saten_glyph_sets[i].glyph[j]);
+        }
+        free(saten_glyph_sets[i].glyph);
+    }
+    free(saten_glyph_sets);
 }

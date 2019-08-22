@@ -9,5 +9,6 @@ void saten_list_search(saten_list *lptr, saten_litem *curreptr,
 void saten_list_traverse(saten_list *lptr, saten_fptr_list_action fptr);
 void saten_list_loop(saten_list *lptr, saten_litem *eptr, int i,
         saten_fptr_list_action fptr);
+void saten_list_destroy(saten_list *lptr);
 
 #endif /* SATURN_ENGINE_CORE_LIST */

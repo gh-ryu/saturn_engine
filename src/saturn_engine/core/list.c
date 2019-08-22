@@ -10,6 +10,12 @@ void saten_list_init(saten_list **lptr, size_t s)
 }
 
 // public
+void saten_list_destroy(saten_list *lptr)
+{
+    free(lptr);
+}
+
+// public
 void saten_list_insert(saten_list *lptr, saten_litem *elemptr)
 {
     if (lptr->num == 0) {
