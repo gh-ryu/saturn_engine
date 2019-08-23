@@ -1,7 +1,6 @@
 #include "saturn_engine/core/_lib.h"
 
-// private
-void saten_pad_input_refresh(int i)
+void saten_pad_input_refresh(int i) /* PRIVATE */
 {
     if (saten_pads[i].dev)
         saten_pad_input_refresh_controller(i);
@@ -9,8 +8,7 @@ void saten_pad_input_refresh(int i)
         saten_pad_input_refresh_joystick(i);
 }
 
-// public
-uint32_t saten_btn(uint8_t i, int j)
+uint32_t saten_btn(uint8_t i, int j) /* PUBLIC */
 {
     if (SATEN_PAD_NUM > j) {
         if (saten_pads[j].flag)
@@ -24,8 +22,7 @@ uint32_t saten_btn(uint8_t i, int j)
     return 0;
 }
 
-// public
-void saten_btn_lock(int i)
+void saten_btn_lock(int i) /* PUBLIC */
 {
     if (i < 0) {
         for (int j = 0; j < SATEN_PAD_NUM; j++)
@@ -39,8 +36,7 @@ void saten_btn_lock(int i)
     }
 }
 
-// public
-void saten_btn_unlock(int i)
+void saten_btn_unlock(int i) /* PUBLIC */
 {
     if (i < 0) {
         for (int j = 0; j < SATEN_PAD_NUM; j++)
@@ -54,8 +50,7 @@ void saten_btn_unlock(int i)
     }
 }
 
-// private
-void saten_pad_input_update(int i, bool b, int j)
+void saten_pad_input_update(int i, bool b, int j) /* PUBLIC */
 {
     if (b) {
         uint32_t tmp = saten_pads[i].state[j];
@@ -66,14 +61,12 @@ void saten_pad_input_update(int i, bool b, int j)
     }
 }
 
-// private
-void saten_pad_axis_update(int i, int16_t k, int j)
+void saten_pad_axis_update(int i, int16_t k, int j) /* PUBLIC */
 {
     saten_pads[i].state[j] = k;
 }
 
-// private
-void saten_pad_filter_deadzone(int i)
+void saten_pad_filter_deadzone(int i) /* PRIVTATE */
 {
     float l = sqrtf((float)saten_square(saten_pads[i].state[SATEN_AXS_LX]) +
         (float)saten_square(saten_pads[i].state[SATEN_AXS_LY]));
@@ -89,8 +82,7 @@ void saten_pad_filter_deadzone(int i)
     }
 }
 
-// public?
-void saten_pad_stick_angle(int i)
+void saten_pad_stick_angle(int i) /* PRIVATE */
 {
     saten_pads[i].lang = 180+atan2f((float)saten_pads[i].state[SATEN_AXS_LY],
             (float)saten_pads[i].state[SATEN_AXS_LX]) * (180 / M_PI);
@@ -105,8 +97,7 @@ void saten_pad_stick_angle(int i)
         saten_pads[i].rang = 0.0f;
 }
 
-// private
-void saten_pad_input_refresh_controller(int i)
+void saten_pad_input_refresh_controller(int i) /* PRIVATE */
 {
     saten_pad_input_update(i, SDL_GameControllerGetButton(saten_pads[i].dev,
                 SDL_CONTROLLER_BUTTON_INVALID), 0);
@@ -164,8 +155,7 @@ void saten_pad_input_refresh_controller(int i)
     saten_pad_stick_angle(i);
 }
 
-// private
-void saten_pad_input_refresh_joystick(int i)
+void saten_pad_input_refresh_joystick(int i) /* PRIVATE */
 {
     saten_pad_input_update(i,SDL_JoystickGetButton(saten_pads[i].jdev,0),0);
     saten_pad_input_update(i,SDL_JoystickGetButton(saten_pads[i].jdev,1),1);
@@ -196,8 +186,7 @@ void saten_pad_input_refresh_joystick(int i)
     saten_pad_stick_angle(i);
 }
 
-// public?
-void saten_controller_add(int i)
+void saten_controller_add(int i) /* PRIVATE */
 {
     if (i >= SATEN_PAD_NUM) {
         saten_errhandler(7);
@@ -230,8 +219,7 @@ void saten_controller_add(int i)
     }
 }
 
-// public?
-void saten_controller_remove(SDL_JoystickID i)
+void saten_controller_remove(SDL_JoystickID i) /* PRIVATE */
 {
     SDL_GameController *controller;
     SDL_Joystick       *jstick;
@@ -252,18 +240,18 @@ void saten_controller_remove(SDL_JoystickID i)
     memset(&saten_pads[i2],0, sizeof(saten_pad));
 }
 
-void saten_controller_deadzone(int16_t dz, int i)
+void saten_controller_deadzone(int16_t dz, int i) /* PUBLIC */
 {
     saten_pads[i].deadzone = dz;
 }
 
 
-float saten_rstickang_get(int i)
+float saten_rstickang_get(int i) /* PUBLIC */
 {
     return saten_pads[i].rang;
 }
 
-float saten_lstickang_get(int i)
+float saten_lstickang_get(int i) /* PUBLIC */
 {
     return saten_pads[i].lang;
 }
