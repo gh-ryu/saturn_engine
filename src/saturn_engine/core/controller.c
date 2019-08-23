@@ -12,7 +12,7 @@ void saten_pad_input_refresh(int i)
 // public
 uint32_t saten_btn(uint8_t i, int j)
 {
-    if (saten_pad_num >= j+1) {
+    if (SATEN_PAD_NUM > j) {
         if (saten_pads[j].flag)
             if (!saten_pads[j].lockstate[i])
                 return saten_pads[j].state[i];
@@ -27,25 +27,31 @@ uint32_t saten_btn(uint8_t i, int j)
 // public
 void saten_btn_lock(int i)
 {
-    if (i < 0)
-        for (int j = 0; j < saten_pad_num; j++)
-            for (int k = 0; k < 25; k++)
-                saten_pads[j].lockstate[k] = true;
-    else
-        for (int j = 0; j < saten_pad_num; j++)
-            saten_pads[j].lockstate[i] = true;
+    if (i < 0) {
+        for (int j = 0; j < SATEN_PAD_NUM; j++)
+            if (saten_pads[j].flag)
+                for (int k = 0; k < 25; k++)
+                    saten_pads[j].lockstate[k] = true;
+    } else {
+        for (int j = 0; j < SATEN_PAD_NUM; j++)
+            if (saten_pads[j].flag)
+                saten_pads[j].lockstate[i] = true;
+    }
 }
 
 // public
 void saten_btn_unlock(int i)
 {
-    if (i < 0)
-        for (int j = 0; j < saten_pad_num; j++)
-            for (int k = 0; k < 25; k++)
-                saten_pads[j].lockstate[k] = false;
-    else
-        for (int j = 0; j < saten_pad_num; j++)
-            saten_pads[j].lockstate[i] = false;
+    if (i < 0) {
+        for (int j = 0; j < SATEN_PAD_NUM; j++)
+            if (saten_pads[j].flag) 
+                for (int k = 0; k < 25; k++)
+                    saten_pads[j].lockstate[k] = false;
+    } else {
+        for (int j = 0; j < SATEN_PAD_NUM; j++)
+            if (saten_pads[j].flag)
+                saten_pads[j].lockstate[i] = false;
+    }
 }
 
 // private
@@ -193,14 +199,10 @@ void saten_pad_input_refresh_joystick(int i)
 // public?
 void saten_controller_add(int i)
 {
-    if (SDL_NumJoysticks() > saten_pad_num) {
-        saten_pad_num = SDL_NumJoysticks();
-        saten_pads = (saten_pad*) realloc(saten_pads, saten_pad_num*
-                sizeof(saten_pad));
-        if (saten_pads == NULL) {
-            saten_errhandler(7);
-        }
-        memset(&saten_pads[i], 0, sizeof(saten_pad));
+    if (i >= SATEN_PAD_NUM) {
+        saten_errhandler(7);
+        saten_killf = true;
+        return;
     }
     if (SDL_IsGameController(i)) {
         saten_pads[i].dev = SDL_GameControllerOpen(i);
@@ -209,6 +211,10 @@ void saten_controller_add(int i)
         } else {
             saten_pads[i].flag = true;
             saten_haptic_init(i);
+            saten_pads[i].jdev = SDL_GameControllerGetJoystick(
+                    saten_pads[i].dev);
+            saten_pads[i].instance_id = SDL_JoystickInstanceID(
+                    saten_pads[i].jdev);
         }
     } else {
         // joystick
@@ -218,19 +224,32 @@ void saten_controller_add(int i)
         } else {
             // joystick accepted
             saten_pads[i].flag = true;
+            saten_pads[i].instance_id = SDL_JoystickInstanceID(
+                    saten_pads[i].jdev);
         }
     }
 }
 
 // public?
-void saten_controller_remove(int i)
+void saten_controller_remove(SDL_JoystickID i)
 {
-    if (SDL_IsGameController(i)) {
-        SDL_GameControllerClose(saten_pads[i].dev);
-    } else {
-        SDL_JoystickClose(saten_pads[i].jdev);
+    SDL_GameController *controller;
+    SDL_Joystick       *jstick;
+    int i2 = 0;
+    for (int j = 0; j < SATEN_PAD_NUM; j++) {
+        if (saten_pads[j].instance_id == i && saten_pads[j].flag) {
+            controller = saten_pads[j].dev;
+            jstick = saten_pads[j].jdev;
+            i2 = j;
+        }
     }
-    memset(&saten_pads[i],0, sizeof(saten_pad));
+
+    if (controller) {
+        SDL_GameControllerClose(controller);
+    } else {
+        SDL_JoystickClose(jstick);
+    }
+    memset(&saten_pads[i2],0, sizeof(saten_pad));
 }
 
 void saten_controller_deadzone(int16_t dz, int i)

@@ -9,11 +9,13 @@
 #include "_global.h"
 #include "scene_root.h"
 
-int something;
+char something;
+char anotherthing;
 
 int main (int argc, char *argv[])
 {
     printf("location of something: %p\n", &something);
+    printf("location of anotherthing: %p\n", &anotherthing);
     memset(&scene, 0, sizeof(scenemngr));
     // Engine initialization
     if (saten_init("saturn_engine_demo", SATEN_MRBLOAD) < 0)

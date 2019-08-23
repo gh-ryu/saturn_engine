@@ -31,6 +31,7 @@ typedef struct _saten_pad {
     int jbtncnt;
     int deadzone;
     bool flag;
+    SDL_JoystickID instance_id;
 } saten_pad;
 
 typedef struct _saten_framgr {

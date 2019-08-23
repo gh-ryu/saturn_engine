@@ -12,7 +12,7 @@ uint32_t saten_btn(uint8_t i, int j);
 void saten_btn_lock(int i);
 void saten_btn_unlock(int i);
 void saten_controller_add(int i);
-void saten_controller_remove(int i);
+void saten_controller_remove(SDL_JoystickID i);
 
 void saten_controller_set_deadzone(int16_t dz, int i);
 float saten_lstickang_get(int i);

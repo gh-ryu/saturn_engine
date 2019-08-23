@@ -177,6 +177,9 @@ void saten_errhandler(int i)
     case 56:
         saten_printerr(i, "Failed setting fullscreen");
         break;
+    case 57:
+        saten_printerr(i, "Player ID is invalid");
+        break;
     }
 }
 

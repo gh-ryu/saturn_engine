@@ -40,4 +40,19 @@ typedef struct _saten_vstng {
     bool update; // flag
 } saten_vstng;
 
+typedef struct _saten_btnmap {
+} saten_btnmap;
+
+typedef struct _saten_keymap {
+} saten_keymap;
+
+typedef struct _saten_player {
+    bool keyboardf; // uses keyboard
+    bool controllerf; // uses controller
+    int  padid; // controller associated with player
+    saten_btnmap btn;
+    saten_keymap key;
+    bool flag; // player enabled? disabled?
+} saten_player;
+
 #endif /* SATURN_ENGINE_STRUCT */

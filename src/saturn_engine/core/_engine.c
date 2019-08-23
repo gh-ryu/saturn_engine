@@ -13,24 +13,22 @@ int saten_core_run(saten_fptr_void fptr)
                 if (sdl_event.type == SDL_JOYDEVICEREMOVED) {
                     //FIXME jdevice.which returns nonsense on second removal
                     // and causes seg fault
-                    printf("removed controller id: %d\n",
-                            sdl_event.jdevice.which);
+                    //printf("removed controller id: %d\n",
+                    //        sdl_event.jdevice.which);
                     saten_controller_remove(sdl_event.jdevice.which);
                 }
                 if (sdl_event.type == SDL_JOYDEVICEADDED) {
-                    printf("added controller id: %d\n",
-                            sdl_event.jdevice.which);
+                    //printf("added controller id: %d\n",
+                    //        sdl_event.jdevice.which);
                     saten_controller_add(sdl_event.jdevice.which);
                 }
             }
             SDL_PumpEvents();
             saten_keystate = SDL_GetKeyboardState(NULL);
             saten_keyb_input_refresh();
-            if (saten_pad_num > 0) {
-                for (int i = 0; i < saten_pad_num; i++) {
-                    if (saten_pads[i].flag)
-                        saten_pad_input_refresh(i);
-                }
+            for (int i = 0; i < SATEN_PAD_NUM; i++) {
+                if (saten_pads[i].flag)
+                    saten_pad_input_refresh(i);
             }
         }
         if (SDL_RenderClear(saten_ren) < 0)
@@ -132,7 +130,7 @@ void saten_core_quit(void)
     }
     saten_text_quit();
     free(saten_base_path);
-    free(saten_pads);
+    //free(saten_pads);
     //free(saten_keystate); internal SDL array
     free(saten_keystate2);
     free(saten_keystate3);
