@@ -5,7 +5,7 @@ saten_player player[SATEN_PLAYER_NUM]; // 4 players max
 int saten_player_enable(int id) /* PUBLIC */
 {
     int i;
-    if (index = saten_player_check(id) == -1)
+    if ((i = saten_player_check(id)) == -1)
         return -1;
 
     player[i].flag = true;
@@ -14,6 +14,12 @@ int saten_player_enable(int id) /* PUBLIC */
 
 int saten_player_disable(int id) /* PUBLIC */
 {
+    int i;
+    if ((i = saten_player_check(id)) == -1)
+        return -1;
+
+    memset(&player[i], 0, sizeof(saten_player));
+    return 0;
 }
 
 int saten_player_check(int id) /* PRIVATE */
@@ -27,23 +33,27 @@ int saten_player_check(int id) /* PRIVATE */
 
 }
 
-int saten_player_assgnkeybrd(int id) /* PUBLIC */
+int saten_player_assignkeyboard(int id) /* PUBLIC */
 {
     int i;
-    if (index = saten_player_check(id) == -1)
+    if ((i = saten_player_check(id)) == -1)
         return -1;
 
     player[i].keyboardf = true;
     return 0;
 }
 
-int saten_player_assgnpad(int player, int pad) /* PUBLIC */
+int saten_player_assignpad(int id, int pad) /* PUBLIC */
 {
     int i;
-    if (index = saten_player_check(player) == -1)
+    if ((i = saten_player_check(id)) == -1)
+        return -1;
+    if (pad > SATEN_PAD_NUM)
         return -1;
 
-    player[i].controllerf = true;
-    player[i].padid = pad;
+    if (saten_pads[pad].flag) {
+        player[i].controllerf = true;
+        player[i].padid = pad;
+    }
     return 0;
 }

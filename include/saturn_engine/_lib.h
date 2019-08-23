@@ -49,6 +49,7 @@ void saten_kill(void);
 #include "resource.h"
 #include "data.h"
 #include "video.h"
+#include "player.h"
 
 
 #endif /* SATURN_ENGINE */
