@@ -10,6 +10,24 @@ typedef struct _scenemngr { // index 0: uid, index 1: position id
     saten_scene_info load;
 } scenemngr;
 
+typedef struct _inputcntr {
+    uint8_t accept;
+    uint8_t cancel;
+    uint8_t pause;
+    uint8_t mainshot;
+    uint8_t subshot;
+    uint8_t up;
+    uint8_t down;
+    uint8_t right;
+    uint8_t left;
+    uint8_t switchwpn;
+    uint8_t slow;
+} inputcntr;
+
 SATEN_GLOBAL scenemngr scene;
+SATEN_GLOBAL inputcntr p1inp; // controller inputs
+SATEN_GLOBAL inputcntr p2inp;
+SATEN_GLOBAL inputcntr p1inpkb; // keyboad inputs
+SATEN_GLOBAL inputcntr p2inpkb;
 
 #endif /* GLOBAL */
