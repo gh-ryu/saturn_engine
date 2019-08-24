@@ -7,6 +7,10 @@
 #include "input.h"
 
 int player;
+inputcntr p1inp; // controller inputs
+inputcntr p2inp;
+inputcntr p1inpkb; // keyboad inputs
+inputcntr p2inpkb;
 
 /* MAPPING HANDLER */
 
@@ -95,6 +99,20 @@ void input_load_mappings(char *fn, inputcntr *inp) /* PRIVATE */
     }
 }
 
+void input_set(inputcntr **btn, inputcntr **key) /* PRIVATE */
+{
+    switch (player) {
+    case 1:
+        *btn = &p1inp;
+        *key = &p1inpkb;
+        break;
+    case 2:
+        *btn = &p2inp;
+        *key = &p2inpkb;
+        break;
+    }
+}
+
 /* INPUT HANDLER */
 
 void input_playerw(int id) /* PUBLIC */
@@ -103,3 +121,21 @@ void input_playerw(int id) /* PUBLIC */
     player = id;
 }
 
+uint32_t input(enum inputs i) /* PUBLIC */
+{
+    inputcntr *btn = NULL;
+    inputcntr *key = NULL;
+    input_set(&btn, &key);
+    uint32_t rv;
+    switch (i) {
+    case accept:
+        if ((rv = saten_player_keyr(player, key->accept)) < 1)
+            rv = saten_player_btnr(player, btn->accept);
+        break;
+    case cancel:
+        if ((rv = saten_player_keyr(player, key->cancel)) < 1)
+            rv = saten_player_btnr(player, btn->cancel);
+        break;
+    }
+    return rv;
+}

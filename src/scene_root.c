@@ -6,10 +6,12 @@
 #include "_global.h"
 #include "scene_root.h"
 #include "scene_title.h"
+#include "input.h"
 
 void scene_root_init(void)
 {
     // load global resouces (menu soundeffects, load screen stuff)
+    saten_player_assign_pad(1,0); // Allow player 1 to use keyboard
     saten_load_resources(scene.root, false);
     if (saten_scene_loaded(scene.root)) {
         saten_sprite_texturize(saten_resource_sprite(scene.root, 0));
@@ -51,7 +53,8 @@ void scene_root_update(bool c)
             saten_scene_set_start(scene.title);
         }
 
-        if (saten_key(SATEN_KEY_ESC))
+        //if (saten_key(SATEN_KEY_ESC))
+        if (input(cancel))
             saten_scene_quit(scene.root);
 
     }

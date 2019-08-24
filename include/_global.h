@@ -25,9 +25,5 @@ typedef struct _inputcntr {
 } inputcntr;
 
 SATEN_GLOBAL scenemngr scene;
-SATEN_GLOBAL inputcntr p1inp; // controller inputs
-SATEN_GLOBAL inputcntr p2inp;
-SATEN_GLOBAL inputcntr p1inpkb; // keyboad inputs
-SATEN_GLOBAL inputcntr p2inpkb;
 
 #endif /* GLOBAL */

@@ -8,6 +8,7 @@
 #include "saturn_engine/_lib.h"
 #include "_global.h"
 #include "scene_root.h"
+#include "input.h"
 
 char something;
 char anotherthing;
@@ -46,6 +47,12 @@ int main (int argc, char *argv[])
     //saten_voutreg(SATEN_VOUT_1920x1080, 5);
     saten_voutreg(SATEN_VOUT_1920x1200, 5);
     saten_video_colw(0, 125, 255);
+
+    // player and input setup
+    saten_player_enable(1); // Enable player 1
+    saten_player_assign_keyboard(1); // Allow player 1 to use keyboard
+    input_init(); // Initialize input module
+    input_playerw(1); // Input checks now consider player 1's inputs
     saten_run();
     printf("w: %d, h: %d, x: %d, y: %d\n", saten_game_view.w,
             saten_game_view.h, saten_game_view.x, saten_game_view.y);
