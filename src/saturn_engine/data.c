@@ -1,15 +1,15 @@
 #include "saturn_engine/_lib.h"
 
-FILE *f;
+//FILE *f;
 
-bool secure;
-char *dfilepath;
-SDL_RWops *data;
-uint8_t fendian_flag;
-uint8_t cpuendian_flag;
-size_t fintsize;
-size_t cpuintsize;
-uint64_t checksum;
+static bool secure;
+static char *dfilepath;
+static SDL_RWops *data;
+static uint8_t fendian_flag;
+static uint8_t cpuendian_flag;
+static size_t fintsize;
+static size_t cpuintsize;
+static uint64_t checksum;
 
 // public
 int saten_data_save_init(char *fp, bool is_secure)

@@ -133,7 +133,6 @@ uint32_t input(enum inputs i) /* PUBLIC */
             rv = saten_player_btnr(player, btn->accept);
         break;
     case cancel:
-        printf("A\n");
         if ((rv = saten_player_keyr(player, key->cancel)) < 1)
             rv = saten_player_btnr(player, btn->cancel);
         break;
