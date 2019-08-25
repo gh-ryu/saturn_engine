@@ -1,6 +1,6 @@
 #include "saturn_engine/_lib.h"
 
-saten_player player[SATEN_PLAYER_NUM]; // 4 players max
+static saten_player player[SATEN_PLAYER_NUM]; // 4 players max
 
 int saten_player_enable(int id) /* PUBLIC */
 {

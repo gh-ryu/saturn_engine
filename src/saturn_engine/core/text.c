@@ -1,7 +1,7 @@
 #include "saturn_engine/core/_lib.h"
 
 
-saten_mfield mfg; // memory field for glyphs
+static saten_mfield mfg; // memory field for glyphs
 
 // private
 void saten_mrb_text_init(void)

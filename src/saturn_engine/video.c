@@ -1,8 +1,8 @@
 #include "saturn_engine/_lib.h"
 
-saten_vinfo *video_modes; // dynamic array
-saten_window_info winfo; // information about window
-bool video_modes_flag;
+static saten_vinfo *video_modes; // dynamic array
+static saten_window_info winfo; // information about window
+static bool video_modes_flag;
 
 // private
 void saten_video_init(void)

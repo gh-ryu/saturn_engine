@@ -4,7 +4,7 @@
 
 #include "saturn_engine/core/_lib.h"
 
-saten_cryptomngr mrb_cryptobj;
+static saten_cryptomngr mrb_cryptobj;
 
 void saten_mrb_crypt_init(void)
 {

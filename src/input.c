@@ -6,11 +6,11 @@
 #include "_global.h"
 #include "input.h"
 
-int player;
-inputcntr p1inp; // controller inputs
-inputcntr p2inp;
-inputcntr p1inpkb; // keyboad inputs
-inputcntr p2inpkb;
+static int player;
+static inputcntr p1inp; // controller inputs
+static inputcntr p2inp;
+static inputcntr p1inpkb; // keyboad inputs
+static inputcntr p2inpkb;
 
 /* MAPPING HANDLER */
 
@@ -133,6 +133,7 @@ uint32_t input(enum inputs i) /* PUBLIC */
             rv = saten_player_btnr(player, btn->accept);
         break;
     case cancel:
+        printf("A\n");
         if ((rv = saten_player_keyr(player, key->cancel)) < 1)
             rv = saten_player_btnr(player, btn->cancel);
         break;
