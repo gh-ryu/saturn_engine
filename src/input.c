@@ -99,16 +99,17 @@ void input_load_mappings(char *fn, inputcntr *inp) /* PRIVATE */
     }
 }
 
-void input_set(inputcntr **btn, inputcntr **key) /* PRIVATE */
+//void input_set(inputcntr **btn, inputcntr **key) /* PRIVATE */
+void input_set(uint8_t **btn, uint8_t **key) /* PRIVATE */
 {
     switch (player) {
     case 1:
-        *btn = &p1inp;
-        *key = &p1inpkb;
+        *btn = (uint8_t*)&p1inp;
+        *key = (uint8_t*)&p1inpkb;
         break;
     case 2:
-        *btn = &p2inp;
-        *key = &p2inpkb;
+        //*btn = &p2inp;
+        //*key = &p2inpkb;
         break;
     }
 }
@@ -123,11 +124,23 @@ void input_playerw(int id) /* PUBLIC */
 
 uint32_t input(enum inputs i) /* PUBLIC */
 {
-    inputcntr *btn = NULL;
-    inputcntr *key = NULL;
+    //inputcntr *btn = NULL;
+    //inputcntr *key = NULL;
+    uint8_t *btn = NULL;
+    uint8_t *key = NULL;
     input_set(&btn, &key);
     uint32_t rv;
     switch (i) {
+    // Check analog inputs too
+    case up:
+    case down:
+    case left:
+    case right:
+    default:
+        if ((rv = saten_player_keyr(player, key[i])) < 1)
+            rv = saten_player_btnr(player, btn[i]);
+        break;
+        /*
     case accept:
         if ((rv = saten_player_keyr(player, key->accept)) < 1)
             rv = saten_player_btnr(player, btn->accept);
@@ -136,6 +149,19 @@ uint32_t input(enum inputs i) /* PUBLIC */
         if ((rv = saten_player_keyr(player, key->cancel)) < 1)
             rv = saten_player_btnr(player, btn->cancel);
         break;
+    case pause:
+        if ((rv = saten_player_keyr(player, key->pause)) < 1)
+            rv = saten_player_btnr(player, btn->pause);
+        break;
+    case mainshot:
+        if ((rv = saten_player_keyr(player, key->mainshot)) < 1)
+            rv = saten_player_btnr(player, btn->mainshot);
+        break;
+    case subshot:
+        if ((rv = saten_player_keyr(player, key->subshot)) < 1)
+            rv = saten_player_btnr(player, btn->subshot);
+        break;
+        */
     }
     return rv;
 }
