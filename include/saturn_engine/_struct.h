@@ -55,4 +55,22 @@ typedef struct _saten_player {
     bool flag; // player enabled? disabled?
 } saten_player;
 
+typedef struct _saten_tile {
+    int id; // index for graphic
+    int layer; // layer id
+    bool pass_upf;
+    bool pass_downf;
+    bool pass_rightf;
+    bool pass_leftf;
+} saten_tile;
+
+typedef struct _saten_background {
+    saten_layer *layer; // To draw sprites on a surface
+    SDL_Texture *texture; // Uses pixel data from layer's surface
+    saten_sprite *tilset;
+    saten_tile *tiles;
+    SDL_Rect tilemap; // The whole map used by the background
+    SDL_Rect screen; // The screen drawn to the renderer
+} saten_background;
+
 #endif /* SATURN_ENGINE_STRUCT */

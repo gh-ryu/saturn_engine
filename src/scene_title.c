@@ -18,7 +18,7 @@ void scene_title_init(void)
     if (saten_scene_loaded(scene.title) && !saten_scene_exists(scene.load)) {
         // initialization with loaded resources starts here
         saten_sprite_texturize(saten_resource_sprite(scene.title, 0));
-        saten_sprite_scale(saten_resource_sprite(scene.title, 0), 0.5f);
+        //saten_sprite_scale(saten_resource_sprite(scene.title, 0), 0.5f);
         int w = saten_get_text_width(saten_resource_text(scene.title, 1));
         printf("%d\n", w);
         saten_text_update(saten_resource_text(scene.title, 1), NULL,
@@ -41,38 +41,65 @@ void scene_title_update(bool c)
             saten_key_lock(-1);
             saten_scene_quit(scene.title);
         }
-        /*
-        if (saten_key(SATEN_KEY_F4)) {
-            printf("F4..\n");
-            SDL_SetWindowFullscreen(saten_window, SDL_WINDOW_FULLSCREEN);
-        }
-        if (saten_key(SATEN_KEY_F5)) {
-            printf("F5..\n");
-            SDL_SetWindowFullscreen(saten_window,
-                    SDL_WINDOW_FULLSCREEN_DESKTOP);
-            SDL_DisplayMode current;
-            SDL_GetWindowDisplayMode(saten_window, &current);
-            printf("w: %d, h: %d\n", current.w, current.h);
-        }
-        */
     }
 }
 
 void scene_title_draw(void)
 {
-    //saten_text_draw(saten_asset.text[0]);
-    //saten_draw_rect_filled(0, 0, 2*384, 2*216, 0, 0,
-    //    0, 255, SDL_BLENDMODE_NONE);
-    saten_sprite_draw(saten_resource_sprite(scene.title, 0),
-            0, 0, 0, 0, 0);
-    saten_text_draw(saten_resource_text(scene.title, 1));
+
+    saten_sprite* spr = saten_resource_sprite(scene.title, 0);
+    uint32_t pformat = SDL_GetWindowPixelFormat(saten_window);
+    SDL_Surface *srf = SDL_ConvertSurfaceFormat(spr->srf, pformat, 0);
+    void *pixels = NULL;
+
+    SDL_Texture *txt = SDL_CreateTexture(saten_ren, pformat,
+            SDL_TEXTUREACCESS_STREAMING, srf->w, srf->h);
+
+    // start profiling
+    uint64_t start = SDL_GetPerformanceCounter();
+
+    SDL_LockTexture(txt, NULL, &pixels, &srf->pitch);
+
+    memcpy(pixels, srf->pixels, srf->pitch * srf->h);
+
+    SDL_UnlockTexture(txt);
+    SDL_RenderCopy(saten_ren, txt, NULL, NULL);
+
+    //SDL_Rect rect = { 0, 0, 320, 240 };
+    //SDL_Texture* txt = SDL_CreateTextureFromSurface(saten_ren, spr->srf);
+    //SDL_RenderCopy(saten_ren, spr->texture, NULL, &rect);
     /*
-    SDL_RenderSetScale(saten_ren, 1, 1);
-    for (int i = 0; i < 480; i++)
-        if (i % 2)
-            saten_draw_line(0, i, 640, i, 0, 0, 0, 125, SDL_BLENDMODE_BLEND);
-    SDL_RenderSetScale(saten_ren, 2, 2);
+    for (int y = 0; y < 240; y++) {
+        for (int x = 0; x < 320; x++) {
+            uint8_t r0, g0, b0, a0;
+            uint32_t pixel = saten_pixel_get(spr, SATEN_SPRITE, x, y);
+            SDL_GetRGBA(pixel, spr->srf->format,&r0,&g0,&b0,&a0);
+            SDL_RenderDrawPoint(saten_ren, x, y);
+        }
+    }
     */
+
+    // end profiling
+    uint64_t end = SDL_GetPerformanceCounter();
+    uint64_t diff = end - start;
+    float deltaf = (float)diff;
+    deltaf = (deltaf / SDL_GetPerformanceFrequency()) * 1000.0f;
+    printf("diff: %lu\n", diff);
+    printf("deltaf: %f\n", deltaf);
+    SDL_FreeSurface(srf);
+    SDL_DestroyTexture(txt);
+
+    // loading texture and copying: rougly 0.5ms
+    // preloading texture and copying: rougly 0.004ms
+    // drawing each pixel individually: rougly 6.5ms
+    // writing to texture 0.1 - 0.7ms
+
+    //saten_sprite_draw(saten_resource_sprite(scene.title, 0),
+    //        0, 0, 0, 0, 0);
+    //saten_text_draw(saten_resource_text(scene.title, 1));
+    //
+    
+    //SDL_DestroyTexture(txt);
 }
 
 void scene_title_quit(void)
