@@ -19,6 +19,8 @@ SATENOBJ += src/saturn_engine/core/text.c
 SATENOBJ += src/saturn_engine/core/util.c
 SATENOBJ += src/saturn_engine/core/mfield.c
 SATENOBJ += src/saturn_engine/core/crypt.c
+SATENOBJ += src/saturn_engine/core/window.c
+SATENOBJ += src/saturn_engine/core/texture.c
 
 
 SATENOBJ += src/saturn_engine/_engine.c
@@ -29,3 +31,4 @@ SATENOBJ += src/saturn_engine/sfx.c
 SATENOBJ += src/saturn_engine/data.c
 SATENOBJ += src/saturn_engine/video.c
 SATENOBJ += src/saturn_engine/player.c
+SATENOBJ += src/saturn_engine/background.c

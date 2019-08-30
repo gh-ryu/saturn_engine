@@ -180,6 +180,12 @@ void saten_errhandler(int i)
     case 57:
         saten_printerr(i, "Player ID is invalid");
         break;
+    case 58:
+        saten_printerr(i, "Unable to fetch window pixel format");
+        break;
+    case 59:
+        saten_printerr(i, "Unable to create texture");
+        break;
     }
 }
 

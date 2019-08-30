@@ -131,5 +131,7 @@ void saten_core_quit(void);
 #include "audio.h"
 #include "mfield.h"
 #include "crypt.h"
+#include "window.h"
+#include "texture.h"
 
 #endif /* SATURN_ENGINE_CORE */

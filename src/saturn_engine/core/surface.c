@@ -23,6 +23,17 @@ SDL_Surface* saten_surface_create(int w, int h, int depth)
     return srf;
 }
 
+SDL_Surface* saten_surface_fromwinformat(int w, int h, int depth)
+{
+    SDL_Surface *srf = NULL;
+    uint32_t pformat = saten_window_pformr();
+    srf = SDL_CreateRGBSurfaceWithFormat(0, w, h, depth, pformat);
+    if (srf == NULL)
+        saten_errhandler(17);
+
+    return srf;
+}
+
 // private
 SDL_Surface* saten_surface_get(void *data, int type)
 {

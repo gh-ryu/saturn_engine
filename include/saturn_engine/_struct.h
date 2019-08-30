@@ -56,8 +56,13 @@ typedef struct _saten_player {
 } saten_player;
 
 typedef struct _saten_tile {
-    int id; // index for graphic
-    int layer; // layer id
+    int id; // Index for graphic
+    int layer; // Layer id
+    bool flexf; // Flexible layer id changeable at runtime
+    bool dynaf; // Dynamic tile
+    int freq;   // Update frequency for dynamic tiles
+    int cnt;   
+    int total; // Number of alternating tiles
     bool pass_upf;
     bool pass_downf;
     bool pass_rightf;
@@ -65,12 +70,19 @@ typedef struct _saten_tile {
 } saten_tile;
 
 typedef struct _saten_background {
-    saten_layer *layer; // To draw sprites on a surface
-    SDL_Texture *texture; // Uses pixel data from layer's surface
-    saten_sprite *tilset;
+    // Layer 1 drawn before sprites 
+    SDL_Surface *surface1; // To draw sprites on a surface
+    SDL_Texture *texture1; // Uses pixel data from layer's surface
+    // Layer 2 drawn after sprites
+    SDL_Surface *surface2; // To draw sprites on a surface
+    SDL_Texture *texture2; // Uses pixel data from layer's surface
+    saten_sprite *tileset;
+    saten_sprite *picture; // Optional image to draw on tilemap
     saten_tile *tiles;
     SDL_Rect tilemap; // The whole map used by the background
     SDL_Rect screen; // The screen drawn to the renderer
+    int x_offset, y_offset; // Draw x/y pixels beyond the screen
+                          // Important for HDMA effects
 } saten_background;
 
 #endif /* SATURN_ENGINE_STRUCT */
