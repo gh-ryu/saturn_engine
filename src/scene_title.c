@@ -50,20 +50,31 @@ void scene_title_draw(void)
     saten_sprite* spr = saten_resource_sprite(scene.title, 0);
     uint32_t pformat = SDL_GetWindowPixelFormat(saten_window);
     SDL_Surface *srf = SDL_ConvertSurfaceFormat(spr->srf, pformat, 0);
-    void *pixels = NULL;
+    //void *pixels = NULL;
 
     SDL_Texture *txt = SDL_CreateTexture(saten_ren, pformat,
             SDL_TEXTUREACCESS_STREAMING, srf->w, srf->h);
 
     // start profiling
     uint64_t start = SDL_GetPerformanceCounter();
+    //SDL_Rect src = { 0, 0, 1, 1 };
+    //SDL_Rect trgt = { 0, 0, 1, 1 };
+    for (int y = 0; y < 240; y++) {
+        for (int x = 0; x < 320; x++) {
+            //src.x = x;
+            //trgt.x = x;
+            //src.y = y;
+            //trgt.y = y;
+            SDL_RenderCopy(saten_ren, spr->texture, NULL, NULL);
+        }
+    }
 
-    SDL_LockTexture(txt, NULL, &pixels, &srf->pitch);
+    //SDL_LockTexture(txt, NULL, &pixels, &srf->pitch);
 
-    memcpy(pixels, srf->pixels, srf->pitch * srf->h);
+    //memcpy(pixels, srf->pixels, srf->pitch * srf->h);
 
-    SDL_UnlockTexture(txt);
-    SDL_RenderCopy(saten_ren, txt, NULL, NULL);
+    //SDL_UnlockTexture(txt);
+    //SDL_RenderCopy(saten_ren, txt, NULL, NULL);
 
     //SDL_Rect rect = { 0, 0, 320, 240 };
     //SDL_Texture* txt = SDL_CreateTextureFromSurface(saten_ren, spr->srf);
@@ -93,6 +104,8 @@ void scene_title_draw(void)
     // preloading texture and copying: rougly 0.004ms
     // drawing each pixel individually: rougly 6.5ms
     // writing to texture 0.1 - 0.7ms
+    // copying each pixel from texture to renderer: 130ms?!
+    // copying whole texture for each pixel: 800ms....
 
     //saten_sprite_draw(saten_resource_sprite(scene.title, 0),
     //        0, 0, 0, 0, 0);

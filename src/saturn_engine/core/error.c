@@ -186,6 +186,9 @@ void saten_errhandler(int i)
     case 59:
         saten_printerr(i, "Unable to create texture");
         break;
+    case 60:
+        saten_printerr(i, "Tilemap dimensions need to be multiples of 8");
+        break;
     }
 }
 

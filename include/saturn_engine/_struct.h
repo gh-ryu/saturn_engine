@@ -83,6 +83,9 @@ typedef struct _saten_background {
     SDL_Rect screen; // The screen drawn to the renderer
     int x_offset, y_offset; // Draw x/y pixels beyond the screen
                           // Important for HDMA effects
+
+    // Mode 7 stuff
+    int a, b, c, d, x0, y0;
 } saten_background;
 
 #endif /* SATURN_ENGINE_STRUCT */

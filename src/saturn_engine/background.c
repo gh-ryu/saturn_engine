@@ -3,6 +3,11 @@
 saten_background* saten_bg_create(saten_sprite *tileset, saten_sprite *pic,
         int w, int h, int x_offset, int y_offset, int wscreen, int hscreen)
 {
+    if (w%8 != 0 || h%8 != 0) {
+        saten_errhandler(60);
+        return NULL;
+    }
+    const int tiles_n = (w/8)*(h/8);
     SDL_Rect tilemap = { 0, 0, w, h };
     SDL_Rect screen = { 0, 0, wscreen, hscreen };
 
@@ -17,7 +22,7 @@ saten_background* saten_bg_create(saten_sprite *tileset, saten_sprite *pic,
     bg->y_offset = y_offset;
     bg->tileset = tileset;
     bg->picture = pic;
-    bg->tiles = (saten_tile*)saten_malloc(sizeof(saten_tile)*(w*h));
+    bg->tiles = (saten_tile*)saten_malloc(sizeof(saten_tile)*tiles_n);
     bg->surface1 = saten_surface_fromwinformat(w, h, 32);
     bg->surface2 = saten_surface_fromwinformat(w, h, 32);
     uint32_t pformat = saten_window_pformr();
