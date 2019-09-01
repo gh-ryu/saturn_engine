@@ -3,16 +3,25 @@
 // public
 saten_sprite* saten_sprite_load(char *filename)
 {
+    uint32_t pformat = saten_window_pformr();
     saten_sprite* sprite = (saten_sprite*) saten_malloc(sizeof(saten_sprite));
-    sprite->srf = IMG_Load(filename);
-    if (sprite->srf == NULL)
+    SDL_Surface *srf = IMG_Load(filename);
+    //printf("format before: %s\n", SDL_GetPixelFormatName(srf->format->format));
+    if (srf == NULL)
         saten_errhandler(33);
+    else
+        sprite->srf = SDL_ConvertSurfaceFormat(srf, pformat, 0);
+    if (sprite->srf == NULL)
+        saten_errhandler(61);
+    //printf("format after: %s\n", SDL_GetPixelFormatName(sprite->srf->format->format));
     sprite->target = (SDL_Rect*)saten_malloc(sizeof(SDL_Rect));
     sprite->target->x = 0;
     sprite->target->y = 0;
     sprite->target->w = sprite->srf->w;
     sprite->target->h = sprite->srf->h;
     sprite->scale = 1.0f;
+
+    SDL_FreeSurface(srf);
 
     return sprite;
 }

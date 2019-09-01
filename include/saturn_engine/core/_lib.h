@@ -43,12 +43,14 @@
 
 #include "_struct.h"
 
-SATEN_GLOBAL char *saten_base_path;
-SATEN_GLOBAL bool saten_brkf; // break flag
-SATEN_GLOBAL bool saten_killf;
-SATEN_GLOBAL saten_pad saten_pads[SATEN_PAD_NUM];
 SATEN_GLOBAL SDL_Window *saten_window;
 SATEN_GLOBAL SDL_Renderer *saten_ren;
+
+SATEN_GLOBAL bool saten_brkf; // break flag
+SATEN_GLOBAL bool saten_killf;
+
+SATEN_GLOBAL char *saten_base_path;
+SATEN_GLOBAL saten_pad saten_pads[SATEN_PAD_NUM];
 SATEN_GLOBAL saten_framgr saten_framectrl;
 SATEN_GLOBAL uint8_t saten_core_flags;
 SATEN_GLOBAL char* saten_errpath;
@@ -133,5 +135,6 @@ void saten_core_quit(void);
 #include "crypt.h"
 #include "window.h"
 #include "texture.h"
+#include "renderer.h"
 
 #endif /* SATURN_ENGINE_CORE */

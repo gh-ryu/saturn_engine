@@ -2,6 +2,7 @@
 
 saten_background* saten_bg_create(saten_sprite *tileset,saten_tile *tmap,
         int w, int h, int x_offset, int y_offset, int wscreen0, int hscreen0)
+    /* PUBLIC */
 {
     if (w%8 != 0 || h%8 != 0) {
         saten_errhandler(60);
@@ -12,9 +13,6 @@ saten_background* saten_bg_create(saten_sprite *tileset,saten_tile *tmap,
     const int hscreen = hscreen0 + (y_offset*2);
     SDL_Rect tilemap = { 0, 0, w, h };
     SDL_Rect screen = { x_offset, y_offset, wscreen0, hscreen0 };
-
-    
-
     
     saten_background *bg = (saten_background*)saten_malloc(
             sizeof(saten_background));
@@ -38,7 +36,13 @@ saten_background* saten_bg_create(saten_sprite *tileset,saten_tile *tmap,
     return bg;
 }
 
-void saten_bg_destroy(saten_background *bg)
+void saten_bg_imgw(saten_background *bg, saten_sprite *spr, int x, int y)
+    /* PUBLIC */
+{
+
+}
+
+void saten_bg_destroy(saten_background *bg) /* PUBLIC */
 {
     free(bg->tiles);
     SDL_FreeSurface(bg->surface1);

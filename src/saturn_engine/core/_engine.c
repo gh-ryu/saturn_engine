@@ -79,13 +79,8 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
         return -1;
     }
 
-    saten_ren = SDL_CreateRenderer(saten_window, -1, SDL_RENDERER_ACCELERATED);
-    if (saten_ren == NULL) {
-        saten_errhandler(4);
+    if (saten_ren_create() < 0)
         return -1;
-    }
-
-
 
     if (saten_flag_check(SATEN_INPUT, saten_core_flags)) {
         saten_keystate2 = (int32_t*)saten_malloc(SATEN_KEYNUM*sizeof(int32_t));

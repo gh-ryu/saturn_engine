@@ -95,7 +95,7 @@ void scene_title_draw(void)
     uint64_t diff = end - start;
     float deltaf = (float)diff;
     deltaf = (deltaf / SDL_GetPerformanceFrequency()) * 1000.0f;
-    printf("diff: %lu\n", diff);
+    printf("diff: %zu\n", diff);
     printf("deltaf: %f\n", deltaf);
     SDL_FreeSurface(srf);
     SDL_DestroyTexture(txt);

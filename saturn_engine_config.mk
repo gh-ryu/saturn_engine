@@ -21,6 +21,7 @@ SATENOBJ += src/saturn_engine/core/mfield.c
 SATENOBJ += src/saturn_engine/core/crypt.c
 SATENOBJ += src/saturn_engine/core/window.c
 SATENOBJ += src/saturn_engine/core/texture.c
+SATENOBJ += src/saturn_engine/core/renderer.c
 
 
 SATENOBJ += src/saturn_engine/_engine.c
