@@ -67,6 +67,7 @@ typedef struct _saten_tile {
     bool pass_downf;
     bool pass_rightf;
     bool pass_leftf;
+    int opacity;
 } saten_tile;
 
 typedef struct _saten_background {
@@ -77,8 +78,9 @@ typedef struct _saten_background {
     SDL_Surface *surface2; // To draw sprites on a surface
     SDL_Texture *texture2; // Uses pixel data from layer's surface
     saten_sprite *tileset;
-    saten_sprite *picture; // Optional image to draw on tilemap
+    //saten_sprite *picture; // Optional image to draw on tilemap
     saten_tile *tiles;
+    int tilen;
     SDL_Rect tilemap; // The whole map used by the background
     SDL_Rect screen; // The screen drawn to the renderer
     int x_offset, y_offset; // Draw x/y pixels beyond the screen
