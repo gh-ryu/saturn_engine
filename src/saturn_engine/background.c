@@ -25,13 +25,10 @@ saten_background* saten_bg_create(saten_sprite *tileset,saten_tile *tmap,
     //bg->tiles = (saten_tile*)saten_malloc(sizeof(saten_tile)*tiles_n);
     bg->tiles = tmap;
     bg->tilen = tilen;
-    bg->surface1 = saten_surface_fromwinformat(w, h, 32);
-    bg->surface2 = saten_surface_fromwinformat(w, h, 32);
-    uint32_t pformat = saten_window_pformr();
-    bg->texture1 = SDL_CreateTexture(saten_ren, pformat,
-            SDL_TEXTUREACCESS_STREAMING, wscreen, hscreen);
-    bg->texture2 = SDL_CreateTexture(saten_ren, pformat,
-            SDL_TEXTUREACCESS_STREAMING, wscreen, hscreen);
+    bg->surface1 = saten_surface_create(w, h, 32);
+    bg->surface2 = saten_surface_create(w, h, 32);
+    bg->texture1 = saten_texture_create(wscreen, hscreen);
+    bg->texture2 = saten_texture_create(wscreen, hscreen);
 
     return bg;
 }
@@ -39,7 +36,6 @@ saten_background* saten_bg_create(saten_sprite *tileset,saten_tile *tmap,
 void saten_bg_imgw(saten_background *bg, saten_sprite *spr, int x, int y)
     /* PUBLIC */
 {
-
 }
 
 void saten_bg_destroy(saten_background *bg) /* PUBLIC */

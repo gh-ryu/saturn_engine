@@ -82,6 +82,9 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
     if (saten_ren_create() < 0)
         return -1;
 
+    saten_surface_pformatw(saten_ren_pformatr());
+    saten_texture_pformatw(saten_ren_pformatr());
+
     if (saten_flag_check(SATEN_INPUT, saten_core_flags)) {
         saten_keystate2 = (int32_t*)saten_malloc(SATEN_KEYNUM*sizeof(int32_t));
         saten_keystate3 = (bool*)saten_malloc(SATEN_KEYNUM*sizeof(bool));

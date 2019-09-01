@@ -1,9 +1,12 @@
 #include "saturn_engine/core/_lib.h"
 
+static uint32_t pformat;
+
 // private
 SDL_Surface* saten_surface_create(int w, int h, int depth)
 {
     SDL_Surface *srf = NULL;
+    /*
     int32_t rmask, gmask, bmask, amask;
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
     rmask = 0xff000000;
@@ -19,8 +22,17 @@ SDL_Surface* saten_surface_create(int w, int h, int depth)
     srf = SDL_CreateRGBSurface(0, w, h, depth, rmask, gmask, bmask, amask);
     if (srf == NULL)
         saten_errhandler(17);
+    */
+    srf = SDL_CreateRGBSurfaceWithFormat(0, w, h, depth, pformat);
+    if (srf == NULL)
+        saten_errhandler(17);
 
     return srf;
+}
+
+void saten_surface_pformatw(uint32_t form) /* PUBLIC */
+{
+    pformat = form;
 }
 
 SDL_Surface* saten_surface_fromwinformat(int w, int h, int depth)

@@ -1,7 +1,7 @@
 #include "saturn_engine/core/_lib.h"
 
-SDL_RendererInfo info;
-uint32_t pformat;
+static SDL_RendererInfo info;
+static uint32_t pformat;
 
 int saten_ren_create(void) /* PUBLIC */
 {

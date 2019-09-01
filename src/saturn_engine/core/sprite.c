@@ -3,7 +3,7 @@
 // public
 saten_sprite* saten_sprite_load(char *filename)
 {
-    uint32_t pformat = saten_window_pformr();
+    uint32_t pformat = saten_ren_pformatr();
     saten_sprite* sprite = (saten_sprite*) saten_malloc(sizeof(saten_sprite));
     SDL_Surface *srf = IMG_Load(filename);
     //printf("format before: %s\n", SDL_GetPixelFormatName(srf->format->format));
