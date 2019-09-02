@@ -76,6 +76,8 @@ typedef struct _saten_plane {
     saten_sprite *tileset;
     //saten_sprite *picture; // Optional image to draw on tilemap
     saten_tile **tmap;
+    saten_sprite **pic;
+    int picn;
     int tmapn;
     int tilen;
     SDL_Rect map; // The whole map used by the background

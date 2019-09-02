@@ -37,12 +37,21 @@ void saten_plane_linktmap(saten_plane *pl, saten_tile *tmap) /* PUBLIC */
     pl->tmap[i] = tmap;
 }
 
-void saten_plane_sprdraw(saten_plane *pl, saten_sprite *spr, int x, int y)
+void saten_plane_linkspr(saten_plane *pl, saten_sprite *spr) /* PUBLIC */
+{
+    int i = pl->picn;
+    pl->picn++;
+    pl->pic = (saten_sprite**)saten_realloc(pl->pic,
+            pl->picn * sizeof(saten_sprite*));
+    pl->pic[i] = spr;
+}
+
+void saten_plane_blitpic(saten_plane *pl, int id, int x, int y)
     /* PUBLIC */
 {
 }
 
-void saten_plane_tmapdraw(saten_plane *pl, int id) /* PUBLIC */
+void saten_plane_blittmap(saten_plane *pl, int id) /* PUBLIC */
 {
 }
 
