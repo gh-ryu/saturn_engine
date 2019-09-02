@@ -46,9 +46,20 @@ void saten_plane_linkspr(saten_plane *pl, saten_sprite *spr) /* PUBLIC */
     pl->pic[i] = spr;
 }
 
-void saten_plane_blitpic(saten_plane *pl, int id, int x, int y)
-    /* PUBLIC */
+void saten_plane_blitpic(saten_plane *pl, int id, int x, int y, float scale,
+        double ang) /* PUBLIC */
 {
+    SDL_Rect target = { x, y, pl->pic[id]->srf->w, pl->pic[id]->srf->h };
+    if (ang != 0) {
+        // TODO rotation
+    }
+    if (scale == 1.0f) {
+        SDL_BlitSurface(pl->pic[id]->srf, NULL, pl->srf, &target);
+    } else {
+        target.w *= scale;
+        target.h *= scale;
+        SDL_BlitScaled(pl->pic[id]->srf, NULL, pl->srf, &target);
+    }
 }
 
 void saten_plane_blittmap(saten_plane *pl, int id) /* PUBLIC */
@@ -61,4 +72,9 @@ void saten_plane_destroy(saten_plane *pl) /* PUBLIC */
     SDL_FreeSurface(pl->srf);
     SDL_DestroyTexture(pl->txt);
     free(pl);
+}
+
+void saten_plane_clear(saten_plane *pl)
+{
+    SDL_FillRect(pl->srf, NULL, SDL_MapRGBA(pl->srf->format, 0, 0, 0, 255));
 }
