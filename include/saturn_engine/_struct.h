@@ -70,24 +70,21 @@ typedef struct _saten_tile {
     int opacity;
 } saten_tile;
 
-typedef struct _saten_background {
-    // Layer 1 drawn before sprites 
-    SDL_Surface *surface1; // To draw sprites on a surface
-    SDL_Texture *texture1; // Uses pixel data from layer's surface
-    // Layer 2 drawn after sprites
-    SDL_Surface *surface2; // To draw sprites on a surface
-    SDL_Texture *texture2; // Uses pixel data from layer's surface
+typedef struct _saten_plane {
+    SDL_Surface *srf; // To draw sprites on a surface
+    SDL_Texture *txt; // Uses pixel data from layer's surface
     saten_sprite *tileset;
     //saten_sprite *picture; // Optional image to draw on tilemap
-    saten_tile *tiles;
+    saten_tile **tmap;
+    int tmapn;
     int tilen;
-    SDL_Rect tilemap; // The whole map used by the background
+    SDL_Rect map; // The whole map used by the background
     SDL_Rect screen; // The screen drawn to the renderer
     int x_offset, y_offset; // Draw x/y pixels beyond the screen
                           // Important for HDMA effects
 
     // Mode 7 stuff
     int a, b, c, d, x0, y0;
-} saten_background;
+} saten_plane;
 
 #endif /* SATURN_ENGINE_STRUCT */

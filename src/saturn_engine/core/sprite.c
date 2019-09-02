@@ -34,6 +34,10 @@ void saten_sprite_texturize(saten_sprite *sprite)
     sprite->texture = SDL_CreateTextureFromSurface(saten_ren, sprite->srf);
     if (sprite->texture == NULL)
         saten_errhandler(14);
+
+    uint32_t pformat = 0;
+    SDL_QueryTexture(sprite->texture, &pformat, NULL, NULL, NULL);
+    printf("Texture pformat: %s\n", SDL_GetPixelFormatName(pformat));
 }
 
 // public

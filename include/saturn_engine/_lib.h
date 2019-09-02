@@ -50,7 +50,7 @@ void saten_kill(void);
 #include "data.h"
 #include "video.h"
 #include "player.h"
-#include "background.h"
+#include "plane.h"
 
 
 #endif /* SATURN_ENGINE */
