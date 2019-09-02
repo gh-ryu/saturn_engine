@@ -49,6 +49,8 @@ void saten_plane_linkspr(saten_plane *pl, saten_sprite *spr) /* PUBLIC */
 void saten_plane_blitpic(saten_plane *pl, int id, int x, int y, float scale,
         double ang) /* PUBLIC */
 {
+    if (pl->pic == NULL || id > pl->picn)
+        saten_errhandler(63);
     SDL_Rect target = { x, y, pl->pic[id]->srf->w, pl->pic[id]->srf->h };
     if (ang != 0) {
         // TODO rotation

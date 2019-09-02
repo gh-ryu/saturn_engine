@@ -195,6 +195,9 @@ void saten_errhandler(int i)
     case 62:
         saten_printerr(i, "Failed to receive renderer info");
         break;
+    case 63:
+        saten_printerr(i, "No sprite to blit for plane");
+        break;
     }
 }
 
