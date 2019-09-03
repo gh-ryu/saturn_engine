@@ -94,16 +94,28 @@ void saten_plane_make(saten_plane *pl, int test) /* PUBLIC */
     int yend   = pl->screen.y + pl->screen.h;
     int xstart = pl->screen.x;
     int xend   = pl->screen.x + pl->screen.w;
+    /*
     for (int y = ystart; y < yend; y++) {
         for (int x = xstart; x < xend; x++) {
             uint8_t *p =
                 (uint8_t*) pl->srf->pixels + y * pl->srf->pitch + x * 4;
-            pl->buffer[i] = *(uint32_t*)p;
+            
+            //memcpy(pl->buffer+i, p, 4);
+            memcpy(pixels+i, p, 4);
+            //pl->buffer[i] = *(uint32_t*)p;
             //pl->buffer[i] = saten_pixel_get(pl->srf, SATEN_SURFACE, x, y);
             i++;
         }
     }
-    memcpy(pixels, pl->buffer, pitch * pl->screen.h);
+    */
+    for (int y = ystart; y < yend; y++) {
+        uint8_t *p =
+            (uint8_t*) pl->srf->pixels + y * pl->srf->pitch + xstart * 4;
+        memcpy(pixels+i, p, pitch);
+        i += pitch;
+        
+    }
+    //memcpy(pixels, pl->buffer, pitch * pl->screen.h);
     SDL_UnlockTexture(pl->txt);
     } else {
     }
