@@ -6,6 +6,9 @@
 #include "_global.h"
 #include "scene_title.h"
 #include "scene_load.h"
+#include "input.h"
+
+saten_plane *plane0;
 
 void scene_title_init(void)
 {
@@ -23,6 +26,12 @@ void scene_title_init(void)
         printf("%d\n", w);
         saten_text_update(saten_resource_text(scene.title, 1), NULL,
                 1.0, 320/2 - w/2, 200);
+
+        /* PLANE TESTING */
+        plane0 = saten_plane_create(NULL, 1024, 1024, 0, 0, 320, 240);
+        saten_plane_linkspr(plane0, saten_resource_sprite(scene.title, 0));
+
+
 
         saten_scene_init_done(scene.title);
     }
@@ -57,17 +66,27 @@ void scene_title_draw(void)
 
     // start profiling
     uint64_t start = SDL_GetPerformanceCounter();
+    saten_plane_clear(plane0);
+    saten_plane_blitpic(plane0, 0, 0, 0, 1.0f, 0.0);
+    if (input(pause)) {
+        saten_plane_make(plane0, 1);
+        saten_plane_draw(plane0, 1);
+    } else {
+        saten_plane_make(plane0, 0);
+        saten_plane_draw(plane0, 0);
+    }
     //SDL_Rect src = { 0, 0, 1, 1 };
     //SDL_Rect trgt = { 0, 0, 1, 1 };
-    for (int y = 0; y < 240; y++) {
-        for (int x = 0; x < 320; x++) {
+
+    //for (int y = 0; y < 240; y++) {
+    //    for (int x = 0; x < 320; x++) {
             //src.x = x;
             //trgt.x = x;
             //src.y = y;
             //trgt.y = y;
-            SDL_RenderCopy(saten_ren, spr->texture, NULL, NULL);
-        }
-    }
+    //        SDL_RenderCopy(saten_ren, spr->texture, NULL, NULL);
+    //    }
+    //}
 
     //SDL_LockTexture(txt, NULL, &pixels, &srf->pitch);
 
@@ -95,11 +114,6 @@ void scene_title_draw(void)
     uint64_t diff = end - start;
     float deltaf = (float)diff;
     deltaf = (deltaf / SDL_GetPerformanceFrequency()) * 1000.0f;
-#ifdef _WIN32
-    printf("diff: %Iu\n", diff);
-#else
-    printf("diff: %zu\n", diff);
-#endif
     printf("deltaf: %f\n", deltaf);
     SDL_FreeSurface(srf);
     SDL_DestroyTexture(txt);
@@ -121,6 +135,8 @@ void scene_title_draw(void)
 
 void scene_title_quit(void)
 {
+    saten_plane_destroy(plane0);
+    plane0 = NULL;
     scene.title = saten_scene_destroy(scene.title);
     saten_scene_set_start(scene.root);
 }

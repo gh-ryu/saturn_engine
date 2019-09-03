@@ -73,10 +73,12 @@ typedef struct _saten_tile {
 typedef struct _saten_plane {
     SDL_Surface *srf; // To draw sprites on a surface
     SDL_Texture *txt; // Uses pixel data from layer's surface
+    int bpp;       // Bits per pixel of texture
     saten_sprite *tileset;
     //saten_sprite *picture; // Optional image to draw on tilemap
     saten_tile **tmap;
     saten_sprite **pic;
+    uint32_t *buffer;
     int picn;
     int tmapn;
     int tilen;

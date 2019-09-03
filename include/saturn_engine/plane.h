@@ -12,5 +12,7 @@ void saten_plane_blitpic(saten_plane *pl, int id, int x, int y, float scale,
 void saten_plane_blittmap(saten_plane *pl, int id);
 
 void saten_plane_clear(saten_plane *pl);
+void saten_plane_make(saten_plane *pl, int test);
+void saten_plane_draw(saten_plane *pl, int test);
 
 #endif /* SATURN_ENGINE_BACKGROUND */

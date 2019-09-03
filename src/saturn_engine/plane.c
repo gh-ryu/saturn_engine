@@ -24,6 +24,9 @@ saten_plane* saten_plane_create(saten_sprite *tileset,
     pl->tilen = tilen;
     pl->srf = saten_surface_create(w, h, 32);
     pl->txt = saten_texture_create(wscreen, hscreen);
+    pl->bpp = 32;
+
+    pl->buffer = (uint32_t*)saten_malloc(4* (wscreen * hscreen));
 
     return pl;
 }
@@ -73,10 +76,65 @@ void saten_plane_destroy(saten_plane *pl) /* PUBLIC */
     free(pl->tmap);
     SDL_FreeSurface(pl->srf);
     SDL_DestroyTexture(pl->txt);
+    free(pl->buffer);
     free(pl);
+}
+
+void saten_plane_make(saten_plane *pl, int test) /* PUBLIC */
+{
+    if (test == 0) {
+    // Fill texture via buffer
+    int pitch = (pl->screen.w) * (pl->bpp / 8);
+    void *pixels = NULL;
+    SDL_LockTexture(pl->txt, NULL, &pixels, &pitch);
+    // Srf pixels do not map 1:1 to screen pixels...
+    //memcpy(pixels, pl->srf->pixels, pitch * pl->screen.h); // wrong
+    int i = 0;
+    int ystart = pl->screen.y;
+    int yend   = pl->screen.y + pl->screen.h;
+    int xstart = pl->screen.x;
+    int xend   = pl->screen.x + pl->screen.w;
+    for (int y = ystart; y < yend; y++) {
+        for (int x = xstart; x < xend; x++) {
+            uint8_t *p =
+                (uint8_t*) pl->srf->pixels + y * pl->srf->pitch + x * 4;
+            pl->buffer[i] = *(uint32_t*)p;
+            //pl->buffer[i] = saten_pixel_get(pl->srf, SATEN_SURFACE, x, y);
+            i++;
+        }
+    }
+    memcpy(pixels, pl->buffer, pitch * pl->screen.h);
+    SDL_UnlockTexture(pl->txt);
+    } else {
+    }
+}
+
+void saten_plane_draw(saten_plane *pl, int test) /* PUBLIC */
+{
+    if (test == 0) {
+        SDL_RenderCopy(saten_ren, pl->txt, &pl->screen, NULL);
+    } else {
+        // extract color from pixels and draw to renderer
+    int ystart = pl->screen.y;
+    int yend   = pl->screen.y + pl->screen.h;
+    int xstart = pl->screen.x;
+    int xend   = pl->screen.x + pl->screen.w;
+    for (int y = ystart; y < yend; y++) {
+        for (int x = xstart; x < xend; x++) {
+            uint8_t *p =
+                (uint8_t*) pl->srf->pixels + y * pl->srf->pitch + x * 4;
+            uint32_t pixel = *(uint32_t*)p;
+            uint8_t *pc = (uint8_t*) &pixel;
+            SDL_SetRenderDrawColor(saten_ren, pc[0], pc[1], pc[2], pc[3]);
+            SDL_RenderDrawPoint(saten_ren, x, y);
+        }
+    }
+
+    }
 }
 
 void saten_plane_clear(saten_plane *pl)
 {
+    //SDL_DestroyTexture(pl->txt);
     SDL_FillRect(pl->srf, NULL, SDL_MapRGBA(pl->srf->format, 0, 0, 0, 255));
 }
