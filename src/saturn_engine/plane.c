@@ -93,7 +93,7 @@ void saten_plane_make(saten_plane *pl, int test) /* PUBLIC */
     int ystart = pl->screen.y;
     int yend   = pl->screen.y + pl->screen.h;
     int xstart = pl->screen.x;
-    int xend   = pl->screen.x + pl->screen.w;
+    //int xend   = pl->screen.x + pl->screen.w;
     /*
     for (int y = ystart; y < yend; y++) {
         for (int x = xstart; x < xend; x++) {

@@ -22,6 +22,7 @@ int main (int argc, char *argv[])
     scene.title_menu.uid = 2;
     scene.title_menu_settings.uid = 3;
     scene.game.uid = 4;
+    scene.maptest.uid = 244;
     scene.load.uid = 255;
     // Create root scene
     scene.root = saten_scene_create(scene.root, scene_root_init,
