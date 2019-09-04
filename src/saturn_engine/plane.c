@@ -181,7 +181,18 @@ void saten_plane_clear(saten_plane *pl) /* PUBLIC */
 void saten_plane_scroll(saten_plane *pl, int x, int y) /* PUBLIC */
 {
     pl->screen.x += x;
-    pl->screen.y += y;
     pl->scrupdate.x += x;
+
+    pl->screen.y += y;
     pl->scrupdate.y += y;
+
+    // Reposition screen into map
+    if (pl->screen.y >= pl->map.h)
+        pl->screen.y = pl->screen.y - pl->map.h;
+    if (pl->screen.y < pl->screen.h * -1)
+        pl->screen.y = pl->map.h - pl->screen.h;
+    if (pl->screen.x >= pl->map.w)
+        pl->screen.x = pl->screen.x - pl->map.w;
+    if (pl->screen.x < pl->screen.w * -1)
+        pl->screen.x = pl->map.w - pl->screen.w;
 }
