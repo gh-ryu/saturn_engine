@@ -23,8 +23,9 @@ void scene_maptest_init(void)
         saten_sprite_texturize(saten_resource_sprite(scene.maptest, 0));
 
         /* PLANE TESTING */
-        plane0 = saten_plane_create(NULL, 1024, 1024, 0, 0, 320, 240);
+        plane0 = saten_plane_create(NULL, 264, 264, 0, 0, 288, 216);
         saten_plane_linkspr(plane0, saten_resource_sprite(scene.maptest, 0));
+        saten_plane_blitpic(plane0, 0, 0, 0, 1.0f, 0.0);
 
 
 
@@ -46,14 +47,13 @@ void scene_maptest_update(bool c)
             saten_scene_quit(scene.maptest);
         }
     }
+    saten_plane_scroll(plane0, 0, 1);
 }
 
 void scene_maptest_draw(void)
 {
     // start profiling
     uint64_t start = SDL_GetPerformanceCounter();
-    saten_plane_clear(plane0);
-    saten_plane_blitpic(plane0, 0, 0, 0, 1.0f, 0.0);
 
     if (input(pause)) {
         //TODO Test with SDL_GetRGBA

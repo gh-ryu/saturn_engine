@@ -12,21 +12,24 @@ saten_plane* saten_plane_create(saten_sprite *tileset,
     const int wscreen = wscreen0 + (x_offset*2);
     const int hscreen = hscreen0 + (y_offset*2);
     SDL_Rect map = { 0, 0, w, h };
-    SDL_Rect screen = { x_offset, y_offset, wscreen0, hscreen0 };
+    SDL_Rect scrupdate = { 0-x_offset, 0-y_offset, wscreen, hscreen };
+    SDL_Rect screen = { 0, 0, wscreen0, hscreen0 };
     
     saten_plane *pl = (saten_plane*)saten_malloc(
             sizeof(saten_plane));
     pl->map = map;
     pl->screen = screen;
+    pl->scrupdate = scrupdate;
     pl->x_offset = x_offset;
     pl->y_offset = y_offset;
     pl->tileset = tileset;
     pl->tilen = tilen;
     pl->srf = saten_surface_create(w, h, 32);
-    pl->txt = saten_texture_create(wscreen, hscreen);
+    pl->txt = saten_texture_create(wscreen0, hscreen0);
     pl->bpp = 32;
 
     pl->buffer = (uint32_t*)saten_malloc(4* (wscreen * hscreen));
+    saten_plane_clear(pl);
 
     return pl;
 }
@@ -90,10 +93,11 @@ void saten_plane_make(saten_plane *pl, int test) /* PUBLIC */
     // Srf pixels do not map 1:1 to screen pixels...
     //memcpy(pixels, pl->srf->pixels, pitch * pl->screen.h); // wrong
     int i = 0;
+    int j = 0;
     int ystart = pl->screen.y;
     int yend   = pl->screen.y + pl->screen.h;
     int xstart = pl->screen.x;
-    //int xend   = pl->screen.x + pl->screen.w;
+    int xend   = pl->screen.x + pl->screen.w;
     /*
     for (int y = ystart; y < yend; y++) {
         for (int x = xstart; x < xend; x++) {
@@ -108,12 +112,34 @@ void saten_plane_make(saten_plane *pl, int test) /* PUBLIC */
         }
     }
     */
-    for (int y = ystart; y < yend; y++) {
+    //for (int y = ystart; y < yend; y++) {
+    for (int y = ystart; i < pl->screen.h; i++, y++, j+=pitch) {
+        //printf("pre y: %d, ", y);
+        //printf("map.h: %d, ", pl->map.h);
+        //printf("i: %d, j: %d\n", i, j);
+        int ydiff = pl->map.h - y;
+        printf("ydiff: %d\n", ydiff);
+        if (ydiff > pl->map.h)
+            y = (ydiff - pl->map.h)-1;
+        if (ydiff <= 0) {
+            y = abs(ydiff);
+        }
+        //printf("post y: %d\n", y);
+
+        if (yend > pl->map.h) {
+            // Screen goes beyond map V-boundary
+            // Simply adjust ystart
+        }
+
+        if (xend > pl->map.w || xstart < 0) {
+            // screen goes beyond map H-boundary
+        }
+
+
         uint8_t *p =
             (uint8_t*) pl->srf->pixels + y * pl->srf->pitch + xstart * 4;
-        memcpy(pixels+i, p, pitch);
-        i += pitch;
-        
+        memcpy(pixels+j, p, pitch);
+        //i += pitch;
     }
     //memcpy(pixels, pl->buffer, pitch * pl->screen.h);
     SDL_UnlockTexture(pl->txt);
@@ -124,7 +150,8 @@ void saten_plane_make(saten_plane *pl, int test) /* PUBLIC */
 void saten_plane_draw(saten_plane *pl, int test) /* PUBLIC */
 {
     if (test == 0) {
-        SDL_RenderCopy(saten_ren, pl->txt, &pl->screen, NULL);
+        //SDL_RenderCopy(saten_ren, pl->txt, &pl->screen, NULL);
+        SDL_RenderCopy(saten_ren, pl->txt, NULL, NULL);
     } else {
         // extract color from pixels and draw to renderer
     int ystart = pl->screen.y;
@@ -145,8 +172,16 @@ void saten_plane_draw(saten_plane *pl, int test) /* PUBLIC */
     }
 }
 
-void saten_plane_clear(saten_plane *pl)
+void saten_plane_clear(saten_plane *pl) /* PUBLIC */
 {
     //SDL_DestroyTexture(pl->txt);
     SDL_FillRect(pl->srf, NULL, SDL_MapRGBA(pl->srf->format, 0, 0, 0, 255));
+}
+
+void saten_plane_scroll(saten_plane *pl, int x, int y) /* PUBLIC */
+{
+    pl->screen.x += x;
+    pl->screen.y += y;
+    pl->scrupdate.x += x;
+    pl->scrupdate.y += y;
 }

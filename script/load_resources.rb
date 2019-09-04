@@ -8,7 +8,7 @@ Saten::Resource::Sprite.load("demo_assets/background_title_small.png", 1);
 Saten::Resource::Text.load("Press Start", 1);
 Saten::Resource::Text.load("Press Enter", 1);
 # Scene MapTest
-Saten::Resource::Sprite.load("demo_assets/background_title_small.png", 244);
+Saten::Resource::Sprite.load("demo_assets/background0.png", 244);
 # Scene Load
 Saten::Resource::Sprite.load("demo_assets/load_indicator.png", 255);
 Saten::Resource::Text.load("\\C[7]---LOADING---", 255);

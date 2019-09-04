@@ -14,5 +14,6 @@ void saten_plane_blittmap(saten_plane *pl, int id);
 void saten_plane_clear(saten_plane *pl);
 void saten_plane_make(saten_plane *pl, int test);
 void saten_plane_draw(saten_plane *pl, int test);
+void saten_plane_scroll(saten_plane *pl, int x, int y);
 
 #endif /* SATURN_ENGINE_BACKGROUND */
