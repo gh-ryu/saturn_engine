@@ -198,6 +198,9 @@ void saten_errhandler(int i)
     case 63:
         saten_printerr(i, "No sprite to blit for plane");
         break;
+    case 64:
+        saten_printerr(i, "Map needs to be at least the size of game screen");
+        break;
     }
 }
 

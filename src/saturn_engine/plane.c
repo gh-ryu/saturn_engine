@@ -1,11 +1,16 @@
 #include "saturn_engine/_lib.h"
 
+
 saten_plane* saten_plane_create(saten_sprite *tileset,
         int w, int h, int x_offset, int y_offset, int wscreen0, int hscreen0)
     /* PUBLIC */
 {
     if (w%8 != 0 || h%8 != 0) {
         saten_errhandler(60);
+        return NULL;
+    }
+    if (w < SATEN_GAME_WIDTH || h < SATEN_GAME_HEIGHT) {
+        saten_errhandler(64);
         return NULL;
     }
     const int tilen = (w/8)*(h/8);
@@ -26,6 +31,7 @@ saten_plane* saten_plane_create(saten_sprite *tileset,
     pl->tilen = tilen;
     pl->srf = saten_surface_create(w, h, 32);
     pl->txt = saten_texture_create(wscreen0, hscreen0);
+    SDL_SetTextureBlendMode(pl->txt, SDL_BLENDMODE_BLEND);
     pl->bpp = 32;
 
     pl->buffer = (uint32_t*)saten_malloc(4* (wscreen * hscreen));
@@ -87,11 +93,10 @@ void saten_plane_make(saten_plane *pl, int test) /* PUBLIC */
 {
     if (test == 0) {
     // Fill texture via buffer
-    int pitch = (pl->screen.w) * (pl->bpp / 8);
+    int pitch;
     void *pixels = NULL;
     SDL_LockTexture(pl->txt, NULL, &pixels, &pitch);
     // Srf pixels do not map 1:1 to screen pixels...
-    //memcpy(pixels, pl->srf->pixels, pitch * pl->screen.h); // wrong
     int i = 0;
     int j = 0;
     int ystart = pl->screen.y;
@@ -114,17 +119,12 @@ void saten_plane_make(saten_plane *pl, int test) /* PUBLIC */
     */
     //for (int y = ystart; y < yend; y++) {
     for (int y = ystart; i < pl->screen.h; i++, y++, j+=pitch) {
-        //printf("pre y: %d, ", y);
-        //printf("map.h: %d, ", pl->map.h);
-        //printf("i: %d, j: %d\n", i, j);
         int ydiff = pl->map.h - y;
-        printf("ydiff: %d\n", ydiff);
         if (ydiff > pl->map.h)
             y = (ydiff - pl->map.h)-1;
         if (ydiff <= 0) {
             y = abs(ydiff);
         }
-        //printf("post y: %d\n", y);
 
         if (yend > pl->map.h) {
             // Screen goes beyond map V-boundary
@@ -136,12 +136,9 @@ void saten_plane_make(saten_plane *pl, int test) /* PUBLIC */
         }
 
 
-        uint8_t *p =
-            (uint8_t*) pl->srf->pixels + y * pl->srf->pitch + xstart * 4;
+        void *p = pl->srf->pixels + (y * pl->srf->pitch) + (xstart * 4);
         memcpy(pixels+j, p, pitch);
-        //i += pitch;
     }
-    //memcpy(pixels, pl->buffer, pitch * pl->screen.h);
     SDL_UnlockTexture(pl->txt);
     } else {
     }
@@ -150,7 +147,6 @@ void saten_plane_make(saten_plane *pl, int test) /* PUBLIC */
 void saten_plane_draw(saten_plane *pl, int test) /* PUBLIC */
 {
     if (test == 0) {
-        //SDL_RenderCopy(saten_ren, pl->txt, &pl->screen, NULL);
         SDL_RenderCopy(saten_ren, pl->txt, NULL, NULL);
     } else {
         // extract color from pixels and draw to renderer
@@ -174,7 +170,6 @@ void saten_plane_draw(saten_plane *pl, int test) /* PUBLIC */
 
 void saten_plane_clear(saten_plane *pl) /* PUBLIC */
 {
-    //SDL_DestroyTexture(pl->txt);
     SDL_FillRect(pl->srf, NULL, SDL_MapRGBA(pl->srf->format, 0, 0, 0, 255));
 }
 

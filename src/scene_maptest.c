@@ -9,6 +9,7 @@
 #include "input.h"
 
 saten_plane *plane0;
+saten_plane *plane1;
 
 void scene_maptest_init(void)
 {
@@ -23,10 +24,13 @@ void scene_maptest_init(void)
         saten_sprite_texturize(saten_resource_sprite(scene.maptest, 0));
 
         /* PLANE TESTING */
-        plane0 = saten_plane_create(NULL, 264, 264, 0, 0, 288, 216);
+        plane0 = saten_plane_create(NULL, 320, 320, 0, 0, 288, 216);
         saten_plane_linkspr(plane0, saten_resource_sprite(scene.maptest, 0));
         saten_plane_blitpic(plane0, 0, 0, 0, 1.0f, 0.0);
 
+        plane1 = saten_plane_create(NULL, 320, 320, 0, 0, 288, 216);
+        saten_plane_linkspr(plane1, saten_resource_sprite(scene.maptest, 0));
+        saten_plane_blitpic(plane1, 0, 120, 0, 1.0f, 0.0);
 
 
         saten_scene_init_done(scene.maptest);
@@ -48,6 +52,7 @@ void scene_maptest_update(bool c)
         }
     }
     saten_plane_scroll(plane0, 0, 1);
+    saten_plane_scroll(plane1, 0, -1);
 }
 
 void scene_maptest_draw(void)
@@ -61,6 +66,8 @@ void scene_maptest_draw(void)
         saten_plane_draw(plane0, 1);
     } else {
         saten_plane_make(plane0, 0);
+        saten_plane_make(plane1, 0);
+        saten_plane_draw(plane1, 0);
         saten_plane_draw(plane0, 0);
     }
 
