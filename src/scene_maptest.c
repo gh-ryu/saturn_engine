@@ -25,8 +25,8 @@ void scene_maptest_init(void)
 
         /* PLANE TESTING */
         plane0 = saten_plane_create(NULL, 320, 320, 0, 0, 288, 216);
-        saten_plane_linkspr(plane0, saten_resource_sprite(scene.maptest, 0));
-        saten_plane_blitpic(plane0, 0, 0, -60, 1.0f, 0.0);
+        saten_plane_linkspr(plane0, saten_resource_sprite(scene.maptest, 1));
+        saten_plane_blitpic(plane0, 0, 0, 0, 1.0f, 0.0);
 
         plane1 = saten_plane_create(NULL, 320, 320, 0, 0, 288, 216);
         saten_plane_linkspr(plane1, saten_resource_sprite(scene.maptest, 0));
@@ -51,9 +51,10 @@ void scene_maptest_update(bool c)
             saten_scene_quit(scene.maptest);
         }
     }
-    //saten_plane_scroll(plane0, 0, 1);
-    //saten_plane_scroll(plane1, 0, -1);
-    saten_plane_scroll(plane0, 1, -1);
+    if (input(pause))
+        saten_plane_scroll(plane0, 2, 0);
+    else
+        saten_plane_scroll(plane0, 1, 0);
     saten_plane_scroll(plane1, -1, 1);
 }
 
@@ -64,8 +65,8 @@ void scene_maptest_draw(void)
 
     saten_plane_make(plane0);
     saten_plane_make(plane1);
-    saten_plane_draw(plane1);
     saten_plane_draw(plane0);
+    saten_plane_draw(plane1);
 
     // end profiling
     uint64_t end = SDL_GetPerformanceCounter();
