@@ -89,52 +89,58 @@ void saten_plane_destroy(saten_plane *pl) /* PUBLIC */
     free(pl);
 }
 
-void saten_plane_make(saten_plane *pl, int test) /* PUBLIC */
+void saten_plane_make(saten_plane *pl) /* PUBLIC */
 {
-    if (test == 0) {
     // Fill texture via buffer
     int pitch;
     void *pixels = NULL;
-    void *p = NULL;
-    SDL_LockTexture(pl->txt, NULL, &pixels, &pitch);
-    // Srf pixels do not map 1:1 to screen pixels...
-    int i = 0;
-    int j = 0;
-    int ystart = pl->screen.y;
-    //int yend   = pl->screen.y + pl->screen.h;
-    int xstart = pl->screen.x;
-    int xend   = pl->screen.x + pl->screen.w;
+    void *p      = NULL;
+    int i        = 0;
+    int j        = 0;
+    int ystart   = pl->screen.y;
+    int xstart   = pl->screen.x;
+    int xend     = pl->screen.x + pl->screen.w;
+    bool x2flag  = false;
+    int xdiff    = 0;
+    int xdiff2   = 0;
+    int x2type   = 0;
 
-    bool x2flag = false;
-    int xdiff = 0;
-    int xdiff2 = 0;
-    int x2type = 0;
-
+    // Extra routine when screen is at least partially
+    // past the map's right boundary
     if (xend >= pl->map.w) {
         x2flag = true;
         xdiff2 = xend - pl->map.w; // Lenth of wrapping screen section
-        xdiff = pl->screen.w - xdiff2; // Length of section on map
+        xdiff  = pl->screen.w - xdiff2; // Length of section on map
     }
+
+    // Extra routine when screen is at least partially
+    // past the map's left boundary
     if (xstart < 0) {
         x2flag = true;
         xdiff2 = abs(xstart);
-        xdiff = pl->screen.w - xdiff2;
+        xdiff  = pl->screen.w - xdiff2;
         xstart = pl->map.w - xdiff2;
         x2type = 1;
     }
+    // For accessing the pixels
     const int spitch2 = xdiff2 * 4;
-    const int spitch = xdiff * 4;
-    int xpos = xstart * 4;
-    //for (int y = ystart; y < yend; y++) {
+    const int spitch  = xdiff * 4;
+    const int xpos    = xstart * 4;
+
+    SDL_LockTexture(pl->txt, NULL, &pixels, &pitch);
+
     for (int y = ystart; i < pl->screen.h; i++, y++, j+=pitch) {
+        // Check is screen is at least partially under or
+        // above the map's vertical boundaries
+        // and modify y accordingly
         int ydiff = pl->map.h - y;
         if (ydiff > pl->map.h)
             y = pl->map.h - (ydiff - pl->map.h)-1;
-        if (ydiff <= 0) {
+        if (ydiff <= 0)
             y = abs(ydiff);
-        }
 
         if (!x2flag) {
+            // screen is horizontally within map
             p = pl->srf->pixels + (y * pl->srf->pitch) + xpos;
             memcpy(pixels+j, p, pitch);
         } else {
@@ -156,32 +162,11 @@ void saten_plane_make(saten_plane *pl, int test) /* PUBLIC */
         }
     }
     SDL_UnlockTexture(pl->txt);
-    } else {
-    }
 }
 
-void saten_plane_draw(saten_plane *pl, int test) /* PUBLIC */
+void saten_plane_draw(saten_plane *pl) /* PUBLIC */
 {
-    if (test == 0) {
-        SDL_RenderCopy(saten_ren, pl->txt, NULL, NULL);
-    } else {
-        // extract color from pixels and draw to renderer
-    int ystart = pl->screen.y;
-    int yend   = pl->screen.y + pl->screen.h;
-    int xstart = pl->screen.x;
-    int xend   = pl->screen.x + pl->screen.w;
-    for (int y = ystart; y < yend; y++) {
-        for (int x = xstart; x < xend; x++) {
-            uint8_t *p =
-                (uint8_t*) pl->srf->pixels + y * pl->srf->pitch + x * 4;
-            uint32_t pixel = *(uint32_t*)p;
-            uint8_t *pc = (uint8_t*) &pixel;
-            SDL_SetRenderDrawColor(saten_ren, pc[0], pc[1], pc[2], pc[3]);
-            SDL_RenderDrawPoint(saten_ren, x, y);
-        }
-    }
-
-    }
+    SDL_RenderCopy(saten_ren, pl->txt, NULL, NULL);
 }
 
 void saten_plane_clear(saten_plane *pl) /* PUBLIC */
