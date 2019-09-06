@@ -121,7 +121,7 @@ void saten_plane_make(saten_plane *pl, int test) /* PUBLIC */
     for (int y = ystart; i < pl->screen.h; i++, y++, j+=pitch) {
         int ydiff = pl->map.h - y;
         if (ydiff > pl->map.h)
-            y = (ydiff - pl->map.h)-1;
+            y = pl->map.h - (ydiff - pl->map.h)-1;
         if (ydiff <= 0) {
             y = abs(ydiff);
         }
@@ -170,7 +170,8 @@ void saten_plane_draw(saten_plane *pl, int test) /* PUBLIC */
 
 void saten_plane_clear(saten_plane *pl) /* PUBLIC */
 {
-    SDL_FillRect(pl->srf, NULL, SDL_MapRGBA(pl->srf->format, 0, 0, 0, 255));
+    //SDL_FillRect(pl->srf, NULL, SDL_MapRGBA(pl->srf->format, 0, 0, 0, 255));
+    SDL_FillRect(pl->srf, NULL, SDL_MapRGBA(pl->srf->format, 0, 0, 0, 0));
 }
 
 void saten_plane_scroll(saten_plane *pl, int x, int y) /* PUBLIC */
