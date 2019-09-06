@@ -51,8 +51,10 @@ void scene_maptest_update(bool c)
             saten_scene_quit(scene.maptest);
         }
     }
-    saten_plane_scroll(plane0, 0, 1);
-    saten_plane_scroll(plane1, 0, -1);
+    //saten_plane_scroll(plane0, 0, 1);
+    //saten_plane_scroll(plane1, 0, -1);
+    saten_plane_scroll(plane0, 1, 0);
+    //saten_plane_scroll(plane1, 0, -1);
 }
 
 void scene_maptest_draw(void)
@@ -66,8 +68,8 @@ void scene_maptest_draw(void)
         saten_plane_draw(plane0, 1);
     } else {
         saten_plane_make(plane0, 0);
-        saten_plane_make(plane1, 0);
-        saten_plane_draw(plane1, 0);
+        //saten_plane_make(plane1, 0);
+        //saten_plane_draw(plane1, 0);
         saten_plane_draw(plane0, 0);
     }
 
@@ -76,7 +78,7 @@ void scene_maptest_draw(void)
     uint64_t diff = end - start;
     float deltaf = (float)diff;
     deltaf = (deltaf / SDL_GetPerformanceFrequency()) * 1000.0f;
-    printf("deltaf: %f\n", deltaf);
+    //printf("deltaf: %f\n", deltaf);
 
     // loading texture and copying: rougly 0.5ms
     // preloading texture and copying: rougly 0.004ms

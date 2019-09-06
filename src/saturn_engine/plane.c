@@ -95,6 +95,7 @@ void saten_plane_make(saten_plane *pl, int test) /* PUBLIC */
     // Fill texture via buffer
     int pitch;
     void *pixels = NULL;
+    void *p = NULL;
     SDL_LockTexture(pl->txt, NULL, &pixels, &pitch);
     // Srf pixels do not map 1:1 to screen pixels...
     int i = 0;
@@ -103,20 +104,18 @@ void saten_plane_make(saten_plane *pl, int test) /* PUBLIC */
     int yend   = pl->screen.y + pl->screen.h;
     int xstart = pl->screen.x;
     int xend   = pl->screen.x + pl->screen.w;
-    /*
-    for (int y = ystart; y < yend; y++) {
-        for (int x = xstart; x < xend; x++) {
-            uint8_t *p =
-                (uint8_t*) pl->srf->pixels + y * pl->srf->pitch + x * 4;
-            
-            //memcpy(pl->buffer+i, p, 4);
-            memcpy(pixels+i, p, 4);
-            //pl->buffer[i] = *(uint32_t*)p;
-            //pl->buffer[i] = saten_pixel_get(pl->srf, SATEN_SURFACE, x, y);
-            i++;
-        }
+
+    bool x2flag = false;
+    int xdiff = 0;
+    int xdiff2 = 0;
+
+    if (xend >= pl->map.w) {
+        x2flag = true;
+        xdiff2 = xend - pl->map.w; // Lenth of wrapping screen section
+        xdiff = pl->screen.w - xdiff2; // Length of section on map
     }
-    */
+    const int spitch2 = xdiff2 * 4;
+    const int spitch = xdiff * 4;
     //for (int y = ystart; y < yend; y++) {
     for (int y = ystart; i < pl->screen.h; i++, y++, j+=pitch) {
         int ydiff = pl->map.h - y;
@@ -136,8 +135,16 @@ void saten_plane_make(saten_plane *pl, int test) /* PUBLIC */
         }
 
 
-        void *p = pl->srf->pixels + (y * pl->srf->pitch) + (xstart * 4);
-        memcpy(pixels+j, p, pitch);
+        if (!x2flag) {
+            p = pl->srf->pixels + (y * pl->srf->pitch) + (xstart * 4);
+            memcpy(pixels+j, p, pitch);
+        } else {
+            // Split row into two sections
+            p = pl->srf->pixels + (y * pl->srf->pitch) + (xstart * 4);
+            memcpy(pixels+j, p, spitch);
+            p = pl->srf->pixels + (y * pl->srf->pitch);
+            memcpy(pixels+j+spitch, p, spitch2);
+        }
     }
     SDL_UnlockTexture(pl->txt);
     } else {
