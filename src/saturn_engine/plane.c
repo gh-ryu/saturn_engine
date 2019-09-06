@@ -101,21 +101,30 @@ void saten_plane_make(saten_plane *pl, int test) /* PUBLIC */
     int i = 0;
     int j = 0;
     int ystart = pl->screen.y;
-    int yend   = pl->screen.y + pl->screen.h;
+    //int yend   = pl->screen.y + pl->screen.h;
     int xstart = pl->screen.x;
     int xend   = pl->screen.x + pl->screen.w;
 
     bool x2flag = false;
     int xdiff = 0;
     int xdiff2 = 0;
+    int x2type = 0;
 
     if (xend >= pl->map.w) {
         x2flag = true;
         xdiff2 = xend - pl->map.w; // Lenth of wrapping screen section
         xdiff = pl->screen.w - xdiff2; // Length of section on map
     }
+    if (xstart < 0) {
+        x2flag = true;
+        xdiff2 = abs(xstart);
+        xdiff = pl->screen.w - xdiff2;
+        xstart = pl->map.w - xdiff2;
+        x2type = 1;
+    }
     const int spitch2 = xdiff2 * 4;
     const int spitch = xdiff * 4;
+    int xpos = xstart * 4;
     //for (int y = ystart; y < yend; y++) {
     for (int y = ystart; i < pl->screen.h; i++, y++, j+=pitch) {
         int ydiff = pl->map.h - y;
@@ -125,25 +134,25 @@ void saten_plane_make(saten_plane *pl, int test) /* PUBLIC */
             y = abs(ydiff);
         }
 
-        if (yend > pl->map.h) {
-            // Screen goes beyond map V-boundary
-            // Simply adjust ystart
-        }
-
-        if (xend > pl->map.w || xstart < 0) {
-            // screen goes beyond map H-boundary
-        }
-
-
         if (!x2flag) {
-            p = pl->srf->pixels + (y * pl->srf->pitch) + (xstart * 4);
+            p = pl->srf->pixels + (y * pl->srf->pitch) + xpos;
             memcpy(pixels+j, p, pitch);
         } else {
             // Split row into two sections
-            p = pl->srf->pixels + (y * pl->srf->pitch) + (xstart * 4);
-            memcpy(pixels+j, p, spitch);
-            p = pl->srf->pixels + (y * pl->srf->pitch);
-            memcpy(pixels+j+spitch, p, spitch2);
+            switch (x2type) {
+            case 0:
+                p = pl->srf->pixels + (y * pl->srf->pitch) + xpos;
+                memcpy(pixels+j, p, spitch);
+                p = pl->srf->pixels + (y * pl->srf->pitch);
+                memcpy(pixels+j+spitch, p, spitch2);
+                break;
+            case 1:
+                p = pl->srf->pixels + (y * pl->srf->pitch);
+                memcpy(pixels+j+spitch2, p, spitch);
+                p = pl->srf->pixels + (y * pl->srf->pitch) + xpos;
+                memcpy(pixels+j, p, spitch2);
+                break;
+            }
         }
     }
     SDL_UnlockTexture(pl->txt);
