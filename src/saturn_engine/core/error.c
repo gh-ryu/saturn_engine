@@ -201,6 +201,12 @@ void saten_errhandler(int i)
     case 64:
         saten_printerr(i, "Map needs to be at least the size of game screen");
         break;
+    case 65:
+        saten_printerr(i, "Plane already opened!");
+        break;
+    case 66:
+        saten_printerr(i, "Plane already closed!");
+        break;
     }
 }
 

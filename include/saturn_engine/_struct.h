@@ -70,6 +70,11 @@ typedef struct _saten_tile {
     int opacity;
 } saten_tile;
 
+typedef struct _saten_tmod {
+    int pitch;
+    void *pixels;
+} saten_tmod;
+
 typedef struct _saten_plane {
     SDL_Surface *srf; // To draw sprites on a surface
     SDL_Texture *txt; // Uses pixel data from layer's surface
@@ -87,8 +92,7 @@ typedef struct _saten_plane {
     SDL_Rect scrupdate; // The surface area eligible for updates
     int x_offset, y_offset; // Draw x/y pixels beyond the screen
                           // Important for HDMA effects
-    float screenxfl, screenyfl;
-
+    saten_tmod tmod;
     // Mode 7 stuff
     int a, b, c, d, x0, y0;
 } saten_plane;

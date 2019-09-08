@@ -33,6 +33,8 @@ saten_plane* saten_plane_create(saten_sprite *tileset,
     pl->txt = saten_texture_create(wscreen0, hscreen0);
     SDL_SetTextureBlendMode(pl->txt, SDL_BLENDMODE_BLEND);
     pl->bpp = 32;
+    pl->tmod.pixels = NULL;
+    pl->tmod.pitch = 0;
 
     pl->buffer = (uint32_t*)saten_malloc(4* (wscreen * hscreen));
     saten_plane_clear(pl);
@@ -92,8 +94,6 @@ void saten_plane_destroy(saten_plane *pl) /* PUBLIC */
 void saten_plane_make(saten_plane *pl) /* PUBLIC */
 {
     // Fill texture via buffer
-    int pitch;
-    void *pixels = NULL;
     void *p      = NULL;
     int i        = 0;
     int j        = 0;
@@ -127,9 +127,9 @@ void saten_plane_make(saten_plane *pl) /* PUBLIC */
     const int spitch  = xdiff * 4;
     const int xpos    = xstart * 4;
 
-    SDL_LockTexture(pl->txt, NULL, &pixels, &pitch);
+    saten_plane_open(pl);
 
-    for (int y = ystart; i < pl->screen.h; i++, y++, j+=pitch) {
+    for (int y = ystart; i < pl->screen.h; i++, y++, j+=pl->tmod.pitch) {
         // Check is screen is at least partially under or
         // above the map's vertical boundaries
         // and modify y accordingly
@@ -142,26 +142,45 @@ void saten_plane_make(saten_plane *pl) /* PUBLIC */
         if (!x2flag) {
             // screen is horizontally within map
             p = pl->srf->pixels + (y * pl->srf->pitch) + xpos;
-            memcpy(pixels+j, p, pitch);
+            memcpy(pl->tmod.pixels+j, p, pl->tmod.pitch);
         } else {
             // Split row into two sections
             switch (x2type) {
             case 0:
                 p = pl->srf->pixels + (y * pl->srf->pitch) + xpos;
-                memcpy(pixels+j, p, spitch);
+                memcpy(pl->tmod.pixels+j, p, spitch);
                 p = pl->srf->pixels + (y * pl->srf->pitch);
-                memcpy(pixels+j+spitch, p, spitch2);
+                memcpy(pl->tmod.pixels+j+spitch, p, spitch2);
                 break;
             case 1:
                 p = pl->srf->pixels + (y * pl->srf->pitch);
-                memcpy(pixels+j+spitch2, p, spitch);
+                memcpy(pl->tmod.pixels+j+spitch2, p, spitch);
                 p = pl->srf->pixels + (y * pl->srf->pitch) + xpos;
-                memcpy(pixels+j, p, spitch2);
+                memcpy(pl->tmod.pixels+j, p, spitch2);
                 break;
             }
         }
     }
-    SDL_UnlockTexture(pl->txt);
+    saten_plane_close(pl);
+}
+
+void saten_plane_open(saten_plane *pl) /* PUBILC */
+{
+    if (pl->tmod.pixels)
+        saten_errhandler(65);
+    else
+        SDL_LockTexture(pl->txt, NULL, &pl->tmod.pixels, &pl->tmod.pitch);
+}
+
+void saten_plane_close(saten_plane *pl) /* PUBLIC */
+{
+    if(!pl->tmod.pixels) {
+        saten_errhandler(66);
+    } else {
+        SDL_UnlockTexture(pl->txt);
+        pl->tmod.pixels = NULL;
+        pl->tmod.pitch = 0;
+    }
 }
 
 void saten_plane_draw(saten_plane *pl) /* PUBLIC */
