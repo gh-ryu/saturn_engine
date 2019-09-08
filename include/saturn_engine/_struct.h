@@ -87,6 +87,7 @@ typedef struct _saten_plane {
     SDL_Rect scrupdate; // The surface area eligible for updates
     int x_offset, y_offset; // Draw x/y pixels beyond the screen
                           // Important for HDMA effects
+    float screenxfl, screenyfl;
 
     // Mode 7 stuff
     int a, b, c, d, x0, y0;

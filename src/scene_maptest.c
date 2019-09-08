@@ -11,8 +11,8 @@
 static saten_plane *plane0;
 static saten_plane *plane1;
 
-static int scroll_speed_x;
-static int scroll_speed_y;
+static float scroll_speed_x;
+static float scroll_speed_y;
 
 void scene_maptest_init(void)
 {
@@ -55,15 +55,15 @@ void scene_maptest_update(bool c)
         }
         if (saten_key(SATEN_KEY_X)) {
             if (scroll_speed_x >= 0)
-                scroll_speed_x += 1;
+                scroll_speed_x += 0.05f;
             if (scroll_speed_x <= 0)
-                scroll_speed_x -= 1;
+                scroll_speed_x -= 0.05f;
         }
         if (saten_key(SATEN_KEY_Y)) {
             if (scroll_speed_y >= 0)
-                scroll_speed_y += 1;
+                scroll_speed_y += 0.05f;
             if (scroll_speed_y <= 0)
-                scroll_speed_y -= 1;
+                scroll_speed_y -= 0.05f;
         }
         if (input(accept)) {
             scroll_speed_x = 0;
@@ -75,8 +75,9 @@ void scene_maptest_update(bool c)
             scroll_speed_y = -scroll_speed_y;
     }
 
-    saten_plane_scroll(plane0, scroll_speed_x, scroll_speed_y);
-    saten_plane_scroll(plane1, scroll_speed_x+3, scroll_speed_y);
+    saten_plane_scroll(plane0, floorf(scroll_speed_x), floorf(scroll_speed_y));
+    saten_plane_scroll(plane1, floorf(scroll_speed_x+1.0f),
+            floorf(scroll_speed_y));
 }
 
 void scene_maptest_draw(void)
