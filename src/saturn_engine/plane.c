@@ -169,7 +169,7 @@ void saten_plane_open(saten_plane *pl) /* PUBILC */
     if (pl->tmod.pixels)
         saten_errhandler(65);
     else
-        SDL_LockTexture(pl->txt, NULL, &pl->tmod.pixels, &pl->tmod.pitch);
+        SDL_LockTexture(pl->txt, NULL, &(pl->tmod.pixels), &(pl->tmod.pitch));
 }
 
 void saten_plane_close(saten_plane *pl) /* PUBLIC */
@@ -211,4 +211,79 @@ void saten_plane_scroll(saten_plane *pl, int x, int y) /* PUBLIC */
         pl->screen.x = pl->screen.x - pl->map.w;
     if (pl->screen.x < pl->screen.w * -1)
         pl->screen.x = pl->map.w - pl->screen.w;
+}
+
+void saten_plane_linecpy(saten_plane *pl, int l, int ox, int oy) /* PUBLIC */
+{
+    void *p      = NULL;
+    int y        = pl->screen.y + l + oy;
+    int xstart   = pl->screen.x + ox;
+    int xend     = xstart + pl->screen.w;
+    bool x2flag  = false;
+    int xdiff    = 0;
+    int xdiff2   = 0;
+    int x2type   = 0;
+
+    // Extra routine when screen is at least partially
+    // past the map's right boundary
+    if (xend >= pl->map.w) {
+        x2flag = true;
+        xdiff2 = xend - pl->map.w; // Lenth of wrapping screen section
+        xdiff  = pl->screen.w - xdiff2; // Length of section on map
+    }
+
+    // Extra routine when screen is at least partially
+    // past the map's left boundary
+    if (xstart < 0) {
+        x2flag = true;
+        xdiff2 = abs(xstart);
+        xdiff  = pl->screen.w - xdiff2;
+        xstart = pl->map.w - xdiff2;
+        x2type = 1;
+    }
+    // For accessing the pixels
+    const int spitch2 = xdiff2 * 4;
+    const int spitch  = xdiff * 4;
+    const int xpos    = xstart * 4;
+
+    const int j = l * pl->tmod.pitch;
+
+
+    // Check is screen is at least partially under or
+    // above the map's vertical boundaries
+    // and modify y accordingly
+    int ydiff = pl->map.h - y;
+    if (ydiff > pl->map.h)
+        y = pl->map.h - (ydiff - pl->map.h)-1;
+    if (ydiff <= 0)
+        y = abs(ydiff);
+
+    if (!x2flag) {
+        // screen is horizontally within map
+        p = pl->srf->pixels + (y * pl->srf->pitch) + xpos;
+        memcpy(pl->tmod.pixels+j, p, pl->tmod.pitch);
+    } else {
+        // Split row into two sections
+        switch (x2type) {
+        case 0:
+            p = pl->srf->pixels + (y * pl->srf->pitch) + xpos;
+            memcpy(pl->tmod.pixels+j, p, spitch);
+            p = pl->srf->pixels + (y * pl->srf->pitch);
+            memcpy(pl->tmod.pixels+j+spitch, p, spitch2);
+            break;
+        case 1:
+            p = pl->srf->pixels + (y * pl->srf->pitch);
+            memcpy(pl->tmod.pixels+j+spitch2, p, spitch);
+            p = pl->srf->pixels + (y * pl->srf->pitch) + xpos;
+            memcpy(pl->tmod.pixels+j, p, spitch2);
+            break;
+        }
+    }
+}
+
+void saten_plmake(saten_plane *pl)
+{
+    for (int i = 0; i < pl->screen.h; i++)
+        saten_plane_linecpy(pl, i, 0, 0);
+
 }

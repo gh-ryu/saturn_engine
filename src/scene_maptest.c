@@ -85,8 +85,36 @@ void scene_maptest_draw(void)
     // start profiling
     uint64_t start = SDL_GetPerformanceCounter();
 
-    saten_plane_make(plane0);
-    saten_plane_make(plane1);
+    //saten_plane_make(plane0);
+    //saten_plane_make(plane1);
+    saten_plane_open(plane0);
+    //saten_plmake(plane0);
+    int xoff;
+    //int yoff;
+
+    for (int i = 0; i < plane0->screen.h; i++) {
+        if (i % 16 == 0)
+            xoff = 2;
+        else
+            xoff = 0;
+        printf("xoff0: %d\n", xoff);
+        saten_plane_linecpy(plane0, i, xoff, 0);
+    }
+    saten_plane_close(plane0);
+
+    saten_plane_open(plane1);
+    for (int i = 0; i < plane1->screen.h; i++) {
+        if (i % 16 == 0)
+            xoff = 2;
+        else
+            xoff = 0;
+        printf("xoff1: %d\n", xoff);
+        saten_plane_linecpy(plane1, i, xoff, 0);
+    }
+    //saten_plmake(plane1);
+    saten_plane_close(plane1);
+
+
     saten_plane_draw(plane0);
     saten_plane_draw(plane1);
 
@@ -95,7 +123,7 @@ void scene_maptest_draw(void)
     uint64_t diff = end - start;
     float deltaf = (float)diff;
     deltaf = (deltaf / SDL_GetPerformanceFrequency()) * 1000.0f;
-    printf("deltaf: %f\n", deltaf);
+    //printf("deltaf: %f\n", deltaf);
 
     // loading texture and copying: rougly 0.5ms
     // preloading texture and copying: rougly 0.004ms
