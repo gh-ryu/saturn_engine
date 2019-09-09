@@ -209,7 +209,7 @@ void saten_plane_scroll(saten_plane *pl, int x, int y) /* PUBLIC */
         pl->screen.y = pl->map.h - pl->screen.h;
     if (pl->screen.x >= pl->map.w)
         pl->screen.x = pl->screen.x - pl->map.w;
-    if (pl->screen.x < pl->map.w * -1)
+    if (pl->screen.x < pl->screen.w * -1)
         pl->screen.x = pl->map.w - abs(x);
 }
 
