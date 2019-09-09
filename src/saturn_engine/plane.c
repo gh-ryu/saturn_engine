@@ -221,9 +221,8 @@ void saten_plane_linecpy(saten_plane *pl, int l, int ox, int oy) /* PUBLIC */
     saten_plane_scroll(pl, ox, oy+l);
 
     void *p      = NULL;
-    //int y        = pl->screen.y + l + oy;
     int y        = pl->screen.y;
-    int xstart   = pl->screen.x + ox;
+    int xstart   = pl->screen.x;
     int xend     = xstart + pl->screen.w;
     bool x2flag  = false;
     int xdiff    = 0;
