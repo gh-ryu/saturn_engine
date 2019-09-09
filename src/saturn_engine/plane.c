@@ -209,14 +209,20 @@ void saten_plane_scroll(saten_plane *pl, int x, int y) /* PUBLIC */
         pl->screen.y = pl->map.h - pl->screen.h;
     if (pl->screen.x >= pl->map.w)
         pl->screen.x = pl->screen.x - pl->map.w;
-    if (pl->screen.x < pl->screen.w * -1)
-        pl->screen.x = pl->map.w - pl->screen.w;
+    if (pl->screen.x < pl->map.w * -1)
+        pl->screen.x = pl->map.w - abs(x);
 }
 
 void saten_plane_linecpy(saten_plane *pl, int l, int ox, int oy) /* PUBLIC */
 {
+    // Scroll screen according to offsets
+    int x0 = pl->screen.x;
+    int y0 = pl->screen.y;
+    saten_plane_scroll(pl, ox, oy+l);
+
     void *p      = NULL;
-    int y        = pl->screen.y + l + oy;
+    //int y        = pl->screen.y + l + oy;
+    int y        = pl->screen.y;
     int xstart   = pl->screen.x + ox;
     int xend     = xstart + pl->screen.w;
     bool x2flag  = false;
@@ -279,6 +285,9 @@ void saten_plane_linecpy(saten_plane *pl, int l, int ox, int oy) /* PUBLIC */
             break;
         }
     }
+    // Restore screen position
+    pl->screen.x = x0;
+    pl->screen.y = y0;
 }
 
 void saten_plmake(saten_plane *pl)

@@ -94,10 +94,9 @@ void scene_maptest_draw(void)
 
     for (int i = 0; i < plane0->screen.h; i++) {
         if (i % 16 == 0)
-            xoff = 2;
+            xoff = -2;
         else
             xoff = 0;
-        printf("xoff0: %d\n", xoff);
         saten_plane_linecpy(plane0, i, xoff, 0);
     }
     saten_plane_close(plane0);
@@ -105,10 +104,9 @@ void scene_maptest_draw(void)
     saten_plane_open(plane1);
     for (int i = 0; i < plane1->screen.h; i++) {
         if (i % 16 == 0)
-            xoff = 2;
+            xoff = -2;
         else
             xoff = 0;
-        printf("xoff1: %d\n", xoff);
         saten_plane_linecpy(plane1, i, xoff, 0);
     }
     //saten_plmake(plane1);
@@ -123,7 +121,7 @@ void scene_maptest_draw(void)
     uint64_t diff = end - start;
     float deltaf = (float)diff;
     deltaf = (deltaf / SDL_GetPerformanceFrequency()) * 1000.0f;
-    //printf("deltaf: %f\n", deltaf);
+    printf("deltaf: %f\n", deltaf);
 
     // loading texture and copying: rougly 0.5ms
     // preloading texture and copying: rougly 0.004ms
