@@ -11,6 +11,8 @@ demo.exe
 test.h
 test.txt
 
+demo_assets/background-sonic.png
+
 # Prerequisites
 *.d
 
