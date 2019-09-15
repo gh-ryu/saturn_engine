@@ -36,6 +36,10 @@ saten_plane* saten_plane_create(saten_sprite *tileset,
     pl->tmod.pixels = NULL;
     pl->tmod.pitch = 0;
 
+    pl->a = 1.0f;
+    pl->d = 1.0f;
+
+
     pl->buffer = (uint32_t*)saten_malloc(4* (wscreen * hscreen));
     saten_plane_clear(pl);
 
@@ -213,6 +217,17 @@ void saten_plane_scroll(saten_plane *pl, int x, int y) /* PUBLIC */
         pl->screen.x = pl->map.w - abs(x);
 }
 
+void saten_plane_pcpy(saten_plane *pl, int i, int x, int y) /* PUBLIC */
+{
+    //printf("i: %d, x: %d, y: %d\n", i, x, y);
+    int pbytes = 4;
+    int depth = i * pbytes;
+    int xpos = x * pbytes;
+    void *p = NULL;
+    p = pl->srf->pixels + (y * pl->srf->pitch) + xpos;
+    memcpy(pl->tmod.pixels+depth, p, 4);
+}
+
 void saten_plane_linecpy(saten_plane *pl, int l, int ox, int oy) /* PUBLIC */
 {
     // Scroll screen according to offsets
@@ -294,4 +309,33 @@ void saten_plmake(saten_plane *pl)
     for (int i = 0; i < pl->screen.h; i++)
         saten_plane_linecpy(pl, i, 0, 0);
 
+}
+
+SDL_Point saten_pltransform(saten_plane *pl, int x0, int y0)
+{
+    float xout, yout;
+    float h, v, xi, yi;
+    SDL_Point out;
+    // Prepare Input
+    xi = (float)x0 / (float)pl->screen.w;
+    yi = (float)y0 / (float)pl->screen.h;
+    h = (float)pl->screen.x / (float)pl->map.w;
+    v = (float)pl->screen.y / (float)pl->map.h;
+
+    // Get coordinates of transformed pixel
+    xout = pl->a * (xi + h - pl->x0) + pl->b * (yi + v - pl->y0) + pl->x0;
+    yout = pl->c * (xi + h - pl->x0) + pl->d * (yi + v - pl->y0) + pl->y0;
+
+    // Wrap
+    xout = fmod(xout, 1.0f);
+    yout = fmod(yout, 1.0f);
+
+    // Restore coordinates
+    xout = xout * pl->screen.w;
+    yout = yout * pl->screen.h;
+
+    out.x = (int)xout;
+    out.y = (int)yout;
+
+    return out;
 }

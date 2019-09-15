@@ -94,7 +94,7 @@ typedef struct _saten_plane {
                           // Important for HDMA effects
     saten_tmod tmod;
     // Mode 7 stuff
-    int a, b, c, d, x0, y0;
+    float a, b, c, d, x0, y0;
 } saten_plane;
 
 #endif /* SATURN_ENGINE_STRUCT */

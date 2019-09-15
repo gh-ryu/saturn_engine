@@ -70,10 +70,20 @@ void scene_maptest_update(bool c)
             scroll_speed_x = 0;
             scroll_speed_y = 0;
         }
+        
         if (input(left) == 1 || input(right) == 1)
             scroll_speed_x = -scroll_speed_x;
         if (input(up) == 1 || input(down) == 1)
             scroll_speed_y = -scroll_speed_y;
+
+        if (saten_key(SATEN_KEY_A))
+            plane0->a -= 0.05f;
+        if (saten_key(SATEN_KEY_D))
+            plane0->a += 0.05f;
+        if (saten_key(SATEN_KEY_W))
+            plane0->d -= 0.05f;
+        if (saten_key(SATEN_KEY_S))
+            plane0->d += 0.05f;
     }
 
     saten_plane_scroll(plane0, floorf(scroll_speed_x), floorf(scroll_speed_y));
@@ -91,6 +101,11 @@ void scene_maptest_draw(void)
     saten_plane_open(plane0);
     //saten_plmake(plane0);
     //int yoff;
+    
+    /* 
+     * HORIZONTAL OSCILLATION TEST
+     *
+     *
     int xoff = 0;
     int dir = 1; // right
     int myx = 0;
@@ -124,6 +139,18 @@ void scene_maptest_draw(void)
     if (base < 120)
         base++;
 
+        */
+    // MODE7 TEST
+    int i = 0;
+    for (int y = 0; y < plane0->screen.h; y++) {
+        for (int x = 0; x < plane0->screen.w; x++) {
+            SDL_Point new = saten_pltransform(plane0, x, y);
+            saten_plane_pcpy(plane0, i, new.x, new.y);
+            i++;
+        }
+    }
+    saten_plane_close(plane0);
+
     /*
     saten_plane_open(plane1);
     for (int i = 0; i < plane1->screen.h; i++) {
@@ -148,7 +175,7 @@ void scene_maptest_draw(void)
     uint64_t diff = end - start;
     float deltaf = (float)diff;
     deltaf = (deltaf / SDL_GetPerformanceFrequency()) * 1000.0f;
-    //printf("deltaf: %f\n", deltaf);
+    printf("deltaf: %f\n", deltaf);
 
     // loading texture and copying: rougly 0.5ms
     // preloading texture and copying: rougly 0.004ms
