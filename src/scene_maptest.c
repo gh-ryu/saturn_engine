@@ -43,6 +43,7 @@ void scene_maptest_init(void)
 
 void scene_maptest_update(bool c)
 {
+    static float ang = 0.0f;
     // unlock buttons when user stopped giving input for even a frame
     if (!saten_input_check())
         saten_key_unlock(-1);
@@ -84,7 +85,23 @@ void scene_maptest_update(bool c)
             plane0->d -= 0.05f;
         if (saten_key(SATEN_KEY_S))
             plane0->d += 0.05f;
+
+        if (saten_key(SATEN_KEY_J))
+            plane0->b -= 0.05f;
+        if (saten_key(SATEN_KEY_L))
+            plane0->b += 0.05f;
+        if (saten_key(SATEN_KEY_I))
+            plane0->c -= 0.05f;
+        if (saten_key(SATEN_KEY_K))
+            plane0->c += 0.05f;
+
+        if (saten_key(SATEN_KEY_Q))
+            ang += 0.05f;
+
     }
+
+    ang = fmod(ang, 360.0f);
+    saten_plrot(plane0, ang);
 
     saten_plane_scroll(plane0, floorf(scroll_speed_x), floorf(scroll_speed_y));
     saten_plane_scroll(plane1, floorf(scroll_speed_x+1.0f),

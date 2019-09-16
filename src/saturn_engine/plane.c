@@ -304,11 +304,19 @@ void saten_plane_linecpy(saten_plane *pl, int l, int ox, int oy) /* PUBLIC */
     pl->screen.y = y0;
 }
 
-void saten_plmake(saten_plane *pl)
+void saten_plmake(saten_plane *pl) /* PUBLIC */
 {
     for (int i = 0; i < pl->screen.h; i++)
         saten_plane_linecpy(pl, i, 0, 0);
 
+}
+
+void saten_plrot(saten_plane *pl, float ang) /* PUBLIC */
+{
+    pl->a = cosf(ang);
+    pl->b = sinf(ang);
+    pl->c = -sinf(ang);
+    pl->d = cosf(ang);
 }
 
 SDL_Point saten_pltransform(saten_plane *pl, int x0, int y0)
@@ -339,3 +347,5 @@ SDL_Point saten_pltransform(saten_plane *pl, int x0, int y0)
 
     return out;
 }
+
+

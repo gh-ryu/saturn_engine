@@ -22,5 +22,6 @@ void saten_plane_linecpy(saten_plane *pl, int l, int ox, int oy);
 void saten_plmake(saten_plane *pl);
 void saten_plane_pcpy(saten_plane *pl, int i, int x, int y);
 SDL_Point saten_pltransform(saten_plane *pl, int x0, int y0);
+void saten_plrot(saten_plane *pl, float ang);
 
 #endif /* SATURN_ENGINE_BACKGROUND */
