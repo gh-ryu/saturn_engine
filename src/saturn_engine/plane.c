@@ -319,7 +319,7 @@ void saten_plrot(saten_plane *pl, float ang) /* PUBLIC */
     pl->d = cosf(ang);
 }
 
-SDL_Point saten_pltransform(saten_plane *pl, int x0, int y0)
+SDL_Point saten_pltransform(saten_plane *pl, int x0, int y0) /* PUBLIC */
 {
     float xout, yout;
     float h, v, xi, yi;
@@ -341,6 +341,10 @@ SDL_Point saten_pltransform(saten_plane *pl, int x0, int y0)
     // Restore coordinates
     xout = xout * pl->screen.w;
     yout = yout * pl->screen.h;
+    if (xout < 0)
+        xout = 0;
+    if (yout < 0)
+        yout = 0;
 
     out.x = (int)xout;
     out.y = (int)yout;

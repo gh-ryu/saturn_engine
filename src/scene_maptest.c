@@ -101,7 +101,9 @@ void scene_maptest_update(bool c)
     }
 
     ang = fmod(ang, 360.0f);
-    saten_plrot(plane0, ang);
+    //saten_plrot(plane0, ang);
+    //plane0->x0 = plane0->screen.w/2;
+    //plane0->y0 = plane0->screen.h/2;
 
     saten_plane_scroll(plane0, floorf(scroll_speed_x), floorf(scroll_speed_y));
     saten_plane_scroll(plane1, floorf(scroll_speed_x+1.0f),
