@@ -33,3 +33,4 @@ SATENOBJ += src/saturn_engine/data.c
 SATENOBJ += src/saturn_engine/video.c
 SATENOBJ += src/saturn_engine/player.c
 SATENOBJ += src/saturn_engine/plane.c
+SATENOBJ += src/saturn_engine/bgm.c

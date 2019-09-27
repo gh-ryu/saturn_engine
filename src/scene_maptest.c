@@ -161,12 +161,16 @@ void scene_maptest_draw(void)
         */
     // MODE7 TEST
     int i = 0;
+    //plane0->a = 2.0f;
+    //plane0->d = 2.0f;
     for (int y = 0; y < plane0->screen.h; y++) {
         for (int x = 0; x < plane0->screen.w; x++) {
             SDL_Point new = saten_pltransform(plane0, x, y);
             saten_plane_pcpy(plane0, i, new.x, new.y);
             i++;
         }
+        //plane0->a -= 0.05f;
+        //plane0->d -= 0.05f;
     }
     saten_plane_close(plane0);
 

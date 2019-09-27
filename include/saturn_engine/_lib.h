@@ -45,6 +45,7 @@ void saten_kill(void);
 
 #include "scene.h"
 #include "load.h"
+#include "bgm.h"
 #include "sfx.h"
 #include "resource.h"
 #include "data.h"

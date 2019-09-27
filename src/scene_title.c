@@ -26,6 +26,9 @@ void scene_title_init(void)
         saten_text_update(saten_resource_text(scene.title, 1), NULL,
                 1.0, 320/2 - w/2, 200);
 
+        saten_bgmplay(saten_resource_bgm(scene.title, 0));
+        //Mix_PlayMusic(saten_resource_bgm(scene.title, 0), -1);
+        //Mix_PlayMusic(saten_resource_bgm(scene.title, 1), -1);
         saten_scene_init_done(scene.title);
     }
 }
@@ -47,6 +50,8 @@ void scene_title_update(bool c)
             saten_scene_quit(scene.title);
             jumptomaptest = true;
         }
+        if (saten_key(SATEN_KEY_Q) == 1)
+            Mix_VolumeMusic(Mix_VolumeMusic(-1) + 1);
     }
 }
 

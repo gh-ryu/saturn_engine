@@ -207,6 +207,9 @@ void saten_errhandler(int i)
     case 66:
         saten_printerr(i, "Plane already closed!");
         break;
+    case 67:
+        saten_printerr(i, "Failed BGM playback");
+        break;
     }
 }
 
