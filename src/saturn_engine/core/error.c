@@ -213,6 +213,9 @@ void saten_errhandler(int i)
     case 68:
         saten_printerr(i, "Failed to load music file.");
         break;
+    case 69:
+        saten_printerr(i, "Can only set position for MOD, MP3 and OGG");
+        break;
     }
 }
 

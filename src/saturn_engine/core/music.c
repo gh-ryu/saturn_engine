@@ -17,3 +17,8 @@ void saten_mufree(saten_music *mus) /* PRIVATE */
     Mix_FreeMusic(mus->o); 
     free(mus);
 }
+
+int saten_mucheckpos(Mix_MusicType t) /* PRIVATE */
+{
+   return (t == MUS_MOD || t == MUS_OGG || t == MUS_MP3);
+}

@@ -13,10 +13,14 @@ void saten_bgmplay(saten_music *music) /* PUBLIC */
         ret = Mix_PlayMusic(music->o, loops);
     }
     else {
-        if (pos > 0)
-            ret = Mix_FadeInMusicPos(music->o, loops, fadems, pos);
-        else
+        if (pos > 0) {
+            if (saten_mucheckpos(music->t))
+                ret = Mix_FadeInMusicPos(music->o, loops, fadems, pos);
+            else
+                saten_errhandler(69);
+        } else {
             ret = Mix_FadeInMusic(music->o, loops, fadems);
+        }
     }
     if (ret < 0)
         saten_errhandler(67);
