@@ -6,17 +6,17 @@ static double pos = 0;  // Default start at song beginning
                         // pos is only available to certain file types
                         // (MOD,OFF,MP3)
 
-void saten_bgmplay(Mix_Music *music) /* PUBLIC */
+void saten_bgmplay(saten_music *music) /* PUBLIC */
 {
     int ret;
     if (fadems > 0) {
-        ret = Mix_PlayMusic(music, loops);
+        ret = Mix_PlayMusic(music->o, loops);
     }
     else {
         if (pos > 0)
-            ret = Mix_FadeInMusicPos(music, loops, fadems, pos);
+            ret = Mix_FadeInMusicPos(music->o, loops, fadems, pos);
         else
-            ret = Mix_FadeInMusic(music, loops, fadems);
+            ret = Mix_FadeInMusic(music->o, loops, fadems);
     }
     if (ret < 0)
         saten_errhandler(67);

@@ -130,8 +130,8 @@ mrb_value saten_mrb_load_bgm(mrb_state *mrb, mrb_value self)
         // load file if no scene given or if we want to load files for id
         res->bgm_n++;
         i = res->bgm_n;
-        res->bgm = saten_realloc(res->bgm, i * sizeof(Mix_Music*));
-        res->bgm[i-1] = Mix_LoadMUS(string);
+        res->bgm = saten_realloc(res->bgm, i * sizeof(saten_music*));
+        res->bgm[i-1] = saten_muload(string);
     }
 
     return mrb_nil_value();

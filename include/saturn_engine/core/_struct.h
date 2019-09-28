@@ -99,6 +99,21 @@ typedef struct _saten_spixel {
     int x, y;
     uint8_t r, g, b, a;
 } saten_spixel;
+/*
+ * Mix_MusicType:
+ * MUS_CMD = Command based music
+ * MUS_WAV = WAV/RIFF file
+ * MUS_MOD = MOD music (.xm, .mod...)
+ * MUS_MID = MIDI file
+ * MUS_OGG = OGG file
+ * MUS_MP3 = MP3 file
+ * default = Unknown file type
+ */
+
+typedef struct _saten_music {
+    Mix_Music *o; // Object
+    Mix_MusicType t; 
+} saten_music;
 
 typedef struct _saten_resmngr {
     saten_sprite **sprite;
@@ -106,7 +121,7 @@ typedef struct _saten_resmngr {
     Mix_Chunk **sfx;
     int sfx_n;
     bool *sfx_flag;
-    Mix_Music **bgm;
+    saten_music **bgm;
     int bgm_n;
     saten_text **text;
     int text_n;

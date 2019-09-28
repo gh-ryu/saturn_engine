@@ -136,5 +136,6 @@ void saten_core_quit(void);
 #include "window.h"
 #include "texture.h"
 #include "renderer.h"
+#include "music.h"
 
 #endif /* SATURN_ENGINE_CORE */

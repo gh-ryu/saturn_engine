@@ -29,7 +29,7 @@ Mix_Chunk* saten_resource_sfx(saten_scene_info scene, int id)
 }
 
 // public
-Mix_Music* saten_resource_bgm(saten_scene_info scene, int id)
+saten_music* saten_resource_bgm(saten_scene_info scene, int id)
 {
     if (!saten_scene_exists(scene)) {
         saten_errhandler(40);
@@ -64,7 +64,7 @@ void saten_resource_free(saten_resmngr res)
     for (int i = 0; i < res.sfx_n; i++)
         Mix_FreeChunk(res.sfx[i]);
     for (int i = 0; i < res.bgm_n; i++)
-        Mix_FreeMusic(res.bgm[i]);
+        saten_mufree(res.bgm[i]);
     for (int i = 0; i < res.text_n; i++)
         saten_text_destroy(res.text[i]);
     free(res.sprite);

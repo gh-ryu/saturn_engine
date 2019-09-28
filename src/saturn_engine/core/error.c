@@ -210,6 +210,9 @@ void saten_errhandler(int i)
     case 67:
         saten_printerr(i, "Failed BGM playback");
         break;
+    case 68:
+        saten_printerr(i, "Failed to load music file.");
+        break;
     }
 }
 
