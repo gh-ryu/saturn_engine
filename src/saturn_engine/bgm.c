@@ -9,7 +9,7 @@ static double pos = 0;  // Default start at song beginning
 void saten_bgmplay(saten_music *music) /* PUBLIC */
 {
     int ret;
-    if (fadems > 0) {
+    if (fadems == 0) {
         ret = Mix_PlayMusic(music->o, loops);
     }
     else {
@@ -24,4 +24,31 @@ void saten_bgmplay(saten_music *music) /* PUBLIC */
     }
     if (ret < 0)
         saten_errhandler(67);
+}
+
+void saten_bgmposw(double npos) /* PUBLIC */
+{
+    pos = npos;
+    if (pos < 0)
+        pos = 0;
+}
+
+void saten_bgmloopsw(int n) /* PUBLIC */
+{
+    // This function affects the currently playing music
+    loops = n;
+}
+
+void saten_bgmfadein(int ms) /* PUBLIC */
+{
+    // This functino affects subsequent calls to bgmplay
+    fadems = ms;
+    if (fadems < 0)
+        fadems = 0;
+}
+
+void saten_bgmfadeout(int ms) /* PUBLIC */
+{
+    // This function affects the currently playing music
+    Mix_FadeOutMusic(ms);
 }
