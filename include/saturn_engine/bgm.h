@@ -17,4 +17,7 @@ void saten_bgmnorepeat(void);
 void saten_bgmloop(void);
 void saten_bgmstart(void);
 
+void saten_bgmpause(void);
+void saten_bgmstop(void);
+
 #endif /* SATURN_ENGINE_BGM */

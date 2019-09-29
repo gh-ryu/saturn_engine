@@ -7,6 +7,7 @@ static double lpos = 0; // pos is only available to certain file types
                         // (MOD,OFF,MP3)
 static bool playf;
 static bool repeatf;
+static bool pausef;
 //static int curloop;
 static saten_music *track;
 
@@ -63,6 +64,7 @@ void saten_bgmfadeout(int ms) /* PUBLIC */
     Mix_HookMusicFinished(NULL);
     Mix_FadeOutMusic(ms);
     lpos = 0;
+    track = NULL;
 }
 
 void saten_bgmloop(void) /* PRIVATE */
@@ -106,4 +108,26 @@ void saten_bgmvolw(int v) /* PUBLIC */
 int saten_bgmvolr(void) /* PUBLIC */
 {
     return Mix_VolumeMusic(-1);
+}
+
+void saten_bgmpause(void) /* PUBLIC */
+{
+    if (pausef)
+        Mix_ResumeMusic();
+    else
+        Mix_PauseMusic();
+    pausef = !pausef;
+}
+
+void saten_bgmstop(void) /* PUBLIC */
+{
+    Mix_HookMusicFinished(NULL);
+    Mix_HaltMusic();
+    lpos = 0;
+    track = NULL;
+    loops = -1;
+    pos = 0;
+    repeatf = false;
+    pausef = false;
+    playf = false;
 }
