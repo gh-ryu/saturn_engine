@@ -26,7 +26,10 @@ void scene_title_init(void)
         saten_text_update(saten_resource_text(scene.title, 1), NULL,
                 1.0, 320/2 - w/2, 200);
 
+        //saten_bgmlposw(6.3);
         saten_bgmplay(saten_resource_bgm(scene.title, 0));
+        //saten_music *wow = saten_resource_bgm(scene.title, 2);
+        //Mix_PlayMusic(wow->o, -1);
         saten_scene_init_done(scene.title);
     }
 }
