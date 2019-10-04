@@ -99,17 +99,19 @@ typedef struct _saten_plane {
 
 enum saten_menut { hori, vert };
 enum saten_menuelt { text, sprite };
+enum saten_align { aleft, acenter, aright };
 
 typedef struct _saten_menu_element {
     enum saten_menuelt type; 
-    SDL_Point pos;
+    SDL_Rect rect;
     bool activef; // Can the element respond to input?
     union { saten_text *text;
             saten_sprite *sprite; } data;
 } saten_menu_element;
 
 typedef struct _saten_menu {
-    enum saten_menut type; // Direction of elements
+    enum saten_menut type;  // Direction of elements
+    enum saten_align align; // Alignment of elements
     bool loopf;       // Loop back around when going past end of menu
     bool activef;     // Reacts to inputs?
     bool drawf;       // Draw menu elements?
@@ -119,6 +121,7 @@ typedef struct _saten_menu {
     int elonscreen;   // Number of elements on screen
     SDL_Color mod;    // Modifiers for alpha and color of not-selected elements
     saten_menu_element *el; // Array of elements
+    SDL_Point pos;
 } saten_menu;
 
 #endif /* SATURN_ENGINE_STRUCT */
