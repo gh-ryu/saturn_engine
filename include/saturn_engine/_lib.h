@@ -37,6 +37,15 @@ SATEN_GLOBAL SDL_Rect saten_game_view;
 #define SATEN_VOUT_1920x1080 7 // sd-ws x5, vga-ws x3
 #define SATEN_VOUT_1920x1200 8 // for the cool kids
 
+// Menu stuff
+#define SATEN_MENU_VERT 0
+#define SATEN_MENU_HORI 1
+#define SATEN_MENU_LEFT 0
+#define SATEN_MENU_CENTER 1
+#define SATEN_MENU_RIGHT 2
+#define SATEN_MENU_TEXT 0
+#define SATEN_MENU_SPRITE 1
+
 int saten_init(char *title, uint8_t flags);
 int saten_run(void);
 void saten_game(void);
@@ -52,6 +61,7 @@ void saten_kill(void);
 #include "video.h"
 #include "player.h"
 #include "plane.h"
+#include "menu.h"
 
 
 #endif /* SATURN_ENGINE */

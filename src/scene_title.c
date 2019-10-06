@@ -9,7 +9,8 @@
 #include "scene_load.h"
 #include "input.h"
 
-bool jumptomaptest;
+static bool jumptomaptest;
+static saten_menu *menu;
 
 void scene_title_init(void)
 {
@@ -30,6 +31,23 @@ void scene_title_init(void)
         saten_bgmplay(saten_resource_bgm(scene.title, 0));
         //saten_music *wow = saten_resource_bgm(scene.title, 2);
         //Mix_PlayMusic(wow->o, -1);
+
+        // Menu test...
+        menu = saten_menucreate(SATEN_MENU_VERT, SATEN_MENU_LEFT, false,
+                20, 20);
+        saten_menuaddel(menu, saten_resource_text(scene.title, 2),
+                    SATEN_MENU_TEXT);
+        saten_menuaddel(menu, saten_resource_text(scene.title, 3),
+                    SATEN_MENU_TEXT);
+        saten_menuaddel(menu, saten_resource_text(scene.title, 4),
+                    SATEN_MENU_TEXT);
+        saten_menuaddel(menu, saten_resource_text(scene.title, 5),
+                    SATEN_MENU_TEXT);
+        saten_menuaddel(menu, saten_resource_text(scene.title, 6),
+                    SATEN_MENU_TEXT);
+        saten_menuaddel(menu, saten_resource_text(scene.title, 7),
+                    SATEN_MENU_TEXT);
+
         saten_scene_init_done(scene.title);
     }
 }
@@ -61,6 +79,7 @@ void scene_title_draw(void)
     saten_sprite_draw(saten_resource_sprite(scene.title, 0),
             0, 0, 0, 0, 0);
     saten_text_draw(saten_resource_text(scene.title, 1));
+    saten_menudraw(menu);
 }
 
 void scene_title_quit(void)

@@ -7,6 +7,15 @@ Saten::Resource::SoundEffect.load("demo_assets/sfx_cursor.wav", 0)
 Saten::Resource::Sprite.load("demo_assets/background_title_small.png", 1)
 Saten::Resource::Text.load("PRESS START", 1)
 Saten::Resource::Text.load("PRESS ENTER", 1)
+
+  # Menu
+  Saten::Resource::Text.load("Game", 1);
+  Saten::Resource::Text.load("Shop", 1);
+  Saten::Resource::Text.load("Score", 1);
+  Saten::Resource::Text.load("Setting", 1);
+  Saten::Resource::Text.load("Replay", 1);
+  Saten::Resource::Text.load("Quit", 1);
+
 Saten::Resource::BackgroundMusic.load("demo_assets/bgm_title.ogg", 1)
 Saten::Resource::BackgroundMusic.load("demo_assets/bgm_test.wav", 1)
 Saten::Resource::BackgroundMusic.load("demo_assets/mod_test.xm", 1)
