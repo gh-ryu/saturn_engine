@@ -93,6 +93,8 @@ typedef struct _saten_text {
     int id;
     bool update_flag;
     int w, h, x, y;
+    SDL_Color mod;
+    bool modf;
 } saten_text;
 
 typedef struct _saten_spixel {

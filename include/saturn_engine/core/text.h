@@ -31,4 +31,7 @@ int saten_get_text_x(saten_text *text);
 int saten_get_text_y(saten_text *text);
 void saten_text_quit(void);
 
+void saten_text_modglyph(saten_text *text, SDL_Color *mod);
+void saten_text_unmodglyph(saten_text *text);
+
 #endif /* SATURN_ENGINE_CORE_TEXT */

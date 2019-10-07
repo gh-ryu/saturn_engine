@@ -29,12 +29,14 @@ saten_menu* saten_menucreate(int mtype, int malign,
 void saten_menuaddel(saten_menu *menu, void *data, int dtype)
     /* PUBLIC */
 {
+    SDL_Color mod = { 255, 255, 255, 255 };
     int x; int y;
     int i = menu->elnum;
     menu->elnum++;
     //saten_menu_element *el =
     //    (saten_menu_element*)saten_malloc(sizeof(saten_menu_element));
     saten_menu_element el = { 0 };
+    el.mod = mod;
     el.type = dtype;
     switch (dtype) {
     case SATEN_MENU_TEXT:
@@ -49,6 +51,7 @@ void saten_menuaddel(saten_menu *menu, void *data, int dtype)
         break;
     }
     el.activef = true;
+    el.modf    = false;
 
     if (menu->elnum <= menu->elonscreen) {
         el.drawf = true;
@@ -92,10 +95,25 @@ void saten_menudraw(saten_menu *menu) /* PUBLIC */
             continue;
         switch (menu->el[i].type) {
         case SATEN_MENU_TEXT:
+            if (menu->el[i].modf)
+                saten_text_modglyph(menu->el[i].data.text, &menu->el[i].mod);
             saten_text_draw(menu->el[i].data.text);
             break;
         case SATEN_MENU_SPRITE:
             break;
         }
     }
+}
+
+void saten_menumodel(saten_menu *menu, int id, uint8_t r, uint8_t g,
+        uint8_t b, uint8_t a) /* PUBLIC */
+{
+    SDL_Color c = { r, g, b, a };
+    menu->el[id].modf = true;
+    menu->el[id].mod = c;
+}
+
+void saten_menuremelmod(saten_menu *menu, int id) /* PUBLIC */
+{
+    menu->el[id].modf = false;
 }

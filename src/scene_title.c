@@ -48,6 +48,10 @@ void scene_title_init(void)
         saten_menuaddel(menu, saten_resource_text(scene.title, 7),
                     SATEN_MENU_TEXT);
 
+        saten_menumodel(menu, 0, 128, 128, 128, 255);
+        saten_menumodel(menu, 1, 128, 128, 128, 255);
+        saten_menumodel(menu, 2, 128, 128, 128, 255);
+
         saten_scene_init_done(scene.title);
     }
 }

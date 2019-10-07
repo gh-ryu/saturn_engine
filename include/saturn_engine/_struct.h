@@ -102,6 +102,8 @@ typedef struct _saten_menu_element {
     SDL_Rect rect;
     bool activef; // Can the element respond to input?
     bool drawf;
+    bool modf;
+    SDL_Color mod; // Alpha and color modifier
     union { saten_text *text;
             saten_sprite *sprite; } data;
 } saten_menu_element;
@@ -116,7 +118,6 @@ typedef struct _saten_menu {
     int select;       // Current selection
     int padding;      // Pixels between elements
     int elonscreen;   // Number of elements on screen
-    SDL_Color mod;    // Modifiers for alpha and color of not-selected elements
     saten_menu_element *el; // Array of elements
     SDL_Rect rect;
 } saten_menu;
