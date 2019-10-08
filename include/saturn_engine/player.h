@@ -8,6 +8,7 @@ int saten_player_assign_keyboard(int id);
 int saten_player_assign_pad(int id, int pad);
 uint32_t saten_player_btnr(int id, uint8_t btn);
 uint32_t saten_player_keyr(int id, uint8_t key);
+int saten_player_numr(void);
 
 /* PRIVATE */
 int saten_player_check(int id);

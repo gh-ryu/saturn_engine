@@ -120,6 +120,7 @@ typedef struct _saten_menu {
     int elonscreen;   // Number of elements on screen
     saten_menu_element *el; // Array of elements
     SDL_Rect rect;
+    int owner;        // ID of player who has control
 } saten_menu;
 
 #endif /* SATURN_ENGINE_STRUCT */

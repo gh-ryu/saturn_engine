@@ -1,5 +1,6 @@
 #include "saturn_engine/_lib.h"
 
+/*
 static Mix_Chunk *sfx_accept;
 static Mix_Chunk *sfx_cancel;
 static Mix_Chunk *sfx_select;
@@ -10,8 +11,9 @@ static int acceptbtn;
 static int acceptkey;
 static int cancelbtn;
 static int acceptkey;
+*/
 
-saten_menu* saten_menucreate(int mtype, int malign,
+saten_menu* saten_menu_create(int mtype, int malign,
         bool loop, int x, int y) /* PUBLIC */
 {
     saten_menu *menu = (saten_menu*)saten_malloc(sizeof(saten_menu));
@@ -23,10 +25,69 @@ saten_menu* saten_menucreate(int mtype, int malign,
     menu->padding = 16;
     menu->drawf = true;
     menu->elonscreen = 2000;
+    menu->owner = 1;
     return menu;
 }
 
-void saten_menuaddel(saten_menu *menu, void *data, int dtype)
+void saten_menu_assign_to_player(saten_menu *menu, int id) /* PUBLIC */
+{
+    menu->owner = id;
+}
+
+void saten_menu_update(saten_menu *menu) /* PUBLIC */
+{
+    if (!menu->activef)
+        return;
+    int ctrl_prev;
+    int ctrl_next;
+
+    int btn_prev;
+    int key_prev;
+    int btn_next;
+    int key_next;
+
+    switch (menu->type) {
+    case SATEN_MENU_VERT:
+        key_prev = SATEN_KEY_UP;
+        btn_prev = SATEN_BTN_DPAD_UP;
+        key_next = SATEN_KEY_DOWN;
+        btn_next = SATEN_BTN_DPAD_DOWN;
+        break;
+    case SATEN_MENU_HORI:
+        key_prev = SATEN_KEY_LEFT;
+        btn_prev = SATEN_BTN_DPAD_LEFT;
+        key_next = SATEN_KEY_RIGHT;
+        btn_next = SATEN_BTN_DPAD_RIGHT;
+        break;
+    }
+    ctrl_prev = saten_player_keyr(menu->owner, key_prev);
+    if (ctrl_prev < 1)
+        ctrl_prev = saten_player_btnr(menu->owner, btn_prev);
+    ctrl_next = saten_player_keyr(menu->owner, key_next);
+    if (ctrl_next < 1)
+        ctrl_next = saten_player_btnr(menu->owner, btn_next);
+
+    printf("current: %d\n", menu->select);
+    switch (menu->loopf) {
+    case true:
+        break;
+    case false:
+        if (ctrl_prev == 1 && menu->select > 0)
+            menu->select--;
+        if (ctrl_next == 1 && menu->select < (menu->elnum - 1))
+            menu->select++;
+        break;
+    }
+    // By default make all non-selected elements transparent
+    for (int i = 0; i < menu->elnum; i++) {
+        if (i == menu->select)
+            saten_menu_element_colmod_reset(menu, i);
+        else
+            saten_menu_element_colmodw(menu, i, 255, 255, 255, 128);
+    }
+}
+
+void saten_menu_element_add(saten_menu *menu, void *data, int dtype)
     /* PUBLIC */
 {
     SDL_Color mod = { 255, 255, 255, 255 };
@@ -86,7 +147,7 @@ void saten_menuaddel(saten_menu *menu, void *data, int dtype)
     menu->el[i] = el;
 }
 
-void saten_menudraw(saten_menu *menu) /* PUBLIC */
+void saten_menu_draw(saten_menu *menu) /* PUBLIC */
 {
     if (!menu->drawf)
         return;
@@ -97,6 +158,8 @@ void saten_menudraw(saten_menu *menu) /* PUBLIC */
         case SATEN_MENU_TEXT:
             if (menu->el[i].modf)
                 saten_text_modglyph(menu->el[i].data.text, &menu->el[i].mod);
+            else
+                saten_text_unmodglyph(menu->el[i].data.text);
             saten_text_draw(menu->el[i].data.text);
             break;
         case SATEN_MENU_SPRITE:
@@ -105,7 +168,7 @@ void saten_menudraw(saten_menu *menu) /* PUBLIC */
     }
 }
 
-void saten_menumodel(saten_menu *menu, int id, uint8_t r, uint8_t g,
+void saten_menu_element_colmodw(saten_menu *menu, int id, uint8_t r, uint8_t g,
         uint8_t b, uint8_t a) /* PUBLIC */
 {
     SDL_Color c = { r, g, b, a };
@@ -113,7 +176,12 @@ void saten_menumodel(saten_menu *menu, int id, uint8_t r, uint8_t g,
     menu->el[id].mod = c;
 }
 
-void saten_menuremelmod(saten_menu *menu, int id) /* PUBLIC */
+void saten_menu_element_colmod_reset(saten_menu *menu, int id) /* PUBLIC */
 {
     menu->el[id].modf = false;
+}
+
+void saten_menu_toggle(saten_menu *menu) /* PUBLIC */
+{
+    menu->activef = !menu->activef;
 }

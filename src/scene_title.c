@@ -33,24 +33,24 @@ void scene_title_init(void)
         //Mix_PlayMusic(wow->o, -1);
 
         // Menu test...
-        menu = saten_menucreate(SATEN_MENU_VERT, SATEN_MENU_LEFT, false,
+        menu = saten_menu_create(SATEN_MENU_VERT, SATEN_MENU_LEFT, false,
                 20, 20);
-        saten_menuaddel(menu, saten_resource_text(scene.title, 2),
+        saten_menu_element_add(menu, saten_resource_text(scene.title, 2),
                     SATEN_MENU_TEXT);
-        saten_menuaddel(menu, saten_resource_text(scene.title, 3),
+        saten_menu_element_add(menu, saten_resource_text(scene.title, 3),
                     SATEN_MENU_TEXT);
-        saten_menuaddel(menu, saten_resource_text(scene.title, 4),
+        saten_menu_element_add(menu, saten_resource_text(scene.title, 4),
                     SATEN_MENU_TEXT);
-        saten_menuaddel(menu, saten_resource_text(scene.title, 5),
+        saten_menu_element_add(menu, saten_resource_text(scene.title, 5),
                     SATEN_MENU_TEXT);
-        saten_menuaddel(menu, saten_resource_text(scene.title, 6),
+        saten_menu_element_add(menu, saten_resource_text(scene.title, 6),
                     SATEN_MENU_TEXT);
-        saten_menuaddel(menu, saten_resource_text(scene.title, 7),
+        saten_menu_element_add(menu, saten_resource_text(scene.title, 7),
                     SATEN_MENU_TEXT);
 
-        saten_menumodel(menu, 0, 128, 128, 128, 255);
-        saten_menumodel(menu, 1, 128, 128, 128, 255);
-        saten_menumodel(menu, 2, 128, 128, 128, 255);
+        saten_menu_toggle(menu); // Turn menu on
+
+        saten_player_enable(1);
 
         saten_scene_init_done(scene.title);
     }
@@ -75,6 +75,8 @@ void scene_title_update(bool c)
         }
         if (saten_key(SATEN_KEY_Q) == 1)
             Mix_VolumeMusic(Mix_VolumeMusic(-1) + 1);
+
+        saten_menu_update(menu);
     }
 }
 
@@ -83,7 +85,7 @@ void scene_title_draw(void)
     saten_sprite_draw(saten_resource_sprite(scene.title, 0),
             0, 0, 0, 0, 0);
     saten_text_draw(saten_resource_text(scene.title, 1));
-    saten_menudraw(menu);
+    saten_menu_draw(menu);
 }
 
 void scene_title_quit(void)

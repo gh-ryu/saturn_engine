@@ -12,6 +12,16 @@ int saten_player_enable(int id) /* PUBLIC */
     return 0;
 }
 
+int saten_player_numr(void) /* PUBLIC */
+{
+    int n = 0;
+    for (int i = 0; i < SATEN_PLAYER_NUM; i++) {
+        if (player[i].flag)
+            n++;
+    }
+    return n;
+}
+
 int saten_player_disable(int id) /* PUBLIC */
 {
     int i;
