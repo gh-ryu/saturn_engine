@@ -70,6 +70,10 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
     printf("current: %d\n", menu->select);
     switch (menu->loopf) {
     case true:
+        if (ctrl_prev == 1)
+            menu->select = (menu->select+(menu->elnum-1)) % menu->elnum;
+        if (ctrl_next == 1)
+            menu->select = (menu->select+1) % menu->elnum;
         break;
     case false:
         if (ctrl_prev == 1 && menu->select > 0)
