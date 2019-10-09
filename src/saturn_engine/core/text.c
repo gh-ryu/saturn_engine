@@ -183,8 +183,8 @@ void saten_text_glyph_create(int a, int b, int c, int x, int y, int l,
         text->glyph[i].is_animated = false;
     }
     if (i == 0) {
-        text->x = text->glyph[i].rect.x;
-        text->y = text->glyph[i].rect.y;
+        //text->x = text->glyph[i].rect.x;
+        //text->y = text->glyph[i].rect.y;
         text->w = 0;
         text->h = 0;
     }
@@ -199,6 +199,8 @@ void saten_text_draw(saten_text *text)
         //saten_text_set_data(text);
     }
 
+    SDL_Rect trgt = { 0 };
+
     for (int i = 0; i < text->size; i++) {
         if (i == SATEN_TEXT_GLYPH_MAX)
             return ; // prevent overflow
@@ -211,10 +213,14 @@ void saten_text_draw(saten_text *text)
                         glyph[text->glyph[i].b][text->glyph[i].acnt],
                         text->mod.a);
             }
+            trgt = text->glyph[i].rect;
+            trgt.x += text->x;
+            trgt.y += text->y;
             SDL_RenderCopyEx(saten_ren,
                     saten_glyph_sets[text->glyph[i].a].
                     glyph[text->glyph[i].b][text->glyph[i].acnt],
-                    NULL, &text->glyph[i].rect, 0, NULL, SDL_FLIP_NONE);
+                    //NULL, &text->glyph[i].rect, 0, NULL, SDL_FLIP_NONE);
+                    NULL, &trgt, 0, NULL, SDL_FLIP_NONE);
             if (text->modf) {
                 SDL_SetTextureColorMod(saten_glyph_sets[text->glyph[i].a].
                         glyph[text->glyph[i].b][text->glyph[i].acnt],
@@ -240,10 +246,14 @@ void saten_text_draw(saten_text *text)
                         glyph[text->glyph[i].b][text->glyph[i].c],
                         text->mod.a);
             }
+            trgt = text->glyph[i].rect;
+            trgt.x += text->x;
+            trgt.y += text->y;
             SDL_RenderCopyEx(saten_ren,
                     saten_glyph_sets[text->glyph[i].a].
                     glyph[text->glyph[i].b][text->glyph[i].c],
-                    NULL, &text->glyph[i].rect, 0, NULL, SDL_FLIP_NONE);
+                    //NULL, &text->glyph[i].rect, 0, NULL, SDL_FLIP_NONE);
+                    NULL, &trgt, 0, NULL, SDL_FLIP_NONE);
             if (text->modf) {
                 SDL_SetTextureColorMod(saten_glyph_sets[text->glyph[i].a].
                         glyph[text->glyph[i].b][text->glyph[i].c],
@@ -611,16 +621,21 @@ void saten_text_update(saten_text* text, char *str, float scale, int x, int y)
     else
         mrb_str = mrb_nil_value();
 
+    /*
     mrb_funcall(saten_mrb, text->mrbo, "update", 4, mrb_str,
             mrb_float_value(saten_mrb, scale), mrb_fixnum_value(x),
             mrb_fixnum_value(y));
+            */
+    mrb_funcall(saten_mrb, text->mrbo, "update", 4, mrb_str,
+            mrb_float_value(saten_mrb, scale), mrb_fixnum_value(0),
+            mrb_fixnum_value(0));
 
 }
 
 void saten_text_set_data(saten_text *text)
 {
-    text->x = text->glyph[0].rect.x;
-    text->y = text->glyph[0].rect.y;
+    //text->x = text->glyph[0].rect.x;
+    //text->y = text->glyph[0].rect.y;
     for (int i = 0; i < text->size; i++)
         text->w += text->glyph[i].rect.w;
 }
@@ -671,4 +686,10 @@ void saten_text_modglyph(saten_text *text, SDL_Color *mod)
 void saten_text_unmodglyph(saten_text *text)
 {
     text->modf = false;
+}
+
+void saten_text_posw(saten_text *text, int x, int y) /* PUBLIC */
+{
+    text->x = x;
+    text->y = y;
 }

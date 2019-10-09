@@ -24,8 +24,7 @@ void scene_title_init(void)
         // initialization with loaded resources starts here
         saten_sprite_texturize(saten_resource_sprite(scene.title, 0));
         int w = saten_get_text_width(saten_resource_text(scene.title, 1));
-        saten_text_update(saten_resource_text(scene.title, 1), NULL,
-                1.0, 320/2 - w/2, 200);
+        saten_text_posw(saten_resource_text(scene.title, 1), 320/2 - w/2, 200);
 
         //saten_bgmlposw(6.3);
         saten_bgmplay(saten_resource_bgm(scene.title, 0));

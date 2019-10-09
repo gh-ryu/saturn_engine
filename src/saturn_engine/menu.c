@@ -212,5 +212,5 @@ void saten_menu_element_posw(saten_menu *menu, saten_menu_element *el)
         break;
     }
     if (el->type == SATEN_MENU_TEXT)
-        saten_text_update(el->data.text, NULL, 1.0, x, y);
+        saten_text_posw(el->data.text, x, y);
 }
