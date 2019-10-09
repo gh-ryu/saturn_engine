@@ -49,6 +49,7 @@ void scene_title_init(void)
                     SATEN_MENU_TEXT);
 
         saten_menu_toggle(menu); // Turn menu on
+        menu->elonscreen = 3;
 
         saten_player_enable(1);
 

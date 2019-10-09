@@ -21,6 +21,7 @@ char* saten_mfield_take(saten_mfield *field, size_t size)
     field->volume += size;
     //for (int i = 0; i < size; i++)
     //    field->ptr++;
+    memset(ptr, 0, size);
     return ptr;
 }
 

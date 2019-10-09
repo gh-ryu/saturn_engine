@@ -13,7 +13,7 @@ void saten_mrb_text_init(void)
             "saten_mrb_load_glyph_file", saten_mrb_text_load_glyph_file,
             MRB_ARGS_REQ(7));
 
-    mfg = saten_mfield_create(SATEN_MB(1));
+    mfg = saten_mfield_create(SATEN_MB(20));
     struct RClass* _saten_mrb_class_text;
     _saten_mrb_class_text = mrb_define_class_under(saten_mrb,
             _saten_mrb_module, "Text", saten_mrb->object_class);

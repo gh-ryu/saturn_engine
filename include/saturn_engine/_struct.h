@@ -116,6 +116,7 @@ typedef struct _saten_menu {
     bool drawf;       // Draw menu elements?
     int elnum;        // Number of menu items
     int select;       // Current selection
+    int frame;        // position of frame that draws elements
     int padding;      // Pixels between elements
     int elonscreen;   // Number of elements on screen
     saten_menu_element *el; // Array of elements

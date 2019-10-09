@@ -67,7 +67,6 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
     if (ctrl_next < 1)
         ctrl_next = saten_player_btnr(menu->owner, btn_next);
 
-    printf("current: %d\n", menu->select);
     switch (menu->loopf) {
     case true:
         if (ctrl_prev == 1)
@@ -82,6 +81,26 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
             menu->select++;
         break;
     }
+    // Handle frame-limited menus
+    if (menu->elonscreen < menu->elnum) {
+        if (menu->select > (menu->frame + (menu->elonscreen - 1)))
+            menu->frame++; // Move frame to show current element
+        if (menu->select < menu->frame)
+            menu->frame--;
+        // Only Draw elements within frame
+        menu->rect.h = 0;
+        for (int i = 0; i < menu->elnum; i++) {
+            if (i >= menu->frame &&
+                i <= (menu->frame + (menu->elonscreen -1))) 
+            {
+                menu->el[i].drawf = true;
+                saten_menu_element_posw(menu, menu->el+i);
+
+            }
+            else
+                menu->el[i].drawf = false;
+        }
+    }
     // By default make all non-selected elements transparent
     for (int i = 0; i < menu->elnum; i++) {
         if (i == menu->select)
@@ -95,7 +114,6 @@ void saten_menu_element_add(saten_menu *menu, void *data, int dtype)
     /* PUBLIC */
 {
     SDL_Color mod = { 255, 255, 255, 255 };
-    int x; int y;
     int i = menu->elnum;
     menu->elnum++;
     //saten_menu_element *el =
@@ -121,29 +139,7 @@ void saten_menu_element_add(saten_menu *menu, void *data, int dtype)
     if (menu->elnum <= menu->elonscreen) {
         el.drawf = true;
         // Set position
-        switch (menu->type) {
-        case SATEN_MENU_HORI:
-            break;
-        case SATEN_MENU_VERT:
-            y = menu->rect.y + menu->rect.h + menu->padding;
-            switch (menu->align) {
-            case SATEN_MENU_LEFT:
-                x = menu->rect.x;
-                break;
-            case SATEN_MENU_CENTER:
-                x = menu->rect.x - (el.rect.w/2);
-                break;
-            case SATEN_MENU_RIGHT:
-                x = menu->rect.x - el.rect.w;
-                break;
-            }
-            el.rect.x = x;
-            el.rect.y = y;
-            menu->rect.h = menu->rect.h + el.rect.h + menu->padding;
-            break;
-        }
-        if (dtype == SATEN_MENU_TEXT)
-            saten_text_update(el.data.text, NULL, 1.0, x, y);
+        saten_menu_element_posw(menu, &el);
     }
 
     menu->el = (saten_menu_element*)saten_realloc(menu->el,
@@ -188,4 +184,33 @@ void saten_menu_element_colmod_reset(saten_menu *menu, int id) /* PUBLIC */
 void saten_menu_toggle(saten_menu *menu) /* PUBLIC */
 {
     menu->activef = !menu->activef;
+}
+
+void saten_menu_element_posw(saten_menu *menu, saten_menu_element *el)
+    /* PRIVATE */
+{
+    int x; int y;
+    switch (menu->type) {
+    case SATEN_MENU_HORI:
+        break;
+    case SATEN_MENU_VERT:
+        y = menu->rect.y + menu->rect.h + menu->padding;
+        switch (menu->align) {
+        case SATEN_MENU_LEFT:
+            x = menu->rect.x;
+            break;
+        case SATEN_MENU_CENTER:
+            x = menu->rect.x - (el->rect.w/2);
+            break;
+        case SATEN_MENU_RIGHT:
+            x = menu->rect.x - el->rect.w;
+            break;
+        }
+        el->rect.x = x;
+        el->rect.y = y;
+        menu->rect.h = menu->rect.h + el->rect.h + menu->padding;
+        break;
+    }
+    if (el->type == SATEN_MENU_TEXT)
+        saten_text_update(el->data.text, NULL, 1.0, x, y);
 }
