@@ -95,7 +95,14 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
         if (menu->select < menu->frame)
             menu->frame--;
         // Only Draw elements within frame
-        menu->rect.h = 0;
+        switch (menu->type) {
+        case SATEN_MENU_HORI:
+            menu->rect.w = 0;
+            break;
+        case SATEN_MENU_VERT:
+            menu->rect.h = 0;
+            break;
+        }
         for (int i = 0; i < menu->elnum; i++) {
             if (i >= menu->frame &&
                 i <= (menu->frame + (menu->elonscreen -1))) 
@@ -149,8 +156,6 @@ void saten_menu_element_add(saten_menu *menu, void *data, int dtype)
         saten_menu_element_posw(menu, &el);
     }
 
-    if (el.rect.w > menu->rect.w)
-        menu->rect.w = el.rect.w;
 
     menu->el = (saten_menu_element*)saten_realloc(menu->el,
             sizeof(saten_menu_element) * menu->elnum);
@@ -185,6 +190,13 @@ void saten_menu_draw(saten_menu *menu) /* PUBLIC */
         case SATEN_MENU_HORI:
             inext.tile_id = 3;
             iprev.tile_id = 2;
+
+            inext.pos.y =
+                menu->rect.y + (menu->rect.h/2) - (iconset->srf->h/4);
+            iprev.pos.y = inext.pos.y;
+
+            iprev.pos.x = menu->rect.x - 12;
+            inext.pos.x = (menu->rect.x + menu->rect.w) + 12;
             break;
         case SATEN_MENU_VERT:
             inext.tile_id = 1;
@@ -251,6 +263,13 @@ void saten_menu_element_posw(saten_menu *menu, saten_menu_element *el)
     int x; int y;
     switch (menu->type) {
     case SATEN_MENU_HORI:
+        x = menu->rect.x + menu->rect.w + menu->padding;
+        y = menu->rect.y;
+        el->rect.x = x;
+        el->rect.y = y;
+        menu->rect.w = menu->rect.w + el->rect.w + menu->padding;
+        if (el->rect.h > menu->rect.h)
+            menu->rect.h = el->rect.h;
         break;
     case SATEN_MENU_VERT:
         y = menu->rect.y + menu->rect.h + menu->padding;
@@ -268,6 +287,8 @@ void saten_menu_element_posw(saten_menu *menu, saten_menu_element *el)
         el->rect.x = x;
         el->rect.y = y;
         menu->rect.h = menu->rect.h + el->rect.h + menu->padding;
+        if (el->rect.w > menu->rect.w)
+            menu->rect.w = el->rect.w;
         break;
     }
     if (el->type == SATEN_MENU_TEXT)
