@@ -5,13 +5,13 @@ static Mix_Chunk *sfx_accept;
 static Mix_Chunk *sfx_cancel;
 static Mix_Chunk *sfx_select;
 
-static saten_sprite *iconset;
 
-static int acceptbtn;
-static int acceptkey;
+static int acceptbtn; static int acceptkey;
 static int cancelbtn;
 static int acceptkey;
 */
+
+static saten_sprite *iconset;
 
 saten_menu* saten_menu_create(int mtype, int malign,
         bool loop, int x, int y) /* PUBLIC */
@@ -27,6 +27,13 @@ saten_menu* saten_menu_create(int mtype, int malign,
     menu->elonscreen = 2000;
     menu->owner = 1;
     return menu;
+}
+
+void saten_menu_iconsetw(saten_sprite *sprite) /* PUBLIC */
+{
+    saten_sprite_texturize(sprite);
+    saten_sprite_set_tiles(sprite, 2, 2);
+    iconset = sprite;
 }
 
 void saten_menu_assign_to_player(saten_menu *menu, int id) /* PUBLIC */
@@ -142,6 +149,9 @@ void saten_menu_element_add(saten_menu *menu, void *data, int dtype)
         saten_menu_element_posw(menu, &el);
     }
 
+    if (el.rect.w > menu->rect.w)
+        menu->rect.w = el.rect.w;
+
     menu->el = (saten_menu_element*)saten_realloc(menu->el,
             sizeof(saten_menu_element) * menu->elnum);
     menu->el[i] = el;
@@ -165,6 +175,55 @@ void saten_menu_draw(saten_menu *menu) /* PUBLIC */
         case SATEN_MENU_SPRITE:
             break;
         }
+    }
+    // Draw arrows indicating additional elements
+    if (iconset && menu->elnum > menu->elonscreen) {
+        saten_menu_icon iprev;
+        saten_menu_icon inext;
+
+        switch (menu->type) {
+        case SATEN_MENU_HORI:
+            inext.tile_id = 3;
+            iprev.tile_id = 2;
+            break;
+        case SATEN_MENU_VERT:
+            inext.tile_id = 1;
+            iprev.tile_id = 0;
+
+            inext.pos.x =
+                menu->rect.x + (menu->rect.w/2) - (iconset->srf->w/4);
+            iprev.pos.x = inext.pos.x;
+
+            iprev.pos.y = menu->rect.y - 12;
+            inext.pos.y = (menu->rect.y + menu->rect.h) + 12;
+            break;
+        }
+
+        iprev.pos.x += menu->icon_xoff;
+        if (menu->type == SATEN_MENU_HORI)
+            inext.pos.x += -menu->icon_xoff;
+        else
+            inext.pos.x += menu->icon_xoff;
+        iprev.pos.y += menu->icon_yoff;
+        if (menu->type == SATEN_MENU_VERT)
+            inext.pos.y += -menu->icon_yoff;
+        else
+            inext.pos.y += menu->icon_yoff;
+
+        if (menu->loopf) {
+            iprev.drawf = true;
+            inext.drawf = true;
+        } else {
+            iprev.drawf = (menu->frame > 0);
+            inext.drawf = (menu->frame + menu->elonscreen < menu->elnum);
+        }
+        if (iprev.drawf)
+            saten_sprite_draw(iconset, iprev.tile_id, iprev.pos.x, iprev.pos.y,
+                    0, false);
+        if (inext.drawf)
+            saten_sprite_draw(iconset, inext.tile_id, inext.pos.x, inext.pos.y,
+                0, false);
+
     }
 }
 
@@ -213,4 +272,10 @@ void saten_menu_element_posw(saten_menu *menu, saten_menu_element *el)
     }
     if (el->type == SATEN_MENU_TEXT)
         saten_text_posw(el->data.text, x, y);
+}
+
+void saten_menu_icon_offsetw(saten_menu *menu, int x, int y) /* PUBLIC */
+{
+    menu->icon_xoff = x;
+    menu->icon_yoff = y;
 }

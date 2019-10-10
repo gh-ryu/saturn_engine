@@ -122,6 +122,8 @@ typedef struct _saten_menu {
     saten_menu_element *el; // Array of elements
     SDL_Rect rect;
     int owner;        // ID of player who has control
+    int icon_xoff;   // Offsets for arrows
+    int icon_yoff;
 } saten_menu;
 
 #endif /* SATURN_ENGINE_STRUCT */

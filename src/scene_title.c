@@ -48,7 +48,8 @@ void scene_title_init(void)
                     SATEN_MENU_TEXT);
 
         saten_menu_toggle(menu); // Turn menu on
-        menu->elonscreen = 3;
+        saten_menu_icon_offsetw(menu, 0, 12);
+        menu->elonscreen = 1;
 
         saten_player_enable(1);
 
