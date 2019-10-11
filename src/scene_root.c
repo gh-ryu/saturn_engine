@@ -21,6 +21,9 @@ void scene_root_init(void)
                 saten_resource_sfx(scene.root, 1),
                 saten_resource_sfx(scene.root, 2), NULL);
 
+        saten_menu_assign_key(input_keyr(accept), input_keyr(cancel));
+        saten_menu_assign_btn(input_btnr(accept), input_btnr(cancel));
+
 
         saten_video_wpw(saten_resource_sprite(scene.root, 0), true);
         saten_sfx_reset(scene.root);

@@ -3,11 +3,8 @@
 static saten_menu_sfx sfx_def;
 static saten_sprite *def_iconset;
 
-/*
 static int acceptbtn; static int acceptkey;
-static int cancelbtn;
-static int acceptkey;
-*/
+static int cancelbtn; static int cancelkey;
 
 
 saten_menu* saten_menu_create(int mtype, int malign,
@@ -26,6 +23,18 @@ saten_menu* saten_menu_create(int mtype, int malign,
     menu->sfx = sfx_def;
     menu->iconset = def_iconset;
     return menu;
+}
+
+void saten_menu_assign_key(int acc, int can) /* PUBLIC */
+{
+    acceptkey = acc;
+    cancelkey = can;
+}
+
+void saten_menu_assign_btn(int acc, int can) /* PUBLIC */
+{
+    acceptbtn = acc;
+    cancelbtn = can;
 }
 
 void saten_menu_default_sfxw(Mix_Chunk *acc, Mix_Chunk *can, Mix_Chunk *sel,

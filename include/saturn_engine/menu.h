@@ -7,6 +7,9 @@ typedef struct _saten_menu_icon {
     bool drawf;
 } saten_menu_icon;
 
+void saten_menu_assign_btn(int acc, int can);
+void saten_menu_assign_key(int acc, int can);
+
 saten_menu* saten_menu_create(int mtype, int malign, bool loop, int x, int y);
 void saten_menu_update(saten_menu *menu);
 void saten_menu_element_add(saten_menu *menu, void *data, int dtype);

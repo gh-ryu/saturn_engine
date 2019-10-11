@@ -122,6 +122,22 @@ void input_playerw(int id) /* PUBLIC */
     player = id;
 }
 
+int input_keyr(enum inputs i) /* PUBLIC */
+{
+    uint8_t *btn = NULL;
+    uint8_t *key = NULL;
+    input_set(&btn, &key);
+    return key[i];
+}
+
+int input_btnr(enum inputs i) /* PUBLIC */
+{
+    uint8_t *btn = NULL;
+    uint8_t *key = NULL;
+    input_set(&btn, &key);
+    return btn[i];
+}
+
 uint32_t input(enum inputs i) /* PUBLIC */
 {
     //inputcntr *btn = NULL;
