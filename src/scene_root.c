@@ -16,7 +16,11 @@ void scene_root_init(void)
     if (saten_scene_loaded(scene.root)) {
         saten_sprite_texturize(saten_resource_sprite(scene.root, 0));
 
-        saten_menu_iconsetw(saten_resource_sprite(scene.root, 1));
+        saten_menu_def_iconsetw(saten_resource_sprite(scene.root, 1));
+        saten_menu_default_sfxw(saten_resource_sfx(scene.root, 0),
+                saten_resource_sfx(scene.root, 1),
+                saten_resource_sfx(scene.root, 2), NULL);
+
 
         saten_video_wpw(saten_resource_sprite(scene.root, 0), true);
         saten_sfx_reset(scene.root);

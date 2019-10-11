@@ -108,6 +108,13 @@ typedef struct _saten_menu_element {
             saten_sprite *sprite; } data;
 } saten_menu_element;
 
+typedef struct _saten_menu_sfx {
+    Mix_Chunk *accept;
+    Mix_Chunk *cancel;
+    Mix_Chunk *select;
+    Mix_Chunk *deny;
+} saten_menu_sfx;
+
 typedef struct _saten_menu {
     int type;  // Direction of elements
     int align; // Alignment of elements
@@ -124,6 +131,8 @@ typedef struct _saten_menu {
     int owner;        // ID of player who has control
     int icon_xoff;   // Offsets for arrows
     int icon_yoff;
+    saten_menu_sfx sfx;
+    saten_sprite *iconset; // Arrow icons
 } saten_menu;
 
 #endif /* SATURN_ENGINE_STRUCT */

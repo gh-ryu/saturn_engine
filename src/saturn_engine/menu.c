@@ -1,17 +1,14 @@
 #include "saturn_engine/_lib.h"
 
+static saten_menu_sfx sfx_def;
+static saten_sprite *def_iconset;
+
 /*
-static Mix_Chunk *sfx_accept;
-static Mix_Chunk *sfx_cancel;
-static Mix_Chunk *sfx_select;
-
-
 static int acceptbtn; static int acceptkey;
 static int cancelbtn;
 static int acceptkey;
 */
 
-static saten_sprite *iconset;
 
 saten_menu* saten_menu_create(int mtype, int malign,
         bool loop, int x, int y) /* PUBLIC */
@@ -26,14 +23,25 @@ saten_menu* saten_menu_create(int mtype, int malign,
     menu->drawf = true;
     menu->elonscreen = 2000;
     menu->owner = 1;
+    menu->sfx = sfx_def;
+    menu->iconset = def_iconset;
     return menu;
 }
 
-void saten_menu_iconsetw(saten_sprite *sprite) /* PUBLIC */
+void saten_menu_default_sfxw(Mix_Chunk *acc, Mix_Chunk *can, Mix_Chunk *sel,
+        Mix_Chunk *den) /* PUBLIC */
+{
+    sfx_def.accept = acc;
+    sfx_def.cancel = can;
+    sfx_def.select = sel;
+    sfx_def.deny   = den;
+}
+
+void saten_menu_def_iconsetw(saten_sprite *sprite) /* PUBLIC */
 {
     saten_sprite_texturize(sprite);
     saten_sprite_set_tiles(sprite, 2, 2);
-    iconset = sprite;
+    def_iconset = sprite;
 }
 
 void saten_menu_assign_to_player(saten_menu *menu, int id) /* PUBLIC */
@@ -182,7 +190,7 @@ void saten_menu_draw(saten_menu *menu) /* PUBLIC */
         }
     }
     // Draw arrows indicating additional elements
-    if (iconset && menu->elnum > menu->elonscreen) {
+    if (menu->iconset && menu->elnum > menu->elonscreen) {
         saten_menu_icon iprev;
         saten_menu_icon inext;
 
@@ -192,7 +200,7 @@ void saten_menu_draw(saten_menu *menu) /* PUBLIC */
             iprev.tile_id = 2;
 
             inext.pos.y =
-                menu->rect.y + (menu->rect.h/2) - (iconset->srf->h/4);
+                menu->rect.y + (menu->rect.h/2) - (menu->iconset->srf->h/4);
             iprev.pos.y = inext.pos.y;
 
             iprev.pos.x = menu->rect.x - 12;
@@ -203,7 +211,7 @@ void saten_menu_draw(saten_menu *menu) /* PUBLIC */
             iprev.tile_id = 0;
 
             inext.pos.x =
-                menu->rect.x + (menu->rect.w/2) - (iconset->srf->w/4);
+                menu->rect.x + (menu->rect.w/2) - (menu->iconset->srf->w/4);
             iprev.pos.x = inext.pos.x;
 
             iprev.pos.y = menu->rect.y - 12;
@@ -230,10 +238,12 @@ void saten_menu_draw(saten_menu *menu) /* PUBLIC */
             inext.drawf = (menu->frame + menu->elonscreen < menu->elnum);
         }
         if (iprev.drawf)
-            saten_sprite_draw(iconset, iprev.tile_id, iprev.pos.x, iprev.pos.y,
+            saten_sprite_draw(menu->iconset, iprev.tile_id, iprev.pos.x,
+                    iprev.pos.y,
                     0, false);
         if (inext.drawf)
-            saten_sprite_draw(iconset, inext.tile_id, inext.pos.x, inext.pos.y,
+            saten_sprite_draw(menu->iconset, inext.tile_id, inext.pos.x,
+                    inext.pos.y,
                 0, false);
 
     }
