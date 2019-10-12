@@ -103,8 +103,8 @@ mrb_value saten_mrb_load_sfx(mrb_state *mrb, mrb_value self)
         // load file if no scene given or if we want to load files for id
         res->sfx_n++;
         i = res->sfx_n;
-        res->sfx = saten_realloc(res->sfx, i * sizeof(Mix_Chunk*));
-        res->sfx[i-1] = Mix_LoadWAV(string);
+        res->sfx = saten_realloc(res->sfx, i * sizeof(saten_sound*));
+        res->sfx[i-1] = saten_sound_load(string, saten_now_loading.id, i-1);
     }
 
     return mrb_nil_value();

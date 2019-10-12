@@ -99,7 +99,6 @@ void input_load_mappings(char *fn, inputcntr *inp) /* PRIVATE */
     }
 }
 
-//void input_set(inputcntr **btn, inputcntr **key) /* PRIVATE */
 void input_set(uint8_t **btn, uint8_t **key) /* PRIVATE */
 {
     switch (player) {
@@ -108,8 +107,8 @@ void input_set(uint8_t **btn, uint8_t **key) /* PRIVATE */
         *key = (uint8_t*)&p1inpkb;
         break;
     case 2:
-        //*btn = &p2inp;
-        //*key = &p2inpkb;
+        *btn = (uint8_t*)&p2inp;
+        *key = (uint8_t*)&p2inpkb;
         break;
     }
 }

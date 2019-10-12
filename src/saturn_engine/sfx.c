@@ -1,20 +1,22 @@
 #include "saturn_engine/_lib.h"
 
 // public
-int saten_sfx_volume(saten_scene_info scene, int i, int vol)
+int saten_sfx_volume(saten_sound *sound, int vol)
 {
-    // returns previous volume
-    if (saten_scene_exists(scene))
-        return Mix_VolumeChunk(saten_darr_scene[scene.id].res.sfx[i], vol);
-    else
-        return 0;
+    return Mix_VolumeChunk(sound->o, vol);
 }
 
 // public
-void saten_sfx_set(saten_scene_info scene, int i)
+void saten_sfx_set(saten_sound *sound)
 {
-    if (i >= 0 && i < saten_darr_scene[scene.id].res.sfx_n)
-        saten_darr_scene[scene.id].res.sfx_flag[i] = true;
+    /*
+    if (sound->sfx_id >= 0 &&
+        sound->sfx_id < saten_darr_scene[sound->scene_id].res.sfx_n)
+    {
+        saten_darr_scene[sound->scene_id].res.sfx_flag[sound->sfx_id] = true;
+    }
+    */
+    sound->playf = true;
 }
 
 // public
@@ -23,14 +25,17 @@ void saten_sfx_play(saten_scene_info scene)
     if (saten_scene_exists(scene)) {
         // plays all soundeffects that have been set
         for (int i = 0; i < saten_darr_scene[scene.id].res.sfx_n; i++)
-            if (saten_darr_scene[scene.id].res.sfx_flag[i])
-                Mix_PlayChannel(-1, saten_darr_scene[scene.id].res.sfx[i], 0);
+            //if (saten_darr_scene[scene.id].res.sfx_flag[i])
+            if (saten_darr_scene[scene.id].res.sfx[i]->playf)
+                Mix_PlayChannel(-1,
+                        saten_darr_scene[scene.id].res.sfx[i]->o, 0);
     }
 }
 
 // public
-void saten_sfx_unset(saten_scene_info scene, int i)
+void saten_sfx_unset(saten_sound *sound)
 {
+    /*
     if (saten_scene_exists(scene)) {
         // unsets a soundeffect. unsets all if i == -1
         if (i == -1) {
@@ -40,7 +45,18 @@ void saten_sfx_unset(saten_scene_info scene, int i)
         if (i >= 0 && i < saten_darr_scene[scene.id].res.sfx_n)
             saten_darr_scene[scene.id].res.sfx_flag[i] = false;
     }
+    */
+    sound->playf = false;
 }
+
+// public
+void saten_sfx_unset_all(saten_scene_info scene)
+{
+    for (int i = 0; i < saten_darr_scene[scene.id].res.sfx_n; i++)
+        saten_darr_scene[scene.id].res.sfx[i]->playf = false;
+}
+
+/*
 
 // private use after loading/unloading soundeffects
 void saten_sfx_reset(saten_scene_info scene)
@@ -53,3 +69,4 @@ void saten_sfx_reset(saten_scene_info scene)
                 sizeof(bool) * saten_darr_scene[scene.id].res.sfx_n);
     }
 }
+ */

@@ -23,7 +23,7 @@ void saten_menu_assign_to_player(saten_menu *menu, int id);
 
 void saten_menu_def_iconsetw(saten_sprite *sprite);
 void saten_menu_icon_offsetw(saten_menu *menu, int x, int y);
-void saten_menu_default_sfxw(Mix_Chunk *acc, Mix_Chunk *can, Mix_Chunk *sel,
-        Mix_Chunk *den);
+void saten_menu_default_sfxw(saten_sound *acc, saten_sound *can,
+        saten_sound *sel, saten_sound *den);
 
 #endif /* SATURN_ENGINE_MENU */

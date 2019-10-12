@@ -25,6 +25,10 @@ saten_menu* saten_menu_create(int mtype, int malign,
     return menu;
 }
 
+// Before assigning buttons and keys
+// set the player of input module to be the menu owner
+// [ if the configuration can vary for each player ]
+
 void saten_menu_assign_key(int acc, int can) /* PUBLIC */
 {
     acceptkey = acc;
@@ -37,8 +41,8 @@ void saten_menu_assign_btn(int acc, int can) /* PUBLIC */
     cancelbtn = can;
 }
 
-void saten_menu_default_sfxw(Mix_Chunk *acc, Mix_Chunk *can, Mix_Chunk *sel,
-        Mix_Chunk *den) /* PUBLIC */
+void saten_menu_default_sfxw(saten_sound *acc, saten_sound *can,
+        saten_sound *sel, saten_sound *den) /* PUBLIC */
 {
     sfx_def.accept = acc;
     sfx_def.cancel = can;

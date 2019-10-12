@@ -15,7 +15,7 @@ saten_sprite* saten_resource_sprite(saten_scene_info scene, int id)
 }
 
 // public
-Mix_Chunk* saten_resource_sfx(saten_scene_info scene, int id)
+saten_sound* saten_resource_sfx(saten_scene_info scene, int id)
 {
     if (!saten_scene_exists(scene)) {
         saten_errhandler(40);
@@ -62,7 +62,7 @@ void saten_resource_free(saten_resmngr res)
     for (int i = 0; i < res.sprite_n; i++)
         saten_sprite_destroy(res.sprite[i]);
     for (int i = 0; i < res.sfx_n; i++)
-        Mix_FreeChunk(res.sfx[i]);
+        saten_sound_free(res.sfx[i]);
     for (int i = 0; i < res.bgm_n; i++)
         saten_mufree(res.bgm[i]);
     for (int i = 0; i < res.text_n; i++)
@@ -71,5 +71,5 @@ void saten_resource_free(saten_resmngr res)
     free(res.sfx);
     free(res.bgm);
     free(res.text);
-    free(res.sfx_flag);
+    //free(res.sfx_flag);
 }

@@ -117,12 +117,19 @@ typedef struct _saten_music {
     Mix_MusicType t; 
 } saten_music;
 
+typedef struct _saten_sound {
+    Mix_Chunk *o;
+    int scene_id;
+    int sfx_id;
+    bool playf;
+} saten_sound;
+
 typedef struct _saten_resmngr {
     saten_sprite **sprite;
     int sprite_n;
-    Mix_Chunk **sfx;
+    saten_sound **sfx;
     int sfx_n;
-    bool *sfx_flag;
+    //bool *sfx_flag;
     saten_music **bgm;
     int bgm_n;
     saten_text **text;

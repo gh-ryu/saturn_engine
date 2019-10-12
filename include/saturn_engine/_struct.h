@@ -109,10 +109,10 @@ typedef struct _saten_menu_element {
 } saten_menu_element;
 
 typedef struct _saten_menu_sfx {
-    Mix_Chunk *accept;
-    Mix_Chunk *cancel;
-    Mix_Chunk *select;
-    Mix_Chunk *deny;
+    saten_sound *accept;
+    saten_sound *cancel;
+    saten_sound *select;
+    saten_sound *deny;
 } saten_menu_sfx;
 
 typedef struct _saten_menu {

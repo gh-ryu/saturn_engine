@@ -26,10 +26,10 @@ void scene_root_init(void)
 
 
         saten_video_wpw(saten_resource_sprite(scene.root, 0), true);
-        saten_sfx_reset(scene.root);
-        saten_sfx_volume(scene.root, 0, 30);
-        saten_sfx_volume(scene.root, 1, 20);
-        saten_sfx_volume(scene.root, 2, 38);
+        //saten_sfx_reset(scene.root);
+        saten_sfx_volume(saten_resource_sfx(scene.root, 0), 30);
+        saten_sfx_volume(saten_resource_sfx(scene.root, 1), 20);
+        saten_sfx_volume(saten_resource_sfx(scene.root, 2), 38);
         saten_scene_init_done(scene.root);
         
         scene.title = saten_scene_create(scene.title, scene_title_init,
@@ -47,14 +47,14 @@ void scene_root_update(bool c)
         saten_key_unlock(-1);
     if (c) {
         if (saten_key(SATEN_KEY_ENTER) == 1)
-            saten_sfx_set(scene.root, 0);
+            saten_sfx_set(saten_resource_sfx(scene.root, 0));
         if (saten_key(SATEN_KEY_SPACE) == 1)
-            saten_sfx_set(scene.root, 1);
+            saten_sfx_set(saten_resource_sfx(scene.root, 1));
         if (saten_key(SATEN_KEY_A) == 1)
-            saten_sfx_set(scene.root, 2);
+            saten_sfx_set(saten_resource_sfx(scene.root, 2));
 
         saten_sfx_play(scene.root);
-        saten_sfx_unset(scene.root, -1);
+        saten_sfx_unset_all(scene.root);
 
         if (saten_key(SATEN_KEY_Z)) {
             scene.title = saten_scene_create(scene.title, scene_title_init,
