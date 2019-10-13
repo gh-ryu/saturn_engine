@@ -6,6 +6,8 @@
  * 384x216 SD Widescreen
  * 640x360 VGA Widescreen
  */
+
+#define SATEN_FRAMERATE 60
 #define SATEN_GAME_WIDTH 288
 #define SATEN_GAME_HEIGHT 216
 

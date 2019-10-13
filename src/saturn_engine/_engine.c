@@ -42,6 +42,8 @@ int saten_init(char *title, uint8_t flags) /* PUBLIC */
     SATEN_DARR_INIT(saten_scene, saten_darr_scene);
     saten_video_init();
 
+    saten_framerate_set(SATEN_FRAMERATE);
+
     return 0; // everything okay!
 }
 
