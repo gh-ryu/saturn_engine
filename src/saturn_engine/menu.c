@@ -46,7 +46,7 @@ void saten_menu_default_sfxw(saten_sound *acc, saten_sound *can,
 {
     sfx_def.accept = acc;
     sfx_def.cancel = can;
-    sfx_def.select = sel;
+    sfx_def.move = sel;
     sfx_def.deny   = den;
 }
 
@@ -100,30 +100,30 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
     switch (menu->loopf) {
     case true:
         if (ctrl_prev == 1) {
-            menu->select = (menu->select+(menu->elnum-1)) % menu->elnum;
+            menu->cursor = (menu->cursor+(menu->elnum-1)) % menu->elnum;
             movef = true;
         }
         if (ctrl_next == 1) {
-            menu->select = (menu->select+1) % menu->elnum;
+            menu->cursor = (menu->cursor+1) % menu->elnum;
             movef = true;
         }
         break;
     case false:
-        if (ctrl_prev == 1 && menu->select > 0) {
-            menu->select--;
+        if (ctrl_prev == 1 && menu->cursor > 0) {
+            menu->cursor--;
             movef = true;
         }
-        if (ctrl_next == 1 && menu->select < (menu->elnum - 1)) {
-            menu->select++;
+        if (ctrl_next == 1 && menu->cursor < (menu->elnum - 1)) {
+            menu->cursor++;
             movef = true;
         }
         break;
     }
     // Handle frame-limited menus
     if (menu->elonscreen < menu->elnum) {
-        if (menu->select > (menu->frame + (menu->elonscreen - 1)))
+        if (menu->cursor > (menu->frame + (menu->elonscreen - 1)))
             menu->frame++; // Move frame to show current element
-        if (menu->select < menu->frame)
+        if (menu->cursor < menu->frame)
             menu->frame--;
         // Only Draw elements within frame
         switch (menu->type) {
@@ -148,14 +148,14 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
     }
     // By default make all non-selected elements transparent
     for (int i = 0; i < menu->elnum; i++) {
-        if (i == menu->select)
+        if (i == menu->cursor)
             saten_menu_element_colmod_reset(menu, i);
         else
             saten_menu_element_colmodw(menu, i, 255, 255, 255, 128);
     }
     // Play sounds
-    if (movef && menu->sfx.select)
-        saten_sfx_set(menu->sfx.select);
+    if (movef && menu->sfx.move)
+        saten_sfx_set(menu->sfx.move);
 }
 
 void saten_menu_element_add(saten_menu *menu, void *data, int dtype)

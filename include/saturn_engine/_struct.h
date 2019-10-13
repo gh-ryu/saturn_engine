@@ -111,7 +111,7 @@ typedef struct _saten_menu_element {
 typedef struct _saten_menu_sfx {
     saten_sound *accept;
     saten_sound *cancel;
-    saten_sound *select;
+    saten_sound *move;
     saten_sound *deny;
 } saten_menu_sfx;
 
@@ -122,7 +122,7 @@ typedef struct _saten_menu {
     bool activef;     // Reacts to inputs?
     bool drawf;       // Draw menu elements?
     int elnum;        // Number of menu items
-    int select;       // Current selection
+    int cursor;       // Current selection
     int frame;        // position of frame that draws elements
     int padding;      // Pixels between elements
     int elonscreen;   // Number of elements on screen
