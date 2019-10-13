@@ -9,14 +9,8 @@ int saten_sfx_volume(saten_sound *sound, int vol)
 // public
 void saten_sfx_set(saten_sound *sound)
 {
-    /*
-    if (sound->sfx_id >= 0 &&
-        sound->sfx_id < saten_darr_scene[sound->scene_id].res.sfx_n)
-    {
-        saten_darr_scene[sound->scene_id].res.sfx_flag[sound->sfx_id] = true;
-    }
-    */
-    sound->playf = true;
+    if (sound)
+        sound->playf = true;
 }
 
 // public

@@ -48,6 +48,7 @@ void scene_title_init(void)
                     SATEN_MENU_TEXT);
 
         saten_menu_toggle(menu); // Turn menu on
+        saten_menu_element_toggle(menu, 4); // Replay turned off..
         saten_menu_icon_offsetw(menu, 0, 12); // Vert menu
         saten_menu_icon_offsetw(menu, 12, 0); // Hori menu
         menu->elonscreen = 1;
@@ -67,6 +68,7 @@ void scene_title_update(bool c)
     if (saten_scene_frame(scene.title) >= 260)
         saten_key_unlock(-1);
     if (c) {
+        /*
         if (input(cancel) == 1) {
             saten_key_lock(-1);
             saten_scene_quit(scene.title);
@@ -75,6 +77,7 @@ void scene_title_update(bool c)
             saten_scene_quit(scene.title);
             jumptomaptest = true;
         }
+        */
         if (saten_key(SATEN_KEY_Q) == 1)
             Mix_VolumeMusic(Mix_VolumeMusic(-1) + 1);
 

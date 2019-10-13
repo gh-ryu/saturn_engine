@@ -19,11 +19,15 @@ void saten_menu_element_colmod_reset(saten_menu *menu, int id);
 void saten_menu_element_posw(saten_menu *menu, saten_menu_element *el);
 void saten_menu_draw(saten_menu *menu);
 void saten_menu_toggle(saten_menu *menu);
+void saten_menu_element_toggle(saten_menu *menu, int id);
 void saten_menu_assign_to_player(saten_menu *menu, int id);
 
 void saten_menu_def_iconsetw(saten_sprite *sprite);
 void saten_menu_icon_offsetw(saten_menu *menu, int x, int y);
 void saten_menu_default_sfxw(saten_sound *acc, saten_sound *can,
         saten_sound *sel, saten_sound *den);
+
+int saten_menu_respondsto(saten_menu *menu);
+int saten_menu_cursor_posr(saten_menu *menu);
 
 #endif /* SATURN_ENGINE_MENU */

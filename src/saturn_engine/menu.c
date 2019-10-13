@@ -22,6 +22,7 @@ saten_menu* saten_menu_create(int mtype, int malign,
     menu->owner = 1;
     menu->sfx = sfx_def;
     menu->iconset = def_iconset;
+    menu->select = -2; // Default for no press of accept key/btn
     return menu;
 }
 
@@ -64,10 +65,14 @@ void saten_menu_assign_to_player(saten_menu *menu, int id) /* PUBLIC */
 
 void saten_menu_update(saten_menu *menu) /* PUBLIC */
 {
+    menu->select = -2;
     if (!menu->activef)
         return;
     int ctrl_prev;
     int ctrl_next;
+
+    int ctrl_accept = 0;
+    int ctrl_cancel = 0;
 
     int btn_prev;
     int key_prev;
@@ -153,9 +158,44 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
         else
             saten_menu_element_colmodw(menu, i, 255, 255, 255, 128);
     }
+    // Handle Accept & Cancel inputs
+    if (!movef) {
+        ctrl_accept = saten_player_keyr(menu->owner, acceptkey);
+        if (ctrl_accept < 1)
+            ctrl_accept = saten_player_btnr(menu->owner, acceptbtn);
+        if (ctrl_accept == 1) {
+            if (menu->el[menu->cursor].activef)
+                menu->select = menu->cursor;
+            else
+                menu->select = -2;
+        }
+        ctrl_cancel = saten_player_keyr(menu->owner, cancelkey);
+        if (ctrl_cancel < 1)
+            ctrl_cancel = saten_player_btnr(menu->owner, cancelbtn);
+        if (ctrl_cancel == 1)
+            menu->select = -1;
+    }
     // Play sounds
-    if (movef && menu->sfx.move)
+    if (movef)
         saten_sfx_set(menu->sfx.move);
+    if (ctrl_accept == 1 && ctrl_cancel == 0) {
+        if (menu->el[menu->select].activef)
+            saten_sfx_set(menu->sfx.accept);
+        else
+            saten_sfx_set(menu->sfx.deny);
+    }
+    if (ctrl_cancel == 1)
+        saten_sfx_set(menu->sfx.cancel);
+}
+
+int saten_menu_respondsto(saten_menu *menu) /* PUBLIC */
+{
+    return menu->select;
+}
+
+int saten_menu_cursor_posr(saten_menu *menu) /* PUBLIC */
+{
+    return menu->cursor;
 }
 
 void saten_menu_element_add(saten_menu *menu, void *data, int dtype)
@@ -291,6 +331,14 @@ void saten_menu_element_colmod_reset(saten_menu *menu, int id) /* PUBLIC */
 void saten_menu_toggle(saten_menu *menu) /* PUBLIC */
 {
     menu->activef = !menu->activef;
+}
+
+void saten_menu_element_toggle(saten_menu *menu, int id) /* PUBLIC */
+{
+    if (id > 0 && id < menu->elnum)
+        menu->el[id].activef = !menu->el[id].activef;
+    else
+        saten_errhandler(70);
 }
 
 void saten_menu_element_posw(saten_menu *menu, saten_menu_element *el)

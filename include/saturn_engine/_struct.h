@@ -133,6 +133,7 @@ typedef struct _saten_menu {
     int icon_yoff;
     saten_menu_sfx sfx;
     saten_sprite *iconset; // Arrow icons
+    int select;      // Element which responded to press of accept
 } saten_menu;
 
 #endif /* SATURN_ENGINE_STRUCT */
