@@ -80,6 +80,8 @@ void scene_title_update(bool c)
 
         saten_menu_update(menu);
     }
+    saten_sfx_play(scene.root);
+    saten_sfx_unset_all(scene.root);
 }
 
 void scene_title_draw(void)

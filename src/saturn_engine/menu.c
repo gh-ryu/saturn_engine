@@ -74,6 +74,8 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
     int btn_next;
     int key_next;
 
+    bool movef = false;
+
     switch (menu->type) {
     case SATEN_MENU_VERT:
         key_prev = SATEN_KEY_UP;
@@ -97,16 +99,24 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
 
     switch (menu->loopf) {
     case true:
-        if (ctrl_prev == 1)
+        if (ctrl_prev == 1) {
             menu->select = (menu->select+(menu->elnum-1)) % menu->elnum;
-        if (ctrl_next == 1)
+            movef = true;
+        }
+        if (ctrl_next == 1) {
             menu->select = (menu->select+1) % menu->elnum;
+            movef = true;
+        }
         break;
     case false:
-        if (ctrl_prev == 1 && menu->select > 0)
+        if (ctrl_prev == 1 && menu->select > 0) {
             menu->select--;
-        if (ctrl_next == 1 && menu->select < (menu->elnum - 1))
+            movef = true;
+        }
+        if (ctrl_next == 1 && menu->select < (menu->elnum - 1)) {
             menu->select++;
+            movef = true;
+        }
         break;
     }
     // Handle frame-limited menus
@@ -143,6 +153,9 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
         else
             saten_menu_element_colmodw(menu, i, 255, 255, 255, 128);
     }
+    // Play sounds
+    if (movef && menu->sfx.select)
+        saten_sfx_set(menu->sfx.select);
 }
 
 void saten_menu_element_add(saten_menu *menu, void *data, int dtype)
