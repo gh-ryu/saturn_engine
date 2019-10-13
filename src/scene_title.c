@@ -51,7 +51,7 @@ void scene_title_init(void)
         saten_menu_element_toggle(menu, 4); // Replay turned off..
         saten_menu_icon_offsetw(menu, 0, 12); // Vert menu
         saten_menu_icon_offsetw(menu, 12, 0); // Hori menu
-        menu->elonscreen = 1;
+        menu->elonscreen = 3;
 
         saten_player_enable(1);
 
