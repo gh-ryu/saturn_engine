@@ -23,6 +23,7 @@ saten_menu* saten_menu_create(int mtype, int malign,
     menu->sfx = sfx_def;
     menu->iconset = def_iconset;
     menu->select = -2; // Default for no press of accept key/btn
+    menu->interval = 0;
     return menu;
 }
 
@@ -80,6 +81,8 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
     int key_next;
 
     bool movef   = false;
+    bool move_prevf = false;
+    bool move_nextf = false;
 
     switch (menu->type) {
     case SATEN_MENU_VERT:
@@ -102,23 +105,41 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
     if (ctrl_next < 1)
         ctrl_next = saten_player_btnr(menu->owner, btn_next);
 
+    menu->cpressf_prev = (ctrl_prev > 1);
+    menu->cpressf_next = (ctrl_next > 1);
+
+    if (menu->interval > 0) {
+        if (menu->cpressf_prev)
+            move_prevf = ((ctrl_prev % menu->interval) == 0);
+        else
+            move_prevf = (ctrl_prev == 1);
+        if (menu->cpressf_next)
+            move_nextf = ((ctrl_next % menu->interval) == 0);
+        else
+            move_nextf = (ctrl_next == 1);
+
+    } else {
+        move_prevf = (ctrl_prev == 1);
+        move_nextf = (ctrl_next == 1);
+    }
+
     switch (menu->loopf) {
     case true:
-        if (ctrl_prev == 1) {
+        if (move_prevf) {
             menu->cursor = (menu->cursor+(menu->elnum-1)) % menu->elnum;
             movef = true;
         }
-        if (ctrl_next == 1) {
+        if (move_nextf) {
             menu->cursor = (menu->cursor+1) % menu->elnum;
             movef = true;
         }
         break;
     case false:
-        if (ctrl_prev == 1 && menu->cursor > 0) {
+        if (move_prevf && menu->cursor > 0) {
             menu->cursor--;
             movef = true;
         }
-        if (ctrl_next == 1 && menu->cursor < (menu->elnum - 1)) {
+        if (move_nextf && menu->cursor < (menu->elnum - 1)) {
             menu->cursor++;
             movef = true;
         }
@@ -387,4 +408,12 @@ void saten_menu_icon_offsetw(saten_menu *menu, int x, int y) /* PUBLIC */
 {
     menu->icon_xoff = x;
     menu->icon_yoff = y;
+}
+
+void saten_menu_intervalw(saten_menu *menu, int ival) /* PUBLIC */
+{
+    if (ival > 0)
+        menu->interval = ival;
+    else
+        menu->interval = 0;
 }

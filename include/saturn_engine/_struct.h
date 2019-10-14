@@ -134,6 +134,9 @@ typedef struct _saten_menu {
     saten_menu_sfx sfx;
     saten_sprite *iconset; // Arrow icons
     int select;      // Element which responded to press of accept
+    int interval;     // Move every i frames when continuous pressed
+    bool cpressf_next;     // dire btn pressed continuously
+    bool cpressf_prev;     // dire btn pressed continuously
 } saten_menu;
 
 #endif /* SATURN_ENGINE_STRUCT */

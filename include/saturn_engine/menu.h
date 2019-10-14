@@ -29,5 +29,6 @@ void saten_menu_default_sfxw(saten_sound *acc, saten_sound *can,
 
 int saten_menu_respondsto(saten_menu *menu);
 int saten_menu_cursor_posr(saten_menu *menu);
+void saten_menu_intervalw(saten_menu *menu, int ival);
 
 #endif /* SATURN_ENGINE_MENU */
