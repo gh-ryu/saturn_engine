@@ -32,7 +32,7 @@ void scene_title_init(void)
         //Mix_PlayMusic(wow->o, -1);
 
         // Menu test...
-        menu = saten_menu_create(SATEN_MENU_HORI, SATEN_MENU_LEFT, true,
+        menu = saten_menu_create(SATEN_MENU_VERT, SATEN_MENU_LEFT, false,
                 20, 20);
         saten_menu_element_add(menu, saten_resource_text(scene.title, 2),
                     SATEN_MENU_TEXT);
@@ -51,7 +51,8 @@ void scene_title_init(void)
         saten_menu_element_toggle(menu, 4); // Replay turned off..
         saten_menu_icon_offsetw(menu, 0, 12); // Vert menu
         saten_menu_icon_offsetw(menu, 12, 0); // Hori menu
-        menu->elonscreen = 3;
+        //saten_menu_max(menu, 3);
+        //saten_menu_intervalw(menu, 20);
 
         saten_player_enable(1);
 

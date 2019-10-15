@@ -147,14 +147,35 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
     }
     // Handle frame-limited menus
     if (menu->elonscreen < menu->elnum) {
-        if (menu->cursor > (menu->frame + (menu->elonscreen - 1)))
-            menu->frame++; // Move frame to show current element
-        if (menu->cursor < menu->frame)
-            menu->frame--;
-        if (menu->cursor == 0 && (menu->frame >= menu->elonscreen))
+        switch (menu->elonscreen) {
+        case 1:
+        case 2:
+            if (menu->cursor > (menu->frame + (menu->elonscreen - 1)))
+                menu->frame++; // Move frame to show current element
+            if (menu->cursor < menu->frame)
+                menu->frame--;
+            break;
+        default:
+            if (menu->cursor == (menu->frame + (menu->elonscreen - 1)) &&
+                (menu->cursor < (menu->elnum - 1 )))
+                {
+                    menu->frame++;
+                }
+            if (menu->cursor == menu->frame && menu->cursor > 0)
+                menu->frame--;
+            break;
+        }
+        //if (menu->cursor == 0 && (menu->frame >= menu->elonscreen))
+        if (menu->cursor == 0 && (menu->frame != 0))
             menu->frame = 0; // Fix for loop end to start
         if (menu->frame == 0  && (menu->cursor == menu->elnum - 1))
             menu->frame = menu->elnum - menu->elonscreen; // Fix start to end
+        if (menu->elonscreen <= 2 && (menu->cursor == menu->elnum - 1)) {
+            if (menu->elonscreen == 1)
+                menu->frame = menu->elnum - 1;
+            else
+                menu->frame = menu->elnum - 2;
+        }
         // Only Draw elements within frame
         switch (menu->type) {
         case SATEN_MENU_HORI:
@@ -416,4 +437,9 @@ void saten_menu_intervalw(saten_menu *menu, int ival) /* PUBLIC */
         menu->interval = ival;
     else
         menu->interval = 0;
+}
+
+void saten_menu_max(saten_menu *menu, int max) /* PUBLIC */
+{
+    menu->elonscreen = max;
 }
