@@ -393,8 +393,19 @@ void saten_menu_element_posw(saten_menu *menu, saten_menu_element *el)
     int x; int y;
     switch (menu->type) {
     case SATEN_MENU_HORI:
-        x = menu->rect.x + menu->rect.w + menu->padding;
         y = menu->rect.y;
+        switch (menu->align) {
+        case SATEN_MENU_LEFT:
+        case SATEN_MENU_RIGHT:
+            x = menu->rect.x + menu->rect.w + menu->padding;
+            break;
+        case SATEN_MENU_CENTER:
+            if (menu->elonscreen == 1)
+                x = menu->rect.x - (el->rect.w/2);
+            else
+                x = menu->rect.x + menu->rect.w + menu->padding;
+            break;
+        }
         el->rect.x = x;
         el->rect.y = y;
         menu->rect.w = menu->rect.w + el->rect.w + menu->padding;
