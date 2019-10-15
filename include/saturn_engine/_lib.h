@@ -46,6 +46,8 @@ SATEN_GLOBAL SDL_Rect saten_game_view;
 #define SATEN_MENU_TEXT 0
 #define SATEN_MENU_SPRITE 1
 
+#define SATEN_MENU_ROWLEN_DEFAULT 4
+
 #define SATEN_MENU_LOOP (1 << 7)
 #define SATEN_MENU_MATRIX (1 << 7)
 

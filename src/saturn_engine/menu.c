@@ -14,6 +14,7 @@ saten_menu* saten_menu_create(int mtype, int malign,
     menu->type  = mtype;
     menu->align = malign;
     menu->loopf = saten_flag_check(SATEN_MENU_LOOP, flags);
+    menu->matrixf = saten_flag_check(SATEN_MENU_MATRIX, flags);
     menu->rect.x = x;
     menu->rect.y = y;
     menu->padding = 16;
@@ -24,6 +25,7 @@ saten_menu* saten_menu_create(int mtype, int malign,
     menu->iconset = def_iconset;
     menu->select = -2; // Default for no press of accept key/btn
     menu->interval = 0;
+    menu->rowlen = SATEN_MENU_ROWLEN_DEFAULT;
     return menu;
 }
 
@@ -453,4 +455,12 @@ void saten_menu_intervalw(saten_menu *menu, int ival) /* PUBLIC */
 void saten_menu_max(saten_menu *menu, int max) /* PUBLIC */
 {
     menu->elonscreen = max;
+}
+
+void saten_menu_rowlenw(saten_menu *menu, int l) /* PUBLIC */
+{
+    if (l > 0)
+        menu->rowlen = l;
+    else
+        menu->rowlen = SATEN_MENU_ROWLEN_DEFAULT;
 }

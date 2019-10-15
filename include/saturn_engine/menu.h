@@ -32,5 +32,6 @@ int saten_menu_respondsto(saten_menu *menu);
 int saten_menu_cursor_posr(saten_menu *menu);
 void saten_menu_intervalw(saten_menu *menu, int ival);
 void saten_menu_max(saten_menu *menu, int max);
+void saten_menu_rowlenw(saten_menu *menu, int l);
 
 #endif /* SATURN_ENGINE_MENU */

@@ -137,6 +137,8 @@ typedef struct _saten_menu {
     int interval;     // Move every i frames when continuous pressed
     bool cpressf_next;     // dire btn pressed continuously
     bool cpressf_prev;     // dire btn pressed continuously
+    bool matrixf;
+    int rowlen;            // elements per row in a matrix
 } saten_menu;
 
 #endif /* SATURN_ENGINE_STRUCT */
