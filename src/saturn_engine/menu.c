@@ -8,12 +8,12 @@ static int cancelbtn; static int cancelkey;
 
 
 saten_menu* saten_menu_create(int mtype, int malign,
-        bool loop, int x, int y) /* PUBLIC */
+        int x, int y, uint8_t flags) /* PUBLIC */
 {
     saten_menu *menu = (saten_menu*)saten_malloc(sizeof(saten_menu));
     menu->type  = mtype;
     menu->align = malign;
-    menu->loopf = loop;
+    menu->loopf = saten_flag_check(SATEN_MENU_LOOP, flags);
     menu->rect.x = x;
     menu->rect.y = y;
     menu->padding = 16;

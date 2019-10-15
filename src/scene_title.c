@@ -32,8 +32,8 @@ void scene_title_init(void)
         //Mix_PlayMusic(wow->o, -1);
 
         // Menu test...
-        menu = saten_menu_create(SATEN_MENU_VERT, SATEN_MENU_LEFT, false,
-                20, 20);
+        menu = saten_menu_create(SATEN_MENU_VERT, SATEN_MENU_LEFT,
+                20, 20, SATEN_MENU_LOOP);
         saten_menu_element_add(menu, saten_resource_text(scene.title, 2),
                     SATEN_MENU_TEXT);
         saten_menu_element_add(menu, saten_resource_text(scene.title, 3),

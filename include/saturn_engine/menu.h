@@ -10,7 +10,8 @@ typedef struct _saten_menu_icon {
 void saten_menu_assign_btn(int acc, int can);
 void saten_menu_assign_key(int acc, int can);
 
-saten_menu* saten_menu_create(int mtype, int malign, bool loop, int x, int y);
+saten_menu* saten_menu_create(int mtype, int malign, int x, int y,
+        uint8_t flags);
 void saten_menu_update(saten_menu *menu);
 void saten_menu_element_add(saten_menu *menu, void *data, int dtype);
 void saten_menu_element_colmodw(saten_menu *menu, int id, uint8_t r, uint8_t g,
