@@ -151,10 +151,10 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
             menu->frame++; // Move frame to show current element
         if (menu->cursor < menu->frame)
             menu->frame--;
-        if (menu->cursor == 0 && menu->frame >= menu->elonscreen)
+        if (menu->cursor == 0 && (menu->frame >= menu->elonscreen))
             menu->frame = 0; // Fix for loop end to start
-        if (menu->frame < menu->cursor) // Fix for loop start to end
-            menu->frame = menu->elnum - menu->elonscreen;
+        if (menu->frame == 0  && (menu->cursor == menu->elnum - 1))
+            menu->frame = menu->elnum - menu->elonscreen; // Fix start to end
         // Only Draw elements within frame
         switch (menu->type) {
         case SATEN_MENU_HORI:
