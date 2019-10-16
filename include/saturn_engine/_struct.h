@@ -122,10 +122,13 @@ typedef struct _saten_menu {
     bool activef;     // Reacts to inputs?
     bool drawf;       // Draw menu elements?
     int elnum;        // Number of menu items
-    int cursor;       // Current selection
+    //int cursor;       // Current selection
+    SDL_Point cursor;
     int frame;        // position of frame that draws elements
-    int padding;      // Pixels between elements
-    int elonscreen;   // Number of elements on screen
+    //int padding;      // Pixels between elements
+    SDL_Point padding;
+    //int elonscreen;   // Number of elements on screen
+    SDL_Rect frame;   // x, y position, w, h num of elements
     saten_menu_element *el; // Array of elements
     SDL_Rect rect;
     int owner;        // ID of player who has control
@@ -135,10 +138,13 @@ typedef struct _saten_menu {
     saten_sprite *iconset; // Arrow icons
     int select;      // Element which responded to press of accept
     int interval;     // Move every i frames when continuous pressed
-    bool cpressf_next;     // dire btn pressed continuously
-    bool cpressf_prev;     // dire btn pressed continuously
+    bool cpressf_next_x;     // dire btn pressed continuously
+    bool cpressf_prev_x;     // dire btn pressed continuously
+    bool cpressf_next_y;     // dire btn pressed continuously
+    bool cpressf_prev_y;     // dire btn pressed continuously
     bool matrixf;
     int rowlen;            // elements per row in a matrix
+    int collen;            // number of rows
 } saten_menu;
 
 #endif /* SATURN_ENGINE_STRUCT */

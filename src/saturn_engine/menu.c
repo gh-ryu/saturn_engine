@@ -17,9 +17,12 @@ saten_menu* saten_menu_create(int mtype, int malign,
     menu->matrixf = saten_flag_check(SATEN_MENU_MATRIX, flags);
     menu->rect.x = x;
     menu->rect.y = y;
-    menu->padding = 16;
+    menu->padding.x = 6;
+    menu->padding.y = 6;
     menu->drawf = true;
-    menu->elonscreen = 2000;
+    //menu->elonscreen = 2000;
+    menu->frame.w = 1;
+    menu->frame.h = 2000;
     menu->owner = 1;
     menu->sfx = sfx_def;
     menu->iconset = def_iconset;
@@ -71,114 +74,158 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
     menu->select = -2;
     if (!menu->activef)
         return;
-    int ctrl_prev;
-    int ctrl_next;
+
+    int ctrl_prev_x;
+    int ctrl_next_x;
+
+    int ctrl_prev_y;
+    int ctrl_next_y;
 
     int ctrl_accept = 0;
     int ctrl_cancel = 0;
 
-    int btn_prev;
-    int key_prev;
-    int btn_next;
-    int key_next;
+    int btn_prev_x;
+    int key_prev_x;
+    int btn_next_x;
+    int key_next_x;
 
-    bool movef   = false;
-    bool move_prevf = false;
-    bool move_nextf = false;
+    int btn_prev_y;
+    int key_prev_y;
+    int btn_next_y;
+    int key_next_y;
 
-    switch (menu->type) {
-    case SATEN_MENU_VERT:
-        key_prev = SATEN_KEY_UP;
-        btn_prev = SATEN_BTN_DPAD_UP;
-        key_next = SATEN_KEY_DOWN;
-        btn_next = SATEN_BTN_DPAD_DOWN;
-        break;
-    case SATEN_MENU_HORI:
-        key_prev = SATEN_KEY_LEFT;
-        btn_prev = SATEN_BTN_DPAD_LEFT;
-        key_next = SATEN_KEY_RIGHT;
-        btn_next = SATEN_BTN_DPAD_RIGHT;
-        break;
-    }
-    ctrl_prev = saten_player_keyr(menu->owner, key_prev);
-    if (ctrl_prev < 1)
-        ctrl_prev = saten_player_btnr(menu->owner, btn_prev);
-    ctrl_next = saten_player_keyr(menu->owner, key_next);
-    if (ctrl_next < 1)
-        ctrl_next = saten_player_btnr(menu->owner, btn_next);
+    bool move_xf   = false;
+    bool move_yf   = false;
+    bool move_prev_xf = false;
+    bool move_next_xf = false;
+    bool move_prev_yf = false;
+    bool move_next_yf = false;
 
-    menu->cpressf_prev = (ctrl_prev > 1);
-    menu->cpressf_next = (ctrl_next > 1);
+    key_prev_y = SATEN_KEY_UP;
+    btn_prev_y = SATEN_BTN_DPAD_UP;
+    key_next_y = SATEN_KEY_DOWN;
+    btn_next_y = SATEN_BTN_DPAD_DOWN;
+
+    key_prev_x = SATEN_KEY_LEFT;
+    btn_prev_x = SATEN_BTN_DPAD_LEFT;
+    key_next_x = SATEN_KEY_RIGHT;
+    btn_next_x = SATEN_BTN_DPAD_RIGHT;
+
+    ctrl_prev_x = saten_player_keyr(menu->owner, key_prev_x);
+    if (ctrl_prev_x < 1)
+        ctrl_prev_x = saten_player_btnr(menu->owner, btn_prev_x);
+    ctrl_next_x = saten_player_keyr(menu->owner, key_next_x);
+    if (ctrl_next_x < 1)
+        ctrl_next_x = saten_player_btnr(menu->owner, btn_next_x);
+
+    ctrl_prev_y = saten_player_keyr(menu->owner, key_prev_y);
+    if (ctrl_prev_y < 1)
+        ctrl_prev_y = saten_player_btnr(menu->owner, btn_prev_y);
+    ctrl_next_y = saten_player_keyr(menu->owner, key_next_y);
+    if (ctrl_next_y < 1)
+        ctrl_next_y = saten_player_btnr(menu->owner, btn_next_y);
+
+    menu->cpressf_prev_x = (ctrl_prev_x > 1);
+    menu->cpressf_next_x = (ctrl_next_x > 1);
+    menu->cpressf_prev_y = (ctrl_prev_y > 1);
+    menu->cpressf_next_y = (ctrl_next_y > 1);
 
     if (menu->interval > 0) {
-        if (menu->cpressf_prev)
-            move_prevf = ((ctrl_prev % menu->interval) == 0);
+        if (menu->cpressf_prev_x)
+            move_prev_xf = ((ctrl_prev_x % menu->interval) == 0);
         else
-            move_prevf = (ctrl_prev == 1);
-        if (menu->cpressf_next)
-            move_nextf = ((ctrl_next % menu->interval) == 0);
+            move_prev_xf = (ctrl_prev_x == 1);
+        if (menu->cpressf_next_x)
+            move_next_xf = ((ctrl_next_x % menu->interval) == 0);
         else
-            move_nextf = (ctrl_next == 1);
+            move_next_xf = (ctrl_next_x == 1);
 
+        if (menu->cpressf_prev_y)
+            move_prev_yf = ((ctrl_prev_y % menu->interval) == 0);
+        else
+            move_prev_yf = (ctrl_prev_y == 1);
+        if (menu->cpressf_next_y)
+            move_next_yf = ((ctrl_next_y % menu->interval) == 0);
+        else
+            move_next_yf = (ctrl_next_y == 1);
     } else {
-        move_prevf = (ctrl_prev == 1);
-        move_nextf = (ctrl_next == 1);
+        move_prev_xf = (ctrl_prev_x == 1);
+        move_next_xf = (ctrl_next_x == 1);
+        move_prev_yf = (ctrl_prev_y == 1);
+        move_next_yf = (ctrl_next_y == 1);
     }
 
     switch (menu->loopf) {
     case true:
-        if (move_prevf) {
-            menu->cursor = (menu->cursor+(menu->elnum-1)) % menu->elnum;
-            movef = true;
+        if (move_prev_xf) {
+            menu->cursor.x = (menu->cursor.x+(menu->rowlen-1)) % menu->rowlen;
+            move_xf = true;
         }
-        if (move_nextf) {
-            menu->cursor = (menu->cursor+1) % menu->elnum;
-            movef = true;
+        if (move_next_xf) {
+            menu->cursor.x = (menu->cursor.x+1) % menu->rowlen;
+            move_xf = true;
+        }
+        if (move_prev_yf) {
+            menu->cursor.y = (menu->cursor.y+(menu->collen-1)) % menu->collen;
+            move_yf = true;
+        }
+        if (move_next_yf) {
+            menu->cursor.y = (menu->cursor.y+1) % menu->collen;
+            move_yf = true;
         }
         break;
     case false:
-        if (move_prevf && menu->cursor > 0) {
-            menu->cursor--;
-            movef = true;
+        if (move_prev_xf && menu->cursor.x > 0) {
+            menu->cursor.x--;
+            move_xf = true;
         }
-        if (move_nextf && menu->cursor < (menu->elnum - 1)) {
-            menu->cursor++;
-            movef = true;
+        if (move_next_xf && menu->cursor.x < (menu->rowlen - 1)) {
+            menu->cursor.x++;
+            move_xf = true;
+        }
+        if (move_prev_yf && menu->cursor.y > 0) {
+            menu->cursor.y--;
+            move_yf = true;
+        }
+        if (move_next_yf && menu->cursor.y < (menu->collen - 1)) {
+            menu->cursor.y++;
+            move_yf = true;
         }
         break;
     }
-    // Handle frame-limited menus
-    if (menu->elonscreen < menu->elnum) {
-        switch (menu->elonscreen) {
+    // Handle frame-limited menus (x)
+    if (menu->frame.w < menu->rowlen) {
+        switch (menu->rowlen) {
         case 1:
         case 2:
-            if (menu->cursor > (menu->frame + (menu->elonscreen - 1)))
-                menu->frame++; // Move frame to show current element
-            if (menu->cursor < menu->frame)
-                menu->frame--;
+            if (menu->cursor.x > (menu->frame.x + (menu->frame.w - 1)))
+                menu->frame.x++; // Move frame to show current element
+            if (menu->cursor.x < menu->frame.x)
+                menu->frame.x--;
             break;
         default:
-            if (menu->cursor == (menu->frame + (menu->elonscreen - 1)) &&
-                (menu->cursor < (menu->elnum - 1 )))
+            if (menu->cursor.x == (menu->frame.x + (menu->frame.w - 1)) &&
+                (menu->cursor.x < (menu->rowlen - 1 )))
                 {
-                    menu->frame++;
+                    menu->frame.x++;
                 }
-            if (menu->cursor == menu->frame && menu->cursor > 0)
-                menu->frame--;
+            if (menu->cursor.x == menu->frame.x && menu->cursor.x > 0)
+                menu->frame.x--;
             break;
         }
         //if (menu->cursor == 0 && (menu->frame >= menu->elonscreen))
-        if (menu->cursor == 0 && (menu->frame != 0))
-            menu->frame = 0; // Fix for loop end to start
-        if (menu->frame == 0  && (menu->cursor == menu->elnum - 1))
-            menu->frame = menu->elnum - menu->elonscreen; // Fix start to end
-        if (menu->elonscreen <= 2 && (menu->cursor == menu->elnum - 1)) {
-            if (menu->elonscreen == 1)
-                menu->frame = menu->elnum - 1;
+        if (menu->cursor.x == 0 && (menu->frame.x != 0))
+            menu->frame.x = 0; // Fix for loop end to start
+        if (menu->frame.x == 0  && (menu->cursor.x == menu->rowlen - 1))
+            menu->frame.x = menu->rowlen - menu->frame.w; // Fix start to end
+        if (menu->frame.w <= 2 && (menu->cursor.x == menu->rowlen - 1)) {
+            if (menu->frame.w == 1)
+                menu->frame.x = menu->rowlen - 1;
             else
-                menu->frame = menu->elnum - 2;
+                menu->frame.x = menu->rowlen - 2;
         }
         // Only Draw elements within frame
+        /*
         switch (menu->type) {
         case SATEN_MENU_HORI:
             menu->rect.w = 0;
@@ -186,7 +233,10 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
         case SATEN_MENU_VERT:
             menu->rect.h = 0;
             break;
-        }
+        } */
+        menu->rect.w = 0;
+        menu->rect.h = 0;
+        //TODO
         for (int i = 0; i < menu->elnum; i++) {
             if (i >= menu->frame &&
                 i <= (menu->frame + (menu->elonscreen -1))) 
@@ -241,7 +291,7 @@ int saten_menu_respondsto(saten_menu *menu) /* PUBLIC */
     return menu->select;
 }
 
-int saten_menu_cursor_posr(saten_menu *menu) /* PUBLIC */
+SDL_Point saten_menu_cursor_posr(saten_menu *menu) /* PUBLIC */
 {
     return menu->cursor;
 }
@@ -452,9 +502,16 @@ void saten_menu_intervalw(saten_menu *menu, int ival) /* PUBLIC */
         menu->interval = 0;
 }
 
-void saten_menu_max(saten_menu *menu, int max) /* PUBLIC */
+void saten_menu_framesizew(saten_menu *menu, int x, int y) /* PUBLIC */
 {
-    menu->elonscreen = max;
+    if (x > 0)
+        menu->frame.w = x;
+    else
+        menu->frame.w = 1;
+    if (y > 0)
+        menu->frame.h = y;
+    else
+        menu->frame.h = 1;
 }
 
 void saten_menu_rowlenw(saten_menu *menu, int l) /* PUBLIC */
