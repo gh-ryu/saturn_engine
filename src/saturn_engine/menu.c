@@ -193,8 +193,8 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
         }
         break;
     }
-    // Handle frame-limited menus (x)
-    if (menu->frame.w < menu->rowlen) {
+    // Handle frame-limited menus
+    if (menu->frame.w < menu->rowlen || menu->frame.h < menu->collen) {
         switch (menu->rowlen) {
         case 1:
         case 2:
@@ -213,6 +213,24 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
                 menu->frame.x--;
             break;
         }
+        switch (menu->collen) {
+        case 1:
+        case 2:
+            if (menu->cursor.y > (menu->frame.y + (menu->frame.h - 1)))
+                menu->frame.y++; // Move frame to show current element
+            if (menu->cursor.y < menu->frame.y)
+                menu->frame.y--;
+            break;
+        default:
+            if (menu->cursor.y == (menu->frame.y + (menu->frame.y - 1)) &&
+                (menu->cursor.y < (menu->collen - 1 )))
+                {
+                    menu->frame.y++;
+                }
+            if (menu->cursor.y == menu->frame.y && menu->cursor.y > 0)
+                menu->frame.y--;
+            break;
+        }
         //if (menu->cursor == 0 && (menu->frame >= menu->elonscreen))
         if (menu->cursor.x == 0 && (menu->frame.x != 0))
             menu->frame.x = 0; // Fix for loop end to start
@@ -223,6 +241,16 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
                 menu->frame.x = menu->rowlen - 1;
             else
                 menu->frame.x = menu->rowlen - 2;
+        }
+        if (menu->cursor.y == 0 && (menu->frame.y != 0))
+            menu->frame.y = 0; // Fix for loop end to start
+        if (menu->frame.y == 0  && (menu->cursor.y == menu->collen - 1))
+            menu->frame.y = menu->collen - menu->frame.h; // Fix start to end
+        if (menu->frame.h <= 2 && (menu->cursor.y == menu->collen - 1)) {
+            if (menu->frame.h == 1)
+                menu->frame.y = menu->collen - 1;
+            else
+                menu->frame.y = menu->collen - 2;
         }
         // Only Draw elements within frame
         /*
@@ -236,10 +264,12 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
         } */
         menu->rect.w = 0;
         menu->rect.h = 0;
-        //TODO
         for (int i = 0; i < menu->elnum; i++) {
-            if (i >= menu->frame &&
-                i <= (menu->frame + (menu->elonscreen -1))) 
+            SDL_Point elpos = saten_coords_from_arrindex(i, menu->rowlen);
+            //if (i >= menu->frame &&
+            //    i <= (menu->frame + (menu->elonscreen -1))) 
+            if (saten_inrange(elpos.x, menu->frame.x, menu->frame.w - 1) &&
+                saten_inrange(elpos.y, menu->frame.y, menu->frame.h - 1))
             {
                 menu->el[i].drawf = true;
                 saten_menu_element_posw(menu, menu->el+i);
@@ -251,7 +281,7 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
     }
     // By default make all non-selected elements transparent
     for (int i = 0; i < menu->elnum; i++) {
-        if (i == menu->cursor)
+        if (saten_coords_from_arrindex(i, menu->rowlen) == menu->cursor)
             saten_menu_element_colmod_reset(menu, i);
         else
             saten_menu_element_colmodw(menu, i, 255, 255, 255, 128);

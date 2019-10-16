@@ -12,5 +12,7 @@ void* saten_malloc(size_t size);
 void* saten_realloc(void* ptr, size_t size);
 bool saten_test_rgb(uint8_t r, uint8_t g, uint8_t b, uint8_t t);
 size_t saten_intlen(int a);
+SDL_Point saten_coords_from_arrindex(int i, int pitch);
+bool saten_inrange(int n, int min, int max);
 
 #endif /* SATURN_ENGINE_CORE_UTIL */

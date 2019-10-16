@@ -116,3 +116,18 @@ void saten_fopen(FILE **fp, const char *filename, const char *mode)
     if (*fp == NULL)
         saten_errhandler(39);
 }
+
+// public
+SDL_Point saten_coords_from_arrindex(int i, int pitch)
+{
+    SDL_Point pos;
+    pos.x = i % p;
+    pos.y = floor(i/p);
+    return pos;
+}
+
+// public
+bool saten_inrange(int n, int min, int max)
+{
+    return ((n >= min) && (n <= max));
+}
