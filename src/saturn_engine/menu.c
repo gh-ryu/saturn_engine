@@ -575,7 +575,9 @@ void saten_menu_element_posw(saten_menu *menu, saten_menu_element *el)
 
     if (el->type == SATEN_MENU_TEXT)
         saten_text_posw(el->data.text, x, y);
+
     drawn++;
+
     if (menu->type != SATEN_MENU_HORI) {
         if ((drawn & menu->frame.w) == 0)
             menu->rect.h = menu->rect.h + el->rect.h + menu->padding.y;
