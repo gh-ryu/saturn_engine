@@ -6,6 +6,8 @@ static saten_sprite *def_iconset;
 static int acceptbtn; static int acceptkey;
 static int cancelbtn; static int cancelkey;
 
+static int drawn; // Number of elements drawn
+
 
 saten_menu* saten_menu_create(int mtype, int malign,
         int x, int y, uint8_t flags) /* PUBLIC */
@@ -71,9 +73,11 @@ void saten_menu_assign_to_player(saten_menu *menu, int id) /* PUBLIC */
 
 void saten_menu_update(saten_menu *menu) /* PUBLIC */
 {
-    menu->select = -2;
     if (!menu->activef)
         return;
+
+    menu->select = -2;
+    drawn = 0;
 
     int ctrl_prev_x;
     int ctrl_next_x;
@@ -265,35 +269,31 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
         menu->rect.w = 0;
         menu->rect.h = 0;
         for (int i = 0; i < menu->elnum; i++) {
-            SDL_Point elpos = saten_coords_from_arrindex(i, menu->rowlen);
-            //if (i >= menu->frame &&
-            //    i <= (menu->frame + (menu->elonscreen -1))) 
-            if (saten_inrange(elpos.x, menu->frame.x, menu->frame.w - 1) &&
-                saten_inrange(elpos.y, menu->frame.y, menu->frame.h - 1))
-            {
+            if (saten_menu_elinframe(menu, menu->el+i)) {
                 menu->el[i].drawf = true;
                 saten_menu_element_posw(menu, menu->el+i);
-
-            }
-            else
+            } else {
                 menu->el[i].drawf = false;
+            }
         }
     }
     // By default make all non-selected elements transparent
     for (int i = 0; i < menu->elnum; i++) {
-        if (saten_coords_from_arrindex(i, menu->rowlen) == menu->cursor)
+        if (saten_sdlpntcmp(&(menu->el[i].gpos), &menu->cursor))
             saten_menu_element_colmod_reset(menu, i);
         else
             saten_menu_element_colmodw(menu, i, 255, 255, 255, 128);
     }
     // Handle Accept & Cancel inputs
-    if (!movef) {
+    if (!move_xf && !move_yf) {
         ctrl_accept = saten_player_keyr(menu->owner, acceptkey);
         if (ctrl_accept < 1)
             ctrl_accept = saten_player_btnr(menu->owner, acceptbtn);
         if (ctrl_accept == 1) {
-            if (menu->el[menu->cursor].activef)
-                menu->select = menu->cursor;
+            //if (menu->el[menu->cursor].activef)
+            int index = (menu->cursor.y * menu->rowlen) + menu->cursor.x;
+            if (menu->el[index].activef)
+                menu->select = index;
             else
                 menu->select = -2;
         }
@@ -304,7 +304,7 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
             menu->select = -1;
     }
     // Play sounds
-    if (movef)
+    if (move_xf || move_yf)
         saten_sfx_set(menu->sfx.move);
     if (ctrl_accept == 1 && ctrl_cancel == 0) {
         if (menu->el[menu->select].activef)
@@ -321,9 +321,9 @@ int saten_menu_respondsto(saten_menu *menu) /* PUBLIC */
     return menu->select;
 }
 
-SDL_Point saten_menu_cursor_posr(saten_menu *menu) /* PUBLIC */
+int saten_menu_cursor_posr(saten_menu *menu) /* PUBLIC */
 {
-    return menu->cursor;
+    return ((menu->cursor.y * menu->rowlen) + menu->cursor.x);
 }
 
 void saten_menu_element_add(saten_menu *menu, void *data, int dtype)
@@ -352,7 +352,9 @@ void saten_menu_element_add(saten_menu *menu, void *data, int dtype)
     el.activef = true;
     el.modf    = false;
 
-    if (menu->elnum <= menu->elonscreen) {
+    el.gpos = saten_coords_from_arrindex(i, menu->rowlen);
+
+    if (saten_menu_elinframe(menu, &el)) {
         el.drawf = true;
         // Set position
         saten_menu_element_posw(menu, &el);
@@ -384,6 +386,7 @@ void saten_menu_draw(saten_menu *menu) /* PUBLIC */
         }
     }
     // Draw arrows indicating additional elements
+    /*
     if (menu->iconset && menu->elnum > menu->elonscreen) {
         saten_menu_icon iprev;
         saten_menu_icon inext;
@@ -441,6 +444,7 @@ void saten_menu_draw(saten_menu *menu) /* PUBLIC */
                 0, false);
 
     }
+    */
 }
 
 void saten_menu_element_colmodw(saten_menu *menu, int id, uint8_t r, uint8_t g,
@@ -473,6 +477,26 @@ void saten_menu_element_posw(saten_menu *menu, saten_menu_element *el)
     /* PRIVATE */
 {
     int x; int y;
+    if ((drawn % menu->frame.w) == 0)
+        menu->rect.w = 0; // new row
+    y = menu->rect.y + menu->rect.h;
+    switch (menu->align) {
+    case SATEN_MENU_LEFT:
+        x = menu->rect.x + menu->rect.w;
+        break;
+    case SATEN_MENU_CENTER:
+        x = menu->rect.x - (el->rect.w/2) + menu->rect.w;
+        break;
+    case SATEN_MENU_RIGHT:
+        x = menu->rect.x - el->rect.w + menu->rect.w;
+        break;
+    }
+
+    el->rect.x = x;
+    el->rect.y = y;
+    menu->rect.w = menu->rect.w + el->rect.w + menu->padding.x;
+
+    /*
     switch (menu->type) {
     case SATEN_MENU_HORI:
         y = menu->rect.y;
@@ -514,8 +538,13 @@ void saten_menu_element_posw(saten_menu *menu, saten_menu_element *el)
             menu->rect.w = el->rect.w;
         break;
     }
+    */
+
     if (el->type == SATEN_MENU_TEXT)
         saten_text_posw(el->data.text, x, y);
+    drawn++;
+    if ((drawn & menu->frame.w) == 0)
+        menu->rect.h = menu->rect.h + el->rect.h + menu->padding.y;
 }
 
 void saten_menu_icon_offsetw(saten_menu *menu, int x, int y) /* PUBLIC */
@@ -550,4 +579,11 @@ void saten_menu_rowlenw(saten_menu *menu, int l) /* PUBLIC */
         menu->rowlen = l;
     else
         menu->rowlen = SATEN_MENU_ROWLEN_DEFAULT;
+}
+
+bool saten_menu_elinframe(saten_menu *menu, saten_menu_element *el)
+    /* PUBLIC */
+{
+    return (saten_inrange(el->gpos.x, menu->frame.x, menu->frame.w - 1) &&
+            saten_inrange(el->gpos.y, menu->frame.y, menu->frame.h - 1));
 }

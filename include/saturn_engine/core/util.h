@@ -14,5 +14,6 @@ bool saten_test_rgb(uint8_t r, uint8_t g, uint8_t b, uint8_t t);
 size_t saten_intlen(int a);
 SDL_Point saten_coords_from_arrindex(int i, int pitch);
 bool saten_inrange(int n, int min, int max);
+bool saten_sdlpntcmp(SDL_Point *p1, SDL_Point *p2);
 
 #endif /* SATURN_ENGINE_CORE_UTIL */

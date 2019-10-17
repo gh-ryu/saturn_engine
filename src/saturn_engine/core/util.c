@@ -121,8 +121,8 @@ void saten_fopen(FILE **fp, const char *filename, const char *mode)
 SDL_Point saten_coords_from_arrindex(int i, int pitch)
 {
     SDL_Point pos;
-    pos.x = i % p;
-    pos.y = floor(i/p);
+    pos.x = i % pitch;
+    pos.y = floor(i/pitch);
     return pos;
 }
 
@@ -130,4 +130,10 @@ SDL_Point saten_coords_from_arrindex(int i, int pitch)
 bool saten_inrange(int n, int min, int max)
 {
     return ((n >= min) && (n <= max));
+}
+
+// public
+bool saten_sdlpntcmp(SDL_Point *p1, SDL_Point *p2)
+{
+    return ((p1->x == p2->x) && (p1->y == p2->y));
 }

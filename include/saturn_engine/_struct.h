@@ -104,6 +104,7 @@ typedef struct _saten_menu_element {
     bool drawf;
     bool modf;
     SDL_Color mod; // Alpha and color modifier
+    SDL_Point gpos; // Position in the element grid
     union { saten_text *text;
             saten_sprite *sprite; } data;
 } saten_menu_element;
@@ -124,7 +125,7 @@ typedef struct _saten_menu {
     int elnum;        // Number of menu items
     //int cursor;       // Current selection
     SDL_Point cursor;
-    int frame;        // position of frame that draws elements
+    //int frame;        // position of frame that draws elements
     //int padding;      // Pixels between elements
     SDL_Point padding;
     //int elonscreen;   // Number of elements on screen
