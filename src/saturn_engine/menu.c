@@ -302,8 +302,20 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
             menu->select = -1;
     }
     // Play sounds
-    if (move_xf || move_yf)
-        saten_sfx_set(menu->sfx.move);
+    switch (menu->type) {
+    case SATEN_MENU_VERT:
+        if (move_yf)
+            saten_sfx_set(menu->sfx.move);
+        break;
+    case SATEN_MENU_HORI:
+        if (move_xf)
+            saten_sfx_set(menu->sfx.move);
+        break;
+    case SATEN_MENU_MATR:
+        if (move_xf || move_yf)
+            saten_sfx_set(menu->sfx.move);
+        break;
+    }
     if (ctrl_accept == 1 && ctrl_cancel == 0) {
         if (menu->el[menu->select].activef)
             saten_sfx_set(menu->sfx.accept);
@@ -491,12 +503,14 @@ void saten_menu_element_posw(saten_menu *menu, saten_menu_element *el)
     /* PRIVATE */
 {
     int x; int y;
-    if (menu->framef) {
-        if ((drawn % menu->frame.w) == 0)
-            menu->rect.w = 0; // new row
-    } else {
-        if ((drawn % menu->rowlen) == 0)
-            menu->rect.w = 0; // new row
+    if (menu->type != SATEN_MENU_HORI) {
+        if (menu->framef) {
+            if ((drawn % menu->frame.w) == 0)
+                menu->rect.w = 0; // new row
+        } else {
+            if ((drawn % menu->rowlen) == 0)
+                menu->rect.w = 0; // new row
+        }
     }
     y = menu->rect.y + menu->rect.h;
     switch (menu->align) {
@@ -562,8 +576,10 @@ void saten_menu_element_posw(saten_menu *menu, saten_menu_element *el)
     if (el->type == SATEN_MENU_TEXT)
         saten_text_posw(el->data.text, x, y);
     drawn++;
-    if ((drawn & menu->frame.w) == 0)
-        menu->rect.h = menu->rect.h + el->rect.h + menu->padding.y;
+    if (menu->type != SATEN_MENU_HORI) {
+        if ((drawn & menu->frame.w) == 0)
+            menu->rect.h = menu->rect.h + el->rect.h + menu->padding.y;
+    }
 }
 
 void saten_menu_icon_offsetw(saten_menu *menu, int x, int y) /* PUBLIC */
