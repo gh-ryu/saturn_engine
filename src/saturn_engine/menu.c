@@ -491,8 +491,13 @@ void saten_menu_element_posw(saten_menu *menu, saten_menu_element *el)
     /* PRIVATE */
 {
     int x; int y;
-    if ((drawn % menu->frame.w) == 0)
-        menu->rect.w = 0; // new row
+    if (menu->framef) {
+        if ((drawn % menu->frame.w) == 0)
+            menu->rect.w = 0; // new row
+    } else {
+        if ((drawn % menu->rowlen) == 0)
+            menu->rect.w = 0; // new row
+    }
     y = menu->rect.y + menu->rect.h;
     switch (menu->align) {
     case SATEN_MENU_LEFT:
