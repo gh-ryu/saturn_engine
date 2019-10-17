@@ -143,7 +143,7 @@ typedef struct _saten_menu {
     bool cpressf_prev_x;     // dire btn pressed continuously
     bool cpressf_next_y;     // dire btn pressed continuously
     bool cpressf_prev_y;     // dire btn pressed continuously
-    bool matrixf;
+    bool framef;
     int rowlen;            // elements per row in a matrix
     int collen;            // number of rows
 } saten_menu;

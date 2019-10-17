@@ -40,6 +40,7 @@ SATEN_GLOBAL SDL_Rect saten_game_view;
 // Menu stuff
 #define SATEN_MENU_VERT 0
 #define SATEN_MENU_HORI 1
+#define SATEN_MENU_MATR 2
 #define SATEN_MENU_LEFT 0
 #define SATEN_MENU_CENTER 1
 #define SATEN_MENU_RIGHT 2
@@ -47,9 +48,9 @@ SATEN_GLOBAL SDL_Rect saten_game_view;
 #define SATEN_MENU_SPRITE 1
 
 #define SATEN_MENU_ROWLEN_DEFAULT 4
+#define SATEN_MENU_COLLEN_DEFAULT 1
 
 #define SATEN_MENU_LOOP (1 << 7)
-#define SATEN_MENU_MATRIX (1 << 7)
 
 int saten_init(char *title, uint8_t flags);
 int saten_run(void);

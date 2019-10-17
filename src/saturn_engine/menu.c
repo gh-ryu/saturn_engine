@@ -16,21 +16,19 @@ saten_menu* saten_menu_create(int mtype, int malign,
     menu->type  = mtype;
     menu->align = malign;
     menu->loopf = saten_flag_check(SATEN_MENU_LOOP, flags);
-    menu->matrixf = saten_flag_check(SATEN_MENU_MATRIX, flags);
     menu->rect.x = x;
     menu->rect.y = y;
     menu->padding.x = 6;
     menu->padding.y = 6;
     menu->drawf = true;
     //menu->elonscreen = 2000;
-    menu->frame.w = 1;
+    menu->frame.w = 2000;
     menu->frame.h = 2000;
     menu->owner = 1;
     menu->sfx = sfx_def;
     menu->iconset = def_iconset;
     menu->select = -2; // Default for no press of accept key/btn
     menu->interval = 0;
-    menu->rowlen = SATEN_MENU_ROWLEN_DEFAULT;
     return menu;
 }
 
@@ -77,7 +75,6 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
         return;
 
     menu->select = -2;
-    drawn = 0;
 
     int ctrl_prev_x;
     int ctrl_next_x;
@@ -198,7 +195,7 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
         break;
     }
     // Handle frame-limited menus
-    if (menu->frame.w < menu->rowlen || menu->frame.h < menu->collen) {
+    if (menu->framef) {
         switch (menu->rowlen) {
         case 1:
         case 2:
@@ -268,6 +265,7 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
         } */
         menu->rect.w = 0;
         menu->rect.h = 0;
+        drawn = 0;
         for (int i = 0; i < menu->elnum; i++) {
             if (saten_menu_elinframe(menu, menu->el+i)) {
                 menu->el[i].drawf = true;
@@ -329,6 +327,22 @@ int saten_menu_cursor_posr(saten_menu *menu) /* PUBLIC */
 void saten_menu_element_add(saten_menu *menu, void *data, int dtype)
     /* PUBLIC */
 {
+    switch (menu->type) {
+    case SATEN_MENU_VERT:
+        menu->rowlen = 1;
+        menu->collen += 1;
+        break;
+    case SATEN_MENU_HORI:
+        menu->rowlen += 1;
+        menu->collen = 1;
+        break;
+    case SATEN_MENU_MATR:
+        if (menu->rowlen <= 1 || menu->collen <= 1) {
+            saten_errhandler(71);
+            saten_kill();
+        }
+        break;
+    }
     SDL_Color mod = { 255, 255, 255, 255 };
     int i = menu->elnum;
     menu->elnum++;
@@ -586,4 +600,17 @@ bool saten_menu_elinframe(saten_menu *menu, saten_menu_element *el)
 {
     return (saten_inrange(el->gpos.x, menu->frame.x, menu->frame.w - 1) &&
             saten_inrange(el->gpos.y, menu->frame.y, menu->frame.h - 1));
+}
+
+void saten_menu_matrixs(saten_menu *menu, int x, int y) /* PUBLIC */
+{
+    menu->rowlen = x;
+    menu->collen = y; 
+}
+
+void saten_menu_frames(saten_menu *menu, int x, int y) /* PUBLIC */
+{
+    menu->framef = true;
+    menu->frame.w = x;
+    menu->frame.h = y;
 }

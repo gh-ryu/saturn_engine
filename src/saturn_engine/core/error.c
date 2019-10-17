@@ -219,6 +219,9 @@ void saten_errhandler(int i)
     case 70:
         saten_printerr(i, "Invalid element ID (toggle)");
         break;
+    case 71:
+        saten_printerr(i, "Matrix menu requires call to saten_menu_matrixs()");
+        break;
     }
 }
 

@@ -34,5 +34,7 @@ void saten_menu_intervalw(saten_menu *menu, int ival);
 void saten_menu_framesizew(saten_menu *menu, int x, int y);
 
 bool saten_menu_elinframe(saten_menu *menu, saten_menu_element *el);
+void saten_menu_matrixs(saten_menu *menu, int x, int y);
+void saten_menu_frames(saten_menu *menu, int x, int y);
 
 #endif /* SATURN_ENGINE_MENU */
