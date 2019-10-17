@@ -120,6 +120,12 @@ void saten_fopen(FILE **fp, const char *filename, const char *mode)
 // public
 SDL_Point saten_coords_from_arrindex(int i, int pitch)
 {
+    if (pitch < 1) {
+        saten_errhandler(72);
+        saten_killf = true;
+        pitch = 1;
+    }
+
     SDL_Point pos;
     pos.x = i % pitch;
     pos.y = floor(i/pitch);

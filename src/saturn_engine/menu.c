@@ -352,6 +352,8 @@ void saten_menu_element_add(saten_menu *menu, void *data, int dtype)
         if (menu->rowlen <= 1 || menu->collen <= 1) {
             saten_errhandler(71);
             saten_kill();
+            menu->rowlen = 1;
+            menu->collen = 1;
         }
         break;
     }
@@ -579,8 +581,13 @@ void saten_menu_element_posw(saten_menu *menu, saten_menu_element *el)
     drawn++;
 
     if (menu->type != SATEN_MENU_HORI) {
-        if ((drawn & menu->frame.w) == 0)
-            menu->rect.h = menu->rect.h + el->rect.h + menu->padding.y;
+        if (menu->framef) {
+            if ((drawn % menu->frame.w) == 0)
+                menu->rect.h = menu->rect.h + el->rect.h + menu->padding.y;
+        } else {
+            if ((drawn % menu->rowlen) == 0)
+                menu->rect.h = menu->rect.h + el->rect.h + menu->padding.y;
+        }
     }
 }
 
