@@ -35,8 +35,9 @@ void scene_title_init(void)
         menu = saten_menu_create(SATEN_MENU_MATR, SATEN_MENU_LEFT,
                 20, 20, SATEN_MENU_LOOP);
 
-        saten_menu_matrixs(menu, 2, 3);
-        //saten_menu_frames(menu, 1, 1);
+        saten_menu_matrixs(menu, 3, 2);
+        saten_menu_pads(menu, 64, 16);
+        //saten_menu_frames(menu, 1, 2);
         saten_menu_element_add(menu, saten_resource_text(scene.title, 2),
                     SATEN_MENU_TEXT);
         saten_menu_element_add(menu, saten_resource_text(scene.title, 3),

@@ -17,4 +17,9 @@
 #define SATEN_WIDESCREEN_LOCK false // true = game requires widescreen VOUT
 #define SATEN_GSCALE_DEFAULT 2 //  default scale factor for game graphics
 
+#define SATEN_MENU_ROWLEN_DEFAULT 4
+#define SATEN_MENU_COLLEN_DEFAULT 1
+#define SATEN_MENU_HPADDING_DEFAULT 16
+#define SATEN_MENU_VPADDING_DEFAULT 16
+
 #endif /* SATURN_ENGINE_CONFIG */

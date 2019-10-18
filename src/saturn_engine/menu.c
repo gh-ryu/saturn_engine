@@ -18,11 +18,9 @@ saten_menu* saten_menu_create(int mtype, int malign,
     menu->loopf = saten_flag_check(SATEN_MENU_LOOP, flags);
     menu->rect.x = x;
     menu->rect.y = y;
-    menu->padding.x = 6;
-    menu->padding.y = 6;
+    menu->padding.x = SATEN_MENU_HPADDING_DEFAULT;
+    menu->padding.y = SATEN_MENU_VPADDING_DEFAULT;
     menu->drawf = true;
-    menu->frame.w = 2000;
-    menu->frame.h = 2000;
     menu->owner = 1;
     menu->sfx = sfx_def;
     menu->iconset = def_iconset;
@@ -281,7 +279,6 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
         if (ctrl_accept < 1)
             ctrl_accept = saten_player_btnr(menu->owner, acceptbtn);
         if (ctrl_accept == 1) {
-            //if (menu->el[menu->cursor].activef)
             int index = (menu->cursor.y * menu->rowlen) + menu->cursor.x;
             if (menu->el[index].activef)
                 menu->select = index;
@@ -373,9 +370,14 @@ void saten_menu_element_add(saten_menu *menu, void *data, int dtype)
 
     el.gpos = saten_coords_from_arrindex(i, menu->rowlen);
 
-    if (saten_menu_elinframe(menu, &el)) {
+    if (menu->framef) {
+        if (saten_menu_elinframe(menu, &el)) {
+            el.drawf = true;
+            // Set position
+            saten_menu_element_posw(menu, &el);
+        }
+    } else {
         el.drawf = true;
-        // Set position
         saten_menu_element_posw(menu, &el);
     }
 
@@ -511,16 +513,16 @@ void saten_menu_element_posw(saten_menu *menu, saten_menu_element *el)
         x = menu->rect.x + menu->rect.w;
         break;
     case SATEN_MENU_CENTER:
-        x = menu->rect.x - (el->rect.w/2) + menu->rect.w;
+        x = (menu->rect.x + menu->rect.w) - (el->rect.w/2);
         break;
     case SATEN_MENU_RIGHT:
-        x = menu->rect.x - el->rect.w + menu->rect.w;
+        x = (menu->rect.x + menu->rect.w) - el->rect.w;
         break;
     }
 
     el->rect.x = x;
     el->rect.y = y;
-    menu->rect.w = menu->rect.w + el->rect.w + menu->padding.x;
+    menu->rect.w += menu->padding.x;
 
     if (el->type == SATEN_MENU_TEXT)
         saten_text_posw(el->data.text, x, y);
@@ -530,10 +532,10 @@ void saten_menu_element_posw(saten_menu *menu, saten_menu_element *el)
     if (menu->type != SATEN_MENU_HORI) {
         if (menu->framef) {
             if ((drawn % menu->frame.w) == 0)
-                menu->rect.h = menu->rect.h + el->rect.h + menu->padding.y;
+                menu->rect.h += menu->padding.y;
         } else {
             if ((drawn % menu->rowlen) == 0)
-                menu->rect.h = menu->rect.h + el->rect.h + menu->padding.y;
+                menu->rect.h += menu->padding.y;
         }
     }
 }
@@ -592,4 +594,10 @@ void saten_menu_frames(saten_menu *menu, int x, int y) /* PUBLIC */
     menu->framef = true;
     menu->frame.w = x;
     menu->frame.h = y;
+}
+
+void saten_menu_pads(saten_menu *menu, int x, int y) /* PUBLIC */
+{
+    menu->padding.x = x;
+    menu->padding.y = y;
 }
