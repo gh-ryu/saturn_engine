@@ -36,6 +36,7 @@ void scene_title_init(void)
                 20, 20, SATEN_MENU_LOOP);
 
         saten_menu_matrixs(menu, 2, 3);
+        //saten_menu_frames(menu, 1, 1);
         saten_menu_element_add(menu, saten_resource_text(scene.title, 2),
                     SATEN_MENU_TEXT);
         saten_menu_element_add(menu, saten_resource_text(scene.title, 3),

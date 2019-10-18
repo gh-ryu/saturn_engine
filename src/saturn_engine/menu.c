@@ -194,64 +194,71 @@ void saten_menu_update(saten_menu *menu) /* PUBLIC */
         }
         break;
     }
+    printf("frame.w: %d\n", menu->frame.w);
+    printf("frame.h: %d\n", menu->frame.h);
+    printf("frame.x: %d\n", menu->frame.x);
+    printf("frame.y: %d\n", menu->frame.y);
     // Handle frame-limited menus
     if (menu->framef) {
-        switch (menu->rowlen) {
-        case 1:
-        case 2:
-            if (menu->cursor.x > (menu->frame.x + (menu->frame.w - 1)))
-                menu->frame.x++; // Move frame to show current element
-            if (menu->cursor.x < menu->frame.x)
-                menu->frame.x--;
-            break;
-        default:
-            if (menu->cursor.x == (menu->frame.x + (menu->frame.w - 1)) &&
-                (menu->cursor.x < (menu->rowlen - 1 )))
-                {
-                    menu->frame.x++;
-                }
-            if (menu->cursor.x == menu->frame.x && menu->cursor.x > 0)
-                menu->frame.x--;
-            break;
+        if (menu->frame.w < menu->rowlen) {
+            switch (menu->frame.w) {
+            case 1:
+            case 2:
+                if (menu->cursor.x > (menu->frame.x + (menu->frame.w - 1)))
+                    menu->frame.x++; // Move frame to show current element
+                if (menu->cursor.x < menu->frame.x)
+                    menu->frame.x--;
+                break;
+            default:
+                if (menu->cursor.x == (menu->frame.x + (menu->frame.w - 1)) &&
+                    (menu->cursor.x < (menu->rowlen - 1 )))
+                    {
+                        menu->frame.x++;
+                    }
+                if (menu->cursor.x == menu->frame.x && menu->cursor.x > 0)
+                    menu->frame.x--;
+                break;
+            }
+            if (menu->cursor.x == 0 && (menu->frame.x != 0))
+                menu->frame.x = 0; // Fix for loop end to start
+            if (menu->frame.x == 0  && (menu->cursor.x == menu->rowlen - 1))
+                menu->frame.x = menu->rowlen - menu->frame.w; // Fix start-end
+            if (menu->frame.w <= 2 && (menu->cursor.x == menu->rowlen - 1)) {
+                if (menu->frame.w == 1)
+                    menu->frame.x = menu->rowlen - 1;
+                else
+                    menu->frame.x = menu->rowlen - 2;
+            }
         }
-        switch (menu->collen) {
-        case 1:
-        case 2:
-            if (menu->cursor.y > (menu->frame.y + (menu->frame.h - 1)))
-                menu->frame.y++; // Move frame to show current element
-            if (menu->cursor.y < menu->frame.y)
-                menu->frame.y--;
-            break;
-        default:
-            if (menu->cursor.y == (menu->frame.y + (menu->frame.y - 1)) &&
-                (menu->cursor.y < (menu->collen - 1 )))
-                {
-                    menu->frame.y++;
-                }
-            if (menu->cursor.y == menu->frame.y && menu->cursor.y > 0)
-                menu->frame.y--;
-            break;
-        }
-        //if (menu->cursor == 0 && (menu->frame >= menu->elonscreen))
-        if (menu->cursor.x == 0 && (menu->frame.x != 0))
-            menu->frame.x = 0; // Fix for loop end to start
-        if (menu->frame.x == 0  && (menu->cursor.x == menu->rowlen - 1))
-            menu->frame.x = menu->rowlen - menu->frame.w; // Fix start to end
-        if (menu->frame.w <= 2 && (menu->cursor.x == menu->rowlen - 1)) {
-            if (menu->frame.w == 1)
-                menu->frame.x = menu->rowlen - 1;
-            else
-                menu->frame.x = menu->rowlen - 2;
-        }
-        if (menu->cursor.y == 0 && (menu->frame.y != 0))
-            menu->frame.y = 0; // Fix for loop end to start
-        if (menu->frame.y == 0  && (menu->cursor.y == menu->collen - 1))
-            menu->frame.y = menu->collen - menu->frame.h; // Fix start to end
-        if (menu->frame.h <= 2 && (menu->cursor.y == menu->collen - 1)) {
-            if (menu->frame.h == 1)
-                menu->frame.y = menu->collen - 1;
-            else
-                menu->frame.y = menu->collen - 2;
+        if (menu->frame.h < menu->collen) {
+            switch (menu->frame.h) {
+            case 1:
+            case 2:
+                if (menu->cursor.y > (menu->frame.y + (menu->frame.h - 1)))
+                    menu->frame.y++; // Move frame to show current element
+                if (menu->cursor.y < menu->frame.y)
+                    menu->frame.y--;
+                break;
+            default:
+                if (menu->cursor.y == (menu->frame.y + (menu->frame.y - 1)) &&
+                    (menu->cursor.y < (menu->collen - 1 )))
+                    {
+                        menu->frame.y++;
+                    }
+                if (menu->cursor.y == menu->frame.y && menu->cursor.y > 0)
+                    menu->frame.y--;
+                break;
+            }
+            if (menu->cursor.y == 0 && (menu->frame.y != 0))
+                menu->frame.y = 0; // Fix for loop end to start
+            if (menu->frame.y == 0  && (menu->cursor.y == menu->collen - 1))
+                menu->frame.y = menu->collen - menu->frame.h; // Fix start-end
+            if (menu->frame.h <= 2 && (menu->cursor.y == menu->collen - 1)) {
+                if (menu->frame.h == 1)
+                    menu->frame.y = menu->collen - 1;
+                else
+                    menu->frame.y = menu->collen - 2;
+            }
         }
         // Only Draw elements within frame
         /*
@@ -628,8 +635,10 @@ void saten_menu_rowlenw(saten_menu *menu, int l) /* PUBLIC */
 bool saten_menu_elinframe(saten_menu *menu, saten_menu_element *el)
     /* PUBLIC */
 {
-    return (saten_inrange(el->gpos.x, menu->frame.x, menu->frame.w - 1) &&
-            saten_inrange(el->gpos.y, menu->frame.y, menu->frame.h - 1));
+    return (saten_inrange(el->gpos.x, menu->frame.x,
+                menu->frame.x + menu->frame.w - 1) &&
+            saten_inrange(el->gpos.y, menu->frame.y,
+                menu->frame.y + menu->frame.h - 1));
 }
 
 void saten_menu_matrixs(saten_menu *menu, int x, int y) /* PUBLIC */
