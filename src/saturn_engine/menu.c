@@ -407,65 +407,77 @@ void saten_menu_draw(saten_menu *menu) /* PUBLIC */
         }
     }
     // Draw arrows indicating additional elements
-    /*
-    if (menu->iconset && menu->elnum > menu->elonscreen) {
+    if (menu->iconset && menu->framef && menu->rowlen > menu->frame.w) {
         saten_menu_icon iprev;
         saten_menu_icon inext;
 
-        switch (menu->type) {
-        case SATEN_MENU_HORI:
-            inext.tile_id = 3;
-            iprev.tile_id = 2;
+        inext.tile_id = 3;
+        iprev.tile_id = 2;
 
-            inext.pos.y =
-                menu->rect.y + (menu->rect.h/2) - (menu->iconset->srf->h/4);
-            iprev.pos.y = inext.pos.y;
+        inext.pos.y =
+            menu->rect.y + (menu->rect.h/2) - (menu->iconset->srf->h/4);
+        iprev.pos.y = inext.pos.y;
 
-            iprev.pos.x = menu->rect.x - 12;
-            inext.pos.x = (menu->rect.x + menu->rect.w) + 12;
-            break;
-        case SATEN_MENU_VERT:
-            inext.tile_id = 1;
-            iprev.tile_id = 0;
-
-            inext.pos.x =
-                menu->rect.x + (menu->rect.w/2) - (menu->iconset->srf->w/4);
-            iprev.pos.x = inext.pos.x;
-
-            iprev.pos.y = menu->rect.y - 12;
-            inext.pos.y = (menu->rect.y + menu->rect.h) + 12;
-            break;
-        }
+        iprev.pos.x = menu->rect.x - 12;
+        inext.pos.x = (menu->rect.x + menu->rect.w) + 12;
 
         iprev.pos.x += menu->icon_xoff;
-        if (menu->type == SATEN_MENU_HORI)
-            inext.pos.x += -menu->icon_xoff;
-        else
-            inext.pos.x += menu->icon_xoff;
+        inext.pos.x += -menu->icon_xoff;
+
         iprev.pos.y += menu->icon_yoff;
-        if (menu->type == SATEN_MENU_VERT)
-            inext.pos.y += -menu->icon_yoff;
-        else
-            inext.pos.y += menu->icon_yoff;
+        inext.pos.y += menu->icon_yoff;
 
         if (menu->loopf) {
             iprev.drawf = true;
             inext.drawf = true;
         } else {
-            iprev.drawf = (menu->frame > 0);
-            inext.drawf = (menu->frame + menu->elonscreen < menu->elnum);
+            iprev.drawf = (menu->frame.x > 0);
+            inext.drawf = ((menu->frame.x + menu->frame.w) < menu->rowlen);
         }
+
         if (iprev.drawf)
             saten_sprite_draw(menu->iconset, iprev.tile_id, iprev.pos.x,
-                    iprev.pos.y,
-                    0, false);
+                    iprev.pos.y, 0, false);
         if (inext.drawf)
             saten_sprite_draw(menu->iconset, inext.tile_id, inext.pos.x,
-                    inext.pos.y,
-                0, false);
+                    inext.pos.y, 0, false);
 
     }
-    */
+    if (menu->iconset && menu->framef && menu->collen > menu->frame.h) {
+        saten_menu_icon iprev;
+        saten_menu_icon inext;
+
+        inext.tile_id = 1;
+        iprev.tile_id = 0;
+
+        inext.pos.x =
+            menu->rect.x + (menu->rect.w/2) - (menu->iconset->srf->w/4);
+        iprev.pos.x = inext.pos.x;
+
+        iprev.pos.y = menu->rect.y - 12;
+        inext.pos.y = (menu->rect.y + menu->rect.h) + 12;
+
+        iprev.pos.x += menu->icon_xoff;
+        inext.pos.x += menu->icon_xoff;
+
+        iprev.pos.y += menu->icon_yoff;
+        inext.pos.y += -menu->icon_yoff;
+
+        if (menu->loopf) {
+            iprev.drawf = true;
+            inext.drawf = true;
+        } else {
+            iprev.drawf = (menu->frame.y > 0);
+            inext.drawf = ((menu->frame.y + menu->frame.h) < menu->collen);
+        }
+
+        if (iprev.drawf)
+            saten_sprite_draw(menu->iconset, iprev.tile_id, iprev.pos.x,
+                    iprev.pos.y, 0, false);
+        if (inext.drawf)
+            saten_sprite_draw(menu->iconset, inext.tile_id, inext.pos.x,
+                    inext.pos.y, 0, false);
+    }
 }
 
 void saten_menu_element_colmodw(saten_menu *menu, int id, uint8_t r, uint8_t g,
