@@ -129,8 +129,14 @@ typedef struct _saten_menu {
     saten_menu_element *el; // Array of elements
     SDL_Rect rect;
     int owner;        // ID of player who has control
-    int icon_xoff;   // Offsets for arrows
-    int icon_yoff;
+    int iprev_hxoff;   // Offsets for arrows
+    int inext_hxoff;
+    int iprev_hyoff;
+    int inext_hyoff;
+    int iprev_vxoff;   // Offsets for arrows
+    int inext_vxoff;
+    int iprev_vyoff;
+    int inext_vyoff;
     saten_menu_sfx sfx;
     saten_sprite *iconset; // Arrow icons
     int select;      // Element which responded to press of accept

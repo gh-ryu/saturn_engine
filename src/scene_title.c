@@ -35,6 +35,9 @@ void scene_title_init(void)
         menu = saten_menu_create(SATEN_MENU_MATR, SATEN_MENU_LEFT,
                 20, 20, SATEN_MENU_LOOP);
 
+        //saten_menu_icon_offsetw(menu, 0, 12); // Vert menu
+        //saten_menu_icon_offsetw(menu, 12, 0); // Hori menu
+
         saten_menu_matrixs(menu, 3, 2);
         saten_menu_pads(menu, 64, 16);
         saten_menu_frames(menu, 1, 1);
@@ -53,8 +56,6 @@ void scene_title_init(void)
 
         saten_menu_toggle(menu); // Turn menu on
         saten_menu_element_toggle(menu, 4); // Replay turned off..
-        saten_menu_icon_offsetw(menu, 0, 12); // Vert menu
-        saten_menu_icon_offsetw(menu, 12, 0); // Hori menu
         //saten_menu_max(menu, 3);
         //saten_menu_intervalw(menu, 20);
 

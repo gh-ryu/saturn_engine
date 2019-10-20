@@ -24,7 +24,6 @@ void saten_menu_element_toggle(saten_menu *menu, int id);
 void saten_menu_assign_to_player(saten_menu *menu, int id);
 
 void saten_menu_def_iconsetw(saten_sprite *sprite);
-void saten_menu_icon_offsetw(saten_menu *menu, int x, int y);
 void saten_menu_default_sfxw(saten_sound *acc, saten_sound *can,
         saten_sound *sel, saten_sound *den);
 
@@ -37,5 +36,8 @@ bool saten_menu_elinframe(saten_menu *menu, saten_menu_element *el);
 void saten_menu_matrixs(saten_menu *menu, int x, int y);
 void saten_menu_frames(saten_menu *menu, int x, int y);
 void saten_menu_pads(saten_menu *menu, int x, int y);
+
+void saten_menu_icon_xoffsetw(saten_menu *menu, int t, int op, int on);
+void saten_menu_icon_yoffsetw(saten_menu *menu, int t, int op, int on);
 
 #endif /* SATURN_ENGINE_MENU */

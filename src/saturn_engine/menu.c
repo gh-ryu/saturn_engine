@@ -418,14 +418,14 @@ void saten_menu_draw(saten_menu *menu) /* PUBLIC */
             menu->rect.y + (menu->rect.h/2) - (menu->iconset->srf->h/4);
         iprev.pos.y = inext.pos.y;
 
-        iprev.pos.x = menu->rect.x - 12;
-        inext.pos.x = (menu->rect.x + menu->rect.w) + 12;
+        iprev.pos.x = menu->rect.x - (menu->iconset->srf->w/2);
+        inext.pos.x = (menu->rect.x + menu->rect.w);
 
-        iprev.pos.x += menu->icon_xoff;
-        inext.pos.x += -menu->icon_xoff;
+        iprev.pos.x -= menu->iprev_hxoff;
+        inext.pos.x += menu->inext_hxoff;
 
-        iprev.pos.y += menu->icon_yoff;
-        inext.pos.y += menu->icon_yoff;
+        iprev.pos.y -= menu->iprev_hyoff;
+        inext.pos.y += menu->inext_hyoff;
 
         if (menu->loopf) {
             iprev.drawf = true;
@@ -454,14 +454,14 @@ void saten_menu_draw(saten_menu *menu) /* PUBLIC */
             menu->rect.x + (menu->rect.w/2) - (menu->iconset->srf->w/4);
         iprev.pos.x = inext.pos.x;
 
-        iprev.pos.y = menu->rect.y - 12;
-        inext.pos.y = (menu->rect.y + menu->rect.h) + 12;
+        iprev.pos.y = menu->rect.y - (menu->iconset->srf->h/2);
+        inext.pos.y = (menu->rect.y + menu->rect.h);
 
-        iprev.pos.x += menu->icon_xoff;
-        inext.pos.x += menu->icon_xoff;
+        iprev.pos.x += menu->iprev_vxoff;
+        inext.pos.x += menu->inext_vxoff;
 
-        iprev.pos.y += menu->icon_yoff;
-        inext.pos.y += -menu->icon_yoff;
+        iprev.pos.y -= menu->iprev_vyoff;
+        inext.pos.y += menu->inext_vyoff;
 
         if (menu->loopf) {
             iprev.drawf = true;
@@ -478,6 +478,9 @@ void saten_menu_draw(saten_menu *menu) /* PUBLIC */
             saten_sprite_draw(menu->iconset, inext.tile_id, inext.pos.x,
                     inext.pos.y, 0, false);
     }
+
+    SDL_SetRenderDrawColor(saten_ren, 255, 0, 0, 0);
+    SDL_RenderDrawRect(saten_ren, &menu->rect);
 }
 
 void saten_menu_element_colmodw(saten_menu *menu, int id, uint8_t r, uint8_t g,
@@ -552,10 +555,34 @@ void saten_menu_element_posw(saten_menu *menu, saten_menu_element *el)
     }
 }
 
-void saten_menu_icon_offsetw(saten_menu *menu, int x, int y) /* PUBLIC */
+void saten_menu_icon_xoffsetw(saten_menu *menu, int t, int op, int on)
+    /* PUBLIC */
 {
-    menu->icon_xoff = x;
-    menu->icon_yoff = y;
+    switch (t) {
+    case SATEN_MENU_HORI:
+        menu->iprev_hxoff = op;
+        menu->inext_hxoff = on;
+        break;
+    case SATEN_MENU_VERT:
+        menu->iprev_vxoff = op;
+        menu->inext_vxoff = on;
+        break;
+    }
+}
+
+void saten_menu_icon_yoffsetw(saten_menu *menu, int t, int op, int on)
+    /* PUBLIC */
+{
+    switch (t) {
+    case SATEN_MENU_HORI:
+        menu->iprev_hyoff = op;
+        menu->inext_hyoff = on;
+        break;
+    case SATEN_MENU_VERT:
+        menu->iprev_vyoff = op;
+        menu->inext_vyoff = on;
+        break;
+    }
 }
 
 void saten_menu_intervalw(saten_menu *menu, int ival) /* PUBLIC */
