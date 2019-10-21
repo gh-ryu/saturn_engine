@@ -113,6 +113,8 @@ int saten_core_init(const char *title, int screen_width,
 int saten_core_run(saten_fptr_void fptr);
 void saten_core_quit(void);
 
+#include "filenames.h"
+
 #include "list.h"
 #include "darray.h"
 #include "framerate.h"

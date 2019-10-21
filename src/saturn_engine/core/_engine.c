@@ -91,8 +91,7 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
     }
 
     if (saten_flag_check(SATEN_INPUT, saten_core_flags)) {
-        if (SDL_GameControllerAddMappingsFromFile(
-                    "saturn_engine_data/gamecontrollerdb.txt")<0)
+        if (SDL_GameControllerAddMappingsFromFile(SATEN_CORE_FNAME_GCDB)<0)
             saten_errhandler(12);
 
     }

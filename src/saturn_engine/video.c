@@ -22,7 +22,7 @@ void saten_video_init(void)
 // private
 void saten_video_lconf(void)
 {
-    if (saten_data_load_init("saturn_engine_data/vconf.dat", true) < 0)
+    if (saten_data_load_init(SATEN_FNAME_VDATA, true) < 0)
         return; // no settings to load
     saten_data_load_float(&saten_vconf.scale);
     saten_data_load_bool(&saten_vconf.fullscreen);
@@ -39,7 +39,7 @@ void saten_video_lconf(void)
 // private
 void saten_video_sconf(void)
 {
-    if (saten_data_save_init("saturn_engine_data/vconf.dat", true) < 0)
+    if (saten_data_save_init(SATEN_FNAME_VDATA, true) < 0)
         return; // failed to open file
     saten_data_save_float(saten_vconf.scale);
     saten_data_save_bool(saten_vconf.fullscreen);

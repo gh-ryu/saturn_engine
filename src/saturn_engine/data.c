@@ -15,7 +15,7 @@ static uint64_t checksum;
 int saten_data_save_init(char *fp, bool is_secure)
 {
     saten_data_init(fp, is_secure);
-    data = SDL_RWFromFile("saturn_engine_data/tmp.dat", "wb");
+    data = SDL_RWFromFile(SATEN_FNAME_TMP_DATA, "wb");
     if (data == NULL) {
         saten_errhandler(52);
         return -1;
@@ -82,7 +82,7 @@ int saten_data_save_quit(void)
         SDL_RWwrite(data, &checksum, sizeof(uint64_t), 1);
     }
     
-    if (rename("saturn_engine_data/tmp.dat", dfilepath) < -1) {
+    if (rename(SATEN_FNAME_TMP_DATA, dfilepath) < -1) {
         saten_errhandler(49);
         saten_data_quit();
         return -1;

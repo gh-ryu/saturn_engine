@@ -9,7 +9,7 @@ static saten_cryptomngr mrb_cryptobj;
 void saten_mrb_crypt_init(void)
 {
     FILE *f = NULL;
-    saten_fopen(&f, "script/saten_script_class_crypt.rb", "r");
+    saten_fopen(&f, SATEN_CORE_FNAME_MRB_CRYPT, "r");
     mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
     fclose(f);
 }

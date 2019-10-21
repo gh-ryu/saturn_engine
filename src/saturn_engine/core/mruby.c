@@ -16,13 +16,13 @@ int saten_mrb_init(void)
         saten_mrb_text_init();
         saten_list_init(&saten_list_text, sizeof(saten_text));
         FILE *f = NULL;
-        saten_fopen(&f, "script/saten_script_glyph_mapping.rb", "r");
+        saten_fopen(&f, SATEN_CORE_FNAME_MRB_GLYPHMAP, "r");
         mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
         fclose(f);
-        saten_fopen(&f, "script/saten_script_class_text.rb", "r");
+        saten_fopen(&f, SATEN_CORE_FNAME_MRB_TEXTC, "r");
         mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
         fclose(f);
-        saten_fopen(&f, "script/saten_script_text_init.rb", "r");
+        saten_fopen(&f, SATEN_CORE_FNAME_MRB_TEXT_INIT, "r");
         mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
         fclose(f);
     }
