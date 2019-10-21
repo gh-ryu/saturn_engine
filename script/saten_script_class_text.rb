@@ -3,6 +3,7 @@ module Saten
   class Text
     attr_accessor :cleanstr, :scale, :x, :y, :id
     @@color = 0
+    @@use_color = 0
     @@cnt = 0
     def initialize(str, scale, x, y)
       @cleanstr = str.to_s
@@ -21,7 +22,7 @@ module Saten
       l = 0 # current line
       meta = "no"
       str = @cleanstr
-      @@color = 0
+      @@color = @@use_color
       # process str = remove meta information
       k = 3
       m = 0
@@ -95,6 +96,7 @@ module Saten
         end
         cnt += 1
       end
+      @@color = @@use_color
       @@cnt += 1
     end
 
@@ -110,6 +112,10 @@ module Saten
         @cleanstr = str.to_s
         Text.reset(@id, scale)
       end
+    end
+
+    def Text.use_color(c)
+      @@use_color = c
     end
 
 =begin
