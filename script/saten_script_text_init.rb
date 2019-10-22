@@ -16,3 +16,10 @@ Saten::Text.set_glyph_height(16)
 #Saten::Text.new("hello world 3。「」", 1.0, 0, 220)
 
 #Saten::Text.update(1, nil, 1.0, 0, 200)
+#
+
+def myfunc(str)
+  return str
+end
+
+Saten::Text.modfnc_reg(method(:myfunc))

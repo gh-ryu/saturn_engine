@@ -5,6 +5,7 @@ module Saten
     @@color = 0
     @@use_color = 0
     @@cnt = 0
+    @@modfncs = []
     def initialize(str, scale, x, y)
       @cleanstr = str.to_s
       @scale = scale
@@ -29,6 +30,12 @@ module Saten
       a = ""
       b = ""
       d = ""
+      # call user functions that modify the string
+      unless @@modfncs.empty?
+        @@modfncs.each do |fnc|
+          str = fnc.call(str)
+        end
+      end
       str.each_char do |c|
         if meta == "no"
           if c == "\\" && str[cnt+1] == "C" && str[cnt+2] == "["
@@ -116,6 +123,10 @@ module Saten
 
     def Text.use_color(c)
       @@use_color = c
+    end
+
+    def Text.modfnc_reg(modfnc)
+      @@modfncs.push(modfnc)
     end
 
 =begin
