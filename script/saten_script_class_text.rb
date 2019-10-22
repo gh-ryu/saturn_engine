@@ -125,8 +125,8 @@ module Saten
       @@use_color = c
     end
 
-    def Text.modfnc_reg(modfnc)
-      @@modfncs.push(modfnc)
+    def Text.modfnc_reg(fncname)
+      @@modfncs.push(method(:"#{fncname}"))
     end
 
 =begin

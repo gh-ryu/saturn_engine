@@ -22,4 +22,4 @@ def myfunc(str)
   return str
 end
 
-Saten::Text.modfnc_reg(method(:myfunc))
+Saten::Text.modfnc_reg("myfunc")
