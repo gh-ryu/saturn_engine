@@ -13,12 +13,11 @@ void saten_mrb_text_init(void)
             "saten_mrb_load_glyph_file", saten_mrb_text_load_glyph_file,
             MRB_ARGS_REQ(7));
 
-    /*
-    mfg = saten_mfield_create(SATEN_MB(20));
+    //mfg = saten_mfield_create(SATEN_MB(20));
+    
     struct RClass* _saten_mrb_class_text;
     _saten_mrb_class_text = mrb_define_class_under(saten_mrb,
             _saten_mrb_module, "Text", saten_mrb->object_class);
-            */
 
     mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
             "create", saten_mrb_text_create, MRB_ARGS_REQ(1));
@@ -34,6 +33,8 @@ void saten_mrb_text_init(void)
             "get", saten_mrb_text_get, MRB_ARGS_REQ(1));
     mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
             "reset", saten_mrb_text_reset, MRB_ARGS_REQ(2));
+    mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
+            "set_size", saten_mrb_text_set_size, MRB_ARGS_REQ(2));
 }
 
 mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self)
@@ -109,9 +110,21 @@ mrb_value saten_mrb_text_reset(mrb_state *mrb, mrb_value self)
     id = (int)id0; f = (float)f0;
     saten_text *text = saten_text_find(id);
     //free(text->glyph);
-    text->glyph = NULL;
+    //text->glyph = NULL;
     text->size = 0;
     text->scale = f;
+    return mrb_nil_value();
+}
+
+mrb_value saten_mrb_text_set_size(mrb_state *mrb, mrb_value self)
+{
+    mrb_int a0; mrb_int id0;
+    int a; int id;
+    mrb_get_args(saten_mrb, "ii", &id0, &a0);
+    a = (int)a0;
+    id = (int)id0;
+    saten_text *text = saten_text_find(id);
+    text->size_calc = a;
     return mrb_nil_value();
 }
 
@@ -152,7 +165,8 @@ void saten_text_glyph_create(int a, int b, int c, int x, int y, int l,
                 sizeof(saten_glyph) * SATEN_TEXT_GLYPH_MAX);
                 */
         // Realloc memory once per update
-        if (text->size_calc > size_alloc) {
+        printf("size_calc: %d, size_alloc: %d\n", text->size_calc, text->size_alloc);
+        if (text->size_calc > text->size_alloc) {
             text->glyph = (saten_glyph*)saten_realloc(text->glyph,
                     text->size_calc * sizeof(saten_glyph));
             text->size_alloc = text->size_calc;

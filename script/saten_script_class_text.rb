@@ -17,6 +17,10 @@ module Saten
     def set_id(id)
       @id = id
     end
+    def calc_size(str)
+      size = str.length
+      Text.set_size(@id, size)
+    end
     def set_glyph
       Text.prepare_glyph
       cnt = 0
@@ -36,6 +40,7 @@ module Saten
           str = fnc.call(str)
         end
       end
+      self.calc_size(str)
       str.each_char do |c|
         if meta == "no"
           if c == "\\" && str[cnt+1] == "C" && str[cnt+2] == "["
@@ -128,24 +133,6 @@ module Saten
     def Text.modfnc_reg(fncname)
       @@modfncs.push(method(:"#{fncname}"))
     end
-
-=begin
-    def Text.update(id, str, scale, x, y)
-      obj = Text.get(id)
-      obj.scale = scale
-      obj.x = x
-      obj.y = y
-      if str.nil?
-        # only update scale, x, y
-        # maybe not necessary?
-        Text.reset(id, scale)
-      else
-        str = str.to_s
-        obj.cleanstr = str
-        Text.reset(id, scale)
-      end
-    end
-=end
   end
 
 end
