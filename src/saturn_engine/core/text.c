@@ -2,6 +2,9 @@
 
 
 //static saten_mfield mfg; // memory field for glyphs
+static int wspace_width = SATEN_CORE_TEXT_WSPACE_WIDTH_DEFAULT;
+static int xpad = SATEN_CORE_TEXT_XPAD_DEFAULT;
+static int ypad = SATEN_CORE_TEXT_YPAD_DEFAULT;
 
 // private
 void saten_mrb_text_init(void)
@@ -153,6 +156,13 @@ void saten_text_glyph_create(int a, int b, int c, int x, int y, int l,
 {
     int i = text->size;
 
+    if (i == 0) {
+        //text->x = text->glyph[i].rect.x;
+        //text->y = text->glyph[i].rect.y;
+        text->w = 0;
+        text->h = 0;
+    }
+
     /*
     if (i == SATEN_TEXT_GLYPH_MAX)
         return; // skip glyphs that overflow
@@ -165,15 +175,20 @@ void saten_text_glyph_create(int a, int b, int c, int x, int y, int l,
                 sizeof(saten_glyph) * SATEN_TEXT_GLYPH_MAX);
                 */
         // Realloc memory once per update
-        printf("size_calc: %d, size_alloc: %d\n", text->size_calc, text->size_alloc);
+#if defined(_DEBUG) && defined(_SATEN_CORE_TEXT_DEBUG)
+        printf("size_calc: %d, size_alloc: %d\n",
+                text->size_calc, text->size_alloc);
+#endif
         if (text->size_calc > text->size_alloc) {
             text->glyph = (saten_glyph*)saten_realloc(text->glyph,
                     text->size_calc * sizeof(saten_glyph));
             text->size_alloc = text->size_calc;
         }
     }
+#if defined(_DEBUG) && defined(_SATEN_CORE_TEXT_DEBUG)
     if (text->glyph == NULL)
         printf("wtf!\n");
+#endif
     //text->glyph = (saten_glyph*)saten_realloc(text->glyph,
     //        text->size * sizeof(saten_glyph));
     text->glyph[i].a = a;
@@ -186,15 +201,19 @@ void saten_text_glyph_create(int a, int b, int c, int x, int y, int l,
     if (i > 0) {
         for (int j = i-1; j >= 0; j--) {
             if (text->glyph[j].l == l) {
-                x += text->glyph[j].rect.w;
-                x += 2; // padding
+                if (text->glyph[j].a == 0 && text->glyph[j].c == 10) {
+                    x += wspace_width;
+                } else {
+                    x += text->glyph[j].rect.w;
+                    x += xpad; // padding
+                }
             }
         }
     }
     if (l > 0) {
         //y += l * saten_latest_text->glyph[i-1].rect.h;
         y += l * (saten_text_gheight * text->scale);
-        y += l * 2; // padding
+        y += l * ypad; // padding
     }
 
     text->glyph[i].rect.x = x;
@@ -209,14 +228,12 @@ void saten_text_glyph_create(int a, int b, int c, int x, int y, int l,
     } else {
         text->glyph[i].is_animated = false;
     }
-    if (i == 0) {
-        //text->x = text->glyph[i].rect.x;
-        //text->y = text->glyph[i].rect.y;
-        text->w = 0;
-        text->h = 0;
-    }
-    text->w += text->glyph[i].rect.w+2; // include padding
-    text->h = (l + 1) * (saten_text_gheight * text->scale) + (l * 2);
+    //FIXME don't increase when new line!?
+    if (text->glyph[i].a == 0 && text->glyph[i].c == 1)
+        text->w += wspace_width; // include padding
+    else
+        text->w += text->glyph[i].rect.w+xpad; // include padding
+    text->h = (l + 1) * (saten_text_gheight * text->scale) + (l * ypad);
 }
 
 void saten_text_draw(saten_text *text)

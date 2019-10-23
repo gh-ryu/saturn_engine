@@ -29,7 +29,4 @@ Saten::Resource::Sprite.load("demo_assets/background2.png", 244)
 Saten::Resource::Sprite.load("demo_assets/background-sonic.png", 244)
 # Scene Load
 Saten::Resource::Sprite.load("demo_assets/load_indicator.png", 255)
-#Saten::Resource::Text.load("\\C[7]---LOADING---", 255)
-Saten::Text.use_color(7)
-Saten::Resource::Text.load("---LOADING---", 255)
-Saten::Text.use_color(0)
+Saten::Resource::Text.load("\\C[7]---LOADING---", 255)

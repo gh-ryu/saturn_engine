@@ -18,6 +18,12 @@ module Saten
       @id = id
     end
     def calc_size(str)
+      #FIXME remove special markers (glyph by index, color switch) before
+      # reading length
+      # Don't count whitespace in length
+      #str = str.gsub("\s", "")
+      str = str.gsub("\n", "") # no glyph for new lines
+      str = str.gsub("\t", "") # no glyph for tabs
       size = str.length
       Text.set_size(@id, size)
     end
