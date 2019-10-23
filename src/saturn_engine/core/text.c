@@ -1,7 +1,7 @@
 #include "saturn_engine/core/_lib.h"
 
 
-static saten_mfield mfg; // memory field for glyphs
+//static saten_mfield mfg; // memory field for glyphs
 
 // private
 void saten_mrb_text_init(void)
@@ -13,10 +13,12 @@ void saten_mrb_text_init(void)
             "saten_mrb_load_glyph_file", saten_mrb_text_load_glyph_file,
             MRB_ARGS_REQ(7));
 
+    /*
     mfg = saten_mfield_create(SATEN_MB(20));
     struct RClass* _saten_mrb_class_text;
     _saten_mrb_class_text = mrb_define_class_under(saten_mrb,
             _saten_mrb_module, "Text", saten_mrb->object_class);
+            */
 
     mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
             "create", saten_mrb_text_create, MRB_ARGS_REQ(1));
@@ -137,13 +139,24 @@ void saten_text_glyph_create(int a, int b, int c, int x, int y, int l,
         saten_text *text)
 {
     int i = text->size;
+
+    /*
     if (i == SATEN_TEXT_GLYPH_MAX)
         return; // skip glyphs that overflow
+        */
     text->size++;
     if (i == 0 ) {
+        /*
         // take some preallocated memory
         text->glyph = (saten_glyph*)saten_mfield_take(&mfg,
                 sizeof(saten_glyph) * SATEN_TEXT_GLYPH_MAX);
+                */
+        // Realloc memory once per update
+        if (text->size_calc > size_alloc) {
+            text->glyph = (saten_glyph*)saten_realloc(text->glyph,
+                    text->size_calc * sizeof(saten_glyph));
+            text->size_alloc = text->size_calc;
+        }
     }
     if (text->glyph == NULL)
         printf("wtf!\n");
@@ -202,8 +215,10 @@ void saten_text_draw(saten_text *text)
     SDL_Rect trgt = { 0 };
 
     for (int i = 0; i < text->size; i++) {
+        /*
         if (i == SATEN_TEXT_GLYPH_MAX)
             return ; // prevent overflow
+            */
         if (text->glyph[i].is_animated) {
             if (text->modf) {
                 SDL_SetTextureColorMod(saten_glyph_sets[text->glyph[i].a].
@@ -333,6 +348,7 @@ void saten_text_set_gheight(int a)
 // public
 void saten_text_destroy(saten_text *ptr)
 {
+    free(ptr->glyph);
     saten_litem* eptr = NULL;
     saten_list_search(saten_list_text, NULL, &eptr, (void*)ptr);
     mrb_gc_unregister(saten_mrb, ptr->mrbo);
@@ -663,7 +679,7 @@ int saten_get_text_y(saten_text *text)
 // private
 void saten_text_quit(void)
 {
-    saten_mfield_destroy(&mfg);
+    //saten_mfield_destroy(&mfg);
     saten_list_destroy(saten_list_text);
     for (int i = 0; i < saten_glyph_set_n; i++) {
         free(saten_glyph_sets[i].glyph_width);

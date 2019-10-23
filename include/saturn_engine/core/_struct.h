@@ -95,6 +95,8 @@ typedef struct _saten_text {
     int w, h, x, y;
     SDL_Color mod;
     bool modf;
+    int size_calc;  // calculated n of glyphs
+    int size_alloc; // allocated number of glyphs
 } saten_text;
 
 typedef struct _saten_spixel {
