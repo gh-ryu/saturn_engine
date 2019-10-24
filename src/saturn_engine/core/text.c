@@ -154,11 +154,15 @@ mrb_value saten_mrb_text_append_glyph(mrb_state *mrb, mrb_value self)
 void saten_text_glyph_create(int a, int b, int c, int x, int y, int l,
         saten_text *text)
 {
+    static int clinew = 0; // Current line's width
+    static int tlinew = 0; // Longest line's width
+    static int cl     = 0; // Current line
     int i = text->size;
 
     if (i == 0) {
-        //text->x = text->glyph[i].rect.x;
-        //text->y = text->glyph[i].rect.y;
+        clinew  = 0;
+        tlinew  = 0;
+        cl      = 0;
         text->w = 0;
         text->h = 0;
     }
@@ -228,12 +232,26 @@ void saten_text_glyph_create(int a, int b, int c, int x, int y, int l,
     } else {
         text->glyph[i].is_animated = false;
     }
-    //FIXME don't increase when new line!?
+
+    // New line
+    if (cl < l ) {
+        if (clinew > tlinew)
+            tlinew = clinew;
+        clinew = 0;
+        cl++;
+    }
+
+    // Set text dimensions
     if (text->glyph[i].a == 0 && text->glyph[i].c == 1)
-        text->w += wspace_width; // include padding
+        clinew += wspace_width; // include padding
     else
-        text->w += text->glyph[i].rect.w+xpad; // include padding
+        clinew += text->glyph[i].rect.w+xpad; // include padding
     text->h = (l + 1) * (saten_text_gheight * text->scale) + (l * ypad);
+
+    if (clinew > tlinew)
+        text->w = clinew;
+    else
+        text->w = tlinew;
 }
 
 void saten_text_draw(saten_text *text)
