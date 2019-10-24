@@ -18,13 +18,34 @@ module Saten
       @id = id
     end
     def calc_size(str)
-      #FIXME remove special markers (glyph by index, color switch) before
-      # reading length
-      # Don't count whitespace in length
-      #str = str.gsub("\s", "")
+      cnt  = 0 # str index
+      gcnt = 0 # numbers of indexed glyphs
+      substart = 0
+      subend   = 0 # start/end of substring not to count 
+      subtract = 0 # part of string that's not to be considered a glyph
+
+      #str = str.gsub("\s", "") # uses memory
       str = str.gsub("\n", "") # no glyph for new lines
       str = str.gsub("\t", "") # no glyph for tabs
+
+      str.each_char do |c|
+        if c == "\\" && (str[cnt+1] == "G" || str[cnt+1] == "C")
+          if str[cnt+2] == "["
+            if str[cnt+1] == "G" then gcnt += 1 end
+            substart = cnt
+            scnt = cnt + 3
+            str.each_char do |cs|
+              if str[scnt] == "]" then subend = scnt end
+            end
+            subtract += (subend - substart)
+            subend = substart = 0 # reset for next subarea
+          end
+        end
+        cnt += 1
+      end
       size = str.length
+      size += gcnt # directly indexed glyphs need memory as well
+      size -= subtract
       Text.set_size(@id, size)
     end
     def set_glyph
