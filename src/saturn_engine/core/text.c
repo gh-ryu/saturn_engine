@@ -362,10 +362,12 @@ void saten_nstot(saten_text *text, char *str, int col, int x, int y)
     // string can only contain numbers 0 to 9 and .
     // everything else is ignored
     int i = 0;
+    /* Changes to realloc anyways
     if (text->glyph != NULL) {
         //free(text->glyph);
         text->glyph = NULL;
     }
+    */
     text->size = 0;
 
     while (str[i] != '\0') {
@@ -556,6 +558,7 @@ mrb_value saten_mrb_text_load_glyph_file(mrb_state *mrb, mrb_value self)
                     uint32_t pixel =
                         saten_pixel_get(sprite, SATEN_SPRITE, k, l);
                     SDL_GetRGBA(pixel, sprite->srf->format, &r, &g, &b, &a);
+                    // Glyph starts at fully black or white pixel
                     if (saten_test_rgb(r, g, b, 255) ||
                             saten_test_rgb(r, g, b, 0)) {
                         if (!gstart_set) {
@@ -576,9 +579,11 @@ mrb_value saten_mrb_text_load_glyph_file(mrb_state *mrb, mrb_value self)
                     srf = saten_surface_create(gwidth, h, 32);
                     for (int l = 0; l < pn; l++) { // iterate pixel array
                         if (pixbuff[l].x >= gstart && pixbuff[l].x <= gend) {
+                            // If pixel is black draw it according to color
+                            // otherwise don't add the pixel to glyph
                             if (saten_test_rgb(pixbuff[l].r, pixbuff[l].g,
                                         pixbuff[l].b, 0)) {
-                                // draw this pixel according to color
+                                // Color
                                 uint8_t r, g, b, a;
                                 uint32_t pixel =
                                     saten_pixel_get(sprite, SATEN_SPRITE,
@@ -588,14 +593,11 @@ mrb_value saten_mrb_text_load_glyph_file(mrb_state *mrb, mrb_value self)
                                         &r, &g, &b, &a);
                                 uint32_t pnew = SDL_MapRGBA(srf->format,
                                         r, g, b, a);
-                                //uint32_t pnew = SDL_MapRGBA(srf->format,
-                                //        pixbuff[l].r, pixbuff[l].g,
-                                //        pixbuff[l].b, pixbuff[l].a);
                                 saten_pixel_put(srf, SATEN_SURFACE,
                                         pixbuff[l].x - gstart, pixbuff[l].y,
                                         pnew);
                             } else {
-                                // invisible
+                                // Invisible
                                 uint32_t pnew = SDL_MapRGBA(srf->format,
                                         0, 0, 0, 0);
                                 saten_pixel_put(srf, SATEN_SURFACE,
