@@ -53,6 +53,16 @@ bool saten_test_rgb(uint8_t r, uint8_t g, uint8_t b, uint8_t t)
 }
 
 // public
+bool saten_test_rgbi(SDL_Color inp, SDL_Color test)
+{
+    return (
+            (inp.r == test.r) &&
+            (inp.g == test.g) &&
+            (inp.b == test.b) &&
+            (inp.a == test.a));
+}
+
+// public
 // https://stackoverflow.com/a/3068420
 size_t saten_intlen(int a)
 {

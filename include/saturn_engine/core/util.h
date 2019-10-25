@@ -11,6 +11,7 @@ void saten_fopen(FILE **fp, const char *filename, const char *mode);
 void* saten_malloc(size_t size);
 void* saten_realloc(void* ptr, size_t size);
 bool saten_test_rgb(uint8_t r, uint8_t g, uint8_t b, uint8_t t);
+bool saten_test_rgbi(SDL_Color inp, SDL_Color test);
 size_t saten_intlen(int a);
 SDL_Point saten_coords_from_arrindex(int i, int pitch);
 bool saten_inrange(int n, int min, int max);
