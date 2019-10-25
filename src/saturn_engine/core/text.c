@@ -581,8 +581,13 @@ mrb_value saten_mrb_text_load_glyph_file(mrb_state *mrb, mrb_value self)
                         if (pixbuff[l].x >= gstart && pixbuff[l].x <= gend) {
                             // If pixel is black draw it according to color
                             // otherwise don't add the pixel to glyph
-                            if (saten_test_rgb(pixbuff[l].r, pixbuff[l].g,
-                                        pixbuff[l].b, 0)) {
+                            SDL_Color pcol = { pixbuff[l].r, pixbuff[l].g,
+                                pixbuff[l].b, pixbuff[l].a };
+                            SDL_Color black = { 0, 0, 0, 255 };
+                            //SDL_Color white = { 255, 255, 255, 255 };
+                            SDL_Color red   = { 255, 0, 0, 255 };
+                            if (saten_test_rgbi(pcol, black) ||
+                                saten_test_rgbi(pcol, red)) {
                                 // Color
                                 uint8_t r, g, b, a;
                                 uint32_t pixel =
@@ -591,6 +596,12 @@ mrb_value saten_mrb_text_load_glyph_file(mrb_state *mrb, mrb_value self)
                                             pixbuff[l].y);
                                 SDL_GetRGBA(pixel, sprite->srf->format,
                                         &r, &g, &b, &a);
+                                if (saten_test_rgbi(pcol, red)) {
+                                    // Shadow
+                                    r = r/2;
+                                    g = g/2;
+                                    b = b/2;
+                                }
                                 uint32_t pnew = SDL_MapRGBA(srf->format,
                                         r, g, b, a);
                                 saten_pixel_put(srf, SATEN_SURFACE,
