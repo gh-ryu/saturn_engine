@@ -1,5 +1,9 @@
 #include "saturn_engine/core/_lib.h"
 
+static int *remap_from; // Dynamic array
+static int *remap_to;   // Dynamic array
+
+static bool remapf;    //
 
 //static saten_mfield mfg; // memory field for glyphs
 static int wspace_width = SATEN_CORE_TEXT_WSPACE_WIDTH_DEFAULT;
@@ -38,6 +42,11 @@ void saten_mrb_text_init(void)
             "reset", saten_mrb_text_reset, MRB_ARGS_REQ(2));
     mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
             "set_size", saten_mrb_text_set_size, MRB_ARGS_REQ(2));
+    mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
+            "remap", saten_mrb_text_remap, MRB_ARGS_REQ(2));
+    mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
+            "remap_reset", saten_mrb_text_remap_reset, MRB_ARGS_NONE());
+
 }
 
 mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self)
@@ -741,6 +750,7 @@ int saten_get_text_y(saten_text *text)
 // private
 void saten_text_quit(void)
 {
+    mrb_load_string(saten_mrb, "Saten::Text.remap_reset()");
     //saten_mfield_destroy(&mfg);
     saten_list_destroy(saten_list_text);
     for (int i = 0; i < saten_glyph_set_n; i++) {
@@ -770,4 +780,33 @@ void saten_text_posw(saten_text *text, int x, int y) /* PUBLIC */
 {
     text->x = x;
     text->y = y;
+}
+
+mrb_value saten_mrb_text_remap(mrb_state *mrb, mrb_value self)
+{
+    mrb_int from0; mrb_int to0;
+    int from; int to;
+    mrb_get_args(saten_mrb, "ii", &from0, &to0);
+    from = (int)from0;
+    to = (int)to0;
+    if (!remapf) {
+        SATEN_DARR_INIT(int, remap_from);
+        SATEN_DARR_INIT(int, remap_to);
+        remapf = true;
+    }
+
+    SATEN_DARR_PUSH(remap_from, from);
+    SATEN_DARR_PUSH(remap_to, to);
+
+    return mrb_nil_value();
+}
+
+mrb_value saten_mrb_text_remap_reset(mrb_state *mrb, mrb_value self)
+{
+    if (remapf) {
+        SATEN_DARR_DESTROY(remap_from);
+        SATEN_DARR_DESTROY(remap_to);
+        remapf = false;
+    }
+    return mrb_nil_value();
 }

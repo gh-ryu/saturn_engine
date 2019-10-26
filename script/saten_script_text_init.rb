@@ -22,4 +22,6 @@ def myfunc(str)
   return str
 end
 
+Saten::Text.remap(0, 2)
+
 Saten::Text.modfnc_reg("myfunc")

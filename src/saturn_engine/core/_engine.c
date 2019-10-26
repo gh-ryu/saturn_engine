@@ -121,11 +121,11 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
 
 void saten_core_quit(void)
 {
+    saten_text_quit();
     if (saten_flag_check(SATEN_MRB, saten_core_flags)) {
         mrbc_context_free(saten_mrb, saten_mrbc);
         mrb_close(saten_mrb);
     }
-    saten_text_quit();
     free(saten_base_path);
     //free(saten_pads);
     //free(saten_keystate); internal SDL array

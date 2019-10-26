@@ -3,6 +3,8 @@
 
 /* https://solarianprogrammer.com/2017/
  * 01/08/c99-c11-dynamic-array-mimics-cpp-vector-api-improvements/ */
+
+// Use INIT id defined in global scope
 #define SATEN_DARR_INIT(T, arr) \
     do {\
         size_t *raw = saten_malloc(3 * sizeof(size_t));\
@@ -12,6 +14,7 @@
         arr = (void*) &raw[3];\
     } while (0)
 
+// Use create if variable is not in global scope
 #define SATEN_DARR_CREATE(T, arr) \
     T *arr = NULL;\
     SATEN_DARR_INIT(T, arr);
