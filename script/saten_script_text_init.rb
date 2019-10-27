@@ -22,6 +22,6 @@ def myfunc(str)
   return str
 end
 
-Saten::Text.remap(0, 2)
+#Saten::Text.remap(1, 2) // Use this to simulate multiple fonts
 
 Saten::Text.modfnc_reg("myfunc")

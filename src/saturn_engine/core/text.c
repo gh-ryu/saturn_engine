@@ -216,10 +216,20 @@ void saten_text_glyph_create(int a, int b, int c, int x, int y, int l,
 #endif
     //text->glyph = (saten_glyph*)saten_realloc(text->glyph,
     //        text->size * sizeof(saten_glyph));
+    // Consider remappings
+    if (text->remapn > 0) {
+        for (int i = 0; i < text->remapn; i++) {
+            if (text->remap_from[i] == a) {
+                a = text->remap_to[i];
+                break;
+            }
+        }
+    }
     text->glyph[i].a = a;
     text->glyph[i].b = b;
     text->glyph[i].c = c;
     text->glyph[i].l = l;
+
 
 
     // offset
