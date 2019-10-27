@@ -9,7 +9,7 @@ LIB = `sdl2-config --cflags --libs` -lSDL2_image -lSDL2_mixer \
 	  /home/$(USER)/bin/mruby-2.0.1/build/host/lib/libmruby.a -lm
 INC = -I/home/$(USER)/bin/mruby-2.0.1/include
 CC = gcc
-RUN = -o $(NAME)
+RUN = -o build/$(NAME)
 MSG += linux
 endif
 
@@ -25,7 +25,7 @@ INC = -I/home/$(USER)/lib/SDL2-2.0.9/x86_64-w64-mingw32/include/SDL2 \
 	  -I/home/$(USER)/lib/SDL2_mixer-2.0.4/x86_64-w64-mingw32/include/SDL2 \
       -I/home/$(USER)/bin/mruby-2.0.1/include -lws2_32
 CC = x86_64-w64-mingw32-gcc
-RUN = -o $(NAME).exe
+RUN = -o build/$(NAME).exe
 SFLAG = -D_WIN32
 MSG += win64
 endif
@@ -35,7 +35,7 @@ ifeq ($(filter win32,$(MAKECMDGOALS)),win32)
 LIB =
 INC =
 CC = i686-w64-mingw32-gcc
-RUN = -o $(NAME).exe
+RUN = -o build/$(NAME).exe
 SFLAG = -D_WIN32
 MSG += win32
 endif
@@ -53,7 +53,7 @@ endif
 
 ifeq ($(filter macro,$(MAKECMDGOALS)),macro)
 	#CFLAG += -E
-	RUN = -E $(NAME)
+	RUN = -E build/$(NAME)
 endif
 
 #linux: $(OBJ) // does not recompile when header files change

@@ -6,6 +6,7 @@ error.txt
 
 config.mk
 include/saturn_engine/core/_config.h
+build/*
 demo
 demo.exe
 test.h
