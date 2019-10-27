@@ -97,6 +97,10 @@ typedef struct _saten_text {
     bool modf;
     int size_calc;  // calculated n of glyphs
     int size_alloc; // allocated number of glyphs
+    // Glyph set remappings
+    int remapn; // number of remappings
+    int *remap_from;
+    int *remap_to;
 } saten_text;
 
 typedef struct _saten_spixel {

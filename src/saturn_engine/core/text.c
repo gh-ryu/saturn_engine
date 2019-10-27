@@ -2,6 +2,7 @@
 
 static int *remap_from; // Dynamic array
 static int *remap_to;   // Dynamic array
+static int remapn;      // Current number of remappings
 
 static bool remapf;    //
 
@@ -66,6 +67,17 @@ mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self)
         saten_latest_text->mrbo = o;
         saten_latest_text->id = saten_text_get_id();
         saten_latest_text->update_flag = true;
+
+        // Register remappings
+        if (remapf) {
+            size_t remap_size = remapn * sizeof(int);
+            saten_latest_text->remapn = remapn;
+            saten_latest_text->remap_from = (int*)saten_malloc(remap_size);
+            saten_latest_text->remap_to = (int*)saten_malloc(remap_size);
+
+            memcpy(saten_latest_text->remap_from, remap_from, remap_size);
+            memcpy(saten_latest_text->remap_to, remap_to, remap_size);
+        }
 
         // saten handling
         saten_litem *elem = (saten_litem*)saten_malloc(sizeof(saten_litem));
@@ -797,6 +809,7 @@ mrb_value saten_mrb_text_remap(mrb_state *mrb, mrb_value self)
 
     SATEN_DARR_PUSH(remap_from, from);
     SATEN_DARR_PUSH(remap_to, to);
+    remapn++;
 
     return mrb_nil_value();
 }
@@ -806,6 +819,7 @@ mrb_value saten_mrb_text_remap_reset(mrb_state *mrb, mrb_value self)
     if (remapf) {
         SATEN_DARR_DESTROY(remap_from);
         SATEN_DARR_DESTROY(remap_to);
+        remapn = 0;
         remapf = false;
     }
     return mrb_nil_value();
