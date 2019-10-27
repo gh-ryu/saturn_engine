@@ -47,7 +47,6 @@ void saten_mrb_text_init(void)
             "remap", saten_mrb_text_remap, MRB_ARGS_REQ(2));
     mrb_define_class_method(saten_mrb, _saten_mrb_class_text,
             "remap_reset", saten_mrb_text_remap_reset, MRB_ARGS_NONE());
-
 }
 
 mrb_value saten_mrb_text_create(mrb_state *mrb, mrb_value self)
@@ -229,8 +228,6 @@ void saten_text_glyph_create(int a, int b, int c, int x, int y, int l,
     text->glyph[i].b = b;
     text->glyph[i].c = c;
     text->glyph[i].l = l;
-
-
 
     // offset
     if (i > 0) {
