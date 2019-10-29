@@ -35,11 +35,9 @@
 #include <math.h>
 #include <time.h>
 
-#include "_config.h" // defines mruby locations
-// path to mruby.h
-#include SATEN_MRB_HEADER_LOCATION
-// path to mruby/compile.h
-#include SATEN_MRB_COMPILE_HEADER_LOCATION
+#include "_config.h"
+#include "../mruby-2.0.1/include/mruby.h"
+#include "../mruby-2.0.1/include/mruby/compile.h"
 
 #include "_struct.h"
 

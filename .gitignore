@@ -6,11 +6,13 @@ error.txt
 
 config.mk
 include/saturn_engine/core/_config.h
-build/*
+bin/
 demo
 demo.exe
 test.h
 test.txt
+
+mruby-2.0.1/build/
 
 demo_assets/background-sonic.png
 
