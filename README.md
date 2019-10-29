@@ -1,7 +1,7 @@
 # saturn_engine
-C game programming framework built on SDL
+Game programming framework written in C, built with SDL. Currently developed for private use. No strict plans for adding documentation to encourage usage yet.
 
-setup
+Build mruby
 --
 - Install mingw64
 - cd into mruby-2.0.1/
