@@ -10,7 +10,7 @@ setup
 - open mruby-2.0.1/build/mrbgems/mruby-method/src/method.c
 - Replace the following:
 
-`
+```c
 #include <alloca.h>
 // to
 #if defined(WIN32) || defined(__WIN32) || defined(__WIN32__)
@@ -18,6 +18,6 @@ setup
 #else
 #include <alloca.h>
 #endif
-`
+```
 - cd back into mruby-2.0.1/
 - run ./minirake again
