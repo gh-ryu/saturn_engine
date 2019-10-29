@@ -21,3 +21,7 @@ Build mruby
 ```
 - cd back into mruby-2.0.1/
 - run ./minirake again
+
+Setup
+--
+- Replace project name in `config.mk`

@@ -4,7 +4,6 @@ output.log
 error.log
 error.txt
 
-config.mk
 include/saturn_engine/core/_config.h
 bin/
 demo
