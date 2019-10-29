@@ -1,2 +1,2 @@
 *.h linguist-language=C
-mruby-2.0.1/* linguist-vendored
+mruby-2.0.1/* linguist-vendored=true
