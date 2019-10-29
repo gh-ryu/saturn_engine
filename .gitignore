@@ -41,7 +41,7 @@ demo_assets/background-sonic.png
 *.lo
 
 # Shared objects (inc. Windows DLLs)
-*.dll
+#*.dll
 *.so
 *.so.*
 *.dylib
