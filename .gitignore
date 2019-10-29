@@ -5,7 +5,7 @@ error.log
 error.txt
 
 include/saturn_engine/core/_config.h
-bin/
+bin/*
 !bin/*.dll
 demo
 demo.exe
