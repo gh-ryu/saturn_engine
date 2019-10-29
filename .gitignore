@@ -6,6 +6,7 @@ error.txt
 
 include/saturn_engine/core/_config.h
 bin/
+!bin/*.dll
 demo
 demo.exe
 test.h
