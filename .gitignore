@@ -1,7 +1,7 @@
 # assets etc.
 
 output.log
-data/log/*
+data/log/error.*
 
 bin/*
 !bin/*.dll
