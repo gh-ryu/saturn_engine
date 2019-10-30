@@ -20,7 +20,7 @@ void scene_maptest_init(void)
     if (!saten_scene_loaded(scene.maptest)) // important!
         scene.load = saten_scene_create(scene.load, scene_load_init,
                 scene_load_update, scene_load_draw, scene_load_quit,
-                "script/load_resources.rb");
+                FNAME_MRB_LOAD);
     // make sure load screen has passed
     if (saten_scene_loaded(scene.maptest) && !saten_scene_exists(scene.load)) {
         // initialization with loaded resources starts here

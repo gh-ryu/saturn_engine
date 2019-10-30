@@ -27,7 +27,7 @@ int main (int argc, char *argv[])
     // Create root scene
     scene.root = saten_scene_create(scene.root, scene_root_init,
             scene_root_update, scene_root_draw, scene_root_quit,
-            "script/load_resources.rb");
+            FNAME_MRB_LOAD);
     // Run the game loop
     
     //SDL_SetWindowSize(saten_window, 384*2, 216*2);

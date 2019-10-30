@@ -18,7 +18,7 @@ void scene_title_init(void)
     if (!saten_scene_loaded(scene.title)) // important!
         scene.load = saten_scene_create(scene.load, scene_load_init,
                 scene_load_update, scene_load_draw, scene_load_quit,
-                "script/load_resources.rb");
+                FNAME_MRB_LOAD);
     // make sure load screen has passed
     if (saten_scene_loaded(scene.title) && !saten_scene_exists(scene.load)) {
         // initialization with loaded resources starts here
@@ -109,7 +109,7 @@ void scene_title_quit(void)
         scene.maptest = saten_scene_create(scene.maptest,
                 scene_maptest_init, scene_maptest_update,
                 scene_maptest_draw, scene_maptest_quit,
-                "script/load_resources.rb");
+                FNAME_MRB_LOAD);
         saten_scene_set_start(scene.maptest);
     }
 }

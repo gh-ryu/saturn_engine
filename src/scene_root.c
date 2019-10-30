@@ -34,7 +34,7 @@ void scene_root_init(void)
         
         scene.title = saten_scene_create(scene.title, scene_title_init,
                 scene_title_update, scene_title_draw, scene_title_quit,
-                "script/load_resources.rb");
+                FNAME_MRB_LOAD);
         saten_scene_set_start(scene.title);
         
     }
@@ -59,7 +59,7 @@ void scene_root_update(bool c)
         if (saten_key(SATEN_KEY_Z)) {
             scene.title = saten_scene_create(scene.title, scene_title_init,
                     scene_title_update, scene_title_draw, scene_title_quit,
-                    "script/load_resources.rb");
+                    FNAME_MRB_LOAD);
             saten_scene_set_start(scene.title);
         }
 

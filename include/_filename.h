@@ -3,6 +3,8 @@
 
 #define FNAME_SAVE_DATA "data/misc/demo/s.dat"
 
+#define FNAME_MRB_LOAD "data/mrb/demo/load_resources.rb"
+
 #define FNAME_P1_INP_BTN "data/misc/demo/p1inp.dat"
 #define FNAME_P1_INP_KEY "data/misc/demo/p1inpkb.dat"
 
