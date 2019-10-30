@@ -7,9 +7,9 @@ static int remapn;      // Current number of remappings
 static bool remapf;    //
 
 //static saten_mfield mfg; // memory field for glyphs
-static int wspace_width = SATEN_CORE_TEXT_WSPACE_WIDTH_DEFAULT;
-static int xpad = SATEN_CORE_TEXT_XPAD_DEFAULT;
-static int ypad = SATEN_CORE_TEXT_YPAD_DEFAULT;
+static int wspace_width = SATEN_CORE_CONF_TEXT_WSPACE_WIDTH_DEFAULT;
+static int xpad = SATEN_CORE_CONF_TEXT_XPAD_DEFAULT;
+static int ypad = SATEN_CORE_CONF_TEXT_YPAD_DEFAULT;
 
 // private
 void saten_mrb_text_init(void)
