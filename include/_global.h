@@ -1,6 +1,8 @@
 #ifndef GLOBAL
 #define GLOBAL
 
+#include "_filename.h"
+
 typedef struct _scenemngr { // index 0: uid, index 1: position id
     saten_scene_info root;
     saten_scene_info title;

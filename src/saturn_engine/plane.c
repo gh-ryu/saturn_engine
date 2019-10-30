@@ -9,7 +9,7 @@ saten_plane* saten_plane_create(saten_sprite *tileset,
         saten_errhandler(60);
         return NULL;
     }
-    if (w < SATEN_GAME_WIDTH || h < SATEN_GAME_HEIGHT) {
+    if (w < SATEN_CONF_GAME_WIDTH || h < SATEN_CONF_GAME_HEIGHT) {
         saten_errhandler(64);
         return NULL;
     }

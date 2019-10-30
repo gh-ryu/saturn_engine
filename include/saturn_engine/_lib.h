@@ -56,7 +56,7 @@ void saten_game(void);
 void saten_quit(void);
 void saten_kill(void);
 
-#include "filenames.h"
+#include "_filename.h"
 
 #include "scene.h"
 #include "load.h"

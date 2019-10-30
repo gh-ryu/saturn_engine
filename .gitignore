@@ -1,8 +1,7 @@
 # assets etc.
 
 output.log
-error.log
-error.txt
+data/log/*
 
 bin/*
 !bin/*.dll
@@ -13,7 +12,7 @@ test.txt
 
 mruby-2.0.1/build/
 
-demo_assets/background-sonic.png
+data/img/demo/background-sonic.png
 
 # Prerequisites
 *.d

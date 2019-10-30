@@ -1,6 +1,6 @@
 #include "saturn_engine/_lib.h"
 
-static saten_player player[SATEN_PLAYER_NUM]; // 4 players max
+static saten_player player[SATEN_CONF_PLAYER_NUM]; // 4 players max
 
 int saten_player_enable(int id) /* PUBLIC */
 {
@@ -15,7 +15,7 @@ int saten_player_enable(int id) /* PUBLIC */
 int saten_player_numr(void) /* PUBLIC */
 {
     int n = 0;
-    for (int i = 0; i < SATEN_PLAYER_NUM; i++) {
+    for (int i = 0; i < SATEN_CONF_PLAYER_NUM; i++) {
         if (player[i].flag)
             n++;
     }
@@ -82,7 +82,7 @@ uint32_t saten_player_keyr(int id, uint8_t key)
 
 int saten_player_check(int id) /* PRIVATE */
 {
-    if (id < 1 || id > SATEN_PLAYER_NUM) {
+    if (id < 1 || id > SATEN_CONF_PLAYER_NUM) {
         saten_errhandler(57);
         return -1; // player id invalid
     } else {

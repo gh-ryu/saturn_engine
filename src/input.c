@@ -50,18 +50,18 @@ void input_init(void) /* PUBLIC */
     p2inpkb = defkb;
 
     // Load mappings if available
-    input_load_mappings("demo_data/p1inp.dat", &p1inp);
-    input_load_mappings("demo_data/p2inp.dat", &p2inp);
-    input_load_mappings("demo_data/p1inpkb.dat", &p1inpkb);
-    input_load_mappings("demo_data/p2inpkb.dat", &p2inpkb);
+    input_load_mappings(FNAME_P1_INP_BTN, &p1inp);
+    input_load_mappings(FNAME_P2_INP_BTN, &p2inp);
+    input_load_mappings(FNAME_P1_INP_KEY, &p1inpkb);
+    input_load_mappings(FNAME_P2_INP_KEY, &p2inpkb);
 }
 
 void input_save_all_mappings(void) /* PUBLIC */
 {
-    input_save_mappings("demo_data/p1inp.dat", &p1inp);
-    input_save_mappings("demo_data/p2inp.dat", &p2inp);
-    input_save_mappings("demo_data/p1inpkb.dat", &p1inpkb);
-    input_save_mappings("demo_data/p2inpkb.dat", &p2inpkb);
+    input_save_mappings(FNAME_P1_INP_BTN, &p1inp);
+    input_save_mappings(FNAME_P2_INP_BTN, &p2inp);
+    input_save_mappings(FNAME_P1_INP_KEY, &p1inpkb);
+    input_save_mappings(FNAME_P2_INP_KEY, &p2inpkb);
 }
 
 void input_save_mappings(char *fn, inputcntr *inp) /* PRIVATE */

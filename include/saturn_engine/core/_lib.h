@@ -10,10 +10,10 @@
 
 #ifdef _WIN32
 //#define SATEN_PATH_SEP "\\" 
-#define SATEN_ERROR_LOG "error.txt"
+#define SATEN_ERROR_LOG "data/log/error.txt"
 #else
 //#define SATEN_PATH_SEP "/"
-#define SATEN_ERROR_LOG "error.log"
+#define SATEN_ERROR_LOG "data/log/error.log"
 #endif
 #define SATEN_PATH_SEP "/"
 
@@ -111,7 +111,7 @@ int saten_core_init(const char *title, int screen_width,
 int saten_core_run(saten_fptr_void fptr);
 void saten_core_quit(void);
 
-#include "filenames.h"
+#include "_filename.h"
 
 #include "list.h"
 #include "darray.h"

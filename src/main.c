@@ -14,7 +14,7 @@ int main (int argc, char *argv[])
 {
     memset(&scene, 0, sizeof(scenemngr));
     // Engine initialization
-    if (saten_init("saturn_engine_demo", SATEN_MRBLOAD) < 0)
+    if (saten_init(SATEN_CONF_GAME_NAME, SATEN_MRBLOAD) < 0)
         fprintf(stderr, "Init error...\n");
     // Setting up unique IDs for scenes //TODO let a function handle this?
     scene.root.uid = 0;
@@ -53,7 +53,7 @@ int main (int argc, char *argv[])
     printf("w: %d, h: %d, x: %d, y: %d\n", saten_game_view.w,
             saten_game_view.h, saten_game_view.x, saten_game_view.y);
 
-    saten_data_save_init("demo_assets/s.dat", true);
+    saten_data_save_init(FNAME_SAVE_DATA, true);
     saten_data_save_float(0.1f);
     saten_data_save_int(4629385);
     saten_data_save_bool(true);
@@ -63,7 +63,7 @@ int main (int argc, char *argv[])
     saten_data_save_string("lol");
     saten_data_save_int(32569);
     saten_data_save_quit();
-    saten_data_load_init("demo_assets/s.dat", true);
+    saten_data_load_init(FNAME_SAVE_DATA, true);
     int i; float f; bool b1; bool b2; char *str1=NULL; char *str2=NULL;
     char *str3=NULL; int i2;
     saten_data_load_float(&f);

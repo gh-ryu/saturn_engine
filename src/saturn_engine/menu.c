@@ -18,8 +18,8 @@ saten_menu* saten_menu_create(int mtype, int malign,
     menu->loopf = saten_flag_check(SATEN_MENU_LOOP, flags);
     menu->rect.x = x;
     menu->rect.y = y;
-    menu->padding.x = SATEN_MENU_HPADDING_DEFAULT;
-    menu->padding.y = SATEN_MENU_VPADDING_DEFAULT;
+    menu->padding.x = SATEN_CONF_MENU_HPADDING_DEFAULT;
+    menu->padding.y = SATEN_CONF_MENU_VPADDING_DEFAULT;
     menu->drawf = true;
     menu->owner = 1;
     menu->sfx = sfx_def;
@@ -610,7 +610,7 @@ void saten_menu_rowlenw(saten_menu *menu, int l) /* PUBLIC */
     if (l > 0)
         menu->rowlen = l;
     else
-        menu->rowlen = SATEN_MENU_ROWLEN_DEFAULT;
+        menu->rowlen = SATEN_CONF_MENU_ROWLEN_DEFAULT;
 }
 
 bool saten_menu_elinframe(saten_menu *menu, saten_menu_element *el)

@@ -4,7 +4,7 @@ int saten_init(char *title, uint8_t flags) /* PUBLIC */
 {
     saten_flag_set(flags, &saten_flags);
     int w; int h;
-    saten_voutr(SATEN_VOUT_DEFAULT, &w, &h, NULL);
+    saten_voutr(SATEN_CONF_VOUT_DEFAULT, &w, &h, NULL);
 
     if (saten_core_init(title, w, h,
                 SATEN_ERRORS | SATEN_INPUT|SATEN_MRB | SATEN_TEXT) < 0) {
@@ -42,7 +42,7 @@ int saten_init(char *title, uint8_t flags) /* PUBLIC */
     SATEN_DARR_INIT(saten_scene, saten_darr_scene);
     saten_video_init();
 
-    saten_framerate_set(SATEN_FRAMERATE);
+    saten_framerate_set(SATEN_CONF_FRAMERATE);
 
     return 0; // everything okay!
 }

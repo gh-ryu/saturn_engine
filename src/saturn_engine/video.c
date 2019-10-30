@@ -7,13 +7,13 @@ static bool video_modes_flag;
 // private
 void saten_video_init(void)
 {
-    saten_game_view.w = SATEN_GAME_WIDTH;
-    saten_game_view.h = SATEN_GAME_HEIGHT;
+    saten_game_view.w = SATEN_CONF_GAME_WIDTH;
+    saten_game_view.h = SATEN_CONF_GAME_HEIGHT;
     SATEN_DARR_INIT(uint8_t, video_modes);
     video_modes_flag = true;
 
-    saten_vconf.scale = SATEN_GSCALE_DEFAULT;
-    saten_vconf.vout = SATEN_VOUT_DEFAULT;
+    saten_vconf.scale = SATEN_CONF_GSCALE_DEFAULT;
+    saten_vconf.vout = SATEN_CONF_VOUT_DEFAULT;
     saten_vconf.update = true;
     saten_vconf.scanline_strength = 64;
     saten_vconf.filter = 1;
@@ -205,7 +205,8 @@ void saten_video_update(void)
             saten_errhandler(53);
         w = dmode.w;
         h = dmode.h;
-        for (int i=1;SATEN_GAME_WIDTH*i<=w&&SATEN_GAME_HEIGHT*i<=h; i++)
+        for (int i=1;SATEN_CONF_GAME_WIDTH*i<=w&&SATEN_CONF_GAME_HEIGHT*i<=h;
+             i++)
             saten_vconf.scale = i;
     }
 
@@ -216,13 +217,13 @@ void saten_video_update(void)
     winfo.subw = 0;
     winfo.subh = 0;
 
-    if (SATEN_GAME_WIDTH * saten_vconf.scale < w) {
-        int diff = w - (SATEN_GAME_WIDTH * saten_vconf.scale);
+    if (SATEN_CONF_GAME_WIDTH * saten_vconf.scale < w) {
+        int diff = w - (SATEN_CONF_GAME_WIDTH * saten_vconf.scale);
         saten_game_view.x = (diff / 2) / saten_vconf.scale;
         winfo.subw = diff;
     }
-    if (SATEN_GAME_HEIGHT * saten_vconf.scale < h) {
-        int diff = h - (SATEN_GAME_HEIGHT * saten_vconf.scale);
+    if (SATEN_CONF_GAME_HEIGHT * saten_vconf.scale < h) {
+        int diff = h - (SATEN_CONF_GAME_HEIGHT * saten_vconf.scale);
         saten_game_view.y = (diff / 2) / saten_vconf.scale;
         winfo.subh = diff;
     }
