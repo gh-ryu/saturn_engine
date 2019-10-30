@@ -5,10 +5,6 @@ data/log/*
 
 bin/*
 !bin/*.dll
-demo
-demo.exe
-test.h
-test.txt
 
 mruby-2.0.1/build/
 
