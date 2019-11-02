@@ -40,8 +40,6 @@ endif
 
 # platform independent
 
-OBJ = src/main.c src/scene_root.c src/scene_title.c src/scene_load.c \
-	  src/input.c src/scene_maptest.c
 INC += -Iinclude
 ifeq ($(filter dev,$(MAKECMDGOALS)),dev)
 CFLAG = -g -Wall -Wno-switch -Wno-unused-label

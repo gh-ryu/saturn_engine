@@ -1,5 +1,12 @@
 #include "saturn_engine/_lib.h"
 
+static saten_scene_info *self;
+
+static saten_fptr_void each_scene_init;
+static saten_fptr_bool each_scene_update;
+static saten_fptr_void each_scene_draw;
+static saten_fptr_void each_scene_quit;
+
 // public
 saten_scene_info saten_scene_create(saten_scene_info info,
         saten_fptr_void init, saten_fptr_bool update, saten_fptr_void draw,
@@ -47,6 +54,19 @@ void saten_scene_init_done(saten_scene_info scene)
 }
 
 // public
+// Returns the scene currently being processed
+saten_scene_info* saten_scene_self(void)
+{
+    return self; 
+}
+
+// public
+void saten_scene_self_set(saten_scene_info *scene)
+{
+    self = scene;
+}
+
+// public
 void saten_scene_load_done(saten_scene_info scene)
 {
     int id = scene.id;
@@ -54,6 +74,7 @@ void saten_scene_load_done(saten_scene_info scene)
 }
 
 // public
+// Returns the scene at the top of the stack
 saten_scene_info saten_scene_get_current(void)
 {
     return saten_darr_scene[(SATEN_DARR_SIZE(saten_darr_scene)) - 1].info;
@@ -137,4 +158,42 @@ saten_scene_info saten_scene_destroy(saten_scene_info scene)
     }
 
     return scene;
+}
+
+// private
+void saten_scene_each_init(void)
+{
+    if (each_scene_init)
+        each_scene_init();
+}
+
+// private
+void saten_scene_each_update(bool r)
+{
+    if (each_scene_update)
+        each_scene_update(r);
+}
+
+// private
+void saten_scene_each_draw(void)
+{
+    if (each_scene_draw)
+        each_scene_draw();
+}
+
+// private
+void saten_scene_each_quit(void)
+{
+    if (each_scene_quit)
+        each_scene_quit();
+}
+
+// public
+void saten_scene_each_set(saten_fptr_void init, saten_fptr_bool update,
+        saten_fptr_void draw, saten_fptr_void quit)
+{
+    each_scene_init = init;
+    each_scene_update = update;
+    each_scene_draw = draw;
+    each_scene_quit = quit;
 }

@@ -8,6 +8,7 @@
 #include "saturn_engine/_lib.h"
 #include "_global.h"
 #include "scene_root.h"
+#include "scene_each.h"
 #include "input.h"
 
 int main (int argc, char *argv[])
@@ -28,6 +29,9 @@ int main (int argc, char *argv[])
     scene.root = saten_scene_create(scene.root, scene_root_init,
             scene_root_update, scene_root_draw, scene_root_quit,
             FNAME_MRB_LOAD);
+    // Set functions to run for each scene
+    saten_scene_each_set(scene_each_init, scene_each_update,
+            scene_each_draw, scene_each_quit);
     // Run the game loop
     
     //SDL_SetWindowSize(saten_window, 384*2, 216*2);

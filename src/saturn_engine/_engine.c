@@ -89,16 +89,20 @@ void saten_game(void) /* PRIVATE */
 
     // Traverse bottom-top (play game)
     for (int i=saten_scene_start.id;i< SATEN_DARR_SIZE(saten_darr_scene);i++) {
+        saten_scene_self_set(&saten_darr_scene[i].info);
         if (!saten_darr_scene[i].init_flag) {
             if (saten_darr_scene[i].init != NULL)
                 saten_darr_scene[i].init();
+            saten_scene_each_init();
         } else {
             if (saten_darr_scene[i].update != NULL) 
                 saten_darr_scene[i].update(
                         (i == SATEN_DARR_SIZE(saten_darr_scene)-1));
+            saten_scene_each_update(i == SATEN_DARR_SIZE(saten_darr_scene)-1);
                 // ^only top scene gets user control
             if (saten_darr_scene[i].draw != NULL)
                 saten_darr_scene[i].draw();
+            saten_scene_each_draw();
             saten_darr_scene[i].framecnt++;
         }
     }

@@ -12,7 +12,7 @@ SATEN_GLOBAL saten_scene *saten_darr_scene;
 SATEN_GLOBAL saten_scene_info saten_now_loading;
 SATEN_GLOBAL saten_scene_info saten_scene_start; // the scene at which
                                                  //rendering starts
-SATEN_GLOBAL saten_scene_info saten_scene_current;
+//SATEN_GLOBAL saten_scene_info saten_scene_current;
 SATEN_GLOBAL bool saten_load_on_thread;
 SATEN_GLOBAL saten_resmngr saten_vres; // filled on second thread then
                                        //copied into scene res
