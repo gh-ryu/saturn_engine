@@ -103,6 +103,7 @@ SATEN_GLOBAL struct RClass* _saten_mrb_module;
 #endif /* SATEN_SYMKEY */
 
 typedef void (*saten_fptr_void)(void);
+typedef void (*saten_fptr_voidp)(void*);
 typedef void (*saten_fptr_bool)(bool);
 typedef void (*saten_fptr_list_action)(void*, int, int);
 

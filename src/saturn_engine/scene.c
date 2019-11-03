@@ -7,6 +7,8 @@ static saten_fptr_bool each_scene_update;
 static saten_fptr_void each_scene_draw;
 static saten_fptr_void each_scene_quit;
 
+static void *scene_init_data;
+
 // public
 saten_scene_info saten_scene_create(saten_scene_info info,
         saten_fptr_void init, saten_fptr_bool update, saten_fptr_void draw,
@@ -196,4 +198,15 @@ void saten_scene_each_set(saten_fptr_void init, saten_fptr_bool update,
     each_scene_update = update;
     each_scene_draw = draw;
     each_scene_quit = quit;
+}
+
+void* saten_scene_init_datar(void)
+{
+    return scene_init_data;
+}
+
+void saten_scene_init_data_clear(void)
+{
+    if (scene_init_data)
+        free(scene_init_data);
 }

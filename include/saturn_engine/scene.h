@@ -26,4 +26,7 @@ void saten_scene_each_quit(void);
 void saten_scene_each_set(saten_fptr_void init, saten_fptr_bool update,
         saten_fptr_void draw, saten_fptr_void quit);
 
+void* saten_scene_init_datar(void);
+void saten_scene_init_data_clear(void);
+
 #endif /* SATURN_ENGINE_SCENE */
