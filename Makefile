@@ -1,3 +1,4 @@
+include _config.mk
 include config.mk
 MSG = make 
 
