@@ -1,6 +1,6 @@
 #include "saturn_engine/core/_lib.h"
 
-void saten_errhandler(int i)
+void saten_errhandler(int i) /* PRIVATE */
 {
     if (!SATEN_PRINTERR)
         return;
@@ -225,12 +225,14 @@ void saten_errhandler(int i)
     }
 }
 
-void saten_error_print(char *str)
+void saten_error_print(char *str) /* PUBLIC */
 {
+    // This function is for users to printf their own error messages
+    // TODO improve by making error message more distinct from engine errors
     saten_printerr(-1, str);
 }
 
-void saten_printerr(int i, char *str)
+void saten_printerr(int i, char *str) /* PRIVATE */
 {
 #ifdef _DEBUG
     if (i == -1)
