@@ -225,10 +225,18 @@ void saten_errhandler(int i)
     }
 }
 
+void saten_error_print(char *str)
+{
+    saten_printerr(-1, str);
+}
+
 void saten_printerr(int i, char *str)
 {
 #ifdef _DEBUG
-    fprintf(stderr, "ERROR(%d) : %s. (%s)\n", i, str, SDL_GetError());
+    if (i == -1)
+        fprintf(stderr, "ERROR : %s. (%s)\n", str, SDL_GetError());
+    else
+        fprintf(stderr, "ERROR(%d) : %s. (%s)\n", i, str, SDL_GetError());
 #endif
     time_t t = time(NULL);
     struct tm *tm;
@@ -239,9 +247,15 @@ void saten_printerr(int i, char *str)
     //fprintf(errlog, "ERROR(%d) | %d-%d-%d %d:%d:%d | ", i, tm->tm_year + 1900,
     //        tm->tm_mon + 1, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec);
     //fprintf(errlog, "%s. (%s)\n", str, SDL_GetError());
-    snprintf(buffer, 1024, "ERROR(%d) | %d-%d-%d %d:%d:%d | %s. (%s)\n", i,
-            tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday, tm->tm_hour,
-            tm->tm_min, tm->tm_sec, str, SDL_GetError());
+    if (i == -1) {
+        snprintf(buffer, 1024, "ERROR | %d-%d-%d %d:%d:%d | %s. (%s)\n",
+                tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday, tm->tm_hour,
+                tm->tm_min, tm->tm_sec, str, SDL_GetError());
+    } else {
+        snprintf(buffer, 1024, "ERROR(%d) | %d-%d-%d %d:%d:%d | %s. (%s)\n", i,
+                tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday, tm->tm_hour,
+                tm->tm_min, tm->tm_sec, str, SDL_GetError());
+    }
     //printf("length of buffer: %ld\n", strlen(buffer));
     SDL_RWwrite(errlog, buffer, sizeof(char), strlen(buffer));
 
