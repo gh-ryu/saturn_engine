@@ -6,7 +6,7 @@
 #define SATEN_CORE_FNAME_MRB_GLYPHMAP "data/mrb/saten/glyph_mapping.rb"
 
 #define SATEN_CORE_FNAME_MRB_TEXTC "data/mrb/saten/_class_text.rb"
-#define SATEN_CORE_FNAME_MRB_TEXT_INIT "data/mrb/saten/text_init.rb"
+#define SATEN_CORE_FNAME_MRB_CONFIG "data/mrb/saten/_config.rb"
 
 #define SATEN_CORE_FNAME_MRB_CRYPT "data/mrb/saten/_class_crypt.rb"
 

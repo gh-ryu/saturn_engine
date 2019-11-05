@@ -1,7 +1,7 @@
 #ifndef SATURN_ENGINE_CONFIG
 #define SATURN_ENGINE_CONFIG
 
-#define SATEN_CONF_GAME_NAME "saturn_engine_demo"
+#define SATEN_CONF_GAME_NAME "幻衛星伝記"
 
 /* Recommended app width x height values
  * 288x216 SD
@@ -10,8 +10,8 @@
  */
 
 #define SATEN_CONF_FRAMERATE 60
-#define SATEN_CONF_GAME_WIDTH 288
-#define SATEN_CONF_GAME_HEIGHT 216
+#define SATEN_CONF_GAME_WIDTH 320
+#define SATEN_CONF_GAME_HEIGHT 240
 
 #define SATEN_CONF_PLAYER_NUM 4
 

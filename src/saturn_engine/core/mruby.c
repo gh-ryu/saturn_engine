@@ -22,7 +22,7 @@ int saten_mrb_init(void)
         saten_fopen(&f, SATEN_CORE_FNAME_MRB_TEXTC, "r");
         mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
         fclose(f);
-        saten_fopen(&f, SATEN_CORE_FNAME_MRB_TEXT_INIT, "r");
+        saten_fopen(&f, SATEN_CORE_FNAME_MRB_CONFIG, "r");
         mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
         fclose(f);
     }
