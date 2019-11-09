@@ -1,0 +1,38 @@
+#!/usr/bin/ruby
+
+# Make sure the program is run from the current wdir
+unless __dir__ == Dir.pwd
+  begin
+    Dir.chdir(__dir__)
+  rescue StandardError
+    puts "Failed to switch working directory." \
+      " Please run this script from the root of your project."
+    exit
+  end
+end
+
+# Load modules
+require './build/src/_help.rb'
+require './build/src/_scene.rb'
+require './build/src/util.rb'
+
+def quit
+  puts "aborting Saturn Engine Builder"
+  exit
+end
+
+# Arguments required...
+if ARGV.empty?
+ display_help 
+ exit
+end
+
+# Check arguments and start the appropriate process
+case ARGV[0]
+when "-s", "--scene"
+  Scene.new ARGV[1]
+when "-h", "--help"
+ display_help 
+else
+  display_help
+end
