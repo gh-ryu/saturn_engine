@@ -25,6 +25,9 @@ int saten_mrb_init(void)
         saten_fopen(&f, SATEN_CORE_FNAME_MRB_CONFIG, "r");
         mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
         fclose(f);
+        saten_fopen(&f, SATEN_CORE_FNAME_MRB_CONFIG_SCENE, "r");
+        mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
+        fclose(f);
     }
 
     //saten_mrb_crypt_init();

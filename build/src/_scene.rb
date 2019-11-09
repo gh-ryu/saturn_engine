@@ -13,6 +13,7 @@ class Scene
   SCENE_MANAGER = "include/saturn_engine/config/build_scene.h"
   SCENE_LOAD = "include/saturn_engine/config/build_load.h"
   SCENE_LOADER = "data/mrb/loader/"
+  SCENE_MRB_CONF = "data/mrb/saturn_engine/config/scene_id.rb"
 
   def initialize(name)
     quit unless Util.fcheck(SCENE_LIST)
@@ -155,6 +156,18 @@ class Scene
       end
     else
       puts "-- Fatal. Missing '#{SCENE_LOAD}'"
+    end
+    # Add mrb scene constant
+    file = Util.fopen(SCENE_MRB_CONF, 'r')
+    text = file.read
+    Util.fclose(file)
+    unless text.include?("Saten::Scene::#{@name.upcase}")
+      file = Util.fopen(SCENE_MRB_CONF, 'a')
+      file.puts("Saten::Scene::#{@name.upcase} = #{@id}")
+      Util.fclose(file)
+      puts "-- Updated '#{SCENE_MRB_CONF}'"
+    else
+      puts "-- '#{SCENE_MRB_CONF}' already includes this scene."
     end
     # Add scene to list
     file = Util.fopen(SCENE_LIST, 'a')

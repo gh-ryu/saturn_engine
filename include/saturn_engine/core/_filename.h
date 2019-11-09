@@ -7,6 +7,7 @@
 
 #define SATEN_CORE_FNAME_MRB_TEXTC "data/mrb/saturn_engine/_class_text.rb"
 #define SATEN_CORE_FNAME_MRB_CONFIG "data/mrb/saturn_engine/_config.rb"
+#define SATEN_CORE_FNAME_MRB_CONFIG_SCENE "data/mrb/saturn_engine/config/scene_id.rb"
 
 #define SATEN_CORE_FNAME_MRB_CRYPT "data/mrb/saturn_engine/_class_crypt.rb"
 
