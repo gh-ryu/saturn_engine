@@ -12,6 +12,7 @@ unless __dir__ == Dir.pwd
 end
 
 # Load modules
+require './build/_config.rb'
 require './build/src/_help.rb'
 require './build/src/_scene.rb'
 require './build/src/util.rb'
