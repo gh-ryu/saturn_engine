@@ -9,7 +9,8 @@
 
 #include "config/video.h"
 #include "config/menu.h"
-#include "config/build_scene.h"
-#include "config/build_load.h"
+#include "config/build/resource.h"
+#include "config/build/scene.h"
+#include "config/build/load.h"
 
 #endif /* SATURN_ENGINE_CONFIG */

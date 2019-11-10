@@ -14,30 +14,7 @@ int saten_init(char *title, uint8_t flags) /* PUBLIC */
 
 
     if (saten_flag_check(SATEN_MRBLOAD, saten_flags)) {
-        struct RClass* _saten_mrb_module_resource;
-        struct RClass* _saten_mrb_module_img;
-        struct RClass* _saten_mrb_module_sfx;
-        struct RClass* _saten_mrb_module_bgm;
-        struct RClass* _saten_mrb_module_text;
-        _saten_mrb_module_resource = mrb_define_module_under(saten_mrb,
-            _saten_mrb_module, "Resource");
-        _saten_mrb_module_img = mrb_define_module_under(saten_mrb,
-            _saten_mrb_module_resource, "Sprite");
-        _saten_mrb_module_sfx = mrb_define_module_under(saten_mrb,
-            _saten_mrb_module_resource, "SoundEffect");
-        _saten_mrb_module_bgm = mrb_define_module_under(saten_mrb,
-            _saten_mrb_module_resource, "BackgroundMusic");
-        _saten_mrb_module_text = mrb_define_module_under(saten_mrb,
-            _saten_mrb_module_resource, "Text");
-
-        mrb_define_module_function(saten_mrb, _saten_mrb_module_img,
-                "load", saten_mrb_load_img, MRB_ARGS_ARG(1,1));
-        mrb_define_module_function(saten_mrb, _saten_mrb_module_sfx,
-                "load", saten_mrb_load_sfx, MRB_ARGS_ARG(1,1));
-        mrb_define_module_function(saten_mrb, _saten_mrb_module_bgm,
-                "load", saten_mrb_load_bgm, MRB_ARGS_ARG(1,1));
-        mrb_define_module_function(saten_mrb, _saten_mrb_module_text,
-                "load", saten_mrb_load_text, MRB_ARGS_ARG(1,1));
+        saten_mruby_init();
     }
     SATEN_DARR_INIT(saten_scene, saten_darr_scene);
     saten_video_init();

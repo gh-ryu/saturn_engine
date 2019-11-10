@@ -58,6 +58,7 @@ void saten_kill(void);
 
 #include "_filename.h"
 
+#include "mruby.h"
 #include "scene.h"
 #include "load.h"
 #include "bgm.h"

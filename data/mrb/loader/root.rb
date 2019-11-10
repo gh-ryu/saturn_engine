@@ -19,3 +19,4 @@
 # the Engine's build script it can be accessed with a constant:
 # Saten::Scene::SCENE_NAME
 # where SCENE_NAME is to be replaced with the scene's name (in caps)
+Saten::Resource.set_scene(Saten::Scene::ROOT)

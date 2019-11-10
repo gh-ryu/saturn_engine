@@ -10,8 +10,8 @@ class Scene
   SCENE_HELPER_SOURCE = "src/helper/scene.c"
   SCENE_HELPER_PREBUILD = "build/scene/helper.c"
   MAKE_CONFIG = "config.mk"
-  SCENE_MANAGER = "include/saturn_engine/config/build_scene.h"
-  SCENE_LOAD = "include/saturn_engine/config/build_load.h"
+  SCENE_MANAGER = "include/saturn_engine/config/build/scene.h"
+  SCENE_LOAD = "include/saturn_engine/config/build/load.h"
   SCENE_LOADER = "data/mrb/loader/"
   SCENE_MRB_CONF = "data/mrb/saturn_engine/config/scene_id.rb"
 
@@ -101,7 +101,7 @@ class Scene
     else
       puts "-- 'src/helper/scene.c' already appears to support scene #{@name}"
     end
-    # Update include/saturn_engine/config/build_scene.h
+    # Update include/saturn_engine/config/build/scene.h
     if File.exist?(SCENE_MANAGER)
       file = Util.fopen(SCENE_MANAGER, 'r')
       text = file.read
@@ -127,6 +127,7 @@ class Scene
       file = Util.fopen("build/scene/loader.rb", 'r')
       text = file.read
       Util.fclose(file)
+      text.sub!("{{up}}", @name.upcase)
       file = Util.fopen(SCENE_LOADER + @name + '.rb', 'w')
       file.write(text)
       Util.fclose(file)
@@ -134,7 +135,7 @@ class Scene
     else
       puts "-- File '#{SCENE_LOADER + @name + '.rb'}' already exists."
     end
-    # Update include/saturn_engine/config/build_load.h (filename to above)
+    # Update include/saturn_engine/config/build/load.h (filename to above)
     if File.exist?(SCENE_LOAD)
       file = Util.fopen(SCENE_LOAD, 'r')
       text = file.read

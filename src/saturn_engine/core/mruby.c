@@ -11,6 +11,7 @@ int saten_mrb_init(void)
     saten_mrbc = mrbc_context_new(saten_mrb);
 
     _saten_mrb_module = mrb_define_module(saten_mrb, "Saten");
+    mrb_define_module_under(saten_mrb, _saten_mrb_module, "Scene");
 
     if (saten_flag_check(SATEN_TEXT, saten_core_flags)) {
         saten_mrb_text_init();

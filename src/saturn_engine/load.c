@@ -1,5 +1,7 @@
 #include "saturn_engine/_lib.h"
 
+static int load_scene_id;
+
 // public
 void saten_load_resources(saten_scene_info scene, bool threaded)
 {
@@ -59,15 +61,10 @@ void saten_load_pass_resources(saten_scene_info scene)
 mrb_value saten_mrb_load_img(mrb_state *mrb, mrb_value self)
 {
     char *string;
-    mrb_int mrb_id; int id;
-    mrb_bool mrb_opt; bool opt;
-    mrb_get_args(saten_mrb, "z|i?", &string, &mrb_id, &mrb_opt);
-    id = (int)mrb_id;
-    opt = (bool)mrb_opt;
+    mrb_get_args(saten_mrb, "z", &string);
     int i;
 
-
-    if (!opt || id == saten_now_loading.uid) {
+    if (load_scene_id == saten_now_loading.uid) {
         saten_resmngr *res;
         if (saten_load_on_thread)
             res = &saten_vres;
@@ -87,14 +84,10 @@ mrb_value saten_mrb_load_img(mrb_state *mrb, mrb_value self)
 mrb_value saten_mrb_load_sfx(mrb_state *mrb, mrb_value self)
 {
     char *string;
-    mrb_int mrb_id; int id;
-    mrb_bool mrb_opt; bool opt;
-    mrb_get_args(saten_mrb, "z|i?", &string, &mrb_id, &mrb_opt);
-    id = (int)mrb_id;
-    opt = (bool)mrb_opt;
+    mrb_get_args(saten_mrb, "z", &string);
     int i;
 
-    if (!opt || id == saten_now_loading.uid) {
+    if (load_scene_id == saten_now_loading.uid) {
         saten_resmngr *res;
         if (saten_load_on_thread)
             res = &saten_vres;
@@ -114,14 +107,10 @@ mrb_value saten_mrb_load_sfx(mrb_state *mrb, mrb_value self)
 mrb_value saten_mrb_load_bgm(mrb_state *mrb, mrb_value self)
 {
     char *string;
-    mrb_int mrb_id; int id;
-    mrb_bool mrb_opt; bool opt;
-    mrb_get_args(saten_mrb, "z|i?", &string, &mrb_id, &mrb_opt);
-    id = (int)mrb_id;
-    opt = (bool)mrb_opt;
+    mrb_get_args(saten_mrb, "z", &string);
     int i;
 
-    if (!opt || id == saten_now_loading.uid) {
+    if (load_scene_id == saten_now_loading.uid) {
         saten_resmngr *res;
         if (saten_load_on_thread)
             res = &saten_vres;
@@ -141,14 +130,16 @@ mrb_value saten_mrb_load_bgm(mrb_state *mrb, mrb_value self)
 mrb_value saten_mrb_load_text(mrb_state *mrb, mrb_value self)
 {
     char *string;
-    mrb_int mrb_id; int id;
-    mrb_bool mrb_opt; bool opt;
-    mrb_get_args(saten_mrb, "z|i?", &string, &mrb_id, &mrb_opt);
-    id = (int)mrb_id;
-    opt = (bool)mrb_opt;
+    //mrb_int mrb_id; int id;
+    //mrb_bool mrb_opt; bool opt;
+    //mrb_get_args(saten_mrb, "z|i?", &string, &mrb_id, &mrb_opt);
+    mrb_get_args(saten_mrb, "z", &string);
+    //id = (int)mrb_id;
+    //opt = (bool)mrb_opt;
     int i;
 
-    if (!opt || id == saten_now_loading.uid) {
+    //if (!opt || id == saten_now_loading.uid) {
+    if (load_scene_id == saten_now_loading.uid) {
         saten_resmngr *res;
         if (saten_load_on_thread)
             res = &saten_vres;
@@ -162,3 +153,17 @@ mrb_value saten_mrb_load_text(mrb_state *mrb, mrb_value self)
 
     return mrb_nil_value();
 }
+
+// private
+mrb_value saten_mrb_load_set_scene(mrb_state *mrb, mrb_value self)
+{
+    mrb_int mrb_id;
+    int id;
+    mrb_get_args(saten_mrb, "i", &mrb_id);
+    id = (int)mrb_id;
+
+    load_scene_id = id;
+
+    return mrb_nil_value();
+}
+

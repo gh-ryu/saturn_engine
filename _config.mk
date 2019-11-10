@@ -29,6 +29,7 @@ SATENOBJ += src/saturn_engine/core/sound.c
 
 
 SATENOBJ += src/saturn_engine/_engine.c
+SATENOBJ += src/saturn_engine/mruby.c
 SATENOBJ += src/saturn_engine/load.c
 SATENOBJ += src/saturn_engine/resource.c
 SATENOBJ += src/saturn_engine/scene.c
