@@ -42,3 +42,10 @@ module Util
     end
   end
 end
+
+class String
+  def begins_with?(x)
+    test = self.lstrip
+    test[0] == x
+  end
+end

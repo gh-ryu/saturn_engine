@@ -15,7 +15,15 @@ end
 require './build/_config.rb'
 require './build/src/_help.rb'
 require './build/src/_scene.rb'
+require './build/src/_resource.rb'
 require './build/src/util.rb'
+
+# Required to read resource scene IDs
+module Saten
+  module Scene
+  end
+end
+require './data/mrb/saturn_engine/config/scene_id.rb'
 
 def quit
   puts "aborting Saturn Engine Builder"
@@ -32,6 +40,8 @@ end
 case ARGV[0]
 when "-s", "--scene"
   Scene.new ARGV[1]
+when "-r", "--resource"
+  Resource.new
 when "-h", "--help"
  display_help 
 else

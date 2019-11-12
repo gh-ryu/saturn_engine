@@ -36,6 +36,19 @@ char* saten_strclone(char *str)
 }
 
 // public
+char* saten_strappuniq(char *str, char c)
+{
+    // Only appends c if last character in str is not c
+    int l = strlen(str) + 1;
+    if (str[l-2] == c)
+        return str;
+    str = saten_realloc(str, sizeof(char) * l+1);
+    str[l] = str[l-1]; // Move terminating character
+    str[l-1] = c;
+    return str;
+}
+
+// public
 void* saten_realloc(void* ptr, size_t size)
 {
     ptr = realloc(ptr, size);
@@ -123,8 +136,12 @@ void saten_fopen(FILE **fp, const char *filename, const char *mode)
 #else
     *fp = fopen(filename, mode);
 #endif
-    if (*fp == NULL)
+    if (*fp == NULL) {
+#ifdef _DEBUG
+        fprintf(stderr, "[%s]\n", filename);
+#endif
         saten_errhandler(39);
+    }
 }
 
 // public
@@ -153,3 +170,4 @@ bool saten_sdlpntcmp(SDL_Point *p1, SDL_Point *p2)
 {
     return ((p1->x == p2->x) && (p1->y == p2->y));
 }
+

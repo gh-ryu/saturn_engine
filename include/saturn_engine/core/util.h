@@ -5,6 +5,7 @@ char* saten_get_filepath(const char *fn);
 int saten_square(int a);
 void saten_strcpy(char *str1, const char *str2);
 void saten_strcat(char *str1, const char *str2);
+char* saten_strappuniq(char *str, char c);
 char* saten_strclone(char *str);
 struct tm* saten_localtime( const time_t *timer);
 void saten_fopen(FILE **fp, const char *filename, const char *mode);

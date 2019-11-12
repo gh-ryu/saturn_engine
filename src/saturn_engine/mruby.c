@@ -22,6 +22,12 @@ void saten_mruby_init(void)
 
     // Define functions
     mrb_define_module_function(saten_mrb, _saten_mrb_module_img,
+            "dir", saten_mrb_load_img_dir, MRB_ARGS_REQ(1));
+    mrb_define_module_function(saten_mrb, _saten_mrb_module_sfx,
+            "dir", saten_mrb_load_sfx_dir, MRB_ARGS_REQ(1));
+    mrb_define_module_function(saten_mrb, _saten_mrb_module_bgm,
+            "dir", saten_mrb_load_bgm_dir, MRB_ARGS_REQ(1));
+    mrb_define_module_function(saten_mrb, _saten_mrb_module_img,
             "load", saten_mrb_load_img, MRB_ARGS_REQ(1));
     mrb_define_module_function(saten_mrb, _saten_mrb_module_sfx,
             "load", saten_mrb_load_sfx, MRB_ARGS_REQ(1));

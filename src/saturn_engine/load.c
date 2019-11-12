@@ -1,6 +1,9 @@
 #include "saturn_engine/_lib.h"
 
 static int load_scene_id;
+static char *img_dir;
+static char *sfx_dir;
+static char *bgm_dir;
 
 // public
 void saten_load_resources(saten_scene_info scene, bool threaded)
@@ -58,11 +61,52 @@ void saten_load_pass_resources(saten_scene_info scene)
 }
 
 // private
-mrb_value saten_mrb_load_img(mrb_state *mrb, mrb_value self)
+mrb_value saten_mrb_load_img_dir(mrb_state *mrb, mrb_value self)
 {
     char *string;
     mrb_get_args(saten_mrb, "z", &string);
+    if (img_dir)
+        free(img_dir);
+    img_dir = saten_strclone(string);
+    img_dir = saten_strappuniq(img_dir, '/');
+    return mrb_nil_value();
+}
+
+// private
+mrb_value saten_mrb_load_sfx_dir(mrb_state *mrb, mrb_value self)
+{
+    char *string;
+    mrb_get_args(saten_mrb, "z", &string);
+    if (sfx_dir)
+       free(sfx_dir);
+    sfx_dir = saten_strclone(string);
+    sfx_dir = saten_strappuniq(sfx_dir, '/');
+    return mrb_nil_value();
+}
+
+// private
+mrb_value saten_mrb_load_bgm_dir(mrb_state *mrb, mrb_value self)
+{
+    char *string;
+    mrb_get_args(saten_mrb, "z", &string);
+    if (bgm_dir)
+       free(bgm_dir);
+    bgm_dir = saten_strclone(string);
+    bgm_dir = saten_strappuniq(bgm_dir, '/');
+    return mrb_nil_value();
+}
+
+// private
+mrb_value saten_mrb_load_img(mrb_state *mrb, mrb_value self)
+{
+    char *string;
+    char *string2;
+    mrb_get_args(saten_mrb, "z", &string);
     int i;
+    string2 = saten_malloc(strlen(string)+strlen(img_dir)+1);
+    saten_strcpy(string2, img_dir);
+    saten_strcat(string2, string);
+
 
     if (load_scene_id == saten_now_loading.uid) {
         saten_resmngr *res;
@@ -74,8 +118,9 @@ mrb_value saten_mrb_load_img(mrb_state *mrb, mrb_value self)
         res->sprite_n++;
         i = res->sprite_n;
         res->sprite = saten_realloc(res->sprite, i * sizeof(saten_sprite*));
-        res->sprite[i-1] = saten_sprite_load(string);
+        res->sprite[i-1] = saten_sprite_load(string2);
     }
+    free(string2);
 
     return mrb_nil_value();
 }
@@ -84,8 +129,12 @@ mrb_value saten_mrb_load_img(mrb_state *mrb, mrb_value self)
 mrb_value saten_mrb_load_sfx(mrb_state *mrb, mrb_value self)
 {
     char *string;
+    char *string2;
     mrb_get_args(saten_mrb, "z", &string);
     int i;
+    string2 = saten_malloc(strlen(string)+strlen(sfx_dir)+1);
+    saten_strcpy(string2, sfx_dir);
+    saten_strcat(string2, string);
 
     if (load_scene_id == saten_now_loading.uid) {
         saten_resmngr *res;
@@ -97,8 +146,9 @@ mrb_value saten_mrb_load_sfx(mrb_state *mrb, mrb_value self)
         res->sfx_n++;
         i = res->sfx_n;
         res->sfx = saten_realloc(res->sfx, i * sizeof(saten_sound*));
-        res->sfx[i-1] = saten_sound_load(string, saten_now_loading.id, i-1);
+        res->sfx[i-1] = saten_sound_load(string2, saten_now_loading.id, i-1);
     }
+    free(string2);
 
     return mrb_nil_value();
 }
@@ -107,8 +157,12 @@ mrb_value saten_mrb_load_sfx(mrb_state *mrb, mrb_value self)
 mrb_value saten_mrb_load_bgm(mrb_state *mrb, mrb_value self)
 {
     char *string;
+    char *string2;
     mrb_get_args(saten_mrb, "z", &string);
     int i;
+    string2 = saten_malloc(strlen(string)+strlen(bgm_dir)+1);
+    saten_strcpy(string2, bgm_dir);
+    saten_strcat(string2, string);
 
     if (load_scene_id == saten_now_loading.uid) {
         saten_resmngr *res;
@@ -120,8 +174,9 @@ mrb_value saten_mrb_load_bgm(mrb_state *mrb, mrb_value self)
         res->bgm_n++;
         i = res->bgm_n;
         res->bgm = saten_realloc(res->bgm, i * sizeof(saten_music*));
-        res->bgm[i-1] = saten_muload(string);
+        res->bgm[i-1] = saten_muload(string2);
     }
+    free(string2);
 
     return mrb_nil_value();
 }

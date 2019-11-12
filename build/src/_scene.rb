@@ -12,7 +12,7 @@ class Scene
   MAKE_CONFIG = "config.mk"
   SCENE_MANAGER = "include/saturn_engine/config/build/scene.h"
   SCENE_LOAD = "include/saturn_engine/config/build/load.h"
-  SCENE_LOADER = "data/mrb/loader/"
+  SCENE_LOADER = "data/mrb/resource/"
   SCENE_MRB_CONF = "data/mrb/saturn_engine/config/scene_id.rb"
 
   def initialize(name)
@@ -122,9 +122,9 @@ class Scene
     else
       puts "-- Fatal. Missing '#{SCENE_MANAGER}'"
     end
-    # Add data/mrb/loader/@name.rb
+    # Add data/mrb/resource/@name.rb
     unless File.exist?(SCENE_LOADER + @name + '.rb')
-      file = Util.fopen("build/scene/loader.rb", 'r')
+      file = Util.fopen("build/scene/resource.rb", 'r')
       text = file.read
       Util.fclose(file)
       text.sub!("{{up}}", @name.upcase)
