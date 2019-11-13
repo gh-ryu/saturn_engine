@@ -3,7 +3,7 @@ class Resource
   RESOURCE_DIR    = "data/mrb/resource/"
   RESOURCE_HEADER = "include/saturn_engine/config/build/resource.h"
 
-  PREFIX    = "SATEN_RESOURCE"
+  PREFIX    = Config::RESOURCE_MACRO
   MACRO     = "#define #{PREFIX}(x) x"
 
   MACRO_IMG = "#define #{PREFIX}SPR(x) saten_resource_img(x)"
