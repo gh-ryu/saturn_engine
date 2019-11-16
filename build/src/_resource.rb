@@ -104,6 +104,9 @@ class Resource
                 header.puts "#define TEXTI_#{@scene}_#{name+name2}" \
                   " saten_resource_text2(#{Config::SCENE_MANAGER}." \
                   "#{@scene.swapcase},#{@cnt[@scene][:tex]})"
+                header.puts "#define TEXTL_#{@scene}_#{name+name2}(lang)" \
+                  " saten_resource_text(#{Config::SCENE_MANAGER}." \
+                  "#{@scene.swapcase},#{@cnt[@scene][:tex]}+lang)"
                 @cnt[@scene][:tex] += 1
               end
             end
