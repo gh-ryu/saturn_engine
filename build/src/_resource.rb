@@ -20,7 +20,8 @@ class Resource
 
     # Scan each resource load file
     Dir.foreach(RESOURCE_DIR) do |x| 
-      @scene = nil
+      @scene    = nil
+      @text_dir = nil
       path = RESOURCE_DIR + x
       next if File.directory?(path)
       next unless File.fnmatch('*.rb', x)
@@ -42,6 +43,12 @@ class Resource
             @cnt[@scene][:bgm] = 0
             @cnt[@scene][:tex] = 0
           end
+        end
+        if line.include?("Resource::Text.dir")
+          a = line.split('"') if line.include?('"')
+          a = line.split("'") if line.include?("'")
+          @text_dir = a[1]
+          @text_dir << "/" unless @text_dir[-1] == '/'
         end
         unless @scene.nil?
           # Get Resource
@@ -80,11 +87,24 @@ class Resource
           end
           # Text
           if line.include?("Saten::Resource::Text.load")
-            #header.puts "#{PREFIX}TEXT_#{@scene}_#{@cnt[@scene][:tex]}" \
-            header.puts "#define TEXT_#{@scene}_#{@cnt[@scene][:tex]}" \
-              " saten_resource_text(#{Config::SCENE_MANAGER}." \
-              "#{@scene.swapcase},#{@cnt[@scene][:tex]})"
-            @cnt[@scene][:tex] += 1
+            m = line.match(/"(.*)"/)
+            name = m[1].gsub("-", "_").gsub("/", "_")
+            fn = @text_dir + name
+            name = name.slice(0..(name.index('.'))-1).upcase
+            name << "_"
+            tfile = Util.fopen(fn, 'r')
+            tfile.each_line do |tline|
+              if tline.include?("Resource::Text.from_doc")
+                a = tline.split('"') if tline.include?('"')
+                a = tline.split("'") if tline.include?("'")
+                name2 = a[1].upcase
+                header.puts "#define TEXT_#{@scene}_#{name+name2}" \
+                  " saten_resource_text(#{Config::SCENE_MANAGER}." \
+                  "#{@scene.swapcase},#{@cnt[@scene][:tex]})"
+                @cnt[@scene][:tex] += 1
+              end
+            end
+            Util.fclose(tfile)
           end
           # Write Resource
         end
