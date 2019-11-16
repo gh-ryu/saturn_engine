@@ -15,7 +15,7 @@ mrb_value saten_mrb_text_set_size(mrb_state *mrb, mrb_value self);
 mrb_value saten_mrb_text_remap(mrb_state *mrb, mrb_value self);
 mrb_value saten_mrb_text_remap_reset(mrb_state *mrb, mrb_value self);
 void saten_text_draw(saten_text *text);
-saten_text* saten_text_create(float scale, char *str, int x, int y);
+saten_text* saten_text_create(float scale, char *str, int x, int y, int col);
 void saten_text_set_gheight(int a);
 void saten_text_destroy(saten_text *ptr);
 int saten_text_get_id(void);

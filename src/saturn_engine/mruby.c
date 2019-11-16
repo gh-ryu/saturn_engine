@@ -27,6 +27,8 @@ void saten_mruby_init(void)
             "dir", saten_mrb_load_sfx_dir, MRB_ARGS_REQ(1));
     mrb_define_module_function(saten_mrb, _saten_mrb_module_bgm,
             "dir", saten_mrb_load_bgm_dir, MRB_ARGS_REQ(1));
+    mrb_define_module_function(saten_mrb, _saten_mrb_module_text,
+            "dir", saten_mrb_load_txt_dir, MRB_ARGS_REQ(1));
     mrb_define_module_function(saten_mrb, _saten_mrb_module_img,
             "load", saten_mrb_load_img, MRB_ARGS_REQ(1));
     mrb_define_module_function(saten_mrb, _saten_mrb_module_sfx,
@@ -36,7 +38,9 @@ void saten_mruby_init(void)
     //mrb_define_module_function(saten_mrb, _saten_mrb_module_text,
     //        "load", saten_mrb_load_text, MRB_ARGS_ARG(1,1));
     mrb_define_module_function(saten_mrb, _saten_mrb_module_text,
-            "load", saten_mrb_load_text, MRB_ARGS_REQ(1));
+            "load", saten_mrb_load_text_file, MRB_ARGS_REQ(1));
+    mrb_define_module_function(saten_mrb, _saten_mrb_module_text,
+            "from_doc", saten_mrb_load_text, MRB_ARGS_ARG(2,1));
 
     mrb_define_module_function(saten_mrb, _saten_mrb_module_resource,
             "set_scene", saten_mrb_load_set_scene, MRB_ARGS_REQ(1));

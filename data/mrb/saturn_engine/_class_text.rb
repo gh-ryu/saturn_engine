@@ -3,14 +3,14 @@ module Saten
   class Text
     attr_accessor :cleanstr, :scale, :x, :y, :id
     @@color = 0
-    @@use_color = 0
     @@cnt = 0
     @@modfncs = []
-    def initialize(str, scale, x, y)
+    def initialize(str, scale, x, y, c)
       @cleanstr = str.to_s
       @scale = scale
       @x = x
       @y = y
+      @col = c
       @id = 0
       Text.create(scale, self)
     end
@@ -54,7 +54,7 @@ module Saten
       l = 0 # current line
       meta = "no"
       str = @cleanstr
-      @@color = @@use_color
+      @@color = @col
       # process str = remove meta information
       k = 3
       m = 0
@@ -135,7 +135,7 @@ module Saten
         end
         cnt += 1
       end
-      @@color = @@use_color
+      @@color = @col
       @@cnt += 1
     end
 
@@ -153,13 +153,10 @@ module Saten
       end
     end
 
-    def Text.use_color(c)
-      @@use_color = c
-    end
-
     def Text.modfnc_reg(fncname)
       @@modfncs.push(method(:"#{fncname}"))
     end
+
   end
 
 end
