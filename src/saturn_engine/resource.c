@@ -56,6 +56,20 @@ saten_text* saten_resource_text(saten_scene_info scene, int id)
     return saten_darr_scene[scene.id].res.text[id];
 }
 
+// private
+saten_text** saten_resource_text2(saten_scene_info scene, int id)
+{
+    if (!saten_scene_exists(scene)) {
+        saten_errhandler(40);
+        return NULL;
+    }
+    if (id < 0 || id >= saten_darr_scene[scene.id].res.text_n) {
+        saten_errhandler(44);
+        return NULL;
+    }
+    return (saten_darr_scene[scene.id].res.text + id);
+}
+
 // public
 void saten_resource_free(saten_resmngr res)
 {
