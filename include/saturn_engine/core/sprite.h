@@ -8,9 +8,9 @@ void saten_sprite_scale(saten_sprite *sprite, float scale);
 saten_sprite* saten_sprite_load(char *filename);
 void saten_sprite_texturize(saten_sprite *sprite);
 void saten_sprite_set_tiles(saten_sprite *sprite, int num_h, int num_v);
-void saten_sprite_alphamod(saten_sprite *sprite, uint8_t alpha);
+void saten_sprite_alphamod(saten_sprite *sprite, uint8_t alpha, int type);
 void saten_sprite_colormod(saten_sprite *sprite, uint8_t r, uint8_t g,
-        uint8_t b);
+        uint8_t b, int type);
 void saten_sprite_blendmode(saten_sprite *sprite,
         SDL_BlendMode blendmode);
 void saten_sprite_repeat(saten_sprite *sprite, int tile_id, int x0,

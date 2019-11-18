@@ -186,15 +186,15 @@ void saten_sprite_destroy(saten_sprite *sprite)
 }
 
 // public
-void saten_sprite_alphamod(saten_sprite *sprite, uint8_t alpha)
+void saten_sprite_alphamod(saten_sprite *sprite, uint8_t alpha, int type)
 {
     int r;
-    if (sprite->srf) {
+    if (type == SATEN_SURFACE) {
         r = SDL_SetSurfaceAlphaMod(sprite->srf, alpha);
         if (r < 0)
             saten_errhandler(20);
     }
-    if (sprite->texture) {
+    if (type == SATEN_TEXTURE) {
         r = SDL_SetTextureAlphaMod(sprite->texture, alpha);
         if (r < 0)
             saten_errhandler(21);
@@ -203,15 +203,15 @@ void saten_sprite_alphamod(saten_sprite *sprite, uint8_t alpha)
 
 // public
 void saten_sprite_colormod(saten_sprite *sprite, uint8_t r, uint8_t g,
-        uint8_t b)
+        uint8_t b, int type)
 {
     int res;
-    if (sprite->srf) {
+    if (type == SATEN_SURFACE) {
         res = SDL_SetSurfaceColorMod(sprite->srf, r, g, b);
         if (res < 0)
             saten_errhandler(22);
     }
-    if (sprite->texture) {
+    if (type == SATEN_TEXTURE) {
         res = SDL_SetTextureColorMod(sprite->texture, r, g, b);
         if (res < 0)
             saten_errhandler(23);
