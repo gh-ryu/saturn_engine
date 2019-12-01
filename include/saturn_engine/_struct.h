@@ -1,24 +1,18 @@
 #ifndef SATURN_ENGINE_STRUCT
 #define SATURN_ENGINE_STRUCT
 
-typedef struct _saten_scene_info {
-    uint8_t uid; // unique id given by user
-    uint8_t id; // dynamic id given by engine
-    bool alive;
-} saten_scene_info;
-
 typedef struct _saten_scene {
+    int id;
     saten_fptr_void init;
     saten_fptr_bool update;
     saten_fptr_void draw;
     saten_fptr_void quit;
-    bool load_flag;
-    bool init_flag;
-    bool quit_flag;
-    uint64_t framecnt; // current frame
-    saten_scene_info info;
-    saten_resmngr res;
-    char *loadscriptfp; // file path for associated load script
+    bool inf; // Flags
+    bool outf;
+    bool initf;
+    bool quitf;
+    int frcnt; // Frame counter for this scene
+    void *data;
 } saten_scene;
 
 typedef struct _saten_vinfo {
@@ -149,5 +143,25 @@ typedef struct _saten_menu {
     int rowlen;            // elements per row in a matrix
     int collen;            // number of rows
 } saten_menu;
+
+typedef struct _saten_object {
+    saten_sprite *sprite;
+    SDL_Point      pos;
+    SDL_Color      mods;
+    int            fadein_cnt;
+    float          a; // Angle
+} saten_object;
+
+typedef struct _saten_resource {
+    int8_t type;
+    bool flag;
+    /*
+    union { saten_text *text;
+            saten_sprite *sprite;
+            saten_music *bgm;
+            saten_sound *sfx; } data;
+            */
+    void *data;
+} saten_resource;
 
 #endif /* SATURN_ENGINE_STRUCT */

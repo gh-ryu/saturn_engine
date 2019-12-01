@@ -1,20 +1,95 @@
 #include "saturn_engine/_lib.h"
 
-static int load_scene_id;
-static char *img_dir;
-static char *sfx_dir;
-static char *bgm_dir;
-static char *txt_dir;
-
 // Buffer names of text resource files
 static char **text_file;
-static int *text_id;
 static int text_n;
+static char *text_buffer; // Holds name of text file
+
+mrb_value saten_mrb_load(mrb_state *mrb, mrb_value self) /* PRIVATE */
+{
+    // Setup
+    saten_sprite *sprite = NULL;
+    saten_sound  *sound  = NULL;
+    saten_music  *music  = NULL;
+    mrb_value mrbid; 
+    mrb_value mrbstr;
+    mrb_int mrbtype;
+    int id, type, l;
+    char *string;
+    mrb_get_args(saten_mrb, "zi", &string, &mrbtype);
+    type = (int)mrbtype;
+    mrbstr = mrb_str_new_cstr(saten_mrb, string);
+#if defined(_DEBUG) && defined(SATEN_DEBUG_RESOURCE) 
+    printf("passing %s\n", string);
+#endif
+    mrbid = mrb_funcall(saten_mrb, mrb_obj_value(saten_mruby_module(
+                    SATEN_MRB_MOD_RESOURCE)), "get_id", 1, mrbstr);
+    id = (int)mrb_fixnum(mrbid);
+#if defined(_DEBUG) && defined(SATEN_DEBUG_RESOURCE) 
+    printf("%d\n", id);
+#endif
+
+    // Load
+    if (type == SATEN_RESOURCE_TEXT)
+        goto SATEN_LOAD_TEXT_FILE_HANDLER;
+
+    saten_resource_loading(id);
+
+    saten_resource *res = saten_resource_access(id);
+    if (res->flag == false && res->data == NULL) {
+        switch (type) {
+        case SATEN_RESOURCE_SPRITE:
+            res->type = SATEN_RESOURCE_SPRITE;
+            sprite =
+                (saten_sprite*)saten_malloc(sizeof(saten_sprite));
+            sprite = saten_sprite_load(string);
+            if (sprite) {
+                res->data = (void*)sprite;
+                res->flag = true;
+            }
+            break;
+        case SATEN_RESOURCE_SOUND:
+            res->type = SATEN_RESOURCE_SOUND;
+            sound =
+                (saten_sound*)saten_malloc(sizeof(saten_sound));
+            sound = saten_sound_load(string);
+            if (sound) {
+                res->data = (void*)sound;
+                res->flag = true;
+            }
+            break;
+        case SATEN_RESOURCE_MUSIC:
+            res->type = SATEN_RESOURCE_MUSIC;
+            music =
+                (saten_music*)saten_malloc(sizeof(saten_music));
+            music = saten_music_load(string);
+            if (music) {
+                res->data = (void*)music;
+                res->flag = true;
+            }
+            break;
+        }
+    }
+
+SATEN_LOAD_TEXT_FILE_HANDLER:
+    if (type == SATEN_RESOURCE_TEXT) {
+        l = text_n;
+        text_n++;
+        text_file =
+            (char**)saten_realloc(text_file, sizeof(char*) * text_n);
+        text_file[l] =
+            (char*)saten_malloc(sizeof(char) * strlen(string)+1);
+        memcpy(text_file[l], string, strlen(string)+1);
+    }
+
+    // Cleanup
+    
+    return mrb_nil_value();
+}
 
 
-
-// public
-void saten_load_resources(saten_scene_info scene, bool threaded)
+/*
+void saten_load_resources(bool threaded)
 {
     saten_load_on_thread = threaded;
     saten_now_loading = scene;
@@ -42,8 +117,9 @@ void saten_load_resources(saten_scene_info scene, bool threaded)
         saten_scene_load_done(scene);
     }
 }
+*/
 
-// private
+/*
 int saten_load_thread_func(void *ptr)
 {
     saten_scene_info scene = saten_scene_get_previous();
@@ -63,208 +139,26 @@ int saten_load_thread_func(void *ptr)
     }
     return 0;
 }
-
-void saten_load_pass_resources(saten_scene_info scene)
-{
-    if (saten_scene_exists(scene))
-        saten_darr_scene[scene.id].res = saten_vres;
-}
-
-// private
-mrb_value saten_mrb_load_img_dir(mrb_state *mrb, mrb_value self)
-{
-    char *string;
-    mrb_get_args(saten_mrb, "z", &string);
-    if (img_dir)
-        free(img_dir);
-    img_dir = saten_strclone(string);
-    img_dir = saten_strappuniq(img_dir, '/');
-    return mrb_nil_value();
-}
-
-// private
-mrb_value saten_mrb_load_sfx_dir(mrb_state *mrb, mrb_value self)
-{
-    char *string;
-    mrb_get_args(saten_mrb, "z", &string);
-    if (sfx_dir)
-       free(sfx_dir);
-    sfx_dir = saten_strclone(string);
-    sfx_dir = saten_strappuniq(sfx_dir, '/');
-    return mrb_nil_value();
-}
-
-// private
-mrb_value saten_mrb_load_bgm_dir(mrb_state *mrb, mrb_value self)
-{
-    char *string;
-    mrb_get_args(saten_mrb, "z", &string);
-    if (bgm_dir)
-       free(bgm_dir);
-    bgm_dir = saten_strclone(string);
-    bgm_dir = saten_strappuniq(bgm_dir, '/');
-    return mrb_nil_value();
-}
-
-// private
-mrb_value saten_mrb_load_txt_dir(mrb_state *mrb, mrb_value self)
-{
-    char *string;
-    mrb_get_args(saten_mrb, "z", &string);
-    if (txt_dir)
-        free(txt_dir);
-    txt_dir = saten_strclone(string);
-    txt_dir = saten_strappuniq(txt_dir, '/');
-    return mrb_nil_value();
-}
-
-// private
-mrb_value saten_mrb_load_img(mrb_state *mrb, mrb_value self)
-{
-    char *string;
-    char *string2;
-    mrb_get_args(saten_mrb, "z", &string);
-    int i;
-    string2 = saten_malloc(strlen(string)+strlen(img_dir)+1);
-    saten_strcpy(string2, img_dir);
-    saten_strcat(string2, string);
-
-
-    if (load_scene_id == saten_now_loading.uid) {
-        saten_resmngr *res;
-        if (saten_load_on_thread)
-            res = &saten_vres;
-        else
-            res = &(saten_darr_scene[saten_now_loading.id].res);
-        // load file if no scene given or if we want to load files for id
-        res->sprite_n++;
-        i = res->sprite_n;
-        res->sprite = saten_realloc(res->sprite, i * sizeof(saten_sprite*));
-        res->sprite[i-1] = saten_sprite_load(string2);
-    }
-    free(string2);
-
-    return mrb_nil_value();
-}
-
-// private
-mrb_value saten_mrb_load_sfx(mrb_state *mrb, mrb_value self)
-{
-    char *string;
-    char *string2;
-    mrb_get_args(saten_mrb, "z", &string);
-    int i;
-    string2 = saten_malloc(strlen(string)+strlen(sfx_dir)+1);
-    saten_strcpy(string2, sfx_dir);
-    saten_strcat(string2, string);
-
-    if (load_scene_id == saten_now_loading.uid) {
-        saten_resmngr *res;
-        if (saten_load_on_thread)
-            res = &saten_vres;
-        else
-            res = &(saten_darr_scene[saten_now_loading.id].res);
-        // load file if no scene given or if we want to load files for id
-        res->sfx_n++;
-        i = res->sfx_n;
-        res->sfx = saten_realloc(res->sfx, i * sizeof(saten_sound*));
-        res->sfx[i-1] = saten_sound_load(string2, saten_now_loading.id, i-1);
-    }
-    free(string2);
-
-    return mrb_nil_value();
-}
-
-// private
-mrb_value saten_mrb_load_bgm(mrb_state *mrb, mrb_value self)
-{
-    char *string;
-    char *string2;
-    mrb_get_args(saten_mrb, "z", &string);
-    int i;
-    string2 = saten_malloc(strlen(string)+strlen(bgm_dir)+1);
-    saten_strcpy(string2, bgm_dir);
-    saten_strcat(string2, string);
-
-    if (load_scene_id == saten_now_loading.uid) {
-        saten_resmngr *res;
-        if (saten_load_on_thread)
-            res = &saten_vres;
-        else
-            res = &(saten_darr_scene[saten_now_loading.id].res);
-        // load file if no scene given or if we want to load files for id
-        res->bgm_n++;
-        i = res->bgm_n;
-        res->bgm = saten_realloc(res->bgm, i * sizeof(saten_music*));
-        res->bgm[i-1] = saten_muload(string2);
-    }
-    free(string2);
-
-    return mrb_nil_value();
-}
-
-// private
-mrb_value saten_mrb_load_text_file(mrb_state *mrb, mrb_value self)
-{
-    // This one only reads the passed mrb script which then calls the proper
-    // load functions for text
-    /*
-    char *string;
-    char *string2;
-    mrb_get_args(saten_mrb, "z", &string);
-    string2 = saten_malloc(strlen(string)+strlen(txt_dir)+1);
-    saten_strcpy(string2, txt_dir);
-    saten_strcat(string2, string);
-
-    if (load_scene_id == saten_now_loading.uid) {
-        FILE *f = NULL;
-        saten_fopen(&f, string2, "r");
-        mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
-        fclose(f);
-    }
-    free(string2);
-
-    return mrb_nil_value();
-    */
-    // Workaround: saves information to run scripts after the initial
-    // resource script
-    char *string;
-    char *string2;
-    int i;
-    mrb_get_args(saten_mrb, "z", &string);
-    string2 = saten_malloc(strlen(string)+strlen(txt_dir)+1);
-    saten_strcpy(string2, txt_dir);
-    saten_strcat(string2, string);
-
-    if (load_scene_id == saten_now_loading.uid) {
-        i = text_n;
-        text_n++;
-        text_file = (char**)saten_realloc(text_file, sizeof(char*) * text_n);
-        text_id   = (int*)saten_realloc(text_id, sizeof(int) * text_n);
-        text_file[i] = (char*)saten_malloc(sizeof(char) * strlen(string2)+1);
-        memcpy(text_file[i], string2, strlen(string2)+1);
-        text_id[i] = load_scene_id;
-    }
-    free(string2);
-
-    return mrb_nil_value();
-
-}
+*/
 
 // private
 void saten_load_text_each(void)
 {
+    int l = 0;
     FILE *f = NULL;
     // Load text from the files in buffer
     for (int i = 0; i < text_n; i++) {
-        load_scene_id = text_id[i];
+        l = strlen(text_file[i])-1;
+        text_buffer = (char*)saten_realloc(text_buffer, sizeof(char) * (l));
+        memcpy(text_buffer, text_file[i], l);
+        text_buffer[l-2] = '/';
+        text_buffer[l-1] = '\0';
         saten_fopen(&f, text_file[i], "r");
         mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
         fclose(f);
         free(text_file[i]);
+        free(text_buffer);
     }
-    free(text_id);
-    text_id = NULL;
     free(text_file);
     text_file = NULL;
     text_n = 0;
@@ -273,49 +167,57 @@ void saten_load_text_each(void)
 // private
 mrb_value saten_mrb_load_text(mrb_state *mrb, mrb_value self)
 {
+    mrb_value mrbid, mrbstr;
+    saten_text *text = NULL;
+    char *key = NULL; // String used to fetch resource ID
+    int key_size;
     char *string;
     char *string2;
     mrb_int mrb_c; int c;
     mrb_bool mrb_opt; bool opt;
     mrb_get_args(saten_mrb, "zz|i?", &string, &string2, &mrb_c, &mrb_opt);
     opt = (bool)mrb_opt;
-    int i;
+    int id;
+
+    key_size = strlen(text_buffer)+strlen(string)+5;
+    key = (char*)saten_malloc(sizeof(char)*key_size);
+
+    memcpy(key, text_buffer, strlen(text_buffer)+1);
+    strcat(key, string);
+    key[key_size-1] = '\0';
+    key[key_size-2] = 't';
+    key[key_size-3] = 'x';
+    key[key_size-4] = 't';
+    key[key_size-5] = '.';
+
+    mrbstr = mrb_str_new_cstr(saten_mrb, key);
+    mrbid = mrb_funcall(saten_mrb, mrb_obj_value(saten_mruby_module(
+                    SATEN_MRB_MOD_RESOURCE)), "get_id", 1, mrbstr);
+    id = (int)mrb_fixnum(mrbid);
+
+    saten_resource_loading(id);
+
+    free(key);
 
     if (opt)
         c = (int)mrb_c;
     else
         c = 0;
 
-    // Fix string for text
-    int l = strlen(string2);
-    if (string2[l-1] == '\n')
-        string2[l-1] = '\0';
+    saten_resource *res = saten_resource_access(id);
+    if (res->flag == false && res->data == NULL) {
+        res->type = SATEN_RESOURCE_TEXT;
+        // Fix string for text
+        int l = strlen(string2);
+        if (string2[l-1] == '\n')
+            string2[l-1] = '\0';
 
-    if (load_scene_id == saten_now_loading.uid) {
-        saten_resmngr *res;
-        if (saten_load_on_thread)
-            res = &saten_vres;
-        else
-            res = &(saten_darr_scene[saten_now_loading.id].res);
-        res->text_n++;
-        i = res->text_n;
-        res->text = saten_realloc(res->text, i * sizeof(saten_text*));
-        res->text[i-1] = saten_text_create(1.0, string2, 0, 0, c);
+        text = saten_text_create(1.0, string2, 0, 0, c);
+        if (text) {
+            res->data = (void*)text;
+            res->flag = true;
+        }
     }
 
     return mrb_nil_value();
 }
-
-// private
-mrb_value saten_mrb_load_set_scene(mrb_state *mrb, mrb_value self)
-{
-    mrb_int mrb_id;
-    int id;
-    mrb_get_args(saten_mrb, "i", &mrb_id);
-    id = (int)mrb_id;
-
-    load_scene_id = id;
-
-    return mrb_nil_value();
-}
-

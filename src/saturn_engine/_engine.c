@@ -15,9 +15,11 @@ int saten_init(char *title, uint8_t flags) /* PUBLIC */
 
     if (saten_flag_check(SATEN_MRBLOAD, saten_flags)) {
         saten_mruby_init();
+        saten_resource_init();
     }
-    SATEN_DARR_INIT(saten_scene, saten_darr_scene);
+    saten_scene_init();
     saten_video_init();
+    saten_sfx_init();
 
     saten_framerate_set(SATEN_CONF_FRAMERATE);
 
@@ -30,7 +32,7 @@ int saten_run(void) /* PUBLIC */
     saten_video_lconf();
     saten_video_update();
 
-    if (SATEN_DARR_SIZE(saten_darr_scene) < 1) {
+    if (saten_scene_count() < 1) {
         saten_errhandler(38);
         return -1;
     }
@@ -54,40 +56,18 @@ void saten_game(void) /* PRIVATE */
     if (saten_vconf.update)
         saten_video_update();
 
-    // Traverse top-bottom (quit scenes)
-    for (int i = SATEN_DARR_SIZE(saten_darr_scene)-1; i >= 0; i--) {
-        if (saten_darr_scene[i].quit_flag)
-            if (saten_darr_scene[i].quit != NULL)
-                saten_darr_scene[i].quit();
-    }
-
     // Draw wallpaper if set
     saten_video_wpdraw();
 
-    // Traverse bottom-top (play game)
-    for (int i=saten_scene_start.id;i< SATEN_DARR_SIZE(saten_darr_scene);i++) {
-        saten_scene_self_set(&saten_darr_scene[i].info);
-        if (!saten_darr_scene[i].init_flag) {
-            if (saten_darr_scene[i].init != NULL)
-                saten_darr_scene[i].init();
-            saten_scene_each_init();
-        } else {
-            if (saten_darr_scene[i].update != NULL) 
-                saten_darr_scene[i].update(
-                        (i == SATEN_DARR_SIZE(saten_darr_scene)-1));
-            saten_scene_each_update(i == SATEN_DARR_SIZE(saten_darr_scene)-1);
-                // ^only top scene gets user control
-            if (saten_darr_scene[i].draw != NULL)
-                saten_darr_scene[i].draw();
-            saten_scene_each_draw();
-            saten_darr_scene[i].framecnt++;
-        }
-    }
+    saten_scene_engine_quit(); // Quit and destroy all flagged scenes top>btm
+
+    saten_scene_engine_main(); // Init and run scenes btm>top
+
     saten_video_scldraw();
     // Sets color to be used when renderer resets
     saten_video_prepare_reset();
     // No scenes set = time to quit!
-    if (SATEN_DARR_SIZE(saten_darr_scene) == 0)
+    if (saten_scene_count() == 0)
         saten_brkf = true;
 }
 
@@ -95,13 +75,12 @@ void saten_quit(void) /* PUBLIC */
 {
     saten_video_sconf();
     saten_video_quit();
-    SATEN_DARR_DESTROY(saten_darr_scene);
+    saten_scene_end();
+    saten_resource_quit();
     saten_core_quit();
 }
 
 void saten_kill(void) /* PUBLIC */
 {
-    // Force all scenes to quit
-    saten_scene_info scene = { 0, 0, 1 };
-    saten_scene_quit(scene);
+    saten_scene_quit_all();
 }

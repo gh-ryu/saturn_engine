@@ -1,7 +1,7 @@
 #ifndef SATURN_ENGINE_CORE_SPRITE
 #define SATURN_ENGINE_CORE_SPRITE
 
-void saten_sprite_destroy(saten_sprite *sprite);
+void saten_sprite_free(saten_sprite *sprite);
 void saten_sprite_draw(saten_sprite *sprite, int tile_id, int x, int y,
         double ang, bool stretch);
 void saten_sprite_scale(saten_sprite *sprite, float scale);

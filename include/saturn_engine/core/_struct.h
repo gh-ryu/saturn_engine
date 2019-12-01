@@ -52,6 +52,7 @@ typedef struct _saten_sprite {
     SDL_Rect *source;
     float scale;
     bool centered;
+    SDL_Color mods;
 } saten_sprite;
 
 typedef struct _saten_layer {
@@ -121,26 +122,13 @@ typedef struct _saten_spixel {
 typedef struct _saten_music {
     Mix_Music *o; // Object
     Mix_MusicType t; 
+    bool flag; // Is this music playing?
 } saten_music;
 
 typedef struct _saten_sound {
     Mix_Chunk *o;
-    int scene_id;
-    int sfx_id;
-    bool playf;
+    bool flag; // Play sfx if flag is raised
 } saten_sound;
-
-typedef struct _saten_resmngr {
-    saten_sprite **sprite;
-    int sprite_n;
-    saten_sound **sfx;
-    int sfx_n;
-    //bool *sfx_flag;
-    saten_music **bgm;
-    int bgm_n;
-    saten_text **text;
-    int text_n;
-} saten_resmngr;
 
 typedef struct _saten_cryptomngr {
     mrb_value o;

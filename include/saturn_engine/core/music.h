@@ -1,9 +1,10 @@
 #ifndef SATURN_ENGINE_CORE_MUSIC
 #define SATURN_ENGINE_CORE_MUSIC
 
-saten_music* saten_muload(const char *fn); /* PRIVATE */
-void saten_mufree(saten_music *mus); /* PRIVATE */
+saten_music* saten_music_load(const char *fn); /* PRIVATE */
+void saten_music_free(saten_music *mus); /* PRIVATE */
+bool saten_music_playback_check(saten_music *mus);
 
-int saten_mucheckpos(Mix_MusicType t); /* PRIVATE */
+int saten_music_checkpos(Mix_MusicType t); /* PRIVATE */
 
 #endif /* SATURN_ENGINE_CORE_MUSIC */

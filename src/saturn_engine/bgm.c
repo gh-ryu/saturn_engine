@@ -83,7 +83,7 @@ void saten_bgmstart(void) /* PRIVATE */
         ret = Mix_PlayMusic(track->o, 1);
     } else {
         if (pos > 0) {
-            if (saten_mucheckpos(track->t))
+            if (saten_music_checkpos(track->t))
                 ret = Mix_FadeInMusicPos(track->o, 1, fadems, pos);
             else
                 saten_errhandler(69);
@@ -124,6 +124,7 @@ void saten_bgmstop(void) /* PUBLIC */
     Mix_HookMusicFinished(NULL);
     Mix_HaltMusic();
     lpos = 0;
+    track->flag = false;
     track = NULL;
     loops = -1;
     pos = 0;

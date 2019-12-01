@@ -1,212 +1,182 @@
 #include "saturn_engine/_lib.h"
 
-static saten_scene_info *self;
+static int self;    // ID of currently active scene
+static int scene_n; // Number of scenes
+static int start;   // First scene on stack (from btm up) to be executed
 
-static saten_fptr_void each_scene_init;
-static saten_fptr_bool each_scene_update;
-static saten_fptr_void each_scene_draw;
-static saten_fptr_void each_scene_quit;
+static saten_fptr_void each_init;
+static saten_fptr_bool each_update;
+static saten_fptr_void each_draw;
+static saten_fptr_void each_quit;
 
-static void *scene_init_data;
+static saten_scene *scene_container; // Dynamic array
 
-// public
-saten_scene_info saten_scene_create(saten_scene_info info,
+int saten_scene_create( /* PUBLIC */
         saten_fptr_void init, saten_fptr_bool update, saten_fptr_void draw,
-        saten_fptr_void quit, char *loadscriptfp)
+        saten_fptr_void quit, void *data)
 {
-    if (info.alive)
-        return info;
     saten_scene scene;
     memset(&scene, 0, sizeof(saten_scene));
-    int i = SATEN_DARR_SIZE(saten_darr_scene);
+    int i = saten_scene_fetch_id();
     scene.init = init;
     scene.update = update;
     scene.draw = draw;
     scene.quit = quit;
-    scene.init_flag = false;
-    scene.quit_flag = false;
-    scene.info.id = i;
-    scene.info.uid = info.uid;
-    scene.info.alive = true;
-    scene.loadscriptfp = loadscriptfp;
-    SATEN_DARR_PUSH(saten_darr_scene, scene);
-    info.id = i;
-    info.alive = true;
-    return info;
+    scene.data = data;
+    scene.id = i;
+    SATEN_DARR_PUSH(scene_container, scene);
+    scene_n = SATEN_DARR_SIZE(scene_container);
+    return i;
 }
 
-// public
-/*
- * When switching scenes (e.g. title (menu) -> game)
- * Call this before creating the new scene (game)
-*/
-void saten_scene_quit(saten_scene_info scene)
+void saten_scene_start(int id) /* PUBLIC */
 {
-    int i = scene.id;
-    for (int j = SATEN_DARR_SIZE(saten_darr_scene); i < j; i++)
-        saten_darr_scene[i].quit_flag = true;
+    start = id;
 }
 
-/* Access functions to control scenes */
-// public
-void saten_scene_init_done(saten_scene_info scene)
+void saten_scene_quit_from(int id) /* PUBLIC */
 {
-    int id = scene.id;
-    saten_darr_scene[id].init_flag = true;
-}
-
-// public
-// Returns the scene currently being processed
-saten_scene_info* saten_scene_self(void)
-{
-    return self; 
-}
-
-// public
-void saten_scene_self_set(saten_scene_info *scene)
-{
-    self = scene;
-}
-
-// public
-void saten_scene_load_done(saten_scene_info scene)
-{
-    int id = scene.id;
-    saten_darr_scene[id].load_flag = true;
-}
-
-// public
-// Returns the scene at the top of the stack
-saten_scene_info saten_scene_get_current(void)
-{
-    return saten_darr_scene[(SATEN_DARR_SIZE(saten_darr_scene)) - 1].info;
-}
-
-// public
-saten_scene_info saten_scene_get_previous(void)
-{
-    return saten_darr_scene[(SATEN_DARR_SIZE(saten_darr_scene)) - 2].info; 
-}
-
-// public
-saten_scene_info saten_scene_set_start(saten_scene_info scene)
-{
-    // returns previous starting scene
-    saten_scene_info old = saten_scene_start;
-    saten_scene_start = scene;
-    return old;
-}
-
-// public
-bool saten_scene_initialized(saten_scene_info scene)
-{
-    if (saten_scene_exists(scene)) {
-        return saten_darr_scene[scene.id].init_flag;
+    // Quit all scenes on top of ID including ID
+    int i = saten_scene_find(id);
+    for (int j = i; j < scene_n; j++) {
+        scene_container[j].quitf = true;
     }
-    return false;
 }
 
-bool saten_scene_loaded(saten_scene_info scene)
+void saten_scene_quit_all(void) /* PUBLIC */
 {
-    if (saten_scene_exists(scene)) {
-        return saten_darr_scene[scene.id].load_flag;
+    for (int i = 0; i < scene_n; i++)
+        scene_container[i].quitf = true;
+}
+
+
+int saten_scene_self(void) /* PUBLIC */
+{
+    return self;
+}
+
+int saten_scene_count(void) /* PUBLIC */
+{
+    return scene_n;
+}
+
+int saten_scene_find(int id) /* PRIVATE */
+{
+    // Returns index of scene in container
+    // or -1 if id is not found
+    for (int i = 0; i < scene_n; i++) {
+        if (scene_container[i].id == id)
+            return i;
     }
-    return false;
+    return -1;
 }
 
-bool saten_scene_is_quitting(saten_scene_info scene)
+int saten_scene_fetch_id(void) /* PRIVATE */
 {
-    if (saten_scene_exists(scene)) {
-        return saten_darr_scene[scene.id].quit_flag;
+    bool found = true;
+    int cnt = 0;
+    int size = SATEN_DARR_SIZE(scene_container);
+    while (found) {
+        found = false;
+        for (int i = 0; i < size; i++) {
+            if (scene_container[i].id == cnt) {
+                found = true;
+                break;
+            }
+        }
+        if (found)
+            cnt++;
     }
-    return false;
+    return cnt;
 }
 
-uint64_t saten_scene_frame(saten_scene_info scene)
+int saten_scene_pop(void) /* PRIVATE */
 {
-    if (saten_scene_exists(scene)) {
-        return saten_darr_scene[scene.id].framecnt;
+    if (self == start) {
+        int i = saten_scene_find(self);
+        if (i > 0)
+            saten_scene_start(scene_container[i-1].id);
     }
-    return false;
-}
 
-// private
-bool saten_scene_exists(saten_scene_info scene)
-{
-    return scene.alive;
-}
-
-saten_scene_info saten_scene_destroy(saten_scene_info scene)
-{
-    if (!saten_scene_exists(scene))
-        return scene;
-
-    int n = SATEN_DARR_SIZE(saten_darr_scene);
-    n--; // new size and index of top scene
-    if (scene.id != n) {
-        saten_errhandler(45);
-        return scene;
-    }
-    // free resources
-    saten_resource_free(saten_darr_scene[scene.id].res);
-
-    SATEN_DARR_RESIZE(saten_darr_scene, n);
-
-    scene.alive = false;
-
+    int n = SATEN_DARR_SIZE(scene_container);
+    n--;
+    SATEN_DARR_RESIZE(scene_container, n);
+    scene_n = n;
     if (saten_load_mtx) {
         SDL_DestroyMutex(saten_load_mtx);
         saten_load_mtx = NULL;
     }
-
-    return scene;
+    return -1;
 }
 
-// private
-void saten_scene_each_init(void)
+void saten_scene_each_set(saten_fptr_void init, /* PUBLIC */
+        saten_fptr_bool update, saten_fptr_void draw, saten_fptr_void quit)
 {
-    if (each_scene_init)
-        each_scene_init();
+    each_init = init;
+    each_update = update;
+    each_draw = draw;
+    each_quit = quit;
 }
 
-// private
-void saten_scene_each_update(bool r)
+void saten_scene_init(void) /* PRIVATE */
 {
-    if (each_scene_update)
-        each_scene_update(r);
+    SATEN_DARR_INIT(saten_scene, scene_container);
 }
 
-// private
-void saten_scene_each_draw(void)
+void saten_scene_end(void) /* PRIVATE */
 {
-    if (each_scene_draw)
-        each_scene_draw();
+    SATEN_DARR_DESTROY(scene_container);
 }
 
-// private
-void saten_scene_each_quit(void)
+int saten_scene_frame_count(void) /* PUBLIC */
 {
-    if (each_scene_quit)
-        each_scene_quit();
+    int i = saten_scene_find(self);
+    return scene_container[i].frcnt;
 }
 
-// public
-void saten_scene_each_set(saten_fptr_void init, saten_fptr_bool update,
-        saten_fptr_void draw, saten_fptr_void quit)
+// Engine internal handling
+
+void saten_scene_engine_quit(void) /* PRIVATE */
 {
-    each_scene_init = init;
-    each_scene_update = update;
-    each_scene_draw = draw;
-    each_scene_quit = quit;
+    // Traverse top-bottom (quit scenes)
+    for (int i = scene_n-1; i >= 0; i--) {
+        self = scene_container[i].id;
+        if (scene_container[i].quitf) {
+            if (scene_container[i].quit)
+                scene_container[i].quit();
+            if (each_quit)
+                each_quit();
+            saten_scene_pop();
+        }
+    }
 }
 
-void* saten_scene_init_datar(void)
+void saten_scene_engine_main(void) /* PRIVATE */
 {
-    return scene_init_data;
+    if (scene_n == 0)
+        return;
+    int begin = saten_scene_find(start);
+    // Traverse bottom-top (play game)
+    for (int i = begin; i < scene_n; i++) {
+        self = scene_container[i].id;
+        if (!scene_container[i].initf) { // Current scene still initializing
+            if (scene_container[i].init != NULL)
+                scene_container[i].init();
+            if (each_init)
+                each_init();
+            scene_container[i].initf = true; // Done initializing
+        } else {
+            if (scene_container[i].update != NULL) 
+                scene_container[i].update((i == scene_n-1));
+            if (each_update)
+                each_update(i == scene_n-1);
+            if (scene_container[i].draw != NULL)
+                scene_container[i].draw();
+            if (each_draw)
+                each_draw();
+            scene_container[i].frcnt++;
+        }
+    }
 }
 
-void saten_scene_init_data_clear(void)
-{
-    if (scene_init_data)
-        free(scene_init_data);
-}
+

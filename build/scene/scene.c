@@ -16,5 +16,4 @@ void scene_{{low}}_draw(void)
 
 void scene_{{low}}_quit(void)
 {
-    scene.{{low}} = saten_scene_destroy(scene.{{low}});
 }

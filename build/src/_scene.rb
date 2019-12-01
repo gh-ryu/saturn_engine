@@ -38,6 +38,7 @@ class Scene
       Util.fclose(file)
       text.gsub!('{{up}}', @name.upcase)
       text.gsub!('{{low}}', @name)
+      text.sub!('{{id}}', @id.to_s)
       begin
         file = Util.fopen("include/scene/#{@name}.h", 'w')
         file.write(text)
@@ -91,7 +92,7 @@ class Scene
       Util.fclose(file)
       text2.gsub!('{{up}}', @name.upcase)
       text2.gsub!('{{low}}', @name)
-      text2.sub!('{{id}}', @id.to_s)
+      text2.sub!('{{id}}', "SCENE_#{@name.upcase}")
       text.sub!("// SATEN_BUILDER_SCENE_NEXT_SRC", text2)
       text.rstrip!
       file = Util.fopen(SCENE_HELPER_SOURCE, 'w')
@@ -101,6 +102,7 @@ class Scene
     else
       puts "-- 'src/helper/scene.c' already appears to support scene #{@name}"
     end
+=begin
     # Update include/saturn_engine/config/build/scene.h
     if File.exist?(SCENE_MANAGER)
       file = Util.fopen(SCENE_MANAGER, 'r')
@@ -122,6 +124,8 @@ class Scene
     else
       puts "-- Fatal. Missing '#{SCENE_MANAGER}'"
     end
+=end
+=begin
     # Add data/mrb/resource/@name.rb
     unless File.exist?(SCENE_LOADER + @name + '.rb')
       file = Util.fopen("build/scene/resource.rb", 'r')
@@ -135,6 +139,8 @@ class Scene
     else
       puts "-- File '#{SCENE_LOADER + @name + '.rb'}' already exists."
     end
+=end
+=begin
     # Update include/saturn_engine/config/build/load.h (filename to above)
     if File.exist?(SCENE_LOAD)
       file = Util.fopen(SCENE_LOAD, 'r')
@@ -158,6 +164,7 @@ class Scene
     else
       puts "-- Fatal. Missing '#{SCENE_LOAD}'"
     end
+=end
     # Add mrb scene constant
     file = Util.fopen(SCENE_MRB_CONF, 'r')
     text = file.read

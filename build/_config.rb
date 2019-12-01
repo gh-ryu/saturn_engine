@@ -2,5 +2,5 @@
 
 module Config
   SCENE_MANAGER  = "scene"
-  RESOURCE_MACRO = "SATEN_RESOURCE"
+  RESOURCE_MACRO = "RES"
 end

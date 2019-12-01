@@ -428,7 +428,7 @@ void saten_text_set_gheight(int a)
 }
 
 // public
-void saten_text_destroy(saten_text *ptr)
+void saten_text_free(saten_text *ptr)
 {
     free(ptr->glyph);
     saten_litem* eptr = NULL;

@@ -1,5 +1,6 @@
 #ifndef SCENE_{{up}}
-#define SCENE_{{up}}
+#define SCENE_{{up}} {{id}}
+
 
 void scene_{{low}}_init(void);
 void scene_{{low}}_update(bool c);

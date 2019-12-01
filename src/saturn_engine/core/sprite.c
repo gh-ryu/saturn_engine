@@ -171,7 +171,7 @@ void saten_sprite_scale(saten_sprite *sprite, float scale)
 }
 
 // public
-void saten_sprite_destroy(saten_sprite *sprite)
+void saten_sprite_free(saten_sprite *sprite)
 {
     if (sprite->srf)
         SDL_FreeSurface(sprite->srf);
@@ -182,7 +182,6 @@ void saten_sprite_destroy(saten_sprite *sprite)
     if (sprite->target)
         free(sprite->target);
     free(sprite);
-    sprite = NULL;
 }
 
 // public
@@ -193,11 +192,13 @@ void saten_sprite_alphamod(saten_sprite *sprite, uint8_t alpha, int type)
         r = SDL_SetSurfaceAlphaMod(sprite->srf, alpha);
         if (r < 0)
             saten_errhandler(20);
+        sprite->mods.a = alpha;
     }
     if (type == SATEN_TEXTURE) {
         r = SDL_SetTextureAlphaMod(sprite->texture, alpha);
         if (r < 0)
             saten_errhandler(21);
+        sprite->mods.a = alpha;
     }
 }
 
