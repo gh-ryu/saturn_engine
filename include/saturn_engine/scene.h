@@ -22,4 +22,7 @@ int saten_scene_frame_count(void);
 void saten_scene_engine_quit(void);
 void saten_scene_engine_main(void);
 
+void* saten_scene_access_data(int id);
+void saten_scene_free_data(int id);
+
 #endif /* SATURN_ENGINE_SCENE */

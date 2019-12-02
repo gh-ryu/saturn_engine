@@ -109,6 +109,24 @@ int saten_scene_pop(void) /* PRIVATE */
     return -1;
 }
 
+void* saten_scene_access_data(int id) /* PUBLIC */
+{
+    int i = saten_scene_find(id);
+    if (scene_container[i].data)
+        return scene_container[i].data;
+    else
+        return NULL;
+}
+
+void saten_scene_free_data(int id) /* PUBLIC */
+{
+    int i = saten_scene_find(id);
+    if (scene_container[i].data) {
+        free(scene_container[i].data);
+        scene_container[i].data = NULL;
+    }
+}
+
 void saten_scene_each_set(saten_fptr_void init, /* PUBLIC */
         saten_fptr_bool update, saten_fptr_void draw, saten_fptr_void quit)
 {
@@ -146,7 +164,6 @@ void saten_scene_engine_quit(void) /* PRIVATE */
                 scene_container[i].quit();
             if (each_quit)
                 each_quit();
-            saten_scene_pop();
         }
     }
 }
