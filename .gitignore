@@ -6,7 +6,7 @@ data/log/error.*
 bin/*
 !bin/*.dll
 
-mruby-2.0.1/build/
+mruby-2.1.0/build/
 
 data/img/demo/background-sonic.png
 

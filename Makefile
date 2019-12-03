@@ -5,8 +5,8 @@ MSG = make
 # linux
 ifeq ($(filter linux,$(MAKECMDGOALS)),linux)
 LIB = `sdl2-config --cflags --libs` -lSDL2_image -lSDL2_mixer \
-	  mruby-2.0.1/build/host/lib/libmruby.a -lm
-INC = -Imruby-2.0.1/include
+	  mruby-2.1.0/build/host/lib/libmruby.a -lm
+INC = -Imruby-2.1.0/include
 CC = gcc
 RUN = -o bin/$(NAME)
 MSG += linux
@@ -18,11 +18,11 @@ LIB = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer \
 	  -Llib/SDL2-2.0.9/x86_64-w64-mingw32/lib \
 	  -Llib/SDL2_image-2.0.4/x86_64-w64-mingw32/lib \
 	  -Llib/SDL2_mixer-2.0.4/x86_64-w64-mingw32/lib \
-	  mruby-2.0.1/build/win64/lib/libmruby.a -lm
+	  mruby-2.1.0/build/win64/lib/libmruby.a -lm
 INC = -Ilib/SDL2-2.0.9/x86_64-w64-mingw32/include/SDL2 \
 	  -Ilib/SDL2_image-2.0.4/x86_64-w64-mingw32/include/SDL2 \
 	  -Ilib/SDL2_mixer-2.0.4/x86_64-w64-mingw32/include/SDL2 \
-      -Imruby-2.0.1/include -lws2_32
+      -Imruby-2.1.0/include -lws2_32
 CC = x86_64-w64-mingw32-gcc
 RUN = -o bin/$(NAME).exe
 SFLAG = -D_WIN32

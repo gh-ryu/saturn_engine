@@ -36,8 +36,8 @@
 #include <time.h>
 
 #include "_config.h"
-#include "../mruby-2.0.1/include/mruby.h"
-#include "../mruby-2.0.1/include/mruby/compile.h"
+#include "../mruby-2.1.0/include/mruby.h"
+#include "../mruby-2.1.0/include/mruby/compile.h"
 
 #include "_struct.h"
 
