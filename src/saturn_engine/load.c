@@ -1,8 +1,6 @@
 #include "saturn_engine/_lib.h"
 
 // Buffer names of text resource files
-static char **text_file;
-static int text_n;
 static char *text_buffer; // Holds name of text file
 
 mrb_value saten_mrb_load(mrb_state *mrb, mrb_value self) /* PRIVATE */
@@ -73,13 +71,17 @@ mrb_value saten_mrb_load(mrb_state *mrb, mrb_value self) /* PRIVATE */
 
 SATEN_LOAD_TEXT_FILE_HANDLER:
     if (type == SATEN_RESOURCE_TEXT) {
-        l = text_n;
-        text_n++;
-        text_file =
-            (char**)saten_realloc(text_file, sizeof(char*) * text_n);
-        text_file[l] =
-            (char*)saten_malloc(sizeof(char) * strlen(string)+1);
-        memcpy(text_file[l], string, strlen(string)+1);
+        l = strlen(string)-1;
+        text_buffer = (char*)saten_realloc(text_buffer, sizeof(char) * (l));
+        memcpy(text_buffer, string, l);
+        text_buffer[l-2] = '/';
+        text_buffer[l-1] = '\0';
+        FILE *f = NULL;
+        saten_fopen(&f, string, "r");
+        mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
+        fclose(f);
+        free(text_buffer);
+        text_buffer = NULL;
     }
 
     // Cleanup
@@ -140,29 +142,6 @@ int saten_load_thread_func(void *ptr)
     return 0;
 }
 */
-
-// private
-void saten_load_text_each(void)
-{
-    int l = 0;
-    FILE *f = NULL;
-    // Load text from the files in buffer
-    for (int i = 0; i < text_n; i++) {
-        l = strlen(text_file[i])-1;
-        text_buffer = (char*)saten_realloc(text_buffer, sizeof(char) * (l));
-        memcpy(text_buffer, text_file[i], l);
-        text_buffer[l-2] = '/';
-        text_buffer[l-1] = '\0';
-        saten_fopen(&f, text_file[i], "r");
-        mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
-        fclose(f);
-        free(text_file[i]);
-        free(text_buffer);
-    }
-    free(text_file);
-    text_file = NULL;
-    text_n = 0;
-}
 
 // private
 mrb_value saten_mrb_load_text(mrb_state *mrb, mrb_value self)

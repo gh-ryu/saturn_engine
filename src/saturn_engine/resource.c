@@ -58,7 +58,6 @@ void saten_resource_load(const char *str) /* PUBILC */
 
     // Load stuff
     mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
-    saten_load_text_each();
 
     // Clean up
     fclose(f);
@@ -80,7 +79,6 @@ void saten_resource_load_only(const char *str) /* PUBLIC */
 
     // Load stuff
     mrb_load_file_cxt(saten_mrb, f, saten_mrbc);
-    saten_load_text_each();
 
     // Clean up
     fclose(f);
