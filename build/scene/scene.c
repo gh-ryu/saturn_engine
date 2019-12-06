@@ -2,7 +2,7 @@
 #include "helper/scene.h"
 #include "scene/{{low}}.h"
 
-scene_{{low}}_data *data;
+static scene_{{low}}_data *data;
 
 void scene_{{low}}_init(void)
 {
