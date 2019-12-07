@@ -36,6 +36,7 @@ int saten_core_run(saten_fptr_void fptr)
 
         // Game
         fptr();
+        saten_timer_update_each();
         SDL_RenderPresent(saten_ren);
         //saten_framerate_dixq_wait();
         saten_framerate_wait();
@@ -96,6 +97,8 @@ int saten_core_init(const char *title, int screen_width, int screen_height,
 
     }
 
+    saten_timer_init();
+
     saten_list_init(&saten_list_layer, sizeof(saten_layer));
     saten_layer0 = saten_layer_create(screen_width, screen_height);
     saten_layer0->flag = 0;
@@ -133,6 +136,7 @@ void saten_core_quit(void)
     free(saten_keystate3);
     saten_layer_destroy(saten_layer0);
     saten_list_destroy(saten_list_layer);
+    saten_timer_quit();
 
     SDL_DestroyRenderer(saten_ren);
     SDL_DestroyWindow(saten_window);

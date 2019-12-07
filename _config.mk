@@ -26,6 +26,7 @@ SATENOBJ += src/saturn_engine/core/texture.c
 SATENOBJ += src/saturn_engine/core/renderer.c
 SATENOBJ += src/saturn_engine/core/music.c
 SATENOBJ += src/saturn_engine/core/sound.c
+SATENOBJ += src/saturn_engine/core/timer.c
 
 
 SATENOBJ += src/saturn_engine/_engine.c

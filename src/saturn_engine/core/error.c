@@ -222,6 +222,18 @@ void saten_errhandler(int i) /* PRIVATE */
     case 71:
         saten_printerr(i, "Matrix menu requires call to saten_menu_matrixs()");
         break;
+    case 72:
+        saten_printerr(i, "Can only pause timer that is running");
+        break;
+    case 73:
+        saten_printerr(i, "Can only continue timer that is paused");
+        break;
+    case 74:
+        saten_printerr(i, "Timer is already stopped");
+        break;
+    case 75:
+        saten_printerr(i, "Only stopped timers can be started");
+        break;
     }
 }
 

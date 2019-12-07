@@ -2,9 +2,9 @@
 #define SATURN_ENGINE_CORE_STRUCTS
 
 typedef struct _saten_litem {
-    void *current;
-    void *next;
-    void *prev;
+    void *current; // Pointer to data
+    void *next;    // Pointer to next element
+    void *prev;    // Pointer to next element
 } saten_litem;
 
 typedef struct _saten_list {
@@ -135,5 +135,14 @@ typedef struct _saten_cryptomngr {
     bool flag;
     char *symkey;
 } saten_cryptomngr;
+
+typedef struct _saten_timer {
+    uint8_t type;
+    uint8_t state;
+    uint32_t current;
+    uint32_t goal;
+    Uint32 ms_start;
+    uint32_t loops;
+} saten_timer;
 
 #endif /* SATURN_ENGINE_CORE_STRUCTS */
